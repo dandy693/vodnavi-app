@@ -1,0 +1,113 @@
+# =========================================================
+# VODNAVI-GROUP monorepo root .gitignore
+# 各サブプロジェクト (app-concierge / site-brand / site-moterist /
+# management / docker-env) 全てに横断的に適用される。
+# サブディレクトリ固有の追加除外はそれぞれの .gitignore に書く。
+# パターンは原則として非アンカー (先頭 / を付けない) でツリー内の
+# どこに現れても除外されるようにしている。
+# =========================================================
+
+# ---------- Dependencies (Node) ----------
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ---------- Build / cache (Next.js / Vite / TS) ----------
+.next/
+out/
+build/
+dist/
+.turbo/
+.cache/
+.swc/
+*.tsbuildinfo
+next-env.d.ts
+
+# ---------- Test / coverage ----------
+coverage/
+.nyc_output/
+
+# ---------- Logs ----------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-debug.log*
+logs/
+
+# ---------- Env files (秘匿情報) ----------
+# .env, .env.local, .env.production など全て除外。
+# サンプルだけは追跡対象として明示的に許可する。
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.local.example
+!.env.sample
+
+# ---------- Deployments ----------
+.vercel/
+.netlify/
+.serverless/
+.firebase/
+
+# ---------- Python (management/ など) ----------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.python-version
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---------- Docker (docker-env/) ----------
+# compose の override や local volume は共有しない
+docker-compose.override.yml
+docker-compose.*.local.yml
+*.pid
+
+# ---------- IDE / Editor ----------
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+*.swp
+*.swo
+*~
+
+# ---------- OS ----------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ---------- Secrets / certificates ----------
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+secrets/
+.secrets/
+
+# ---------- Claude Code ローカル設定 ----------
+.claude/settings.local.json
+
+# ---------- アーカイブ / 一時ファイル ----------
+*.tmp
+*.bak
+*.old

@@ -1,0 +1,6 @@
+url_or_post_id,current_page_type,current_status,target_page_type,disposition_candidate,reason,dependency_before_execution,redirect_needed_later,noindex_review_needed,slug_change_allowed,current_priority,evidence_status,owner,notes
+1095,beginner_candidate,publish,beginner_pillar,keep_or_rebuild,existing beginner asset,re-score against new IA,undecided,yes,no,A,historical,Site Audit Agent,
+1106,benefit_candidate,publish,signup_benefits,keep_or_rebuild,existing mid-funnel asset,re-score against new CTA model,undecided,yes,no,A,historical,Site Audit Agent,
+994,safety_candidate,publish,safety_pillar,keep_or_rebuild,existing trust asset,re-score against new IA,undecided,yes,no,A,historical,Site Audit Agent,
+954,sale_candidate,publish,sale_hub,rebuild,existing sale-intent source,define evergreen sale framework first,undecided,yes,no,A,historical,SEO / Content Architecture Agent,
+1018,actress_candidate,publish,actress_hub,merge_or_retire,legacy risk handling requires fresh audit,confirm current risk state first,undecided,yes,no,A,historical,Compliance / Risk Agent,

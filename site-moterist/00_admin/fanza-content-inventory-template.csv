@@ -1,0 +1,7 @@
+page_type,target_url_or_post_id,current_title,current_status,current_category_tags,intent_cluster,content_role,monetization_target,current_cta_state,affiliate_link_presence,disclosure_state,thin_content_risk,duplicate_risk,compliance_risk,keep_rebuild_merge_retire,priority,evidence_status,notes
+beginner_pillar,,,,,what_is_fanza,entry,,,,,,,,,A,open,
+safety_pillar,,,,,is_it_safe,reassurance,,,,,,,,,A,open,
+signup_benefits,,,,,why_join,mid_funnel,,,,,,,,,A,open,
+sale_hub,,,,,what_is_on_sale,offer_discovery,,,,,,,,,A,open,
+actress_hub,,,,,who_to_watch,discovery,,,,,,,,,B,open,
+genre_hub,,,,,what_genre_fits,discovery,,,,,,,,,B,open,
