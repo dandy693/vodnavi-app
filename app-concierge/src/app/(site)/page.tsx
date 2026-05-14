@@ -3,13 +3,13 @@ import { Suspense } from "react";
 import { ConfigErrorPanel } from "@/components/config-error";
 import { EmptyState } from "@/components/empty-state";
 import { FilterBar } from "@/components/filter-bar";
-import { HeroSection } from "@/components/hero-section";
+import { HeroSection, type HeroCopy } from "@/components/hero-section";
 import { ProductGrid } from "@/components/product-grid";
 import { SearchForm } from "@/components/search-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   resolveConciergeSource,
-  type ConciergeSourceProfile,
+  type ConciergeSource,
 } from "@/lib/concierge/sources";
 import {
   FanzaApiError,
@@ -38,6 +38,43 @@ type HomeSearchParams = {
   source?: string;
 };
 
+// チャネル別ヒーローコピー。null/undefined/未知の値は default に明示フォールバックする。
+function selectHeroCopy(source: ConciergeSource): HeroCopy {
+  switch (source) {
+    case "moterist":
+      return {
+        badge: "MOTERIST EXPRESS",
+        headlineLead: "最短30秒、迷いを断つ。VOD選びの",
+        headlineHighlight: "特攻隊長",
+        headlineTail: "、起動。",
+        subcopy:
+          "どのVODが一番得か？今すぐ観れるのはどこか？コスパとスピードを重視した最速の結論を、限定AIが即答します。",
+        ctaLabel: "特攻隊長 AI を起動",
+      };
+    case "brand":
+      return {
+        badge: "VODNAVI PREMIUM",
+        headlineLead: "VODナビ・",
+        headlineHighlight: "プレミアム",
+        headlineTail: "。あなたに相応しい、至高の視聴体験を。",
+        subcopy:
+          "数あるサービスの中から、あなたのライフスタイルと好みに調和する一本を。信頼と実績に基づいた、唯一無二のコンシェルジュ。",
+        ctaLabel: "プレミアム・コンシェルジュへ",
+      };
+    case "default":
+    default:
+      return {
+        badge: "AI VOD CONCIERGE",
+        headlineLead: "あなたに、",
+        headlineHighlight: "最高の『観たい』",
+        headlineTail: "を。VODコンシェルジュがご案内します。",
+        subcopy:
+          "作品数、料金、画質。あらゆる角度から比較して、あなたにぴったりのVODサービスを無料で見つけ出します。",
+        ctaLabel: "AI コンシェルジュに相談する",
+      };
+  }
+}
+
 export default async function HomePage({
   searchParams,
 }: {
@@ -47,7 +84,8 @@ export default async function HomePage({
   const floor = params.floor ?? DEFAULT_FLOOR;
   const sort = (params.sort as DmmSort | undefined) ?? DEFAULT_SORT;
   const keyword = params.keyword?.trim() || undefined;
-  const sourceProfile = resolveConciergeSource(params.source);
+  const sourceId = resolveConciergeSource(params.source).id;
+  const heroCopy = selectHeroCopy(sourceId);
 
   const floorMeta =
     FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
@@ -60,7 +98,8 @@ export default async function HomePage({
           service={floorMeta.service}
           sort={sort}
           keyword={keyword}
-          sourceProfile={sourceProfile}
+          source={sourceId}
+          heroCopy={heroCopy}
         />
       </Suspense>
     </>
@@ -72,13 +111,15 @@ async function ResultsSection({
   service,
   sort,
   keyword,
-  sourceProfile,
+  source,
+  heroCopy,
 }: {
   floor: string;
   service: string;
   sort: DmmSort;
   keyword?: string;
-  sourceProfile: ConciergeSourceProfile;
+  source: ConciergeSource;
+  heroCopy: HeroCopy;
 }) {
   let totalCount: number | undefined;
   let items: Awaited<ReturnType<typeof fetchItemList>>["result"]["items"] = [];
@@ -108,7 +149,7 @@ async function ResultsSection({
 
   return (
     <>
-      <HeroSection totalCount={totalCount} sourceProfile={sourceProfile} />
+      <HeroSection totalCount={totalCount} source={source} copy={heroCopy} />
 
       <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <div className="mb-5 flex flex-col gap-3">

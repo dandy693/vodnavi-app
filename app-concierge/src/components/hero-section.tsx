@@ -1,25 +1,35 @@
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 
-import type { ConciergeSourceProfile } from "@/lib/concierge/sources";
+import type { ConciergeSource } from "@/lib/concierge/sources";
+
+export interface HeroCopy {
+  badge: string;
+  headlineLead: string;
+  headlineHighlight: string;
+  headlineTail: string;
+  subcopy: string;
+  ctaLabel: string;
+}
 
 export function HeroSection({
   totalCount,
-  sourceProfile,
+  source,
+  copy,
 }: {
   totalCount?: number;
-  sourceProfile: ConciergeSourceProfile;
+  source: ConciergeSource;
+  copy: HeroCopy;
 }) {
-  const { hero, id: sourceId } = sourceProfile;
   const conciergeHref =
-    sourceId === "default"
+    source === "default"
       ? "/concierge"
-      : `/concierge?source=${encodeURIComponent(sourceId)}`;
+      : `/concierge?source=${encodeURIComponent(source)}`;
 
   return (
     <section
       className="relative overflow-hidden border-b border-white/5"
-      data-source={sourceId}
+      data-source={source}
     >
       <div
         aria-hidden
@@ -32,22 +42,22 @@ export function HeroSection({
       <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-3 px-4 py-10 sm:px-6 sm:py-14">
         <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/5 px-3 py-1 text-[10px] font-medium tracking-[0.2em] text-amber-300 sm:text-xs">
           <Sparkles className="size-3" aria-hidden />
-          {hero.badge}
+          {copy.badge}
         </div>
         <h1 className="font-heading text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
-          {hero.titlePrefix}
-          <span className="text-amber-300">{hero.titleHighlight}</span>
-          {hero.titleSuffix}
+          {copy.headlineLead}
+          <span className="text-amber-300">{copy.headlineHighlight}</span>
+          {copy.headlineTail}
         </h1>
-        <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          {hero.description}
+        <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+          {copy.subcopy}
         </p>
         <Link
           href={conciergeHref}
           prefetch={false}
           className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs font-medium text-amber-200 transition hover:border-amber-300/60 hover:bg-amber-400/15 sm:text-sm"
         >
-          {hero.ctaLabel}
+          {copy.ctaLabel}
           <ArrowRight className="size-3.5" aria-hidden />
         </Link>
         {typeof totalCount === "number" && totalCount > 0 && (
