@@ -50,6 +50,7 @@ VOD アフィリエイト事業「VODNAVI」の運営モノレポ。**3 サイ�
 | [`KPI_DASHBOARD.md`](management/KPI_DASHBOARD.md) | 集客 → 送客 → クリック → 成約 の漏斗別 KPI |
 | [`COMPLIANCE_GUIDE.md`](management/COMPLIANCE_GUIDE.md) | 法令・各社規約遵守チェックリストと表示テンプレート |
 | [`MARKETING_PILLARS.md`](management/MARKETING_PILLARS.md) | Moterist の 3 本柱キーワード戦略とコンシェルジュ誘導設計 |
+| [`ARTICLE_TEMPLATE.md`](management/ARTICLE_TEMPLATE.md) | CCO 向け記事制作テンプレート（コンシェルジュ誘導動線組込み） |
 | [`STRATEGY_BRIEF_*.md`](management/) | CSO 発行の戦略ブリーフ（連番） |
 | [`CHANGELOG.md`](management/CHANGELOG.md) | エージェント横断の作業ログ（逆時系列） |
 

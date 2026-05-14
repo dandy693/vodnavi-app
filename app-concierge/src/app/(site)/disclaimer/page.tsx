@@ -22,7 +22,7 @@ export default function DisclaimerPage() {
     <LegalLayout
       eyebrow="DISCLAIMER"
       title="免責事項"
-      updatedAt="2026年5月11日"
+      updatedAt="2026年5月14日"
     >
       <Section heading="1. 年齢制限について">
         <p>
@@ -38,7 +38,12 @@ export default function DisclaimerPage() {
           <span className="px-1 text-foreground">FANZA（DMM.com アフィリエイトプログラム）</span>
           に参加しており、商品情報API v3.0
           を利用して FANZA 配信中の作品情報を表示しています。当サイトを経由して FANZA
-          上で商品を購入・契約された場合、運営者に紹介料が支払われます。
+          上で商品を購入・契約された場合、運営者に紹介料が支払われることがあります。
+        </p>
+        <p>
+          本サイトに掲載するレビュー・解説・選定基準は、紹介料の有無や金額によって
+          内容が左右されることはありません。読者が自身の判断で意思決定できるよう、
+          可能な限り客観的な情報の提示に努めています。
         </p>
       </Section>
 
@@ -74,7 +79,23 @@ export default function DisclaimerPage() {
         </p>
       </Section>
 
-      <Section heading="6. 損害の免責">
+      <Section heading="6. 表現に関する自己規制">
+        <p>
+          当サイトでは、景品表示法・ステルスマーケティング規制（2023年10月施行）
+          を遵守し、以下の表現を行わないことを運営方針としています。
+        </p>
+        <ul className="list-inside list-disc space-y-2">
+          <li>合理的な根拠を欠く「絶対」「最安」「業界No.1」等の断定表現</li>
+          <li>調査主体・時期・対象範囲が明示されない No.1 表示</li>
+          <li>本文と視認性の異なる小さな打消し表示</li>
+          <li>広告であることを秘匿した第三者を装ったレビュー</li>
+        </ul>
+        <p>
+          アフィリエイトリンクを含むページには、その旨を冒頭またはフッターで明示しています。
+        </p>
+      </Section>
+
+      <Section heading="7. 損害の免責">
         <p>
           当サイトの利用、または利用できなかったことにより発生したいかなる損害についても、
           当サイト運営者は一切の責任を負いません。リンク先サイトの内容、
@@ -82,7 +103,7 @@ export default function DisclaimerPage() {
         </p>
       </Section>
 
-      <Section heading="7. 免責事項の変更">
+      <Section heading="8. 免責事項の変更">
         <p>
           本免責事項の内容は、必要に応じて予告なく変更することがあります。
           変更後の免責事項は、当サイトに掲載したときから効力を生じるものとします。

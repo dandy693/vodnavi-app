@@ -19,13 +19,21 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <LegalLayout eyebrow="ABOUT" title="運営者情報">
+    <LegalLayout eyebrow="ABOUT" title="運営者情報" updatedAt="2026年5月14日">
       <Section heading="サイトコンセプト">
         <p>
           VODNAVI は、FANZA で配信されている数十万本の VOD
           作品から、いま観るべき一本に最短で辿り着くためのナビゲーションサイトです。
           価格、レビュー、新着情報、ジャンル、出演者などの条件で素早く絞り込み、
           スマートフォンからワンタップで視聴開始できることを目指しています。
+        </p>
+        <p>
+          作品選びに迷ったときは、AI コンシェルジュ「
+          <a href="/concierge" className="text-amber-300 hover:underline">
+            /concierge
+          </a>
+          」が、その日の気分・シチュエーション・希望条件をヒアリングしながら、
+          数十万作品から最適な一本を絞り込みます。
         </p>
       </Section>
 
@@ -52,11 +60,23 @@ export default function AboutPage() {
           <dt className="text-muted-foreground/70">サイト名</dt>
           <dd className="text-foreground">VODNAVI</dd>
           <dt className="text-muted-foreground/70">運営者</dt>
-          <dd className="text-foreground">VODNavi運営事務局</dd>
+          <dd className="text-foreground">VODNavi 運営事務局</dd>
+          <dt className="text-muted-foreground/70">公開日</dt>
+          <dd className="text-foreground">2026年5月</dd>
           <dt className="text-muted-foreground/70">連絡先</dt>
           <dd className="text-foreground">
             <a href="/contact" className="text-amber-300 hover:underline">
               お問い合わせフォーム
+            </a>
+          </dd>
+          <dt className="text-muted-foreground/70">関連ポリシー</dt>
+          <dd className="text-foreground">
+            <a href="/privacy" className="text-amber-300 hover:underline">
+              プライバシーポリシー
+            </a>
+            <span className="px-2 text-muted-foreground/70">/</span>
+            <a href="/disclaimer" className="text-amber-300 hover:underline">
+              免責事項
             </a>
           </dd>
         </dl>

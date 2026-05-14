@@ -22,13 +22,18 @@ export default function PrivacyPage() {
     <LegalLayout
       eyebrow="PRIVACY POLICY"
       title="プライバシーポリシー"
-      updatedAt="2026年5月11日"
+      updatedAt="2026年5月14日"
     >
       <Section heading="1. 個人情報の取り扱い">
         <p>
           VODNAVI（以下「当サイト」）は、お問い合わせフォーム等を通じて取得した
           お名前・メールアドレス・お問い合わせ内容を、ご返答およびサービス改善以外の目的では使用しません。
-          取得した個人情報はご本人の同意なく第三者に提供することはありません。
+          取得した個人情報はご本人の同意なく第三者に提供することはありません（法令に基づく開示要請に応じる場合を除きます）。
+        </p>
+        <p>
+          お問い合わせフォームの送信内容は、運営者への通知のため
+          自動化サービス（Make.com 等の Webhook 経由）に転送されることがあります。
+          これらのサービスは送信内容を中継するためのみに利用され、運営者の管理下に置かれます。
         </p>
       </Section>
 
@@ -73,9 +78,22 @@ export default function PrivacyPage() {
 
       <Section heading="5. アクセス解析ツールについて">
         <p>
-          当サイトでは将来的に Google アナリティクス等のアクセス解析ツールを利用する場合があります。
-          これらのツールはトラフィックデータの収集のために Cookie
-          を使用します。データは匿名で収集されており、個人を特定するものではありません。
+          当サイトはサイト改善のため、Google Analytics 4（以下「GA4」）を利用しています。
+          GA4 は Cookie を利用してアクセス情報を収集しますが、IP
+          アドレスは匿名化された形で記録され、個人を特定するものではありません。
+        </p>
+        <p>
+          ブラウザの設定で Cookie を無効化することで、GA4
+          によるアクセス解析を拒否することができます。GA4 の取り扱いに関する詳細は{" "}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-300 hover:underline"
+          >
+            Google のプライバシーポリシー
+          </a>{" "}
+          をご確認ください。
         </p>
       </Section>
 

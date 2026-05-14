@@ -36,6 +36,7 @@ AI エグゼクティブ・チームの進捗管理表。CSO (Gemini 3) が [`ST
 
 完了したタスクの履歴。詳細は [`CHANGELOG.md`](./CHANGELOG.md) を参照。
 
+- [x] [CTO] Windows 側環境構築 総仕上げ完了 — `app-concierge` 法務 3 ページを `COMPLIANCE_GUIDE.md` に整合化 / `ARTICLE_TEMPLATE.md` 新設（コンシェルジュ誘導組込み）/ `vercel.json` で東京リージョン (hnd1) 指定 + `next.config.ts` にセキュリティヘッダー追加 — 完了 2026-05-14
 - [x] [CTO] 管理インフラ構築完了 — `REVENUE_LOG.md` / `KPI_DASHBOARD.md` / `COMPLIANCE_GUIDE.md` / `MARKETING_PILLARS.md` を整備し、収益・KPI・コンプラ・マーケ柱の運用基盤を確立 — 完了 2026-05-14
 - [x] [CTO] 運用基盤ドキュメント整備 — ルート `README.md` / `TASK_BOARD.md` / `OPERATIONS_FLOW.md` / `app-concierge/.env.example` を作成 — 完了 2026-05-14
 - [x] [CTO] `/concierge` に URL パラメータ `source` を導入し、流入元別の挨拶 / system addendum を切替 — 完了 2026-05-14 (brief: STRATEGY_BRIEF_001 / CHANGELOG: 2026-05-14)
