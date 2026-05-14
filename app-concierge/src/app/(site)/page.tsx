@@ -26,6 +26,11 @@ const HITS = 30;
 // プレースホルダ除外が安定したら revalidate を 300 などに戻す。
 export const revalidate = 0;
 
+// ?source=moterist 等のクエリパラメータでヒーローを出し分けるため、
+// 必ずリクエスト毎に動的レンダリングする (Vercel CDN の暗黙的な共有を防ぐ保険)。
+// Next.js 16: cacheComponents 未使用時は引き続き有効 (v16.0.0 リリースノート参照)。
+export const dynamic = "force-dynamic";
+
 type HomeSearchParams = {
   keyword?: string;
   sort?: string;
