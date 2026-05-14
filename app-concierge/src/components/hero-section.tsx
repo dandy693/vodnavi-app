@@ -1,8 +1,26 @@
-import { Sparkles } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Sparkles } from "lucide-react";
 
-export function HeroSection({ totalCount }: { totalCount?: number }) {
+import type { ConciergeSourceProfile } from "@/lib/concierge/sources";
+
+export function HeroSection({
+  totalCount,
+  sourceProfile,
+}: {
+  totalCount?: number;
+  sourceProfile: ConciergeSourceProfile;
+}) {
+  const { hero, id: sourceId } = sourceProfile;
+  const conciergeHref =
+    sourceId === "default"
+      ? "/concierge"
+      : `/concierge?source=${encodeURIComponent(sourceId)}`;
+
   return (
-    <section className="relative overflow-hidden border-b border-white/5">
+    <section
+      className="relative overflow-hidden border-b border-white/5"
+      data-source={sourceId}
+    >
       <div
         aria-hidden
         className="absolute inset-0 bg-[radial-gradient(ellipse_60%_40%_at_50%_0%,rgba(245,200,80,0.18),transparent_70%)]"
@@ -14,15 +32,24 @@ export function HeroSection({ totalCount }: { totalCount?: number }) {
       <div className="relative mx-auto flex max-w-7xl flex-col items-start gap-3 px-4 py-10 sm:px-6 sm:py-14">
         <div className="inline-flex items-center gap-1.5 rounded-full border border-amber-400/30 bg-amber-400/5 px-3 py-1 text-[10px] font-medium tracking-[0.2em] text-amber-300 sm:text-xs">
           <Sparkles className="size-3" aria-hidden />
-          PREMIUM VOD NAVIGATION
+          {hero.badge}
         </div>
         <h1 className="font-heading text-2xl font-semibold leading-tight tracking-tight text-foreground sm:text-4xl">
-          今夜の<span className="text-amber-300">"極上"</span>に、最短ルートで。
+          {hero.titlePrefix}
+          <span className="text-amber-300">{hero.titleHighlight}</span>
+          {hero.titleSuffix}
         </h1>
         <p className="max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          FANZA から厳選した最新作・話題作を、価格・レビュー・新着ですぐ見つける。
-          スマホからワンタップで視聴開始。
+          {hero.description}
         </p>
+        <Link
+          href={conciergeHref}
+          prefetch={false}
+          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs font-medium text-amber-200 transition hover:border-amber-300/60 hover:bg-amber-400/15 sm:text-sm"
+        >
+          {hero.ctaLabel}
+          <ArrowRight className="size-3.5" aria-hidden />
+        </Link>
         {typeof totalCount === "number" && totalCount > 0 && (
           <p className="text-xs text-muted-foreground/70">
             掲載作品 <span className="font-semibold text-amber-300">

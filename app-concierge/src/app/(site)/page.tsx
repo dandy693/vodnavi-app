@@ -8,6 +8,10 @@ import { ProductGrid } from "@/components/product-grid";
 import { SearchForm } from "@/components/search-form";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
+  resolveConciergeSource,
+  type ConciergeSourceProfile,
+} from "@/lib/concierge/sources";
+import {
   FanzaApiError,
   FanzaConfigError,
   fetchItemList,
@@ -26,6 +30,7 @@ type HomeSearchParams = {
   keyword?: string;
   sort?: string;
   floor?: string;
+  source?: string;
 };
 
 export default async function HomePage({
@@ -37,6 +42,7 @@ export default async function HomePage({
   const floor = params.floor ?? DEFAULT_FLOOR;
   const sort = (params.sort as DmmSort | undefined) ?? DEFAULT_SORT;
   const keyword = params.keyword?.trim() || undefined;
+  const sourceProfile = resolveConciergeSource(params.source);
 
   const floorMeta =
     FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
@@ -49,6 +55,7 @@ export default async function HomePage({
           service={floorMeta.service}
           sort={sort}
           keyword={keyword}
+          sourceProfile={sourceProfile}
         />
       </Suspense>
     </>
@@ -60,11 +67,13 @@ async function ResultsSection({
   service,
   sort,
   keyword,
+  sourceProfile,
 }: {
   floor: string;
   service: string;
   sort: DmmSort;
   keyword?: string;
+  sourceProfile: ConciergeSourceProfile;
 }) {
   let totalCount: number | undefined;
   let items: Awaited<ReturnType<typeof fetchItemList>>["result"]["items"] = [];
@@ -94,7 +103,7 @@ async function ResultsSection({
 
   return (
     <>
-      <HeroSection totalCount={totalCount} />
+      <HeroSection totalCount={totalCount} sourceProfile={sourceProfile} />
 
       <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         <div className="mb-5 flex flex-col gap-3">
