@@ -17,7 +17,6 @@ const MAX_STRING_LEN = 100;
 
 export function track(eventName: string, params?: AnalyticsEventParams): void {
   if (typeof window === "undefined") return;
-  if (typeof window.gtag !== "function") return;
 
   const clean: Record<string, string | number | boolean> = {};
   if (params) {
@@ -34,5 +33,15 @@ export function track(eventName: string, params?: AnalyticsEventParams): void {
     }
   }
 
-  window.gtag("event", eventName, clean);
+  // `<Script strategy="afterInteractive">` is queued until hydration completes,
+  // and useEffect fires before that script has set up `window.gtag`. To avoid
+  // dropping early events we push to `window.dataLayer` directly — `gtag.js`
+  // processes the queue when it loads. Once gtag is live, prefer the function
+  // call (cleaner for browser devtools).
+  if (typeof window.gtag === "function") {
+    window.gtag("event", eventName, clean);
+  } else {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(["event", eventName, clean]);
+  }
 }
