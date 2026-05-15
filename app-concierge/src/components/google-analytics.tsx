@@ -30,7 +30,13 @@ export function GoogleAnalytics({
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', '${measurementId}', { send_page_view: true });
+gtag('config', '${measurementId}', {
+  send_page_view: true,
+  linker: {
+    domains: ['moterist.com', 'vodnavi.jp', 'app.vodnavi.jp'],
+    accept_incoming: true
+  }
+});
         `}
       </Script>
       <Suspense fallback={null}>

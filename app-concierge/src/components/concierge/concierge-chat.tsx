@@ -101,8 +101,21 @@ export function ConciergeChat({
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const viewedRef = useRef<Set<string>>(new Set());
+  const sessionStartedRef = useRef(false);
 
   const isBusy = status === "submitted" || status === "streaming";
+
+  // /concierge の初回到達時に 1 回だけ ai_session_start を送信。
+  // React Strict Mode の二重マウントに耐えるため ref フラグで重複ガード。
+  useEffect(() => {
+    if (sessionStartedRef.current) return;
+    sessionStartedRef.current = true;
+    track("ai_session_start", {
+      source: source ?? "default",
+      shared: initialWorks && initialWorks.length > 0 ? "1" : "0",
+      transport_type: "beacon",
+    });
+  }, [source, initialWorks]);
 
   // 新規メッセージ/ストリームの進行に合わせて最下部へ滑らかにスクロール
   useEffect(() => {
@@ -433,6 +446,16 @@ function RecommendationCard({ work }: { work: Work }) {
       <Link
         href={work.detailHref}
         prefetch={false}
+        onClick={() =>
+          track("product_click", {
+            content_id: work.content_id,
+            title: work.title,
+            floor_code: work.floor_code,
+            placement: "card",
+            link_target: "internal_detail",
+            transport_type: "beacon",
+          })
+        }
         className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
       >
         <div className="relative aspect-[3/4] w-full shrink-0 overflow-hidden bg-black">
@@ -469,14 +492,22 @@ function RecommendationCard({ work }: { work: Work }) {
         href={work.affiliateURL}
         target="_blank"
         rel="noopener noreferrer sponsored"
-        onClick={() =>
+        onClick={() => {
+          track("product_click", {
+            content_id: work.content_id,
+            title: work.title,
+            floor_code: work.floor_code,
+            placement: "cta",
+            link_target: "fanza_affiliate",
+            transport_type: "beacon",
+          });
           track("ai_affiliate_click", {
             content_id: work.content_id,
             title: work.title,
             floor_code: work.floor_code,
             transport_type: "beacon",
-          })
-        }
+          });
+        }}
         className="flex h-10 items-center justify-center gap-1 bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 text-sm font-semibold text-black transition-all hover:from-amber-400 hover:to-amber-300 active:translate-y-px"
       >
         今すぐ視聴
