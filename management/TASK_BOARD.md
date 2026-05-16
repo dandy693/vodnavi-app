@@ -19,6 +19,14 @@ AI エグゼクティブ・チームの進捗管理表。CSO (Gemini 3) が [`ST
 
 新規タスクはまずここに積む。優先度の高いものを上に並べる。
 
+- [ ] [HUMAN] DMMアフィリエイト管理画面にて、vodnavi.jp および app.vodnavi.jp を『副サイト』として登録・申請し、監査による成果没収リスクを完全排除する
+- [ ] [CTO] app-concierge/ にて、アクセス直後の年齢確認モーダル（18歳以上判定クッキー）および未通過時のAPI遮断ロジックの実装
+- [ ] [HUMAN/CTO] mixhostの wp-config.php または管理画面にて、WordPressコア、テーマ、プラグインの『自動更新』を完全に停止（手動制御化）し、生HTMLインジェクションの自動破壊を永久防止する
+- [ ] [CTO] app-concierge/ にて、NODE_ENV === 'production' 以外では本番GA4（G-GG7JV9MJRW）スクリプトを発火させず、console.log にフォールバックするデータ汚染防止ロジックの強制実装
+- [ ] [CTO] app-concierge/ の商品カードアフィリンク生成部に、作品詳細URLの404エラーに備えた「女優名/型番による検索結果一覧URL」への自動フォールバック/ダブルリンクボタン構造の抽象化実装
+- [ ] [CTO] site-brand/ の骨組みをNext.jsモノレポ内にBRAND_DESIGN_GUIDEに基づきミニマル構築
+- [ ] [CTO] app-concierge/ のUI配色およびカードコンポーネントをBRAND_DESIGN_GUIDE（ダーク×ゴールド）に適合
+- [ ] [CTO] app-concierge/ のDBスキーマ（recommendationsテーブル等）に将来の拡張用 `asp_name`（初期値 'fanza'）カラムを予備実装 (brief: STRATEGY_BRIEF_001_ASP)
 - [ ] [CCO] Moterist の主要記事 5 本の末尾 CTA を `https://app.vodnavi.jp/concierge?source=moterist` に差し替え (brief: STRATEGY_BRIEF_001)
 - [ ] [CCO] VODNavi ブランドサイトの「コンシェルジュへ」リンクに `?source=brand` を付与 (brief: STRATEGY_BRIEF_001)
 - [ ] [CTO] `source` 値を GA4 `ai_session_start` イベントに送信する計測実装 (brief: STRATEGY_BRIEF_001)
