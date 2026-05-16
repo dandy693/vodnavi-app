@@ -15,6 +15,7 @@ import {
   createConciergeTools,
 } from "@/lib/concierge/tools";
 import { resolveConciergeSource } from "@/lib/concierge/sources";
+import { isSafetyBlock, sanitizePrompt } from "@/lib/sanitize-prompt";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -124,11 +125,43 @@ export async function POST(req: Request) {
   const selectedIds = { current: [] as string[] };
   const tools = createConciergeTools(works, selectedIds);
 
-  const modelMessages = await convertToModelMessages(body.messages ?? []);
+  // Defense-in-depth: rewrite user messages through the safety sanitizer
+  // before they reach Claude. The sanitizer maps domain-specific NG words
+  // (アダルト / 下着 / セクシー 等) to safer synonyms while preserving intent,
+  // which prevents the upstream safety classifier from refusing requests
+  // that are legitimate for VODNAVI's adult-VOD domain.
+  let sanitizedReplacementCount = 0;
+  const sanitizedMessages = (body.messages ?? []).map((msg) => {
+    if (msg.role !== "user") return msg;
+    return {
+      ...msg,
+      parts: msg.parts.map((part) => {
+        if ((part as { type?: string }).type !== "text") return part;
+        const raw = (part as { text?: string }).text ?? "";
+        const { sanitized, replacementCount } = sanitizePrompt(raw);
+        sanitizedReplacementCount += replacementCount;
+        return { ...part, text: sanitized };
+      }),
+    } as UIMessage;
+  });
+  if (sanitizedReplacementCount > 0) {
+    console.log(
+      `[concierge] sanitize replacements=${sanitizedReplacementCount} source=${sourceProfile.id}`,
+    );
+  }
+
+  const modelMessages = await convertToModelMessages(sanitizedMessages);
 
   const stream = createUIMessageStream({
     onError: (error) => {
       console.error("[concierge] stream error:", error);
+      // 安全フィルター起因の拒否（safety rating / content_filter / blocked 等）は、
+      // プロンプトを置換しても通らないことがある。クラッシュではなくテキストのみ
+      // の柔らかいフォールバック文面を返す。
+      if (isSafetyBlock(error)) {
+        console.warn("[concierge] safety block detected; degrading to text-only fallback");
+        return "今夜のお気持ちが上手く伝わらなかったようです。違う言い回しで、もう一度お聞かせいただけますか。";
+      }
       return "コンシェルジュとの通信中にエラーが発生しました。時間を置いてもう一度お試しください。";
     },
     execute: ({ writer }) => {

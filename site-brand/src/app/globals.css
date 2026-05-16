@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+/* 共通デザイントークン（『ビブリア・エロティカ』）。
+   monorepo ルート直下の design-tokens.css を単一情報源とする。
+   app-concierge と同じ相対深度（src/app/）で読み込む。 */
+@import "../../../design-tokens.css";
+
+/* ───── Tailwind utility への露出
+   design-tokens.css の :root カスタムプロパティを @theme inline で
+   Tailwind の色・フォントトークンに紐付けることで、
+   `bg-brand-dark` / `text-brand-gold` / `font-luxury-heading` を生成する。 */
+@theme inline {
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-hover: var(--brand-gold-hover);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-text-primary: var(--brand-text-primary);
+  --color-brand-text-secondary: var(--brand-text-secondary);
+
+  --font-luxury-heading: var(--font-heading);
+  --font-luxury-body: var(--font-sans);
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    font-family: var(--font-luxury-body);
+  }
+  body {
+    background-color: var(--brand-dark);
+    color: var(--brand-text-primary);
+    background-image:
+      radial-gradient(circle at 20% -10%, rgba(212, 175, 55, 0.06), transparent 50%),
+      radial-gradient(circle at 80% 110%, rgba(212, 175, 55, 0.04), transparent 50%);
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-luxury-heading);
+    letter-spacing: 0.01em;
+  }
+}

@@ -1,0 +1,41 @@
+# VODNAVI-GROUP ローカル開発用インフラ
+#
+# 目的: STRATEGY_BRIEF_00X 以降で実装予定の「会話履歴保存機能」テスト基盤。
+# 現状は Postgres 16 のみ。今後 Redis や pgvector が必要になれば追記する。
+#
+# 起動:    docker compose up -d
+# 停止:    docker compose down
+# 完全削除: docker compose down -v   ← データボリュームも消える
+#
+# 接続 URL（app-concierge の .env.local に貼る用）:
+#   DATABASE_URL=postgresql://vodnavi:vodnavi_dev@localhost:5432/vodnavi_dev
+#
+# パスワードはローカル開発専用の固定値。本番では Vercel Postgres / Supabase / RDS 等を使い、
+# このファイルの値は絶対に流用しないこと。
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: vodnavi_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: vodnavi
+      POSTGRES_PASSWORD: vodnavi_dev
+      POSTGRES_DB: vodnavi_dev
+      # UTF-8 / ja_JP に強制
+      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
+      TZ: Asia/Tokyo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker-env/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U vodnavi -d vodnavi_dev"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
+    name: vodnavi_postgres_data

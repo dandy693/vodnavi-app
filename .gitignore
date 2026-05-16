@@ -111,3 +111,6 @@ secrets/
 *.tmp
 *.bak
 *.old
+
+.vercel
+.env*.local

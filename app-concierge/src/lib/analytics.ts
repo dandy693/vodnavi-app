@@ -33,6 +33,16 @@ export function track(eventName: string, params?: AnalyticsEventParams): void {
     }
   }
 
+  // データ汚染防止の盾：本番以外では絶対に GA4 (G-GG7JV9MJRW) に送信しない。
+  // 開発・プレビュー環境のリロードや HMR が本番プロパティに「ノイズイベント」
+  // として記録されると、サタデー PDCA の数値が汚染される。NODE_ENV をクライアント
+  // バンドル時に静的評価することで、非本番ビルドは window.gtag を一切呼ばない。
+  if (process.env.NODE_ENV !== "production") {
+    // 開発時の動作確認用：イベント名と params を console に出すだけ。
+    console.log("[track-dev]", eventName, clean);
+    return;
+  }
+
   // `<Script strategy="afterInteractive">` is queued until hydration completes,
   // and useEffect fires before that script has set up `window.gtag`. To avoid
   // dropping early events we push to `window.dataLayer` directly — `gtag.js`

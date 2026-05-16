@@ -19,6 +19,13 @@ export function GoogleAnalytics({
 }) {
   if (!measurementId) return null;
 
+  // データ汚染防止の盾：本番以外では gtag.js 自体を一切ロードしない。
+  // analytics.ts の track() も NODE_ENV ガードで console.log フォールバックに
+  // 落ちるため、開発・プレビュー環境からの本番 GA4 (G-GG7JV9MJRW) 流入はゼロ。
+  if (process.env.NODE_ENV !== "production") {
+    return null;
+  }
+
   return (
     <>
       <Script

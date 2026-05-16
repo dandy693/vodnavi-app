@@ -2,6 +2,11 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* 共通デザイントークン（『ビブリア・エロティカ』）。
+   monorepo ルート直下の design-tokens.css を単一情報源とする。
+   site-brand 等の追加アプリも同じ相対パスで import すること。 */
+@import "../../../design-tokens.css";
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -46,6 +51,21 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ───── ブランドカラーを Tailwind utility として露出
+     design-tokens.css の :root カスタムプロパティに紐付ける。
+     使用例: bg-brand-dark / text-brand-gold / border-brand-gold-hover */
+  --color-brand-dark: var(--brand-dark);
+  --color-brand-gold: var(--brand-gold);
+  --color-brand-gold-hover: var(--brand-gold-hover);
+  --color-brand-surface: var(--brand-surface);
+  --color-brand-text-primary: var(--brand-text-primary);
+  --color-brand-text-secondary: var(--brand-text-secondary);
+
+  /* ───── ブランドフォントを Tailwind utility として露出
+     使用例: font-luxury-heading / font-luxury-body */
+  --font-luxury-heading: var(--font-heading);
+  --font-luxury-body: var(--font-sans);
 }
 
 /*

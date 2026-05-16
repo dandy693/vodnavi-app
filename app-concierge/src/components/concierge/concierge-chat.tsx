@@ -166,10 +166,10 @@ export function ConciergeChat({
   const showSuggestions = messages.length === 1 && !isBusy;
 
   return (
-    <div className="relative flex h-full flex-col bg-gradient-to-b from-black via-zinc-950 to-black">
+    <div className="relative flex h-full flex-col bg-brand-dark font-luxury-body">
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(245,200,80,0.15),transparent_70%)]"
+        className="pointer-events-none absolute inset-x-0 top-0 h-40 bg-[radial-gradient(ellipse_50%_50%_at_50%_0%,rgba(212,175,55,0.14),transparent_70%)]"
       />
 
       <div
@@ -182,18 +182,21 @@ export function ConciergeChat({
           ))}
 
           {showSuggestions && (
-            <div className="ml-0 flex flex-wrap gap-2 sm:ml-12">
-              {SUGGESTIONS.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => submit(s)}
-                  className="rounded-full border border-amber-400/20 bg-amber-400/5 px-3 py-1.5 text-xs text-amber-200 transition-colors hover:border-amber-400/40 hover:bg-amber-400/10"
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
+            <>
+              <EarlyEntryCard source={source} />
+              <div className="ml-0 flex flex-wrap gap-2 sm:ml-12">
+                {SUGGESTIONS.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => submit(s)}
+                    className="rounded-full border border-brand-gold/25 bg-brand-gold/5 px-3 py-1.5 text-xs text-brand-text-primary transition-colors hover:border-brand-gold/50 hover:bg-brand-gold/10"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </>
           )}
 
           {status === "submitted" && <TypingIndicator label="考えています" />}
@@ -212,7 +215,7 @@ export function ConciergeChat({
           e.preventDefault();
           submit();
         }}
-        className="relative border-t border-white/5 bg-black/70 px-4 py-3 backdrop-blur-xl sm:px-6"
+        className="relative border-t border-brand-gold/10 bg-brand-dark/85 px-4 py-3 backdrop-blur-xl sm:px-6"
       >
         <div className="mx-auto flex max-w-3xl items-end gap-2">
           <textarea
@@ -225,9 +228,9 @@ export function ConciergeChat({
             disabled={isBusy}
             maxLength={2000}
             className={cn(
-              "min-h-[44px] flex-1 resize-none rounded-2xl border border-white/10 bg-white/5 px-4 py-2.5",
-              "text-sm leading-relaxed text-foreground placeholder:text-muted-foreground/60",
-              "outline-none transition-colors focus:border-amber-400/40 focus:bg-white/[0.07]",
+              "min-h-[44px] flex-1 resize-none rounded-2xl border border-brand-gold/15 bg-brand-surface/70 px-4 py-2.5",
+              "text-sm leading-relaxed text-brand-text-primary placeholder:text-brand-text-secondary/70",
+              "outline-none transition-colors focus:border-brand-gold/50 focus:bg-brand-surface",
               "disabled:opacity-50",
             )}
           />
@@ -236,7 +239,7 @@ export function ConciergeChat({
               type="button"
               onClick={() => stop()}
               aria-label="停止"
-              className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-white/15 bg-white/5 text-foreground transition-all hover:bg-white/10 active:translate-y-px"
+              className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-brand-gold/20 bg-brand-surface text-brand-text-primary transition-all hover:bg-brand-gold/10 active:translate-y-px"
             >
               <Loader2 className="size-5 animate-spin" aria-hidden />
             </button>
@@ -247,9 +250,9 @@ export function ConciergeChat({
               aria-label="送信"
               className={cn(
                 "flex size-11 shrink-0 items-center justify-center rounded-2xl",
-                "bg-gradient-to-br from-amber-400 to-yellow-300 text-black",
-                "shadow-[0_0_20px_-5px_rgba(245,200,80,0.5)] transition-all",
-                "hover:from-amber-300 hover:to-yellow-200 active:translate-y-px",
+                "bg-brand-gold text-brand-dark",
+                "shadow-[0_0_20px_-5px_rgba(212,175,55,0.55)] transition-all",
+                "hover:bg-brand-gold-hover active:translate-y-px",
                 "disabled:opacity-40 disabled:cursor-not-allowed disabled:shadow-none",
               )}
             >
@@ -257,11 +260,56 @@ export function ConciergeChat({
             </button>
           )}
         </div>
-        <p className="mx-auto mt-2 max-w-3xl text-center text-[10px] text-muted-foreground/50">
+        <p className="mx-auto mt-2 max-w-3xl text-center text-[10px] text-brand-text-secondary/60">
           AI による提案です。最終的な視聴・購入は FANZA 公式サイト上で行われます。
         </p>
       </form>
     </div>
+  );
+}
+
+// 早期クッキー着火カード — OPERATION_MANUAL.md §4b 参照。
+// セッション最初の suggestions 表示と同じタイミングで提示し、ユーザーが
+// 「会話前」にも軽く FANZA ドメインを踏める導線を作る。
+// 押しつけがましさを排し、読者の知的好奇心を刺激する静かな招待状として書く。
+function EarlyEntryCard({ source }: { source?: string }) {
+  const affId = process.env.NEXT_PUBLIC_FANZA_AFFILIATE_ID;
+  // 環境変数が設定されていない場合は何も表示しない（ハードコード禁止の盾に準拠）。
+  if (!affId) return null;
+
+  const earlyHref =
+    `https://al.dmm.co.jp/?lurl=${encodeURIComponent("https://www.dmm.co.jp/digital/videoa/-/list/")}` +
+    `&af_id=${encodeURIComponent(affId)}&ch=link_tool&ch_id=link`;
+
+  return (
+    <aside className="ml-0 sm:ml-12">
+      <div className="rounded-2xl border border-brand-gold/20 bg-brand-surface/70 px-5 py-4 backdrop-blur-sm">
+        <p className="font-luxury-heading text-sm tracking-wide text-brand-gold sm:text-base">
+          今夜の隠れ家ラインナップを、あらかじめ書斎に用意しました。
+        </p>
+        <p className="mt-1 text-xs leading-relaxed text-brand-text-secondary sm:text-sm">
+          会話を始める前に、軽く目を通しておくのも一興です。気になる扉が見つかれば、後ほどコンシェルジュへお戻りください。
+        </p>
+        <div className="mt-3">
+          <a
+            href={earlyHref}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            onClick={() => {
+              track("early_cookie_burn", {
+                source: source ?? "default",
+                placement: "mid_session",
+                link_target: "fanza_lineup",
+                transport_type: "beacon",
+              });
+            }}
+            className="btn-luxury-outline"
+          >
+            公式ラインナップを一度チェックする
+          </a>
+        </div>
+      </div>
+    </aside>
   );
 }
 
@@ -272,7 +320,7 @@ function MessageBubble({ msg }: { msg: UIMessage }) {
   if (msg.role === "user") {
     return (
       <div className="flex justify-end">
-        <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-gradient-to-br from-amber-500/20 to-amber-500/5 px-4 py-2.5 text-sm leading-relaxed text-foreground ring-1 ring-amber-400/20">
+        <div className="max-w-[80%] rounded-2xl rounded-tr-sm bg-brand-gold/15 px-4 py-2.5 text-sm leading-relaxed text-brand-text-primary ring-1 ring-brand-gold/30">
           {text}
         </div>
       </div>
@@ -281,12 +329,12 @@ function MessageBubble({ msg }: { msg: UIMessage }) {
 
   return (
     <div className="flex gap-3">
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-yellow-300 shadow-[0_0_20px_-5px_rgba(245,200,80,0.6)]">
-        <Sparkles className="size-4 text-black" aria-hidden />
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.55)]">
+        <Sparkles className="size-4 text-brand-dark" aria-hidden />
       </div>
       <div className="flex flex-1 flex-col gap-3">
         {text && (
-          <div className="rounded-2xl rounded-tl-sm bg-white/5 px-4 py-3 text-sm leading-relaxed text-foreground ring-1 ring-white/10">
+          <div className="rounded-2xl rounded-tl-sm bg-brand-surface/80 px-4 py-3 text-sm leading-relaxed text-brand-text-primary ring-1 ring-brand-gold/15">
             <FormattedText text={text} />
           </div>
         )}
@@ -323,7 +371,7 @@ function renderInline(line: string): React.ReactNode[] {
       out.push(line.slice(lastIndex, match.index));
     }
     out.push(
-      <strong key={key++} className="font-semibold text-amber-200">
+      <strong key={key++} className="font-semibold text-brand-gold">
         {match[1]}
       </strong>,
     );
@@ -402,10 +450,10 @@ function ShareToXButton({ works }: { works: Work[] }) {
       aria-label="この結果を X でシェアする"
       className={cn(
         "group inline-flex items-center justify-center gap-2 self-start rounded-full",
-        "bg-white px-4 py-2 text-sm font-semibold text-black",
-        "shadow-[0_0_20px_-8px_rgba(255,255,255,0.6)] transition-all",
-        "hover:bg-zinc-100 active:translate-y-px",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60",
+        "bg-brand-dark px-4 py-2 font-luxury-heading text-sm font-semibold tracking-wide text-brand-gold",
+        "ring-1 ring-brand-gold/40 shadow-[0_0_20px_-8px_rgba(212,175,55,0.45)] transition-all",
+        "hover:bg-brand-gold hover:text-brand-dark hover:ring-brand-gold active:translate-y-px",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold",
       )}
     >
       <XLogo className="size-4" />
@@ -438,9 +486,9 @@ function RecommendationCard({ work }: { work: Work }) {
     <article
       className={cn(
         // h-full + flex-col で grid 内のセル全体高を取り、ボタンが下端に揃う。
-        "group relative flex h-full flex-col overflow-hidden rounded-xl bg-card/60",
-        "ring-1 ring-white/5 transition-all",
-        "hover:-translate-y-0.5 hover:ring-amber-400/40 hover:shadow-[0_0_40px_-10px_rgba(245,200,80,0.35)]",
+        "group relative flex h-full flex-col overflow-hidden rounded-xl bg-brand-surface",
+        "ring-1 ring-brand-gold/10 transition-all",
+        "hover:-translate-y-0.5 hover:ring-brand-gold/40 hover:shadow-[0_0_40px_-10px_rgba(212,175,55,0.35)]",
       )}
     >
       <Link
@@ -456,9 +504,9 @@ function RecommendationCard({ work }: { work: Work }) {
             transport_type: "beacon",
           })
         }
-        className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
+        className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/60"
       >
-        <div className="relative aspect-[3/4] w-full shrink-0 overflow-hidden bg-black">
+        <div className="relative aspect-[3/4] w-full shrink-0 overflow-hidden bg-brand-dark">
           <Image
             src={work.image}
             alt={work.title}
@@ -467,9 +515,9 @@ function RecommendationCard({ work }: { work: Work }) {
             onError={() => setImageBroken(true)}
             className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-black/0" />
+          <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-brand-dark/15 to-transparent" />
           {work.review_average && (
-            <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-black/60 px-2 py-0.5 text-[11px] text-amber-300 backdrop-blur">
+            <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-brand-dark/70 px-2 py-0.5 text-[11px] text-brand-gold backdrop-blur">
               <span>★</span>
               <span>{work.review_average}</span>
             </div>
@@ -478,11 +526,11 @@ function RecommendationCard({ work }: { work: Work }) {
         {/* 本文エリア: flex-1 で残り空間を埋め、タイトル h3 に min-h を持たせて
             1 行・2 行どちらでも 3 枚全てが同じレイアウトに揃う。 */}
         <div className="flex flex-1 flex-col gap-1 p-3">
-          <h3 className="line-clamp-2 min-h-[2.5rem] text-sm font-medium leading-snug text-foreground">
+          <h3 className="line-clamp-2 min-h-[2.5rem] font-luxury-heading text-sm font-medium leading-snug text-brand-text-primary">
             {work.title}
           </h3>
           {work.actresses && (
-            <p className="line-clamp-1 text-xs text-muted-foreground">
+            <p className="line-clamp-1 text-xs text-brand-text-secondary">
               {work.actresses}
             </p>
           )}
@@ -508,7 +556,7 @@ function RecommendationCard({ work }: { work: Work }) {
             transport_type: "beacon",
           });
         }}
-        className="flex h-10 items-center justify-center gap-1 bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 text-sm font-semibold text-black transition-all hover:from-amber-400 hover:to-amber-300 active:translate-y-px"
+        className="flex h-10 items-center justify-center gap-1 bg-brand-gold font-luxury-heading text-sm font-semibold tracking-wide text-brand-dark transition-all hover:bg-brand-gold-hover active:translate-y-px"
       >
         今すぐ視聴
         <ArrowRight className="size-3.5" aria-hidden />
@@ -520,14 +568,14 @@ function RecommendationCard({ work }: { work: Work }) {
 function TypingIndicator({ label }: { label: string }) {
   return (
     <div className="flex gap-3">
-      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-yellow-300 shadow-[0_0_20px_-5px_rgba(245,200,80,0.6)]">
-        <Sparkles className="size-4 animate-pulse text-black" aria-hidden />
+      <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-gold shadow-[0_0_20px_-5px_rgba(212,175,55,0.55)]">
+        <Sparkles className="size-4 animate-pulse text-brand-dark" aria-hidden />
       </div>
-      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-white/5 px-4 py-3 ring-1 ring-white/10">
-        <span className="size-1.5 animate-bounce rounded-full bg-amber-300 [animation-delay:-0.3s]" />
-        <span className="size-1.5 animate-bounce rounded-full bg-amber-300 [animation-delay:-0.15s]" />
-        <span className="size-1.5 animate-bounce rounded-full bg-amber-300" />
-        <span className="ml-1 text-xs text-muted-foreground">{label}</span>
+      <div className="flex items-center gap-1.5 rounded-2xl rounded-tl-sm bg-brand-surface/80 px-4 py-3 ring-1 ring-brand-gold/15">
+        <span className="size-1.5 animate-bounce rounded-full bg-brand-gold [animation-delay:-0.3s]" />
+        <span className="size-1.5 animate-bounce rounded-full bg-brand-gold [animation-delay:-0.15s]" />
+        <span className="size-1.5 animate-bounce rounded-full bg-brand-gold" />
+        <span className="ml-1 text-xs text-brand-text-secondary">{label}</span>
       </div>
     </div>
   );
