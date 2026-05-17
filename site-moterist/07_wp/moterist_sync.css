@@ -1,0 +1,607 @@
+:root {
+  --nth-bg: #121212;
+  --nth-surface: #1E1E1E;
+  --nth-text: #E0E0E0;
+  --nth-text-strong: #FAFAFA;
+  --nth-gold: #D4AF37;
+  --nth-gold-dark: #AA820A;
+  --nth-border: rgba(212, 175, 55, 0.28);
+  --nth-muted: rgba(224, 224, 224, 0.72);
+  --nth-shadow: rgba(0, 0, 0, 0.65);
+}
+
+/* ============================================================
+   1. サイト根底の漆黒化
+   .main / .content は THE THOR では文脈で意味が変わるため、
+   外周の高位コンテナのみを背景指定する。
+   ============================================================ */
+html, body, #container, #content,
+.l-wrapper, .l-container, .l-main, .l-sidebar, .l-content,
+.site, .site-content, .wrap {
+  background: var(--nth-bg) !important;
+  color: var(--nth-text) !important;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Yu Gothic", sans-serif !important;
+  line-height: 1.85 !important;
+}
+
+/* ============================================================
+   2. メインビジュアル・スライダー（.swiper-slider）の精密調停
+   THE THOR は .swiper-slider を使う（.swiper-container ではない）。
+   内部の .swiper-wrapper / .swiper-slide は JS が transform/position を
+   制御するため、background/box-shadow/border は触らない。外周のみ調停。
+   ============================================================ */
+.swiper-slider {
+  background-color: var(--nth-bg) !important;
+}
+.swiper-slider .swiper-wrapper,
+.swiper-slider .swiper-slide {
+  background-color: transparent !important;
+}
+.swiper-slider .swiper-slide img {
+  opacity: 0.55 !important;
+  filter: grayscale(30%) contrast(110%) !important;
+}
+.swiper-slider .swiper-pagination-bullet-active {
+  background-color: var(--nth-gold) !important;
+}
+.swiper-slider .swiper-button-next,
+.swiper-slider .swiper-button-prev {
+  background-color: rgba(212, 175, 55, 0.6) !important;
+}
+/* メインビジュアル上のキャッチコピー */
+.swiper-slide .heading,
+.swiper-slide .phrase,
+.swiper-slide__text,
+.swiper-slide h2, .swiper-slide h3 {
+  color: var(--nth-text-strong) !important;
+  text-shadow: 0 4px 12px var(--nth-shadow) !important;
+  font-family: Georgia, "Times New Roman", "Yu Mincho", serif !important;
+}
+
+/* THE THOR の記事カルーセル（.swiper-container.swiper-carousel）は別物。
+   レイアウトを邪魔せず、背景だけ透過して下層のダーク背景を見せる。 */
+.swiper-container.swiper-carousel,
+.swiper-container.swiper-carousel .swiper-wrapper,
+.swiper-container.swiper-carousel .swiper-slide {
+  background-color: transparent !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+/* ============================================================
+   3. 個別投稿コンテンツの完全可視化（最重要）
+   THE THOR は .postContents > section.content で記事本文を包む。
+   THE THOR 内蔵カスタマイザ CSS が以下を強制している：
+     .content h2/h3/h4/h5 { color: #191919 }     ← ほぼ黒、暗背景で消える
+     .content ul/ol       { color: #191919 }
+     .content blockquote  { background:#f2f2f2; color:#191919 } ← 白枠で浮く
+     .content table td    { background:#ffffff }
+     .content a           { color: #bf416f }      ← ピンク
+   これらを上書きしてプラチナホワイト＋金色に強制可視化する。
+   ============================================================ */
+.postContents,
+.content,
+.entry-content, .post_content, .article, .entry-body {
+  background-color: transparent !important;
+  color: var(--nth-text) !important;
+}
+
+/* 見出し */
+.content h1, .content h2, .content h3,
+.content h4, .content h5, .content h6 {
+  color: var(--nth-text-strong) !important;
+  background-color: transparent !important;
+}
+.content h2 { border-left: 4px solid var(--nth-gold) !important; padding-left: 0.8rem !important; }
+
+/* 段落・リスト・定義 */
+.content p, .content li, .content dt, .content dd,
+.content ul, .content ol {
+  color: var(--nth-text) !important;
+  background-color: transparent !important;
+}
+
+/* リンク（THE THOR のピンク #bf416f を金に置換） */
+.content a, .phrase a { color: var(--nth-gold) !important; }
+.content a:hover, .phrase a:hover { color: var(--nth-gold-dark) !important; }
+
+/* 引用・吹き出し（白マスクを剥がす） */
+.content blockquote,
+.content .balloon .balloon__text,
+.content .balloon-boder .balloon__text {
+  background-color: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+  border-color: var(--nth-border) !important;
+}
+.content blockquote { border-left: 4px solid var(--nth-gold) !important; padding: 1.5rem !important; }
+.content blockquote::before { color: var(--nth-gold) !important; }
+
+/* テーブル */
+.content table {
+  background-color: transparent !important;
+  color: var(--nth-text) !important;
+  border-color: var(--nth-border) !important;
+}
+.content table th {
+  background: rgba(212, 175, 55, 0.18) !important;
+  color: var(--nth-text-strong) !important;
+  border-color: var(--nth-border) !important;
+}
+.content table td {
+  background-color: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+  border-color: rgba(224, 224, 224, 0.12) !important;
+}
+.content table tr:nth-child(odd) td {
+  background-color: rgba(30, 30, 30, 0.85) !important;
+}
+
+/* ボタン（THE THOR のピンクを金に） */
+.content .btn__link-primary,
+.content .btn__link-secondary,
+.btn__link-primary, .btn__link-secondary {
+  background-color: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+}
+.content .btn__link-primary:hover,
+.content .btn__link-secondary:hover,
+.btn__link-primary:hover, .btn__link-secondary:hover {
+  background-color: var(--nth-gold-dark) !important;
+}
+.content .btn__link-normal, .btn__link-normal {
+  color: var(--nth-gold) !important;
+}
+.content .btn__link-normal:hover, .btn__link-normal:hover {
+  background-color: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+}
+
+/* ============================================================
+   4. ヘッダー・ナビゲーション
+   ============================================================ */
+#header, .header, .site-header, .l-header,
+.global-nav, .gnav, .menu, nav {
+  background: var(--nth-bg) !important;
+  border-bottom: 1px solid var(--nth-border) !important;
+}
+.t-headerColor .l-header { background-color: var(--nth-bg) !important; }
+#header a, .l-header a, .global-nav a, .gnav a, nav a { color: var(--nth-text) !important; }
+#header a:hover, .l-header a:hover, .global-nav a:hover { color: var(--nth-gold) !important; }
+
+/* ============================================================
+   5. フッターと commonCtr（footer 直上の CTA セクション）
+   ============================================================ */
+#footer, .footer, .l-footer, .site-footer, .footer-widget, .p-footer {
+  background: #0a0a0a !important;
+  color: var(--nth-muted) !important;
+  border-top: 1px solid var(--nth-border) !important;
+  padding: 3rem 0 !important;
+}
+#footer a, .site-footer a, .l-footer a { color: var(--nth-gold) !important; }
+#footer .widget, .footer-widget .widget {
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--nth-text) !important;
+}
+
+/* commonCtr セクション（footer 直上の CTA ブロック） */
+.commonCtr { background-color: var(--nth-surface) !important; color: var(--nth-text) !important; }
+.commonCtr .heading,
+.commonCtr h2 {
+  color: var(--nth-text-strong) !important;
+  font-family: Georgia, "Yu Mincho", serif !important;
+}
+.commonCtr .phrase, .commonCtr p { color: var(--nth-muted) !important; }
+.commonCtr .u-white { color: var(--nth-text-strong) !important; }
+/* THE THOR の pink mask を消す */
+.commonCtr__bg.mask.mask-color { background-color: rgba(18, 18, 18, 0.75) !important; }
+
+/* ============================================================
+   6. カード・ウィジェット
+   ============================================================ */
+.card, .post-card, .widget, .sidebar .widget, .p-entryArchive__item,
+.eyecatch__link, .archiveBox {
+  background-color: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+  border-color: var(--nth-border) !important;
+}
+.widget { box-shadow: 0 10px 30px var(--nth-shadow) !important; border-radius: 4px; }
+.widgetCatTitle, .widgetCatTitle__inner,
+.widget-main .heading.heading-widget,
+.widget-side .heading.heading-widget,
+.widget-foot .heading.heading-widget {
+  background-color: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+}
+
+/* ============================================================
+   7. 正典 HTML 装飾クラス（インジェクション対応）
+   ============================================================ */
+.nth-box-luxury {
+  background: var(--nth-surface) !important;
+  color: var(--nth-text-strong) !important;
+  border-left: 4px solid var(--nth-gold) !important;
+  border-top: 1px solid rgba(212, 175, 55, 0.14) !important;
+  border-right: 1px solid rgba(212, 175, 55, 0.14) !important;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.14) !important;
+  padding: 1.5rem !important;
+  margin: 2rem 0 !important;
+  box-shadow: 0 14px 34px var(--nth-shadow) !important;
+}
+.nth-box-luxury p, .nth-box-luxury li, .nth-box-luxury strong, .nth-box-luxury em {
+  color: var(--nth-text-strong) !important;
+}
+.nth-btn-gold {
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, 420px);
+  min-height: 52px;
+  margin: 1.75rem auto !important;
+  padding: 0.95rem 1.8rem !important;
+  border-radius: 999px !important;
+  background: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+  font-weight: 700 !important;
+  text-decoration: none !important;
+  box-shadow: 0 8px 24px rgba(212, 175, 55, 0.24);
+  transition: all 0.3s ease !important;
+}
+.nth-btn-gold:hover {
+  background: var(--nth-gold-dark) !important;
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.6) !important;
+  transform: translateY(-1px);
+}
+.nth-btn-wrap { display: flex !important; justify-content: center !important; margin: 2rem auto !important; }
+.st-mymarker { background: linear-gradient(transparent 62%, rgba(212, 175, 55, 0.38) 62%) !important; color: var(--nth-text-strong) !important; }
+.st-cite { border-left: 4px solid var(--nth-gold) !important; background: var(--nth-surface) !important; padding: 1.5rem !important; color: var(--nth-text) !important; }
+.st-cite cite { color: var(--nth-muted) !important; }
+.st-kaiwa-text { color: var(--nth-text) !important; }
+
+::selection { background: rgba(212, 175, 55, 0.32); color: var(--nth-text-strong); }
+
+/* ============================================================
+   8. 遅延ロード（Layzr.js）画像とカルーセル文字の完全可視化
+   THE THOR は <img src="dummy.gif" data-layzr="real.jpg"> パターンで
+   遅延読み込みする。ロード前 or JS エラー時に画像が黒地に消失するのを
+   防ぎ、領域も最低 150px 確保する。
+   ============================================================ */
+img[data-layzr] {
+  opacity: 1 !important;
+  visibility: visible !important;
+  background-color: #1a1a1a !important;
+}
+.eyecatch, .eyecatch__link, .eyecatch__image, .post-image {
+  background-color: #1a1a1a !important;
+  min-height: 150px;
+}
+/* レイアウト崩れ防止：高さ 0 の親に画像が落ちる事故を避ける */
+.swiper-carousel .swiper-slide,
+.swiper-carousel .swiper-slide a {
+  min-height: 200px;
+}
+
+/* 記事カルーセル内の文字とリンクを金色＋プラチナホワイトに */
+.swiper-carousel .heading,
+.swiper-carousel .heading-carousel,
+.heading-carousel,
+.heading-carousel a,
+.swiper-carousel .the__category,
+.swiper-carousel .the__ribbon,
+.swiper-carousel h3,
+.swiper-carousel .eyecatch__cat {
+  color: var(--nth-text-strong) !important;
+}
+.swiper-carousel a,
+.swiper-carousel .heading a,
+.heading-carousel a:not(.btn__link) {
+  color: var(--nth-gold) !important;
+}
+.swiper-carousel a:hover,
+.heading-carousel a:hover {
+  color: var(--nth-gold-dark) !important;
+}
+.swiper-carousel .eyecatch__cat,
+.swiper-carousel .the__category {
+  background-color: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+}
+
+/* ============================================================
+   9. 構造的余白の最適化：カルーセル下の巨大な空白を完全駆逐
+   THE THOR のスライダー高さ placeholder(600px) や構造コンテナの
+   過剰な padding/margin をリセットし、コンテンツを美しく引き上げる。
+   ============================================================ */
+/* カルーセル外周コンテナの高さ固定化を解除 */
+.l-headerBottom,
+div.l-headerBottom:has(.swiper-carousel) {
+  height: auto !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* 記事カルーセル自体の実高を適切なサイズ（約240px〜280px）に制限 */
+.swiper-container.swiper-carousel {
+  height: auto !important;
+  max-height: 280px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 1.5rem !important; /* ページネーション点の下部余白 */
+}
+
+/* カルーセル内部スライドの高さ固定化の解除（Section 8 の min-height: 200px を上書き） */
+.swiper-carousel .swiper-wrapper,
+.swiper-carousel .swiper-slide {
+  height: auto !important;
+  min-height: auto !important;
+}
+
+/* カルーセル直下のメインコンテンツラッパーを上方に引き締め */
+.l-wrapper, #content .l-wrapper {
+  margin-top: 0 !important;
+  padding-top: 1.5rem !important; /* 必要最低限の品雅な余白 */
+}
+
+/* テーマ側がインライン出力する可能性のあるゴースト要素の排他 */
+.p-mainVisual, .mainVisual-offline {
+  display: none !important;
+  height: 0 !important;
+}
+
+/* ============================================================
+   プランB：背景画像の完全抹殺と招待状の品雅な調停
+   commonCtr セクション（フッター直上 CTA）を「漆黒の静寂」へ。
+   背景画像（fit_conFootCta_bgImg）が万一テーマで強制復活しても
+   CSS 側で完全に遮蔽し、右の eyecatch（招待状）のみを浮かべる。
+   ============================================================ */
+.commonCtr {
+  background: #0a0a0a !important; /* 漆黒 */
+}
+/* 背景画像を DOM から強制遮蔽（mask レイヤー含む） */
+img.commonCtr__bg, .commonCtr__bg.mask, .commonCtr__bg {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+/* 右側の招待状画像のサイズとシャドウをラグジュアリーに補正 */
+.commonCtr__image img {
+  opacity: 1 !important;
+  filter: contrast(105%) brightness(95%) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8) !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-radius: 2px !important;
+}
+
+/* ============================================================
+   10. 第3次：死に文字の完全救済・目次暗色化・フッター1カラム昇華
+   黒背景化で視認性が低下した要素のコントラスト確保と
+   浮いた白目次の制圧、commonCtr の右側画像の最終排他。
+   ============================================================ */
+
+/* 10.1 個別ページの目次（TOC）を鈍色サーフェス＋ゴールド枠へ置換 */
+.p-toc, #toc_container, .toc, .content-toc, .p-entry__toc, .postContents .toc {
+  background-color: var(--nth-surface) !important;
+  border: 1px solid var(--nth-border) !important;
+  border-left: 4px solid var(--nth-gold) !important;
+  box-shadow: 0 10px 30px var(--nth-shadow) !important;
+  padding: 1.5rem !important;
+  margin: 2rem 0 !important;
+}
+.p-toc__title, .toc_title, .p-toc a, #toc_container a, .toc a {
+  color: var(--nth-text-strong) !important;
+  text-decoration: none !important;
+}
+.p-toc a:hover, #toc_container a:hover {
+  color: var(--nth-gold) !important;
+}
+
+/* 10.2 黒背景で死んでいる一覧・サイドバーの文字色を強制レスキュー */
+.phrase-secondary, .phrase, .archive__item p, .dateList__item, .dateList__item a,
+.wp-block-search__label, .widget, .widget-side, .widget-side *, .sidebar, .sidebar * {
+  color: var(--nth-text) !important;
+}
+.heading-secondary a, .heading-tertiary a, .widgetArchive__item a {
+  color: var(--nth-text-strong) !important;
+}
+.heading-secondary a:hover, .heading-tertiary a:hover {
+  color: var(--nth-gold) !important;
+}
+
+/* 10.3 ページャー・ボタン類の旧ブランドカラー（ピンク）を完全上書き */
+.pager__item, .page-numbers, .pagePager__item {
+  background-color: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+  border: 1px solid var(--nth-border) !important;
+}
+.pager__item-current, .page-numbers.current, .pager__item:hover, .page-numbers:hover {
+  background-color: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+  font-weight: bold !important;
+}
+
+/* 10.4 フッターCTA：画像なしでも完成する「極上1カラム・センターラウンジ」化 */
+.commonCtr__image {
+  display: none !important; /* 右側の仮画像を画面から完全抹殺 */
+  width: 0 !important;
+  height: 0 !important;
+}
+.commonCtr__container {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+  width: 100% !important;
+  max-width: 800px !important;
+  margin: 0 auto !important;
+}
+.commonCtr__contents {
+  width: 100% !important;
+  float: none !important;
+  padding: 2rem 0 !important;
+}
+.commonCtr .heading, .commonCtr h2 {
+  font-size: 1.85rem !important;
+  margin-bottom: 1.5rem !important;
+  justify-content: center !important;
+}
+.commonCtr .phrase, .commonCtr p {
+  font-size: 1.05rem !important;
+  line-height: 1.9 !important;
+  margin-bottom: 2rem !important;
+}
+
+/* ============================================================
+   11. 第4次：白背景残党の完全殲滅とブロック要素の暗色サーフェス化
+   目次のインナー、アフィリエイトボックス、テーマ固有装飾の白を根こそぎ融解。
+   実 DOM 偵察で /miru-5/ に afTagBox(2) / ep-box(2) / p-box(2) / bgc-white(2)
+   / heading-widget(3) を検出。THE THOR の style.min.css にも .balloon__text /
+   table td 等の #ffffff 直書きを確認。下記で全て暗色へ落とす。
+   ============================================================ */
+
+/* 11.1 目次ブロックの内部要素を完全透過・同色化 */
+.p-toc ul, .p-toc li, #toc_container ul, #toc_container li, .toc ul, .toc li {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: var(--nth-border) !important;
+}
+
+/* 11.2 THE THOR 固有のアフィリエイトタグボックス・ウィジェットのサーフェス化 */
+.afTagBox, .afTagBox__box, .widgetAfTag, .content .afTagBox, .p-entry__afSpace,
+[class*="afTagBox"], [class*="widgetAfTag"] {
+  background: var(--nth-surface) !important;
+  background-color: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+  border: 1px solid var(--nth-border) !important;
+  box-shadow: 0 10px 30px var(--nth-shadow) !important;
+}
+.afTagBox__title, .afTagBox__text, .widgetAfTag__title {
+  color: var(--nth-text-strong) !important;
+}
+
+/* 11.3 テーマ固有の装飾ボックス（アイコン・ラベル付き等）の白背景を剥離 */
+.ep-box, .p-box, .content .toggle-box, .content .es-box, .wp-block-group, .wp-block-columns,
+.heading-widget, [class*="-box"] {
+  background-color: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+}
+/* 強制白背景クラス（.bgc-white 等）の漆黒・サーフェスへの強制上書き */
+.bgc-white, [style*="background-color: #ffffff"], [style*="background-color: #fff"] {
+  background-color: var(--nth-surface) !important;
+}
+
+/* 11.4 記事下パーツ（前後の記事、著者プロフィール等）の完全ダーク化 */
+.l-postBottom, .prevNext, .prevNext__item, .profileBox, .authorBox, .comments,
+#respond, .comment-respond {
+  background: var(--nth-bg) !important;
+  background-color: var(--nth-bg) !important;
+  border-color: var(--nth-border) !important;
+}
+.prevNext__pop, .prevNext__pop-title {
+  color: var(--nth-text-strong) !important;
+}
+
+/* ============================================================
+   12. 第5次：THE THOR 内蔵目次（.outline）完全制圧とインライン白背景の破壊
+   実ソース（/fanza20250331/）から検知した .outline 構造と
+   .balloon / table td / wp-block-search の白背景を最終調停。
+   ============================================================ */
+
+/* 12.1 テーマ内蔵目次（.outline）のサーフェス化と金枠装飾 */
+.outline, .content .outline, .postContents .outline {
+  background-color: var(--nth-surface) !important;
+  background: var(--nth-surface) !important;
+  border: 1px solid var(--nth-border) !important;
+  border-left: 4px solid var(--nth-gold) !important;
+  box-shadow: 0 10px 30px var(--nth-shadow) !important;
+  padding: 1.5rem !important;
+  margin: 2rem 0 !important;
+}
+.outline__title, .outline__switch, .outline .outline__link, .outline a {
+  color: var(--nth-text-strong) !important;
+  text-decoration: none !important;
+}
+.outline__list, .outline__item {
+  background: transparent !important;
+  background-color: transparent !important;
+  color: var(--nth-text) !important;
+}
+.outline .outline__link:hover, .outline a:hover {
+  color: var(--nth-gold) !important;
+}
+
+/* 12.2 ソース内に直書きされている吹き出し・テーブル・検索枠の白剥離 */
+.content .balloon .balloon__text, .content .balloon-boder .balloon__text,
+.content blockquote, .content table td, .content table tr:nth-child(odd) td {
+  background-color: var(--nth-surface) !important;
+  background: var(--nth-surface) !important;
+  color: var(--nth-text) !important;
+  border-color: var(--nth-border) !important;
+}
+:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper),
+.wp-block-search__inside-wrapper {
+  background-color: var(--nth-surface) !important;
+  background: var(--nth-surface) !important;
+  border: 1px solid var(--nth-border) !important;
+}
+.wp-block-search__input {
+  background-color: var(--nth-bg) !important;
+  color: var(--nth-text) !important;
+  border: 1px solid var(--nth-border) !important;
+}
+
+/* 12.3 フッターCTAコンテナの強制非表示（詳細度引き上げ） */
+div.commonCtr__image, .commonCtr__image, img[alt="CTR IMG"] {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* ============================================================
+   13. 第5次最終調停：blockquote 文字被り解消と検索フォームの黄金反転
+   疑似要素 ::before の巨大引用符が本文と重なる干渉を遮絶し、
+   Gutenberg 検索フォームの白残党を完全制圧して黄金で締める。
+   ============================================================ */
+
+/* 13.1 blockquote の巨大引用符（::before）と先頭文字の被りを完全に引き離す */
+.content blockquote, .postContents blockquote {
+  position: relative !important;
+  padding: 1.5rem 1.5rem 1.5rem 3.8rem !important; /* 左側に圧倒的な安全 margin を確保 */
+}
+.content blockquote::before, .postContents blockquote::before {
+  position: absolute !important;
+  top: 1.2rem !important;
+  left: 1.2rem !important;
+  font-size: 2.2rem !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  display: block !important;
+}
+
+/* 13.2 右上検索ボタンおよびフォームボタンの白残党をゴールド×漆黒へ反転 */
+.wp-block-search__button,
+button.wp-block-search__button,
+.searchHead__submit,
+.widgetSearch__submit {
+  background-color: var(--nth-gold) !important;
+  background: var(--nth-gold) !important;
+  color: var(--nth-bg) !important;
+  border: 1px solid var(--nth-gold) !important;
+  font-weight: bold !important;
+  transition: all 0.25s ease !important;
+}
+.wp-block-search__button:hover {
+  background-color: var(--nth-gold-dark) !important;
+  border-color: var(--nth-gold-dark) !important;
+  color: var(--nth-text-strong) !important;
+}
+
+/* 検索入力エリアの外枠もゴールドに薄く馴染ませる */
+.wp-block-search__inside-wrapper {
+  border: 1px solid var(--nth-border) !important;
+  background-color: var(--nth-bg) !important;
+}

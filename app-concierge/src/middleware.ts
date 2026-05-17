@@ -2,18 +2,19 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 /**
- * 年齢確認の盾（リーガル防衛）— Vercel Edge Middleware
+ * 年齢確認の盾（リーガル防衛）— 非対称型データ追尾インフラ
  *
- * BRAND_DESIGN_GUIDE.md §3「年齢確認の盾」を実効化する不可逆ガード。
- * クライアント JS の改ざんを許さず、サーバー側で必ず判定する。
+ * BRAND_DESIGN_GUIDE.md §3「年齢確認の盾」を「データ追尾を阻害せず」
+ * 実効化する非対称ガード。STRATEGY_BRIEF_002 で設計が確定：
  *
- * 動作：
- *   - `vodnavi_age_verified === "1"` クッキーがあれば通過。
- *   - クッキー未通過時：
- *     - /api/concierge/* など API ルート → HTTP 403 即座返却（JSON 本文付き）。
- *     - /concierge/* など画面ルート → /age-gate?next=<元URL> へリダイレクト。
+ *   - ページルート (/concierge 等)：常に通過 (next)。リダイレクトしない。
+ *     Moterist 側から引き継いだ `source` / `intent` / `_gl` クエリは
+ *     ブラウザに 100% 無傷で着地し、GA4 + ai_session_start イベントが
+ *     発火する。視覚的な年齢確認はクライアント側モーダルで担保する。
  *
- * Vercel/mixhost/FANZA いずれの規約 BAN リスクも排除する。
+ *   - API ルート (/api/concierge/* 等)：クッキー未通過なら HTTP 403。
+ *     LLM コール・FANZA API などコアデータへのアクセスはサーバー側で
+ *     物理遮断する。クライアントの JS 改竄を許容しない核心防衛線。
  */
 
 const COOKIE_NAME = "vodnavi_age_verified";
@@ -25,44 +26,30 @@ export function middleware(req: NextRequest): NextResponse {
     return NextResponse.next();
   }
 
-  const { pathname, search } = req.nextUrl;
-
   // API ルート：403 を即座に返し、リクエスト本体は処理しない。
-  // chat の useChat フックは body を読みに来るので JSON 本文を用意する。
-  if (pathname.startsWith("/api/")) {
-    return new NextResponse(
-      JSON.stringify({
-        error: "age_verification_required",
-        message: "18 歳以上であることを確認してください。/age-gate を訪問してください。",
-      }),
-      {
-        status: 403,
-        headers: {
-          "content-type": "application/json; charset=utf-8",
-          "cache-control": "no-store",
-        },
+  // useChat フックは JSON を読みに来るので本文を用意する。
+  return new NextResponse(
+    JSON.stringify({
+      error: "age_verification_required",
+      message:
+        "18 歳以上であることを確認してください。/concierge のページから年齢確認を完了してください。",
+    }),
+    {
+      status: 403,
+      headers: {
+        "content-type": "application/json; charset=utf-8",
+        "cache-control": "no-store",
       },
-    );
-  }
-
-  // 画面ルート：年齢確認ゲートへリダイレクト。
-  // `next` パラメータは「内部パスのみ」を許可（オープンリダイレクト対策）。
-  const gateUrl = new URL("/age-gate", req.url);
-  const safeNext = pathname.startsWith("/") && !pathname.startsWith("//")
-    ? pathname + search
-    : "/concierge";
-  gateUrl.searchParams.set("next", safeNext);
-  return NextResponse.redirect(gateUrl);
+    },
+  );
 }
 
 /**
- * 守備範囲：
- *   - /concierge と配下のパス（ページ）
- *   - /api/concierge と配下のパス（チャット API）
+ * 守備範囲：API ルートのみ。
  *
- * /age-gate と /api/age-gate は意図的に matcher から除外（ゲート自体を踏ませる必要があるため）。
- * トップページ・記事一覧・法務ページ等は対象外（公開情報のみ提供）。
+ * ページルート (/concierge/*) はパススルーとしクエリパラメータを完全保護。
+ * 年齢確認はクライアント側オーバーレイモーダル (`ConciergeGate`) で担保。
  */
 export const config = {
-  matcher: ["/concierge/:path*", "/api/concierge/:path*"],
+  matcher: ["/api/concierge/:path*"],
 };

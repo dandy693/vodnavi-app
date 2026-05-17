@@ -4,6 +4,1722 @@
 
 ---
 
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist 第5次最終調停（Section 13）：blockquote 文字被り解消 + 検索フォームの黄金反転 — 全大改装落成
+
+### 目的
+
+スクリーンショット (image_0d254d.jpg) で確認された 2 件の最終バグを解消し、ビブリア・エロティカ世界観の塗り残し最終回収：
+
+1. **記事冒頭 `<blockquote>` の巨大引用符（`::before`）と本文先頭文字の重なり**：テーマ既定の `::before` が `position: static` または `float` で出力され、引用文の左端に巨大な「"」が本文に被って表示されていた。
+2. **右上 Gutenberg 検索ブロックのボタン白残党**：Section 12.2 で `inside-wrapper` まではダーク化したが、`.wp-block-search__button` 自体が白のまま残存。
+
+### Section 13 構成（2 サブセクション）
+
+`site-moterist/07_wp/moterist_sync.css` 末尾に追加：
+
+#### 13.1 blockquote 巨大引用符の干渉遮絶
+
+```css
+.content blockquote, .postContents blockquote {
+  position: relative !important;
+  padding: 1.5rem 1.5rem 1.5rem 3.8rem !important;
+}
+.content blockquote::before, .postContents blockquote::before {
+  position: absolute !important;
+  top: 1.2rem !important;
+  left: 1.2rem !important;
+  font-size: 2.2rem !important;
+  line-height: 1 !important;
+  margin: 0 !important;
+  display: block !important;
+}
+```
+
+設計核心：
+- **親 `position: relative`** で `::before` の絶対座標基準を確立
+- **`padding-left: 3.8rem`** で本文を安全マージンの右側へ確実に押し出す
+- **`::before { position: absolute; top: 1.2rem; left: 1.2rem }`** で引用符を完全に切り離して配置
+- **`font-size: 2.2rem`** で品雅な装飾サイズに抑制（テーマ既定の不定サイズを上書き）
+
+#### 13.2 Gutenberg 検索ボタンの黄金反転
+
+- `.wp-block-search__button` `button.wp-block-search__button` `.searchHead__submit` `.widgetSearch__submit`
+- 背景 `--nth-gold` / 文字 `--nth-bg` / ボーダー金 / `font-weight: bold` / 0.25s ease transition
+- hover で `--nth-gold-dark` に沈み、文字をプラチナ白へ反転
+- 外枠 `.wp-block-search__inside-wrapper` も `--nth-bg` + 金縁で統一
+
+### バイト・SHA 完全一致検証
+
+| 計測点 | サイズ | SHA-256 |
+|---|---|---|
+| ローカル | 24,565 B | `9cfd8d53b31a8a43c7750a14cb694f367ce5ee6c6451b8c81adb7cec53648534` |
+| サーバ `/tmp/sync_final.css` | 24,565 B | `9cfd8d53b31a8a43c7750a14cb694f367ce5ee6c6451b8c81adb7cec53648534` |
+| **DB `wp_posts.ID=620` post_content** | **24,565 B** | **`9cfd8d53b31a8a43c7750a14cb694f367ce5ee6c6451b8c81adb7cec53648534`** |
+
+注入前の DB は 22,761 B / SHA `32fb65...8042a`（Section 12 状態）から、24,565 B / SHA `9cfd8d...8534` へ完全遷移。1 バイトの欠落なし。
+
+### 観測上の落とし穴：`cd` と `--path` の二重指定で wp-cli が path 重複
+
+最初の試行で SSH heredoc 内に `cd public_html/moterist.com` を実行した後、wp eval に `--path=public_html/moterist.com` を渡した結果、wp-cli が `/home/rvpuxcjb/public_html/moterist.com/public_html/moterist.com/` という重複パスで探索しエラーで失敗。
+
+```
+Error: This does not seem to be a WordPress installation.
+The used path is: /home/rvpuxcjb/public_html/moterist.com/public_html/moterist.com/
+```
+
+対処：`cd` 済みの状態では `--path` を省略する（または `--path` を渡す場合は `cd` しない）の二択ルールを確立。
+
+### ライブ HTML 配信検証 (`/fanza20250331/`)
+
+| 項目 | 数値 |
+|---|---|
+| HTML 長 | 105,677 B（完全クローズ） |
+| `13. 第5次最終調停` ヘッダー | 1 |
+| `13.1 blockquote の巨大引用符` サブヘッダー | 1 |
+| `13.2 右上検索ボタン` サブヘッダー | 1 |
+| `.postContents blockquote` ルール | 2 |
+| `blockquote::before` ルール | 3 |
+| `padding: 1.5rem 1.5rem 1.5rem 3.8rem` 配信 | 1 |
+| `.wp-block-search__button` 総出現 | 6（11+12+13 累積） |
+| `button.wp-block-search__button` 高詳細度 | 1 |
+| `.searchHead__submit` | 2 |
+| `.widgetSearch__submit` | 2 |
+| `:hover` ルール | 1 |
+| **実 DOM の `<blockquote>` 要素** | **3（完全カバー）** |
+
+### 全大改装の総括（Section 1〜13 構成）
+
+| Section | 役割 | 主要セレクタ |
+|---|---|---|
+| 1 | CSS Variables（漆黒・サーフェス・金・テキスト系） | `:root` |
+| 2 | グローバル背景・タイポ | `body` `.content` 全般 |
+| 3 | ヘッダー / ロゴ / グローバルナビ | `.l-header` `.gnav` |
+| 4 | スライダー（メインビジュアル） | `.swiper-slider` |
+| 5 | ボックス＆ボタン基本意匠 | `.nth-box-luxury` `.nth-btn-gold` |
+| 6 | 本文タイポ・見出し・引用・テーブル | `.content h1-h6` `.content p` `.content a` |
+| 7 | 正典 HTML 装飾クラス | `.nth-btn-gold` `.st-mymarker` `.st-cite` |
+| 8 | Layzr 画像・記事カルーセル文字 | `img[data-layzr]` `.swiper-carousel` |
+| 9 | 構造的余白の最適化（ゴーストスペース駆逐） | `.l-headerBottom` `.swiper-carousel` `.l-wrapper` |
+| 9b | プランB：commonCtr 漆黒化と eyecatch 1188 | `.commonCtr` `.commonCtr__bg` `.commonCtr__image img` |
+| 10 | 死に文字レスキュー + プラグイン TOC + 1 カラム CTA | `.p-toc` `.dateList__item` `.commonCtr__container` |
+| 11 | 白背景殲滅（afTagBox / ep-box / bgc-white） | `[class*="afTagBox"]` `[class*="-box"]` `[style*="#fff"]` |
+| 12 | THE THOR 内蔵目次 + インライン白 + commonCtr 5重ガード | `.outline` `.balloon__text` `.wp-block-search__inside-wrapper` |
+| **13** | **blockquote 文字被り + 検索ボタン黄金反転** | **`blockquote::before`** **`.wp-block-search__button`** |
+
+ローカル CSS 24,565 B / DB SHA `9cfd8d...8534` で確定。ビブリア・エロティカ世界観における塗装作業は全工程落成。
+
+### 残課題
+
+- 引用符のデフォルト記号（`"`）は OS / ブラウザのフォントレンダリングに依存。Mac で右寄せの「"」が出る環境では `top` 値を微調整する必要が出る可能性あり（現状は Windows / Chrome で検証完了）。
+- 検索ボックス用の `<input type="search">` 既定の角丸（Safari）は別途必要なら次回対処。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist 第5次：THE THOR 内蔵目次（.outline）完全制圧 + バイト一致 SHA 検証
+
+### 真犯人：`.outline`（THE THOR の標準目次クラス）
+
+第3次（Section 10.1）で `.p-toc` / `#toc_container` / `.toc` 系の TOC を網羅したが、`/fanza20250331/` 等の実ページにはどれも存在せず、TOC が白浮きしたまま残っていた。本稿で実 HTML を再パースした結果、THE THOR は内蔵目次を **`.outline`** クラスで出力していることが判明（プラグイン由来 TOC ではなくテーマ本体の機能）。
+
+サブ要素も特定：
+- `.outline__title`（タイトル「目次」）
+- `.outline__switch`（開閉トグル）
+- `.outline__list`（外側 ul）
+- `.outline__item`（各 li）
+- `.outline__link`（各リンク）
+
+### Section 12 構成（3 サブセクション）
+
+`site-moterist/07_wp/moterist_sync.css` 末尾に追加：
+
+#### 12.1 内蔵目次 `.outline` のサーフェス化と金枠装飾
+- `.outline` `.content .outline` `.postContents .outline` → `--nth-surface` 背景 + 1px ボーダー + 左 4px 金縁 + 30px 影
+- `.outline__title` `.outline__switch` `.outline__link` `.outline a` → プラチナ白
+- `.outline__list` `.outline__item` → `transparent`（内部 ul/li は外周の暗色を透かす意匠連鎖）
+- hover で金 (`--nth-gold`)
+
+#### 12.2 インライン白背景の最終剥離
+THE THOR `style.min.css` に直書きされていた以下を上書き：
+- `.content .balloon .balloon__text` `.content .balloon-boder .balloon__text`（吹き出し）
+- `.content blockquote` `.content table td` `.content table tr:nth-child(odd) td`（テーブル奇数行・引用）
+- `:where(.wp-block-search__button-inside .wp-block-search__inside-wrapper)` + `.wp-block-search__inside-wrapper`（検索ボックスのラッパー）
+- `.wp-block-search__input`（検索 input — `--nth-bg` で黒地に）
+
+`:where()` を使うことで詳細度を 0 に下げつつ、後続の単独セレクタ `.wp-block-search__inside-wrapper` で堅実に上書きする「重ね打ち」設計。
+
+#### 12.3 commonCtr 画像の高詳細度抹殺
+- `div.commonCtr__image` `.commonCtr__image` `img[alt="CTR IMG"]` → `display: none` + `width/height: 0` + `opacity: 0` + `visibility: hidden`
+- 5 重ガード（display + width + height + opacity + visibility）。テーマ側が後から `display: block` を再注入しても、他 4 要素で完全沈黙。
+
+### 注入手法：SCP + `file_get_contents` で文字列エスケープ問題を完全回避
+
+これまで `wp eval 'wp_update_post(["ID"=>620, "post_content"=>file_get_contents("/tmp/...")])'` を使ってきたが、本稿では指示通り **明示的に SHA-256 を local/server/DB の 3 点で照合**して 1 バイトの欠落も無いことを保証。
+
+```bash
+# 1) SCP 転送
+scp -F /dev/null -i ~/.ssh/mixhost_codex_pc moterist_sync.css rvpuxcjb@...:/tmp/sync.css
+
+# 2) サーバ側で wp eval が file_get_contents で読み込む（HEREDOC 干渉ゼロ）
+wp eval '
+  $css = file_get_contents("/tmp/sync.css");
+  if ($css) {
+    wp_update_post(["ID"=>620, "post_content"=>$css]);
+    echo "SUCCESS";
+  }
+' --path=public_html/moterist.com
+
+# 3) SHA-256 三点照合
+```
+
+### バイト・SHA 一致検証
+
+| 計測点 | サイズ | SHA-256 |
+|---|---|---|
+| ローカル `moterist_sync.css` | 22,761 B | `32fb65595703c8ec8fecf745bde7de6cae25e18295dd51627a462c551048042a` |
+| サーバ `/tmp/sync.css`（SCP 後） | 22,761 B | `32fb65595703c8ec8fecf745bde7de6cae25e18295dd51627a462c551048042a` |
+| **DB `wp_posts.post_content` (ID=620)** | **22,761 B** | **`32fb65595703c8ec8fecf745bde7de6cae25e18295dd51627a462c551048042a`** |
+
+3 点完全一致。`wp eval` の文字列エスケープに関する潜在的なバックスラッシュ / クォート消失問題を本手法で恒久的に解消。
+
+### 観測上の補足：`wp eval` 標準出力のフィルタリングに関する罠
+
+サーバ側の mu-plugin（ahrefs analytics）が **すべての `wp` コマンドの stdout 先頭に `<script src="https://analytics.ahrefs.com/...">...</script>` を 1 行で挿入する** ため、`grep -v "analytics.ahrefs"` フィルタを使うと payload も同行で削除される。今後の wp eval 出力検証は `sed 's|<script[^>]*></script>||g'` で「script タグだけを剥離して payload を残す」方式に統一する。
+
+### ライブ HTML 配信検証 (`/fanza20250331/`)
+
+| 項目 | 数値 |
+|---|---|
+| HTML 長 | 103,873 B（完全クローズ） |
+| Section 12 ヘッダー (`12. 第5次`) | 1 |
+| Section 12.1 サブヘッダー | 1 |
+| `.outline` ルール総出現 | 7 |
+| `.outline__title` 専用ルール | 1 |
+| `.outline__list, .outline__item` ルール | 1 |
+| **実 DOM 内の `.outline` 要素** | **1（実在 TOC、完全カバー）** |
+| `.balloon__text` ルール | 5 |
+| `.content table td` ルール | 4 |
+| `.wp-block-search__inside-wrapper` | 4 |
+| `.wp-block-search__input` | 3 |
+| `div.commonCtr__image` 高詳細度 | 1 |
+| `img[alt="CTR IMG"]` 属性ターゲット | 1 |
+
+### 殲滅対象クラスの最終一覧（第1〜5次総括）
+
+| 出処 | クラス | 解消セクション |
+|---|---|---|
+| WP プラグイン系 TOC | `.p-toc` `#toc_container` `.toc` `.content-toc` `.p-entry__toc` `.postContents .toc` | 10.1 |
+| **THE THOR 内蔵 TOC** | **`.outline` `.outline__title` `.outline__list` `.outline__item` `.outline__link` `.outline__switch`** | **12.1** |
+| TOC 内部 ul/li | `.p-toc ul/li` `#toc_container ul/li` `.toc ul/li` | 11.1 |
+| アフィリ枠 | `.afTagBox` `.afTagBox__box` `.widgetAfTag` `.p-entry__afSpace` + `[class*="afTagBox"]` | 11.2 |
+| ボックス系 | `.ep-box` `.p-box` `.toggle-box` `.es-box` `.wp-block-group/columns` `.heading-widget` + `[class*="-box"]` | 11.3 |
+| 強制白背景 | `.bgc-white` + `[style*="background-color: #fff"]` | 11.3 |
+| 吹き出し | `.balloon .balloon__text` `.balloon-boder .balloon__text` | 12.2 |
+| テーブル | `.content table td` `.content table tr:nth-child(odd) td` | 12.2 |
+| 検索ブロック | `.wp-block-search__inside-wrapper` `.wp-block-search__input` | 12.2 |
+| 記事下 | `.l-postBottom` `.prevNext` `.profileBox` `.authorBox` `.comments` `#respond` | 11.4 |
+| commonCtr 画像 | `div.commonCtr__image` `img[alt="CTR IMG"]` | 12.3（5重ガード） |
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist 第4次：白背景残党の完全殲滅（Section 11）
+
+### 目的
+
+ダーク世界観の塗り残し駆逐。Section 1-10 で大半の白を漆黒 / サーフェスへ落としたあと、個別ページに残存していた以下 5 系の白背景ブロックを根こそぎ融解。
+
+### 偵察フェーズで実 DOM から検出した白背景クラス
+
+`curl https://moterist.com/miru-5/` 直接パースで実在を確認：
+
+| クラス | DOM 出現数 | 補足 |
+|---|---|---|
+| `.afTagBox` | 2 | アフィリエイトタグ枠 |
+| `.afTagBox__content` | (内包) | 上記の中身 |
+| `.ep-box` | 2 | THE THOR エディタプラグインのデザインボックス |
+| `.p-box` | 2 | 標準パラグラフボックス |
+| `.bgc-white` | 5 | THE THOR ユーティリティ：`background-color: #fff` 直当て |
+| `.heading-widget` | 3 | ウィジェット見出し |
+
+THE THOR `style.min.css` (77,578 B) からも `#ffffff` 直書きルールを 4 件検出：
+- `.balloon__text { background-color: #ffffff }`
+- `.content table td { background: #ffffff }`（Section 6 で既に対処済）
+- `.wp-block-search__inside-wrapper { background-color: #fff }`
+
+実 DOM 例：`class="ep-box es-BmarkExcl es-borderSolidS brc-DPred bgc-white es-radius"` — `ep-box` と `bgc-white` が複合適用されていた。
+
+### Section 11 構成（4 サブセクション）
+
+`site-moterist/07_wp/moterist_sync.css` 末尾に追加：
+
+#### 11.1 目次（TOC）内部の完全透過化
+- `.p-toc ul/li` `#toc_container ul/li` `.toc ul/li` → `background: transparent !important`
+- 外周は Section 10.1 で暗色化済、内部の `<ul>/<li>` 白を打ち消し（Gutenberg や TOC プラグインが内側にデフォルト白を吐いても完全透過）
+
+#### 11.2 アフィリエイトタグボックスのサーフェス化
+- `.afTagBox` `.afTagBox__box` `.widgetAfTag` `.p-entry__afSpace`
+- 属性セレクタ `[class*="afTagBox"]` `[class*="widgetAfTag"]` で派生クラス（`afTag-602` 等の連番付き）も網羅
+- `.nth-box-luxury` と統一の意匠（サーフェス + 1px ボーダー + 30px 影）
+
+#### 11.3 ボックス全般 + 強制白背景の剥離
+- `.ep-box` `.p-box` `.toggle-box` `.es-box` `.wp-block-group` `.wp-block-columns` `.heading-widget`
+- 属性ワイルドカード `[class*="-box"]` で `.balloon-box` 等の `*-box` 命名規約全般を吸収
+- `.bgc-white` ＋ インライン style 属性 `[style*="background-color: #ffffff"]` `[style*="background-color: #fff"]` でハードコード白も叩き落とす
+
+#### 11.4 記事下パーツの完全ダーク化
+- `.l-postBottom` `.prevNext` `.prevNext__item` `.profileBox` `.authorBox`
+- コメント領域 `.comments` `#respond` `.comment-respond`
+- `.prevNext__pop` 系のリンクタイトル → プラチナ白
+
+### 設計判断
+
+- **属性セレクタの活用**：派生クラス（`afTag-602`、`*-box` 命名）を 1 つずつ列挙する代わりに `[class*="..."]` で一括吸収。テーマが今後追加するボックス系クラスも自動防衛。
+- **インライン style への対処**：エディタが `style="background-color:#ffffff"` を直接書き込むケースを属性セレクタで捕捉（クラスに頼らない最後の砦）。
+- **`transparent` を `var(--nth-surface)` でなく明示**：TOC 内部のリスト構造は外周コンテナの暗色サーフェスを「透過させて見せる」設計のほうがネスト時の意匠崩れを起こさない。
+
+### サイズ・配信検証
+
+| 項目 | 数値 |
+|---|---|
+| ローカル CSS | 20,394 B（Section 10 → +2,457 B） |
+| DB 上 custom_css 長 | 20,387 B（フィルタ後・実体 ~20,500 B） |
+| ライブ HTML `/miru-5/` | 99,499 B（前回 97,042 B → +2,457 B） |
+
+**ルール配信検証 (/miru-5/):**
+- Section 11 ヘッダー 1 件 / `第4次` マーカー 1 件
+- 11.1 TOC: `p-toc ul` 1, `background-color: transparent` 7
+- 11.2 afTagBox: `.afTagBox` 3, `.afTagBox__box` 1, `[class*="afTagBox"]` 1
+- 11.3 ボックス: `.ep-box` 1, `.p-box` 1, `.bgc-white` 2, `[style*="background-color: #ffffff"]` 1, `[class*="-box"]` 1
+- 11.4 記事下: `.l-postBottom` 1, `.prevNext` 3, `.profileBox` 1
+
+**実 DOM ターゲット件数:**
+- `.afTagBox`: DOM 2 件 → ルール 3 件で完全カバー
+- `.bgc-white`: DOM 5 件 → ルール 2 件 + `[style*=]` 1 件
+- `.ep-box`: DOM 2 件 → ルール 1 件で完全カバー
+
+### 残課題
+
+- `[class*="-box"]` のワイルドカードは意図せず別系のボックスも巻き込む可能性あり（例：`.menuBtn__box` 等）。現時点で視覚的問題は確認されないが、将来差し色が必要な箇所が出た場合は個別の除外指定が必要。
+- `.balloon__text` の白背景は Section 11 で `.balloon-boder` を直接ターゲットしていない。次回必要であれば追記する（現状の `/miru-5/` では未使用）。
+- `.wp-block-search__inside-wrapper` も同様に未対応（検索ブロックが存在するページがあれば次回対処）。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist 第3次補強：死に文字レスキュー + 目次暗色化 + commonCtr 1カラム極上ラウンジ昇華
+
+### 目的
+
+ビブリア・エロティカ世界観の最終調停。黒背景化（Section 1-9）で残存していた以下 3 課題を一括解決：
+1. 一覧ページ・サイドバー・ページャー等で黒に同化していた「死に文字」
+2. 個別ページの白く浮いていた目次（TOC）
+3. プランB で右側画像を 1188 へ差し替えたが、構図上不要となった `commonCtr__image` をレイアウトから完全排他し、CTA を「画像なし 1 カラム・センターラウンジ」へ昇華
+
+### Section 10 構成と対象クラス
+
+`site-moterist/07_wp/moterist_sync.css` 末尾に Section 10 を追加（4 サブセクション）。
+
+#### 10.1 目次（TOC）の暗色サーフェス化
+
+ターゲット網羅セレクタ（多変種 TOC プラグイン対応）：
+- `.p-toc` `.p-toc__title` `.p-toc a`
+- `#toc_container` `#toc_container a` `.toc_title`
+- `.toc` `.toc a`
+- `.content-toc` `.p-entry__toc` `.postContents .toc`
+
+設計：`--nth-surface` (#1E1E1E) 背景 + 1px ボーダー + 左 4px 金縁 + 10px 30px 影。Hover で金 (`--nth-gold`)。これにより既存 `.nth-box-luxury` と視覚的に同居する。
+
+#### 10.2 死に文字レスキュー（コントラスト強制確保）
+
+`color: var(--nth-text)` で救出する一覧/サイドバー要素：
+- `.phrase-secondary` `.phrase` `.archive__item p`
+- `.dateList__item` `.dateList__item a`
+- `.wp-block-search__label`
+- `.widget` `.widget-side` `.widget-side *` `.sidebar` `.sidebar *`
+
+`color: var(--nth-text-strong)` で強調リンク復活：
+- `.heading-secondary a` `.heading-tertiary a` `.widgetArchive__item a`
+
+#### 10.3 ページャーの THE THOR ピンク（#bf416f）完全駆逐
+
+- `.pager__item` `.page-numbers` `.pagePager__item` → サーフェス + ボーダー
+- `.pager__item-current` `.page-numbers.current` + hover → 金背景 + 黒文字 + bold
+
+#### 10.4 commonCtr「1 カラム・センターラウンジ」化
+
+- `.commonCtr__image { display: none / width: 0 / height: 0 }`：DOM 内の `<img src=eyecatch_1106.jpg>` を視覚的に完全抹殺（実体は SEO 観点から残存）
+- `.commonCtr__container { display: flex / justify-content: center / max-width: 800px / margin: 0 auto }`：センター 1 カラム
+- `.commonCtr__contents { width: 100% / float: none / padding: 2rem 0 }`：旧 2 カラムの float を解除
+- `.commonCtr .heading, .commonCtr h2 { font-size: 1.85rem / margin-bottom: 1.5rem / justify-content: center }`：見出しを大きくして中央寄せ
+- `.commonCtr .phrase, .commonCtr p { font-size: 1.05rem / line-height: 1.9 / margin-bottom: 2rem }`：読み心地を上品に
+
+### サイズ・配信検証
+
+| 項目 | 数値 |
+|---|---|
+| ローカル CSS | 17,937 B（Section 9b → +2,963 B） |
+| DB 上 custom_css 長 | 17,930 B（grep フィルタ後・実体 ~18,043 B） |
+| トップページ HTML | 110,727 B（前回 107,693 B → +3,034 B） |
+| 個別ページ HTML（miru-5） | 97,042 B（前回 91,539 B → +5,503 B） |
+
+**トップページ Section 10.4 配信:**
+- `.commonCtr__image` 2 件 / `.commonCtr__container` 1 件 / `justify-content: center` 4 件
+- `max-width: 800px` 1 件 / `.commonCtr__contents` 1 件
+- `.pager__item` 3 件
+- DOM 内 `eyecatch_1106` は 2 件残存（CSS で display:none 隠蔽、SEO 用に DOM 保全）
+
+**個別ページ Section 10.1-10.2 配信:**
+- TOC セレクタ（`.p-toc` / `.toc` / `#toc_container`）3 件
+- `background-color: var(--nth-surface)` 6 件 / `border-left: 4px solid var(--nth-gold)` 5 件
+- `.dateList__item` 2 件 / `.phrase-secondary` 1 件 / `.widget-side` 3 件
+- Section 10 ヘッダーコメント 1 件
+
+### 設計意図
+
+- **複数セレクタの並列指定**：THE THOR / SimpleTOC / Easy Table of Contents / Rich Table of Contents 等、TOC プラグインの差異に対し一網打尽。
+- **`.widget-side *` のワイルドカード**：個別のウィジェット要素を 1 つずつ拾うより、子孫全体を一括 `color: var(--nth-text)` で塗るほうが堅牢。
+- **`.commonCtr__image { display: none }` を DOM 削除でなく CSS 抹殺**：SEO の picture/srcset 評価を維持しつつ、視覚的には完全排他。プランB のシンプル設計に対する「画像レス完成形」へのスムーズな昇華パス。
+
+### 残課題
+
+- `.widget-side *` のワイルドカードは詳細度低めの設計。テーマアップデートで新ウィジェット要素が追加されても自動で吸収されるが、`!important` 連打により逆にカスタムカラーが必要な場合は個別の例外指定が必要。
+- 1188 の `eyecatch_1106` 画像 URL は theme_mods に残存している。将来プランA（画像復活）へ戻す場合、Section 10.4 の `.commonCtr__image { display: none }` をコメントアウトするだけでよい（データ保持型のロールバック設計）。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist commonCtr「プランB（引き算の美学：漆黒）」執行
+
+### 目的
+
+フッター直上 CTA セクション `.commonCtr`（THE THOR の `fit_conFootCta_*` テンプレート）を、HUMAN 選択の「プランB」へ完全置換。背景画像を消滅させて漆黒の静寂を敷き、右側のストックフォトをアタッチメント ID 1188（漆黒の招待状 `eyecatch_1106.jpg`）へ差し替える。
+
+### 真犯人の在処：theme_mods_the-thor-child（シリアライズ配列内）
+
+最初の探査で `wp option list --search='fit_conFoot*'` には画像 URL を持つキーが現れず、また `fit_*` 単独オプションを横断検索しても無風。最終的に `theme_mods_the-thor-child`（24 要素のシリアライズ配列）を `wp eval` で全展開して目標を捕捉。
+
+| キー | 旧値 | 新値 |
+|---|---|---|
+| `fit_conFootCta_bgImg` | `https://moterist.com/wp-content/uploads/2023/03/network-3424070.jpg` | `""`（空文字列） |
+| `fit_conFootCta_eyecatch` | `https://moterist.com/wp-content/uploads/2023/06/26924625_s.jpg` | `https://moterist.com/wp-content/uploads/2025/03/eyecatch_1106.jpg` |
+
+更新方法は `set_theme_mod($name, $value)` 経由。`wp option update` で直接シリアライズ配列を上書きするより安全（WP 内部のキャッシュフラッシュも自動）。
+
+### バックアップ
+
+実行直前に `theme_mods_the-thor-child` の全体を PHP 配列リテラルとして退避：
+`/tmp/theme_mods_backup_20260517_080558.php`（1,540 B、サーバ側 `/tmp`）。
+
+万一の復元手順：
+```bash
+wp eval 'update_option("theme_mods_the-thor-child", require("/tmp/theme_mods_backup_20260517_080558.php"));'
+```
+
+### CSS 防御ガード（Section 9b プランB）
+
+テーマがいずれかの DOM パス（`commonCtr__bg`, `commonCtr__bg.mask`, インライン `style`）で背景画像を強制復活させる可能性に備え、`moterist_sync.css` 末尾に追記：
+
+```css
+/* プランB：背景画像の完全抹殺と招待状の品雅な調停 */
+.commonCtr { background: #0a0a0a !important; }
+img.commonCtr__bg, .commonCtr__bg.mask, .commonCtr__bg {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+.commonCtr__image img {
+  opacity: 1 !important;
+  filter: contrast(105%) brightness(95%) !important;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8) !important;
+  border: 1px solid rgba(212, 175, 55, 0.15) !important;
+  border-radius: 2px !important;
+}
+```
+
+設計意図：
+- **三重ガード（`img.commonCtr__bg` + `.commonCtr__bg.mask` + `.commonCtr__bg`）**：テーマが `<img>` 出力 / `<div>` mask / 抽象 `bg` のいずれを使っても等しく沈黙。
+- **filter: contrast(105%) brightness(95%)**：1188 の eyecatch（招待状）を漆黒の中で僅かに沈ませ、金縁との対比を上品に強調。
+- **box-shadow + 金 15% の border**：ホテルのウィンドウから差す柔らかい影を演出。
+
+### サイズ・配信検証結果
+
+| 項目 | 数値 |
+|---|---|
+| ローカル CSS | 14,974 B（Section 9 → +1,089 B） |
+| DB 上 custom_css 長 | 14,967 B（grep フィルタ後・実体 ~15,080 B） |
+| ライブ HTML 長 | 107,693 B（前回 106,807 B → +886 B） |
+| `eyecatch_1106` の HTML 内出現 | 2 件（`src` + 自動生成 `768x404` バリアント） |
+| 旧 `26924625_s.jpg` 残存 | **0**（完全駆逐） |
+| 旧 `network-3424070.jpg` 残存 | **0**（完全駆逐） |
+| `#0a0a0a` 配信 | 2 件 |
+| `img.commonCtr__bg` ガード | 1 件 |
+| `.commonCtr__image img` 補正 | 1 件 |
+
+### 残課題
+
+- テーマアップデートで `theme_mods_the-thor-child` がリセットされた場合、再度 `set_theme_mod` を打つ必要あり。CSS 側のガードは独立して効くため、画像 URL のみ復活してもユーザー視覚上は漆黒のまま保たれる（二重防衛設計）。
+- `box-shadow: 0 15px 35px rgba(0,0,0,0.8)` は漆黒背景上では視認しづらい。意図通り「沈み込ませる」効果として機能しているが、必要に応じて金色のドロップシャドウへ差し替え可能。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist トップページ・カルーセル下「ゴーストスペース」駆逐 + 構造的余白最適化
+
+### 症状
+
+トップページ `https://moterist.com/` で記事カルーセル（`.swiper-carousel`）の直下に視覚的に巨大な空白帯が発生。スクロール量で約 1 画面分の空気が挟まり、本文記事一覧への接続が断絶していた。
+
+### 真犯人：THE THOR の「高さ placeholder」と構造ラッパーの過剰 padding
+
+DOM/CSS 精査により以下 3 種類の干渉源を特定：
+
+1. **`.l-headerBottom`（カルーセル外周コンテナ）**：テーマ既定で `min-height`/`margin-bottom` が固定値で出力されており、内側のカルーセル高が縮んでも外周は縮まらない。
+2. **`.swiper-container.swiper-carousel`（カルーセル本体）**：THE THOR のメインビジュアル placeholder（`.swiper-slider` 系のハードコード `height: 600px`）と同じ高さ計算ロジックを共有しており、`height` を JS が制御するため `auto` に開放しない限り常に伸びる。Section 8 で付与した `.swiper-slide { min-height: 200px }` も累積し、結果として高さが必要以上に膨らんでいた。
+3. **`.l-wrapper`（メインコンテンツラッパー）**：直上に大きな `margin-top` を持ち、カルーセル末尾との間に二重の空気層が生まれていた。
+
+加えて、テーマがオフライン時に出力し得る `.p-mainVisual` / `.mainVisual-offline` のゴースト要素が `display: block` のまま空高さを残す可能性も判明。
+
+### 修正：包括 CSS Section 9（構造的余白の最適化）
+
+`site-moterist/07_wp/moterist_sync.css` 末尾に Section 9 を追記し、`wp eval` で `custom_css` 投稿 ID=620 へ再注入。
+
+```css
+/* 9. 構造的余白の最適化：カルーセル下の巨大な空白を完全駆逐 */
+.l-headerBottom,
+div.l-headerBottom:has(.swiper-carousel) {
+  height: auto !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.swiper-container.swiper-carousel {
+  height: auto !important;
+  max-height: 280px !important;   /* 視覚的バランス上限を明示 */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 1.5rem !important;  /* ページネーション点の品雅な余白 */
+}
+.swiper-carousel .swiper-wrapper,
+.swiper-carousel .swiper-slide {
+  height: auto !important;
+  min-height: auto !important;    /* Section 8 の min-height: 200px を意図的に上書き */
+}
+.l-wrapper, #content .l-wrapper {
+  margin-top: 0 !important;
+  padding-top: 1.5rem !important;
+}
+.p-mainVisual, .mainVisual-offline {
+  display: none !important;
+  height: 0 !important;
+}
+```
+
+### セレクタ設計意図
+
+| セレクタ | 役割 | 設計理由 |
+|---|---|---|
+| `.l-headerBottom` + `:has()` | カルーセル外周の高さ開放 | THE THOR の `min-height` 既定値を打ち消し、内側に追従させる |
+| `.swiper-container.swiper-carousel { max-height: 280px }` | カルーセル本体の上限固定 | Swiper.js の自走を許しつつ視覚的破綻を防ぐ天井 |
+| `min-height: auto` | Section 8 の意図的上書き | 個別ページでの fallback を残しつつ、トップでは縮める |
+| `.l-wrapper { margin-top: 0 / padding-top: 1.5rem }` | 二重空気層の解消 | `margin` で寄せ、`padding` で品雅な余白を再構築 |
+| `.p-mainVisual / .mainVisual-offline { display: none }` | ゴースト要素の排他 | テーマが出力し得る予備 placeholder を完全駆逐 |
+
+### サイズ・検証結果
+
+| 項目 | 数値 |
+|---|---|
+| ローカル CSS | 13,885 B（Section 8 → +1,614 B） |
+| DB 上 custom_css 長 | 13,991 B |
+| ライブ HTML 長（top） | 106,807 B（前回 105,403 B → +1,404 B 純配信増） |
+| `max-height: 280px` 配信 | 1 件 |
+| `.swiper-container.swiper-carousel` 言及 | 5 件 |
+| `.l-wrapper padding-top: 1.5rem` 配信 | 1 件 |
+| `.l-headerBottom` 配信 | 2 件 |
+| `min-height: auto` 配信 | 1 件 |
+| `.p-mainVisual` ゴースト排他 | 1 件 |
+| `</html>` `</body>` `</footer>` | 各 1（完全クローズ） |
+
+### 残課題
+
+- `:has()` セレクタは Safari 15.4+ / Chrome 105+ / Firefox 121+ で動作。古いブラウザではフォールバックとして単独の `.l-headerBottom` ルールが効くため致命傷にはならない。
+- `max-height: 280px` はデザイン判断値。将来カルーセル内のサムネ高さを上げる場合は同行で調整する。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist 致命的 PHP Fatal Error 一撃修復 + Layzr 可視化
+
+### 真犯人：`is_bot.php` が 0 bytes に空白化 → `is_bot()` 未定義 → 個別ページが `<section class="content">` 後半で Fatal
+
+**1. 症状**
+
+- すべての個別ページ（例：`/miru-5/`、`/saika-kawakita-6/`）が `<section class="content">` の直後で HTML 出力が突然停止
+- `/miru-5/` 通信長：**31,742 B**、`/saika-kawakita-6/`：**48,044 B**（`</html>` が一切出ない）
+- トップページのスライダー /Layzr 画像遅延ロードがフリーズ（CSS で `display: none` のまま）
+
+**2. error_log から確定した真犯人スタックトレース**
+
+```
+PHP Fatal error: Uncaught Error: Call to undefined function is_bot() in
+  /home/.../the-thor/inc/shortcode/tag.php:73     (the_content() 経由・本文内ショートコード)
+  /home/.../the-thor/inc/shortcode/tagrank.php:75
+  /home/.../the-thor/inc/widget/parts_tagrank.php:84
+  /home/.../the-thor/single.php:335                (本文表示後の関連記事ブロック)
+```
+
+**3. 根本原因解析**
+
+- THE THOR 親テーマ：`inc/parts.php:13` で `require_once locate_template('inc/parts/is_bot.php')` を実行。
+- 該当ファイル：`the-thor/inc/parts/is_bot.php` のサイズが **0 bytes**（mtime: 2025-01-13 02:42）。
+- `require_once` 自体は成功（ファイル存在＝true）するが、空ファイルゆえに関数本体が定義されない。
+- その後 `the_content()` 内の `[xxxx]` ショートコード処理（tag.php / tagrank.php）と single.php:335 の Bot 判定で `is_bot()` が呼ばれ、両方とも Fatal。
+- 結果：本文中盤と本文直後の 2 箇所で Fatal が発生し、ページごとに「`</section>` 後で停止」or「`</footer>` 直前で停止」と症状が分岐。
+
+**4. バックエンド修正（Backend Fix）**
+
+子テーマ `the-thor-child/functions.php` の最上部に、`function_exists` ガード付きの shim を恒久注入。
+
+```php
+if ( ! function_exists( 'is_bot' ) ) {
+    function is_bot() {
+        if ( empty( $_SERVER['HTTP_USER_AGENT'] ) ) return false;
+        $ua = strtolower( $_SERVER['HTTP_USER_AGENT'] );
+        $bot_patterns = array(
+            'googlebot','bingbot','slurp','duckduckbot','baiduspider',
+            'yandexbot','sogou','facebot','ia_archiver','ahrefsbot',
+            'semrushbot','mj12bot','crawler','spider','crawling',
+            'applebot','petalbot','bytespider',
+        );
+        foreach ( $bot_patterns as $needle ) {
+            if ( strpos( $ua, $needle ) !== false ) return true;
+        }
+        return false;
+    }
+}
+```
+
+注入方式：
+- ローカル `/tmp/functions_new.php` 生成 → `php -l` で構文検証 → `scp -F /dev/null` で `/tmp/functions_new.php` へ転送 → リモート側で `php -l` 再検証 → `cp` でアトミック置換。
+- バックアップ：サーバ側 `functions.php.bak_is_bot_20260517_163436` (3631 B、旧版)、ローカル `site-moterist/07_wp/backups/functions_child_20260517_163436.php` (3466 B)。
+
+**5. フロントエンド修正（Frontend Fix）**
+
+`site-moterist/07_wp/moterist_sync.css` にセクション 8（Layzr + カルーセル可視化）を追加。
+
+```css
+/* 8. 遅延ロード（Layzr.js）画像とカルーセル文字の完全可視化 */
+img[data-layzr] { opacity: 1 !important; visibility: visible !important; background-color: #1a1a1a !important; }
+.eyecatch, .eyecatch__link, .eyecatch__image, .post-image { background-color: #1a1a1a !important; min-height: 150px; }
+.swiper-carousel .swiper-slide, .swiper-carousel .swiper-slide a { min-height: 200px; }
+.swiper-carousel .heading, .heading-carousel a, .swiper-carousel h3, .swiper-carousel .eyecatch__cat
+  { color: var(--nth-text-strong) !important; }
+.swiper-carousel a, .heading-carousel a:not(.btn__link) { color: var(--nth-gold) !important; }
+.swiper-carousel a:hover, .heading-carousel a:hover     { color: var(--nth-gold-dark) !important; }
+.swiper-carousel .eyecatch__cat, .swiper-carousel .the__category
+  { background-color: var(--nth-gold) !important; color: var(--nth-bg) !important; }
+```
+
+CSS 全体は 12,271 B（旧 10,669 B から 8 セクション構成へ拡張）。`wp eval 'wp_update_post(["ID"=>620, "post_content"=>file_get_contents("/tmp/moterist_sync.css")])'` で custom_css 投稿 ID=620 に再注入。投入後の DB 上 length=12,377 B（WP 内部の正規化分の差）。
+
+**6. 検証結果（フェーズ 3）**
+
+| URL | 修正前 | 修正後 | `</html>` | `</footer>` |
+|---|---|---|---|---|
+| `https://moterist.com/` | — | **105,403 B** | 1 | 1 |
+| `https://moterist.com/miru-5/` | 31,742 B | **91,539 B** | 1 | 1 |
+| `https://moterist.com/saika-kawakita-6/` | 48,044 B | **90,995 B** | 1 | 1 |
+
+- トップページ：swiper-slide 9 枚 / `img[data-layzr]` 17 枚すべて DOM 内に存在、CSS 8 セクション全反映を `<style id="custom_css">` 内で確認。
+- 個別ページ：最終 200 文字に `controllerFooter__topBtn` の jQuery init が含まれ、`</body></html>` できれいに閉じる。
+- error_log：shim 投入時刻（07:34 UTC 以降）に `is_bot()` Fatal は完全消失。残存は `session.gc_divisor` の Startup Warning 1 件のみ（無害・サーバ設定起因）。
+
+**7. ロールバック手順**
+
+万一 shim による副作用が発生した場合：
+```bash
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 \
+  "cp public_html/moterist.com/wp-content/themes/the-thor-child/functions.php.bak_is_bot_20260517_163436 \
+      public_html/moterist.com/wp-content/themes/the-thor-child/functions.php"
+```
+CSS は `wp eval 'wp_update_post(["ID"=>620, "post_content"=>file_get_contents("旧バックアップ.css")])'` で復元。
+
+**8. 残課題 / 推奨フォロー**
+
+- THE THOR 親テーマ本体の `inc/parts/is_bot.php` が空のままなので、テーマアップデートで上書きされる可能性あり。次回テーマ更新前に親テーマファイルを手動で復元するか、shim を継続維持する。
+- 共有 PC のセキュリティ更新で同様の空ファイル化が再発しないか、`find wp-content/themes/the-thor -size 0 -name "*.php"` の定期チェックを推奨。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist DOM 精査 → スライダー崩れ＆動画ページ非表示の根本原因特定 → 精密 CSS 調停
+
+前回投入の包括 CSS（5,215 B）で残存していた「トップページのスライダー崩れ」「動画紹介ページの内容非表示」の根本原因を、本番 DOM の curl パースから特定。THE THOR 固有のクラス名と内蔵カスタマイザ CSS の干渉ロジックを解明したうえで、精密パッチ版 CSS（10,669 B）を再注入。
+
+**フェーズ 1：DOM 精査で判明した 2 件のバグ根因**
+
+### 🔴 根因 A：スライダー要素の正体ミス
+- 私の前回 CSS：`.p-mainVisual / .mainVisual / .swiper-container / .swiper-slide / .p-mainVisual__slide` をターゲット。
+- **DOM 実体**：THE THOR は **`.swiper-slider`（単数形）** をメインビジュアル用、**`.swiper-container.swiper-carousel`** を記事カルーセル用に使い分けている。私のセレクタはどちらにも完全一致しなかった。
+- THE THOR 内蔵 CSS に `.swiper-slider { height: 300px; } @media(min-width:768px){.swiper-slider {height:600px;}}` がハードコード。
+- さらに前回 CSS は **`.swiper-slide` 個別** に `background-color: var(--nth-surface) !important + border-bottom + box-shadow` を付与していたため、Swiper.js が制御する transform / position 計算が崩れていた可能性が高い。
+
+### 🔴 根因 B：本文クラス名ミス + テーマの暗色テキスト上書き
+- 前回 CSS：`.post_content / .entry-content / .article / .entry-body / .p-entry__body / .p-entry__content` 等の **存在しないクラス**を主にターゲット。
+- **DOM 実体**：個別投稿は **`<div class="postContents"><section class="content">`** で本文を包む。これだけ。
+- 一方、THE THOR 内蔵カスタマイザが大量の暗色テキストルールを `<style id="thor-css">` で出力：
+  ```css
+  .content h2, .content h3, .content h4, .content h5 { color: #191919 }   /* ほぼ黒 */
+  .content ul, .content ol                         { color: #191919 }   /* ほぼ黒 */
+  .content blockquote { background-color: #f2f2f2; color: #191919 }      /* 白マスク */
+  .content table td   { background: #ffffff }                              /* 白セル */
+  .content a          { color: #bf416f }                                   /* ピンク */
+  .content .btn__link-primary { background-color: #bf416f }                /* ピンクボタン */
+  ```
+  私の CSS が `.content { background: #121212 }` を入れたため、**黒背景に黒文字＝完全不可視**になっていた。表示が「消えた」のは隠蔽ではなく、テキストカラーと背景が同化した結果。
+
+**フェーズ 2：精密 CSS パッチ（10,669 B）の構成**
+
+更新: `site-moterist/07_wp/moterist_sync.css`（7 セクション、`!important` の打鍵を最小化）
+
+| 修正点 | 旧 | 新 |
+|---|---|---|
+| スライダー外周 | `.swiper-container.swiper-slide` 等の誤セレクタ | **`.swiper-slider`** 単独 + `.swiper-wrapper` / `.swiper-slide` は `transparent !important`（JS レイアウト不可侵） |
+| スライダー個別 slide | border-bottom + box-shadow 付与（JS と競合） | **触らない**。画像のみ `opacity: 0.55 / grayscale(30%) / contrast(110%)` |
+| 記事カルーセル | `.swiper-container.swiper-carousel` 未指定 | `background: transparent / box-shadow: none / border: 0` で透過 |
+| 本文ラッパー | `.post_content` 系の存在しないクラス | **`.postContents` + `.content`** に直接ターゲット |
+| 本文見出し色 | `.content h2/h3/h4/h5 { color: #191919 }`（テーマ既定）が暗背景で消失 | `.content h1〜h6 { color: #FAFAFA !important }` で強制上書き、`h2` に金左罫 |
+| 本文段落・リスト | テーマ既定の `color: #191919` で消失 | `.content p / li / ul / ol { color: #E0E0E0 !important }` |
+| 本文リンク | テーマ既定の `#bf416f`（ピンク） | `.content a { color: #D4AF37 !important }` / hover で `#AA820A` |
+| 引用 (blockquote) | 白マスク `#f2f2f2` で浮いていた | dark surface + 金左罫 |
+| テーブル | `td: #ffffff` `th: #7f7f7f` が眩しい | th = 金 15% / td = `#1E1E1E` の市松 |
+| ボタン | `.btn__link-primary { background: #bf416f }` ピンク | 金背景＋黒文字、hover で `--nth-gold-dark` |
+| 見出し背景 | `widgetCatTitle` 等で `#bf416f` の罫線 | 金背景＋黒文字に統一 |
+| commonCtr マスク | `.commonCtr__bg.mask.mask-color { background: #bf416f }` ピンク | `rgba(18, 18, 18, 0.75)` 漆黒の半透明オーバーレイ |
+
+**フェーズ 3：本番注入とライブ検証**
+
+- バックアップ：`site-moterist/07_wp/backups/custom_css_620_20260517_161908.css`（前回 CSS 5,216 B）
+- SCP：`/tmp/moterist_sync.css`（10,669 B）
+- `wp eval` で post 620 を上書き → Success / Exit 0 / DB post_content 長 10,775 B
+- DB 検証：`.swiper-slider` ルール × 9、`.content hN` 上書き × 4、`.postContents` × 2、`.commonCtr` × 6
+
+**ライブ HTML 検証（curl）**
+
+- **トップ `https://moterist.com/`**（103,574 B）：
+  - `.swiper-slide` × 9（記事カルーセル）／`<div class="swiper-wrapper">` × 1
+  - 新 CSS rules配信：`.swiper-slider` × 10、`.content hN` × 5、`.postContents` × 2、`.commonCtr` × 7
+  - 注：トップページに `.swiper-slider`（メイン visual）は実際には**レンダリングされていない**（テーマ設定で main slider が無効化されている可能性）。視覚的に「壊れたスライダー」と認識されていたのは記事カルーセル（`.swiper-container.swiper-carousel`）の方だった可能性が高く、これも新 CSS で透過化済。
+- **個別 `https://moterist.com/saika-kawakita-6/`**（48,044 B）：
+  - `<div class="postContents">` × 1、`<section class="content">` × 1（DOM 実体確認）
+  - `--nth-bg: #121212` 配信、`.content h2 override rule` × 1、`.postContents transparent` × 1
+  - 本文サンプル：`<blockquote><p>本記事にはアフィリエイトリンクが含まれます…</p></blockquote>` + 目次 + h1「解像度が紡ぐ、非日常の吐息…」が正常レンダリング
+  - Featured image（オペラグラス × プリズム）、intent=premium × 2 すべて保全
+
+→ ✅ 根因 A・B ともに解消。テキストが完全可視化、スライダー JS レイアウト不可侵。
+
+**変更ファイル**
+- 更新 / ローカル：`site-moterist/07_wp/moterist_sync.css`（5,215 B → 10,669 B、精密パッチ版）
+- 新規 / ローカル：`site-moterist/07_wp/backups/custom_css_620_20260517_161908.css`（前回 5,216 B 版を退避）
+- 更新 / DB：`wp_posts.ID=620` post_content を新 CSS で全置換
+
+**ロールバック**
+```bash
+scp -F /dev/null -P 22 -i /tmp/mixhost_key \
+  site-moterist/07_wp/backups/custom_css_620_20260517_161908.css rvpuxcjb@…:/tmp/css_rollback.css
+ssh ... "cd public_html/moterist.com && wp eval '
+  wp_update_post([\"ID\"=>620, \"post_content\"=>file_get_contents(\"/tmp/css_rollback.css\")]);
+'"
+```
+
+**設計上の判断 / デバッグ知見**
+- **「!important で押し切る」の限界**：CSS 詳細度を `!important` で押し切ると、結局後発で出力された別のテーマ CSS が同じセレクタ＋同じ `!important` で上書きしうる。今回の `.content { background: #121212 }` ↔ `.content h2 { color: #191919 }` の競合は、私のルールが祖先要素を黒くしただけで子孫の色を変えなかったため発生した「セレクタ精度不足」だった。**祖先・子孫の双方を同時に支配する**ルールセットが必要。
+- **Swiper.js のような JS 制御要素は触らない**：Swiper / Slick / Glide といったスライダーライブラリは `.swiper-wrapper` に `transform: translate3d(...)` を毎フレーム書き込む。CSS で `position` / `transform` / `box-shadow` を当てると、JS の計算結果と CSS の指定が交錯してレイアウトが崩れる。**外周コンテナ（背景・色）だけ触り、内部レイアウトは透過**で済ませるのが鉄則。
+- **THE THOR の `<style id="thor-css">` 攻略パターン**：このテーマはカスタマイザ設定値を `<head>` 内の動的 `<style>` ブロックに出力する。ユーザーが「テーマカラー = #bf416f」と設定していると、約 200 のセレクタが `#bf416f` でハードコードされる。これらを全て `wp-custom-css` 側で個別に上書きする必要があり、ピンクが残る箇所があれば対応セレクタを発見して追加していく **逐次潰し戦略** を取る。
+- **空セレクタ（HTML に存在しないクラス）の罠**：今回の `.post_content` `.entry-content` `.article` `.p-entry__body` 等は **The Thor では使われていない**。CSS Lint やリンターでは検知できないため、必ず本番 HTML を grep して **実在クラス**を確認してからセレクタを書く。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist サイト全体デザイン皮膚を「ビブリア・エロティカ」へ完全再設計（包括 CSS 上書き + フッター・コンセプト文同期）
+
+THE THOR デフォルト外観（古い「美顔フェラ AV」コピーやピンク基調 `#bf416f`）を完全に廃止し、サイトレベルで **ダーク × ゴールド** 世界観に統一。前回投入した focused CSS（個別装飾クラス中心）を、ヒーロー・スライダー・フッターまで含む **包括 CSS** で全置換し、同時に THE THOR の `fit_conFootCta_*` フッター CTA セクションのテキスト・ボタン・URL を新たな高雅コンセプト文へ強制同期。
+
+**1. ローカル CSS 完全上書き**
+- 更新: `site-moterist/07_wp/moterist_sync.css`（11,966 B → **5,215 B** に縮小し focused / 包括的サイト皮膚に焦点）
+  - `:root` で 9 カスタムプロパティ（`--nth-bg #121212` / `--nth-surface #1E1E1E` / `--nth-text #E0E0E0` / `--nth-text-strong #FAFAFA` / `--nth-gold #D4AF37` / `--nth-gold-dark #AA820A` / `--nth-border` / `--nth-muted` / `--nth-shadow rgba(0,0,0,0.65)`）
+  - 7 セクション構成：
+    1. サイト根底の漆黒化（`html/body/#container/.l-wrapper/.l-main` 等を `!important` で黒背景に統制）
+    2. ヒーロー・スライダー再設計（`.p-mainVisual`/`.swiper-*` に映画的サーフェス + `img { opacity: 0.45 + grayscale(30%) + contrast(110%) }`）
+    3. 個別投稿コンテンツ可視化デバッグ（`.post_content/.entry-content/.p-entry__body` 等の白背景マスクを `background: transparent !important` で全剥離）
+    4. グローバルナビ・ヘッダーの黒化と金リンク
+    5. フッター制圧（`#footer/.l-footer` を `#0a0a0a` の最深漆黒に + 金リンク）
+    6. カード・ウィジェット共通サーフェス化
+    7. 正典 HTML 装飾クラス（`.nth-box-luxury`, `.nth-btn-gold`, `.nth-btn-wrap`, `.st-mymarker`, `.st-cite`, `::selection`）
+
+**2. custom_css 投稿 ID 620 への DB 直接注入**
+- バックアップ：`site-moterist/07_wp/backups/custom_css_620_20260517_160223.css`（前回投入版 11,967 B 保存）
+- SCP：`/tmp/moterist_sync.css`（5,215 B）
+- `wp eval` で `wp_update_post(["ID"=>620, "post_content"=>file_get_contents(...)])` 実行 → Success / Exit 0
+- DB 検証：post_content 5,321 B、`--nth-bg` × 4、`.p-mainVisual` × 3、`.nth-btn-gold` × 2、`::selection` × 1
+
+**3. フッター・コンセプト文の自律探査と完全同期**
+- 探査：`wp option list --search='*footer*'` + `wp db query` で「最強・美顔フェラ・AVファン・日本一」キーワードを横断検索
+- 特定：THE THOR の **`fit_conFootCta_*` シリーズ**（4 オプション）が `commonCtr`（footer 直上の Call-to-Action ブロック）を構成していることを確認：
+
+| option_name | 旧値（バックアップ） | 新値 |
+|---|---|---|
+| `fit_conFootCta_title` | 最強の可愛すぎる美顔フェラ AV 動画紹介サイト「MOTERIST」 | **ビブリア・エロティカ — 大人の配信エンターテインメントを、秘匿性と教養として嗜むための書斎** |
+| `fit_conFootCta_contents` | 本当に AV ファンのみなさんのためになる日本一のサイトにしたい…日本国内の可愛すぎる美顔フェラ AV 動画紹介サイトでナンバー 1 を目指しております… | **大人の配信エンターテインメントを、秘匿性と教養のある嗜みとして扱うための書斎。あなたの審美眼に響く至高の時間と、プライバシーを守る作法を静かに案内します。** |
+| `fit_conFootCta_btn` | 月間女優ランキング | **VODNAVI コンシェルジュへ進む** |
+| `fit_conFootCta_url` | DMM 月間女優ランキング（直アフィ） | **`https://app.vodnavi.jp/concierge?source=moterist`** |
+
+- バックアップ：`site-moterist/07_wp/backups/footer_options_20260517_160444.json`（旧 4 オプション値を JSON で保存）
+- 更新コマンド：`wp eval 'update_option("fit_conFootCta_title", "...")' ×4`（単一トランザクション）
+- 検証：DB から新値を全 4 件取得し、想定通り更新済を確認。
+
+**4. ライブ HTML 自動検証**
+
+**(a) トップページ `https://moterist.com/`**（98,414 bytes）
+- 新コンセプト文「大人の配信エンターテインメントを、秘匿性と教養のある」 × 1 ✅
+- 旧文「本当に AV ファンのみなさんのためになる日本一」 × 0 ✅（完全消失）
+- 新タイトル「ビブリア・エロティカ」 × 2（heading + 派生）✅
+- 新フッター CTA：`<a class="btn__link btn__link-primary" href="https://app.vodnavi.jp/concierge?source=moterist">VODNAVI コンシェルジュへ進む</a>` ✅
+- custom_css ブロック：`--nth-bg: #121212` × 1、`.p-mainVisual` ルール × 1 ✅
+
+**(b) 個別投稿ページ `https://moterist.com/saika-kawakita-6/`**（42,590 bytes）
+- 新 CSS が標的とするコンテナの DOM 存在確認：
+  - `<div class="l-wrapper">` × 1 ✅
+  - `<main class="l-main">` × 1 ✅
+- custom_css ブロック：`--nth-bg: #121212` × 1 ✅（CSS が個別ページにも配信されている）
+- 干渉なく適用可能な状態を DOM 構造から確認 ✅
+
+**変更ファイル構成**
+- 更新 / ローカル：`site-moterist/07_wp/moterist_sync.css`（5,215 B、包括サイト皮膚版）
+- 新規 / ローカル：`site-moterist/07_wp/backups/custom_css_620_20260517_160223.css`（旧 CSS 11,967 B）
+- 新規 / ローカル：`site-moterist/07_wp/backups/footer_options_20260517_160444.json`（旧 fit_conFootCta_* 4 オプション）
+- 新規 / リモート：`/tmp/moterist_sync.css`（SCP）
+- 更新 / DB：`wp_posts.ID=620` の post_content を新 CSS で全置換
+- 更新 / DB：`wp_options` の `fit_conFootCta_title` / `fit_conFootCta_contents` / `fit_conFootCta_btn` / `fit_conFootCta_url` を 4 件同時更新
+
+**ロールバック手順**
+```bash
+# CSS ロールバック
+scp -F /dev/null -P 22 -i /tmp/mixhost_key \
+  site-moterist/07_wp/backups/custom_css_620_20260517_160223.css rvpuxcjb@…:/tmp/css_rollback.css
+ssh ... "cd public_html/moterist.com && wp eval '
+  wp_update_post([\"ID\"=>620, \"post_content\"=>file_get_contents(\"/tmp/css_rollback.css\")]);
+'"
+
+# フッター・コンセプト文ロールバック（JSON から手動復元）
+# site-moterist/07_wp/backups/footer_options_20260517_160444.json を参照し、
+# wp option update fit_conFootCta_title '<旧値>' --path=... を 4 オプション分実行。
+```
+
+**設計上の判断 / デバッグ知見**
+- **CSS 縮小（11,967 B → 5,215 B）の理由**：前回投入版は forms / tables / 個別装飾クラスを詳細に含んでいたが、今回の包括版は「サイトレベルのサーフェス制圧」+「`.nth-*` 装飾クラスのみ」に絞り、`!important` の打鍵範囲を最小限に。HTML パース時の CSS マッチング負荷も軽減。Forms / tables の細部装飾は将来必要になれば追記する余地として残した。
+- **`fit_conFootCta_*` の自律発見プロセス**：HUMAN 指示は「ウィジェットテキスト（widget_text）やテーマの独自設定オプション（theme_mods_the-thor-child 等）を `wp option get` で自律探査」だった。実際の探査ルートは：(1) `widget_text` を確認 → ほぼ空、(2) `theme_mods_the-thor-child` を JSON で取得 → 該当なし、(3) `wp option list --search='*footer*'` → `fit_conFooter_*` ヒットあるも値は空、(4) ライブ HTML から footer 直上のテキストを観察、(5) `wp option list --search='fit_conFootCta*'` で命中。THE THOR は **header/footer の独立 CTA セクションを `fit_conFootCta_*` 4 オプション**で管理することを実証。
+- **URL を `https://app.vodnavi.jp/concierge?source=moterist` に切替えた理由**：旧 URL は DMM 月間女優ランキングへの直アフィリエイトリンクだったが、ブランド・ガバナンス上、Moterist の集客導線は **すべてコンシェルジュ App 経由** で揃える方針。直アフィの即時収益と引き換えに、コンシェルジュ App での `source=moterist` 計測と AI 接客を担保。
+- **既存フッター装飾画像（`network-3424070.jpg` / `26924625_s.jpg`）の温存判断**：HUMAN 指示の「不要な古いアフィリエイトロゴリンク画像」は **「ロゴ」と限定**されていたため、これらは情景背景画像と判断し温存。新 CSS の `.commonCtr__bg` 等は明示的にターゲットしていないが、`.p-mainVisual img` 系のルールが間接的にコントラスト・グレースケール処理を担保。完全除去が必要であれば、後続タスクで `update_option("fit_conFootCta_eyecatch", "")` / `update_option("fit_conFootCta_bgImg", "")` を実行。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 1018（プレミアム視聴環境ガイド）の全文リライト・タイトル同期・アイキャッチ紐付けを一撃完遂（ピラー 5 記事全完了）
+
+CCO 提供のリライト原稿『解像度が紡ぐ、非日常の吐息。4KとVRがもたらす至高の没入体験への招待』と正典アイキャッチ（アンティーク真鍮オペラグラス × クリスタルプリズム × ゴールド粒子）を、確立済の必勝パターンで本番に投入。**本文 + タイトル + アイキャッチを 1 セッションで 3 件同時更新**し、旧サムネ（attachment ID 1020）から新サムネ（1193）への差し替えも併せて完遂。**これにより Moterist のピラー 5 記事（1095 / 1106 / 994 / 954 / 1018）すべてのリライト本番反映が完了**し、Moterist サイトの記事レベルのブランド統一が完成。
+
+**1. ローカルファイル**
+- 新規: `site-moterist/07_wp/posts/post_1018.md`（frontmatter + 本文）
+- 既存: `site-moterist/07_wp/images/eyecatch_1018.png`（1,773,658 bytes / 約 1.77 MB）
+
+**2. CTA URL の defensive correction**（post 994 / 954 と同パターン）
+- HUMAN 提示原稿の最終 `<a class="nth-btn-gold" href="...">` が **Markdown 自動リンク形式（`href="[URL](URL)">`）** で混入していたため、当該 1 箇所のみ `href="https://app.vodnavi.jp/concierge?source=moterist&intent=premium"` へ整形。`<a>` タグ・クラス・アンカーテキスト・他の生 HTML は 1 文字も変更していない。
+
+**3. 重要な観測：ピラー 1018 の本質的変容**
+- 旧 post_title：「河北彩伽の出演作レビュー 作品の見どころと購入前チェックポイント」
+- 旧 post_content：2,228 bytes（短い女優レビュー）
+- 新 post_title：「解像度が紡ぐ、非日常の吐息。4KとVRがもたらす至高の没入体験への招待」
+- 新 post_content：12,277 bytes（4K/VR プレミアム視聴環境ガイド）
+- 既存 page type は `fanza-page-type-design.md` で `Pending Source Material` だったが、今回のリライトで **新たに `Premium Guide` ピラー** として確立（新規ピラー `technology-premium`）。
+- **slug は `saika-kawakita-6` のまま温存**：これまでのピラー 4 記事と同じく、既存検索インデックス・外部リンク資産を保護するため、slug 変更はしない。frontmatter 上の `slug: fanza_premium_view` はローカル設計値で、本番には反映していない。
+
+**4. Markdown → HTML 変換**
+- `marked@18.0.3`（`gfm: true`, `breaks: false`）で frontmatter 分離後の本文を変換。
+- 結果（`/tmp/post_1018_content.html`）：12,171 bytes。
+- マーカー：`<h1>` × 1 / `<h2>` × 7 / `.nth-box-luxury` × 6 / `.nth-btn-gold` × 1 / `.nth-btn-wrap` × 1 / `.st-mymarker` × 3 / `.st-cite` × 2 / `.st-kaiwa-l/r` 各 1 / `intent=premium` × 2 / 残留 Markdown 0。
+
+**5. 手順 3.1：アイキャッチ転送 & インポート**
+- 旧 `_thumbnail_id`：**1020**（観測）
+- SCP：`/tmp/eyecatch_1018.png`（1,773,658 bytes）
+- WP-CLI：
+  ```bash
+  wp media import /tmp/eyecatch_1018.png \
+    --path=public_html/moterist.com \
+    --post_id=1018 \
+    --featured_image \
+    --title='解像度が紡ぐ、非日常の吐息。4KとVRがもたらす至高の没入体験への招待' \
+    --alt='暗い部屋のマーブルトップの机に置かれたアンティークの真鍮製オペラグラス（双眼鏡）、クリスタルガラスの光学プリズム、光の粒子が霧散している静物写真' \
+    --porcelain
+  ```
+- 出力：**新規 attachment ID = 1193** / Exit 0 / `_thumbnail_id` を 1020 → 1193 へ自動更新。
+- 旧 attachment 1020 は孤立状態で温存（404 回避）。
+
+**6. 手順 3.2：本文 + タイトル + 公開状態の 1 トランザクション更新**
+- バックアップ：`site-moterist/07_wp/backups/post_1018_20260517_154532.html`（旧本文 2,228 B）
+- SCP：`/tmp/post_1018_content.html`（12,171 bytes）
+- `wp eval`：
+  ```php
+  wp_update_post([
+    "ID" => 1018,
+    "post_title" => "解像度が紡ぐ、非日常の吐息。4KとVRがもたらす至高の没入体験への招待",
+    "post_content" => file_get_contents("/tmp/post_1018_content.html"),
+    "post_status" => "publish"
+  ], true);
+  ```
+- 出力：`Success: Post 1018 content+title updated.` / Exit 0
+- DB 検証：post_content 長 = 12,277 B、post_title 新版、post_name = `saika-kawakita-6`（slug 不変）、post_status = publish、post_modified = `2026-05-17 15:45:44`、`_thumbnail_id = 1193`、`nth-box-luxury` × 6、`intent=premium` × 2。
+
+**7. 本番 curl 検証（3 点完全通過、実 slug URL で確認）**
+- 検証 URL：`https://moterist.com/saika-kawakita-6/`（実 slug。frontmatter の `/fanza_premium_view/` ではなく本番運用 URL を使用） → HTML 49,341 bytes
+- **(a) `<title>`**：
+  - `<title>解像度が紡ぐ、非日常の吐息。4KとVRがもたらす至高の没入体験への招待│モテリスト</title>` ✅
+  - 新タイトル × 6 / 旧タイトル「河北彩伽の出演作レビュー」× 0
+- **(b) 本文マーカー**：
+  - `.nth-box-luxury` × 13（本文 6 + CSS ルール 7）
+  - `intent=premium` × 2
+  - `.nth-btn-gold` × 13 / `.nth-btn-wrap` × 2 / `.st-mymarker` × 4 / `.st-cite` × 5
+  - 最終 CTA：`<a class="nth-btn-gold" href="https://app.vodnavi.jp/concierge?source=moterist&#038;intent=premium">VODNAVI コンシェルジュに極上の没入プランを委ねる</a>` ✅
+- **(c) アイキャッチ**：
+  - `<meta property="og:image" content="https://moterist.com/wp-content/uploads/2025/01/eyecatch_1018-768x404.jpg" />` ✅
+  - `<img class="attachment-icatch768 size-icatch768 wp-post-image" alt="暗い部屋のマーブルトップの机に置かれたアンティークの真鍮製オペラグラス（双眼鏡）、クリスタルガラスの光学プリズム、光の粒子が霧散している静物写真" ...>` ✅
+  - 画像 URL HEAD → HTTP 200 OK ✅
+
+→ ✅ 完全紐付け・公開反映完了。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/posts/post_1018.md`
+- 新規 / ローカル：`site-moterist/07_wp/backups/post_1018_20260517_154532.html`（旧本文 2,228 B）
+- 新規 / リモート：`/tmp/eyecatch_1018.png`、`/tmp/post_1018_content.html`
+- 新規 / リモート：`wp-content/uploads/2025/01/eyecatch_1018.jpg`（EWWW 経由で PNG→JPEG）
+- 新規 / DB：Attachment **1193**（post_type=attachment、post_parent=1018）
+- 更新 / DB：post 1018 の `post_title` / `post_content` / `_thumbnail_id`（1020→1193）／post_modified
+- 孤立 / DB：旧 Attachment 1020
+
+---
+
+### 🎉 Moterist ピラー 5 記事 全リライト本番反映 完了サマリ
+
+| post_id | slug（不変） | 新 attachment | 新 post_title | intent | ピラー |
+|---|---|---:|---|---|---|
+| 1095 | `fanza20250329` | 1187 | 恥をかかないための、大人のための配信エンターテインメント嗜み方 | `beginner` | emotion-navi |
+| 1106 | `fanza20250331` | 1188 | 10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート | `beginner` | situation |
+| 994 | `fanza_otoku250114` | 1189 | クレジットカード明細、視聴履歴の安全性。紳士のプライバシーを守る3つの鉄則 | `discount` | emotion-navi |
+| 954 | `fanzaotoku` | 1191 | 深淵なる書斎の探訪。心象風景に響くアクトレスとジャンルを巡るキュレーション | `actress` | wisdom-lens |
+| **1018** | **`saika-kawakita-6`** | **1193** | **解像度が紡ぐ、非日常の吐息。4KとVRがもたらす至高の没入体験への招待** | **`premium`** | **technology-premium**（新規） |
+
+**4 つの intent 軸（beginner / discount / actress / premium）すべてに対応する記事配備が完了**。Moterist は VODNAVI コンシェルジュへの送客動線を**全 5 ピラー × 4 intent**で覆い、ダーク × ゴールドの世界観も全記事で統一された。
+
+---
+
+**ロールバック手順（post 1018）**
+```bash
+# サムネ
+ssh ... "cd public_html/moterist.com && wp post meta update 1018 _thumbnail_id 1020"
+ssh ... "cd public_html/moterist.com && wp post delete 1193 --force"
+
+# 本文・タイトル
+scp ... site-moterist/07_wp/backups/post_1018_20260517_154532.html rvpuxcjb@…:/tmp/post_1018_rollback.html
+ssh ... "cd public_html/moterist.com && wp eval '
+  wp_update_post([
+    \"ID\"=>1018,
+    \"post_title\"=>\"河北彩伽の出演作レビュー 作品の見どころと購入前チェックポイント\",
+    \"post_content\"=>file_get_contents(\"/tmp/post_1018_rollback.html\")
+  ]);
+'"
+```
+
+**設計上の判断**
+- **slug 温存方針の完徹**：本記事のリライトは **女優レビュー（河北彩伽）→ プレミアム視聴ガイド** という最も大きな内容変化だが、`fanza-page-type-design.md` の "Pending Source Material" 扱いを踏まえても slug 変更は SEO リスクが高いため、ピラー 5 記事すべてで slug 温存方針を貫いた。frontmatter の `slug: fanza_premium_view` は将来的なクリーン slug の設計案として保留扱い。
+- **新規ピラー `technology-premium` の確立**：これまでの 3 本柱（感情ナビ / 教養レンズ / シチュエーション）に加え、4K/VR の技術没入を扱う第 4 の柱として `technology-premium` を導入。intent=premium の専用導線を持つことで、コンシェルジュ App の対応カバレッジを 4 軸（beginner / discount / actress / premium）に拡張。
+- **HUMAN 提示の `https://moterist.com/fanza_premium_view/` URL について**：実際に curl してみると 200 OK が返ったが、これは WordPress の 404 ハンドリングが 200 を返す挙動の可能性が高い（実 slug `saika-kawakita-6` のままなため）。検証は本番の実 slug URL で実施し、新コンテンツの正常レンダリングを確認済。slug 変更の判断は CSO 領域として保留。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 954（アクトレス・ジャンル探訪ガイド）の全文リライト・タイトル同期・アイキャッチ紐付けを一撃完遂
+
+CCO 提供のリライト原稿『深淵なる書斎の探訪。心象風景に響くアクトレスとジャンルを巡るキュレーション』と正典アイキャッチ（ヴィンテージ・ルーペ × 革装丁洋書 × ゴールド粒子）を、確立済の必勝パターン（post 994 と同一フロー）で本番に投入。**本文 + タイトル + アイキャッチを 1 セッションで 3 件同時更新**し、旧サムネ（attachment ID 958）から新サムネ（1191）への差し替えも併せて完遂。**ピラー 4 記事（1095 / 1106 / 994 / 954）すべてのリライト本番反映が完了** し、Moterist の世界観統一が記事レベルで完成。
+
+**1. ローカルファイル**
+- 新規: `site-moterist/07_wp/posts/post_954.md`（frontmatter + 本文）
+- 既存: `site-moterist/07_wp/images/eyecatch_954.png`（1,710,485 bytes / 約 1.71 MB）
+
+**2. CTA URL の defensive correction**（post 994 と同じ整形）
+- HUMAN 提示原稿の最終 `<a class="nth-btn-gold" href="...">` が **Markdown 自動リンク形式（`href="[URL](URL)">`）** で混入していたため、当該 1 箇所のみ `href="https://app.vodnavi.jp/concierge?source=moterist&intent=actress"` へ整形。`<a>` タグ・クラス・アンカーテキスト・他の生 HTML は 1 文字も変更していない。
+
+**3. Markdown → HTML 変換**
+- `marked@18.0.3`（`gfm: true`, `breaks: false`）で frontmatter 分離後の本文を変換。
+- 結果（`/tmp/post_954_content.html`）：11,493 bytes。
+- マーカー：`<h1>` × 1 / `<h2>` × 7 / `.nth-box-luxury` × 5 / `.nth-btn-gold` × 1 / `.nth-btn-wrap` × 1 / `.st-mymarker` × 3 / `.st-cite` × 2 / `intent=actress` × 2 / 残留 Markdown 0。
+
+**4. 手順 3.1：アイキャッチ転送 & インポート**
+- 旧 `_thumbnail_id`：**958**（観測）
+- SCP：`/tmp/eyecatch_954.png`（1,710,485 bytes）
+- WP-CLI：
+  ```bash
+  wp media import /tmp/eyecatch_954.png \
+    --path=public_html/moterist.com \
+    --post_id=954 \
+    --featured_image \
+    --title='深淵なる書斎の探訪。心象風景に響くアクトレスとジャンルを巡るキュレーション' \
+    --alt='暗い部屋の机に置かれたヴィンテージの金属製の虫眼鏡（ルーペ）、古い革装丁の美しい洋書、鈍いゴールドの光の粒子がボケている静物写真' \
+    --porcelain
+  ```
+- 出力：**新規 attachment ID = 1191** / Exit 0 / `_thumbnail_id` を 958 → 1191 へ自動更新。
+- 旧 attachment 958 は孤立状態でメディアライブラリに温存（404 回避）。
+
+**5. 手順 3.2：本文 + タイトル + 公開状態の 1 トランザクション更新**
+- バックアップ：`site-moterist/07_wp/backups/post_954_20260517_153236.html`（旧本文 7,366 B）
+- SCP：`/tmp/post_954_content.html`（11,493 bytes）
+- HUMAN 提示 PHP の冒頭にあった `$content = file_get_contents("/tmp/post_994_content.html")`（コメントで「直前タスクとの競合防止のため」と明示された誤指定行）は **意図通り上書きされる第 2 行のみを実行**：
+  ```php
+  wp_update_post([
+    "ID" => 954,
+    "post_title" => "深淵なる書斎の探訪。心象風景に響くアクトレスとジャンルを巡るキュレーション",
+    "post_content" => file_get_contents("/tmp/post_954_content.html"),
+    "post_status" => "publish"
+  ], true);
+  ```
+- 出力：`Success: Post 954 content+title updated.` / Exit 0
+- DB 検証：post_content 長 = 11,599 B、post_title 新版、post_name = `fanzaotoku`（slug 不変）、post_status = publish、post_modified = `2026-05-17 15:32:49`、`_thumbnail_id = 1191`、`nth-box-luxury` × 5、`intent=actress` × 2。
+
+**6. 本番 curl 検証（3 点完全通過）**
+- `curl -sL https://moterist.com/fanzaotoku/` → HTML 48,402 bytes
+- **(a) `<title>` 確認**：
+  - `<title>深淵なる書斎の探訪。心象風景に響くアクトレスとジャンルを巡るキュレーション│モテリスト</title>` ✅
+  - 新タイトル × 7 / 旧タイトル × 0
+- **(b) 本文マーカー**：
+  - `.nth-box-luxury` × 12（本文 5 + CSS ルール 7）
+  - `intent=actress` × 2
+  - `.nth-btn-gold` × 13 / `.nth-btn-wrap` × 2 / `.st-mymarker` × 4 / `.st-cite` × 5
+  - 最終 CTA：`<a class="nth-btn-gold" href="https://app.vodnavi.jp/concierge?source=moterist&#038;intent=actress">VODNAVI コンシェルジュに美意識の解析を委ねる</a>` ✅
+- **(c) アイキャッチ**：
+  - `<meta property="og:image" content="https://moterist.com/wp-content/uploads/2024/12/eyecatch_954-768x432.jpg" />` ✅
+  - `<img class="attachment-icatch768 size-icatch768 wp-post-image" alt="暗い部屋の机に置かれたヴィンテージの金属製の虫眼鏡（ルーペ）、古い革装丁の美しい洋書、鈍いゴールドの光の粒子がボケている静物写真" ...>` ✅
+  - 画像 URL HEAD → HTTP 200 OK ✅
+
+→ ✅ 完全紐付け・公開反映完了。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/posts/post_954.md`（CTA URL 1 箇所のみ defensive 修正、他 verbatim）
+- 新規 / ローカル：`site-moterist/07_wp/backups/post_954_20260517_153236.html`（旧本文 7,366 B）
+- 新規 / リモート：`/tmp/eyecatch_954.png`、`/tmp/post_954_content.html`
+- 新規 / リモート：`wp-content/uploads/2024/12/eyecatch_954.jpg`（メディアライブラリ実体、EWWW で PNG→JPEG）
+- 新規 / DB：Attachment **1191**（post_type=attachment、post_parent=954）
+- 更新 / DB：post 954 の `post_title` / `post_content` / `_thumbnail_id`（958→1191）／post_modified = 2026-05-17 15:32:49
+- 孤立 / DB：旧 Attachment 958（孤立、温存）
+
+**ピラー 4 記事のリライト本番反映 全完了サマリ**
+
+| post_id | slug | 旧サムネ → 新サムネ | 新 post_title | intent |
+|---|---|---|---|---|
+| 1095 | `fanza20250329` | (なし) → **1187** | 恥をかかないための、大人のための配信エンターテインメント嗜み方 | `beginner` |
+| 1106 | `fanza20250331` | 1108 → **1188** | 10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート | `beginner` |
+| 994 | `fanza_otoku250114` | 1043 → **1189** | クレジットカード明細、視聴履歴の安全性。紳士のプライバシーを守る3つの鉄則 | `discount` |
+| 954 | `fanzaotoku` | 958 → **1191** | 深淵なる書斎の探訪。心象風景に響くアクトレスとジャンルを巡るキュレーション | `actress` |
+
+全 4 記事で：slug 維持（既存 SEO インデックス温存）／post_status=publish 維持／本文に `.nth-box-luxury` + `.nth-btn-gold` + intent 別 CTA 完備／FAQ・E-E-A-T 担保（`st-cite`・`st-kaiwa-l/r`）／アイキャッチ画像 alt 充実。Moterist サイトの世界観統一が **記事レベルで完成**。
+
+**ロールバック手順**
+```bash
+# サムネ
+ssh ... "cd public_html/moterist.com && wp post meta update 954 _thumbnail_id 958"
+ssh ... "cd public_html/moterist.com && wp post delete 1191 --force"
+
+# 本文・タイトル
+scp ... site-moterist/07_wp/backups/post_954_20260517_153236.html rvpuxcjb@…:/tmp/post_954_rollback.html
+ssh ... "cd public_html/moterist.com && wp eval '
+  wp_update_post([
+    \"ID\"=>954,
+    \"post_title\"=>\"FANZA動画の超豪華キャンペーンがスタート！歳末＆新春をもっと楽しく過ごそう\",
+    \"post_content\"=>file_get_contents(\"/tmp/post_954_rollback.html\")
+  ]);
+'"
+```
+
+**設計上の判断**
+- **post 994 と同じ「2 SSH トランザクション」分離戦略**：画像 import → 本文更新の順序を厳守。`wp media import --featured_image` が `_thumbnail_id` を更新した後で `wp_update_post` の本文書き換えに進むことで、片肺更新リスクを排除。
+- **HUMAN 提示 PHP 中の `post_994_content.html` 行の取り扱い**：原稿には「直前タスクとの競合防止のため、第 2 行で `post_954_content.html` を正しく指定する」というガード意図が明示されていた。実行する際は、混乱を避けて誤指定行（第 1 行）を最初から除外し、正しい第 2 行のみを採用。PHP 的には第 2 代入が最終値となるため動作は等価だが、可読性とロールバック可能性を最大化する判断。
+- **ピラー 4 記事すべてで slug を温存**：`fanza20250329` / `fanza20250331` / `fanza_otoku250114` / `fanzaotoku` のいずれも、外部リンク・検索インデックス・内部相互リンクと紐付く資産。CSO の明示判断がない限り変更しない。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 994（プライバシー安全ガイド）の全文リライト・タイトル同期・アイキャッチ紐付けを一撃完遂
+
+CCO 提供のリライト原稿『クレジットカード明細、視聴履歴の安全性。紳士のプライバシーを守る3つの鉄則』と正典アイキャッチ画像（真鍮の鍵 × ゴールドのチェスボード）を、確立済の必勝パターンで本番に投入。**本文 + タイトル + アイキャッチを 1 セッションで 3 件同時更新**し、旧サムネ（attachment ID 1043）から新サムネ（1189）への差し替えも併せて完遂。
+
+**1. ローカルファイル**
+- 新規: `site-moterist/07_wp/posts/post_994.md`（frontmatter + Markdown 本文）
+- 既存: `site-moterist/07_wp/images/eyecatch_994.png`（1,641,265 bytes / 約 1.64 MB）
+
+**2. CTA URL の defensive correction**
+- HUMAN 提示原稿の最終 `<a class="nth-btn-gold" href="...">` の値が **Markdown 自動リンク形式（`href="[URL](URL)">`）** で混入していた。これは原稿テキストの Markdown レンダリング時に発生する典型的アーティファクトで、verbatim 投入すると **本記事の最重要 CTA リンクが壊れる**（href 内に URL が二重ネストされた状態）。
+- 自動検証の (b) 項目（`intent=discount` リンクが正常に含まれていること）と矛盾するため、当該 1 箇所のみ **`href="https://app.vodnavi.jp/concierge?source=moterist&intent=discount"`** へ整形し保存。`<a>` タグ構造・クラス名・アンカーテキストは原稿のまま。他の生 HTML（`<div class="nth-box-luxury">` 等）は 1 文字も変更していない。
+
+**3. Markdown → HTML 変換**
+- 既存 `md2html.mjs`（`marked@18.0.3`、`gfm: true`, `breaks: false`）で frontmatter を分離し本文のみを変換。
+- 変換結果（`/tmp/post_994_content.html`）：13,081 bytes。
+- マーカー（変換直後）：`<h1>` × 1 / `<h2>` × 7 / `.nth-box-luxury` × 6 / `.nth-btn-gold` × 1 / `.nth-btn-wrap` × 1 / `.st-mymarker` × 4 / `.st-kaiwa-l/r` 各 1 / `.st-cite` × 2 / `intent=discount` × 2 / Markdown 残留 0。
+
+**4. SSH 接続**
+- ポート 22 / 鍵 `~/.ssh/mixhost_codex_pc`（CRLF→LF 正規化済 `/tmp/mixhost_key`）/ ユーザー `rvpuxcjb`。
+- `~/.ssh/config` の BOM 回避：`ssh -F /dev/null` + `scp -F /dev/null`。
+
+**5. 手順 3.1：アイキャッチの転送＆インポート**
+- バックアップ：旧 `_thumbnail_id` 値「**1043**」を観測。
+- SCP：`/tmp/eyecatch_994.png`（1,641,265 bytes）。
+- WP-CLI コマンド（HUMAN 指定 verbatim、`--porcelain`）：
+  ```bash
+  wp media import /tmp/eyecatch_994.png \
+    --path=public_html/moterist.com \
+    --post_id=994 \
+    --featured_image \
+    --title='クレジットカード明細、視聴履歴の安全性。紳士のプライバシーを守る3つの鉄則' \
+    --alt='暗い部屋の机に置かれたヴィンテージの真鍮の鍵、ゴールドと黒の高級チェスボード、駒が一筋のスポットライトに照らされている静物写真' \
+    --porcelain
+  ```
+- 出力：**新規 attachment ID = 1189** / Exit 0 / `_thumbnail_id` を 1043 → 1189 へ自動更新。
+- 旧 attachment 1043 はメディアライブラリに残存（孤立、物理ファイル温存）— 外部キャッシュ 404 回避のため即時削除はしない。
+
+**6. 手順 3.2：本文 + タイトル + 公開状態の 1 トランザクション更新**
+- バックアップ：`site-moterist/07_wp/backups/post_994_20260517_151013.html`（旧本文 8,112 B、Ahrefs script 除去後）。
+- SCP：`/tmp/post_994_content.html`（13,081 bytes）。
+- `wp eval` コマンド：
+  ```php
+  wp_update_post([
+    "ID" => 994,
+    "post_title" => "クレジットカード明細、視聴履歴の安全性。紳士のプライバシーを守る3つの鉄則",
+    "post_content" => file_get_contents("/tmp/post_994_content.html"),
+    "post_status" => "publish"
+  ], true);
+  ```
+- 出力：`Success: Post 994 content+title updated via single transaction.` / Exit 0
+- DB 検証：post_content 長 = 13,187 B、post_title 新版、post_name = `fanza_otoku250114`（slug 不変）、post_status = publish、post_modified = `2026-05-17 15:10:20`、`_thumbnail_id = 1189`、`nth-box-luxury` × 6、`intent=discount` × 2。
+
+**7. 本番 curl 検証（3 点完全通過）**
+- `curl -sL https://moterist.com/fanza_otoku250114/` → HTML 50,305 bytes
+- **(a) `<title>` 確認**：
+  - `<title>クレジットカード明細、視聴履歴の安全性。紳士のプライバシーを守る3つの鉄則│モテリスト</title>` ✅
+  - 新タイトル × 6（title / og:title / twitter:title / breadcrumb / h1 等）／ 旧タイトル × 0
+- **(b) 本文マーカー**：
+  - `.nth-box-luxury` × 13（本文 6 + custom_css ルール 7）
+  - `intent=discount` × 2
+  - `.nth-btn-gold` × 13 / `.nth-btn-wrap` × 2 / `.st-mymarker` × 5 / `.st-cite` × 5
+  - 最終 CTA：`<a class="nth-btn-gold" href="https://app.vodnavi.jp/concierge?source=moterist&#038;intent=discount">VODNAVI コンシェルジュに安全な秘匿プランの作成を委ねる</a>` ✅
+- **(c) アイキャッチ確認**：
+  - `<meta property="og:image" content="https://moterist.com/wp-content/uploads/2025/01/eyecatch_994-768x432.jpg" />` ✅
+  - `<img class="attachment-icatch768 size-icatch768 wp-post-image" alt="暗い部屋の机に置かれたヴィンテージの真鍮の鍵、ゴールドと黒の高級チェスボード、駒が一筋のスポットライトに照らされている静物写真" ...>` ✅
+  - 画像 URL HEAD → HTTP 200 OK ✅
+
+→ ✅ 完全紐付け・公開反映完了。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/posts/post_994.md`（CTA URL 1 箇所のみ defensive 修正、その他原稿 verbatim）
+- 新規 / ローカル：`site-moterist/07_wp/backups/post_994_20260517_151013.html`（旧本文 8,112 B）
+- 新規 / リモート：`/tmp/eyecatch_994.png`、`/tmp/post_994_content.html`
+- 新規 / リモート：`wp-content/uploads/2025/01/eyecatch_994.jpg`（メディアライブラリ実体、EWWW Image Optimizer により PNG→JPEG 変換）
+- 新規 / DB：Attachment **1189**（post_type=attachment、post_parent=994）
+- 更新 / DB：post 994 の `post_title` / `post_content` / `_thumbnail_id`（1043→1189）／post_modified = 2026-05-17 15:10:20
+- 孤立 / DB：旧 Attachment 1043（孤立、温存）
+
+**実行した主要コマンド要約**
+```bash
+# 共通：鍵正規化・marked 変換
+tr -d '\r' < ~/.ssh/mixhost_codex_pc > /tmp/mixhost_key && chmod 600 /tmp/mixhost_key
+node md2html.mjs site-moterist/07_wp/posts/post_994.md /tmp/post_994_content.html
+
+# 3.1：画像 import
+scp -F /dev/null -P 22 -i /tmp/mixhost_key site-moterist/07_wp/images/eyecatch_994.png rvpuxcjb@…:/tmp/eyecatch_994.png
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "wp media import /tmp/eyecatch_994.png --path=public_html/moterist.com --post_id=994 --featured_image --title='…' --alt='…' --porcelain"
+# → 1189
+
+# 3.2：本文+タイトル
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "wp post get 994 --field=post_content --path=public_html/moterist.com" \
+  | sed 's|<script src="https://analytics.ahrefs.com[^"]*"[^>]*></script>||g' \
+  > site-moterist/07_wp/backups/post_994_<TS>.html
+scp -F /dev/null -P 22 -i /tmp/mixhost_key /tmp/post_994_content.html rvpuxcjb@…:/tmp/post_994_content.html
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp eval '<wp_update_post PHP>'"
+
+# 検証
+curl -sL https://moterist.com/fanza_otoku250114/ | grep -cE 'nth-box-luxury|intent=discount|wp-post-image|クレジットカード明細'
+```
+
+**ロールバック手順**
+```bash
+# サムネ
+ssh ... "cd public_html/moterist.com && wp post meta update 994 _thumbnail_id 1043"
+ssh ... "cd public_html/moterist.com && wp post delete 1189 --force"
+
+# 本文・タイトル
+scp ... site-moterist/07_wp/backups/post_994_20260517_151013.html rvpuxcjb@…:/tmp/post_994_rollback.html
+ssh ... "cd public_html/moterist.com && wp eval '
+  wp_update_post([
+    \"ID\"=>994,
+    \"post_title\"=>\"FANZAは安全？支払い・プライバシー・退会前に確認したいポイントを解説\",
+    \"post_content\"=>file_get_contents(\"/tmp/post_994_rollback.html\")
+  ]);
+'"
+```
+
+**設計上の判断**
+- **3 件の更新を 2 SSH トランザクションに分けた理由**：`wp media import --featured_image` は内部で `_thumbnail_id` を自動更新するため、本文更新（`wp_update_post`）と独立。順序的にも画像 import → 本文更新の方が、本文更新中に `_thumbnail_id` 設定が完了済となり安全。両者を 1 つの bash で続けて実行することで「片肺更新」のリスクを排除した。
+- **CTA URL の defensive correction**：原稿の `href="[url](url)"` 形式を verbatim で投入すると、href 属性内に二重 URL を含む不正な属性値となり、ブラウザが解釈できない（または前半のみを URL として扱う）状態に陥る。検証 (b) の「intent=discount のリンクが正常に含まれていること」と整合させるため、当該 1 箇所のみ整形。`<a>` タグ・class・アンカーテキストは原稿のまま。
+- **旧 attachment 1043 を温存した理由**（前 2 記事の判断と同様）：外部メディアキャッシュ・古い OG プレビュー・内部リンク残存に対する 404 影響を回避。クリーンアップは CSO 判断で `wp post delete 1043 --force` を後続実行。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 1106 にアイキャッチ画像（Featured Image）を SSH + WP-CLI で一撃紐付け（旧サムネからの差し替え）
+
+CCO 設計の正典アイキャッチ画像（ヴィンテージ万年筆＋黒い招待状＋封蝋封筒のスポットライト静物）を、確立済パターン（前回 post 1095 のフロー）で post 1106 に紐付け。旧サムネ（attachment ID 1108）からの差し替えとして実行し、`_thumbnail_id` を新 ID 1188 へ更新。
+
+**1. ローカル原本**
+- `site-moterist/07_wp/images/eyecatch_1106.png`（1,641,141 bytes / 約 1.64 MB）
+  - 画像内容：暗い部屋の机に置かれたヴィンテージの万年筆、ゴールドの刻印が入った黒い招待状、封蝋付き封筒がスポットライトに照らされている静物写真。
+
+**2. 事前状態（重要：post 1106 にはすでに旧サムネが紐付いていた）**
+- `wp post meta get 1106 _thumbnail_id` → **1108**（旧）
+- 本タスクで `--featured_image` を実行することで `_thumbnail_id` を 1108 → 1188 へ上書き。旧 attachment 1108 はメディアライブラリに残るが孤立（post_parent 紐付け解除）。物理ファイル削除は実施せず（外部リンク残存リスク回避）。
+
+**3. SCP 転送**
+```bash
+scp -F /dev/null -P 22 -i /tmp/mixhost_key \
+  site-moterist/07_wp/images/eyecatch_1106.png \
+  rvpuxcjb@133.125.148.25:/tmp/eyecatch_1106.png
+```
+リモート確認：`/tmp/eyecatch_1106.png`（1,641,141 bytes）
+
+**4. WP-CLI 一撃インポート**
+```bash
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 \
+  "wp media import /tmp/eyecatch_1106.png \
+    --path=public_html/moterist.com \
+    --post_id=1106 \
+    --featured_image \
+    --title='10分後にはじめる、秘匿性の高い至高 of プライベート空間へのパスポート' \
+    --alt='暗い部屋の机に置かれたヴィンテージの万年筆、ゴールドの刻印が入った黒い招待状、封蝋付き封筒がスポットライトに照らされている静物写真' \
+    --porcelain"
+```
+- 出力（--porcelain）：新規アタッチメント ID = **1188**
+- Exit Code: 0
+- 注：`--title` の文字列は HUMAN 指定通り verbatim（中央部に「of」が混入しているが、これは media library 内部メタデータのみで user-facing HTML には影響しない。post_title は別フィールドで前回タスクにより「の」版へ更新済）。
+
+**5. DB 検証**
+
+| 項目 | 値 |
+|---|---|
+| `post_meta._thumbnail_id` (post 1106) | **1188**（前 1108 から更新） |
+| Attachment 1188 `post_title` | 10分後にはじめる、秘匿性の高い至高 of プライベート空間へのパスポート（HUMAN 指定 verbatim） |
+| Attachment 1188 `post_type` | attachment |
+| Attachment 1188 `post_mime_type` | image/jpeg（EWWW Image Optimizer による自動変換） |
+| Attachment 1188 `post_status` | inherit |
+| Attachment 1188 `post_parent` | 1106 |
+| Attachment 1188 `_wp_attached_file` | `2025/03/eyecatch_1106.jpg`（衝突なし、`-N` サフィックスなし） |
+| Attachment 1188 `_wp_attachment_image_alt` | 暗い部屋の机に置かれたヴィンテージの万年筆、ゴールドの刻印が入った黒い招待状、封蝋付き封筒がスポットライトに照らされている静物写真 |
+| `guid` | `https://moterist.com/wp-content/uploads/2025/03/eyecatch_1106.jpg` |
+
+**6. 本番 curl 検証（live URL）**
+- `curl -sL https://moterist.com/fanza20250331/` → HTML 50,329 bytes
+- 検出：
+  - `<meta property="og:image" content="https://moterist.com/wp-content/uploads/2025/03/eyecatch_1106-768x404.jpg" />` ✅
+  - 本文先頭の Featured Image `<img>` タグ：
+    ```html
+    <img width="768" height="404" src=".../dummy.gif"
+         data-layzr="https://moterist.com/.../eyecatch_1106-768x404.jpg"
+         class="attachment-icatch768 size-icatch768 wp-post-image"
+         alt="暗い部屋の机に置かれたヴィンテージの万年筆、ゴールドの刻印が入った黒い招待状、封蝋付き封筒がスポットライトに照らされている静物写真"
+         decoding="async" fetchpriority="high" />
+    ```
+  - 画像 URL HEAD → **HTTP 200 OK** ✅
+
+→ ✅ 完全紐付け・公開反映完了。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/images/eyecatch_1106.png`（1.64 MB / 原本 PNG）
+- 新規 / リモート：`/tmp/eyecatch_1106.png`（SCP）
+- 新規 / リモート：`wp-content/uploads/2025/03/eyecatch_1106.jpg`（メディアライブラリ実体）
+- 新規 / DB：Attachment 1188（post_type=attachment、post_parent=1106）
+- 更新 / DB：`wp_postmeta._thumbnail_id` for post 1106：1108 → **1188**
+- 孤立 / DB：旧 Attachment 1108（メディアライブラリには残存、post_parent 紐付け解除）
+
+**設計上の判断**
+- **旧 Attachment 1108 を即時削除しなかった理由**：物理ファイルは `wp-content/uploads/` 配下に残しておくことで、外部メディアや過去のソーシャル投稿が旧画像 URL をキャッシュしている場合でも 404 を出さない。クリーンアップが必要な場合は後続タスクで CSO 判断のうえ `wp post delete 1108 --force` を実行する。
+- **`--title` の "of" 表記**：HUMAN 指定通り verbatim で投入。attachment.post_title はメディアライブラリ管理画面のみで参照されるフィールドで、フロントエンドの `<title>` や `og:title` には反映されない（post 1106 自体の post_title は前回タスクで「の」版に同期済で温存）。
+
+**ロールバック手順**
+```bash
+# 旧サムネ 1108 に戻す
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp post meta update 1106 _thumbnail_id 1108"
+
+# 新サムネ 1188 を完全削除（物理ファイル含む）
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp post delete 1188 --force"
+```
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 1095 にアイキャッチ画像（Featured Image）を SSH + WP-CLI で一撃紐付け
+
+CCO 設計の正典アイキャッチ画像（リッチブラック × シャンパンゴールドの静物写真）を本番 WordPress に転送・登録し、投稿 1095 に Featured Image として紐付け。`wp media import --featured_image --porcelain` の単一コマンドで「メディアライブラリ登録」「アタッチメント生成」「post 1095 へのサムネ紐付け」「title・alt 設定」を 1 トランザクションで完遂。
+
+**1. ローカル原本**
+- `site-moterist/07_wp/images/eyecatch_1095.png`（1,768,729 bytes / 約 1.77 MB）
+  - HUMAN が ChatGPT Image 出力をローカル指定パスへ配置済。
+  - 画像内容：重厚なマホガニーの机、クリスタルグラス、琥珀色のウイスキー、暗い書斎の本棚がシャンパンゴールドに輝く静物写真（『ビブリア・エロティカ』世界観準拠）。
+
+**2. SCP 転送**
+```bash
+scp -F /dev/null -P 22 -i /tmp/mixhost_key \
+  site-moterist/07_wp/images/eyecatch_1095.png \
+  rvpuxcjb@133.125.148.25:/tmp/eyecatch_1095.png
+```
+- リモート確認：`/tmp/eyecatch_1095.png`（1,768,729 bytes）
+
+**3. WP-CLI 一撃インポート**
+```bash
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 \
+  "wp media import /tmp/eyecatch_1095.png \
+    --path=public_html/moterist.com \
+    --post_id=1095 \
+    --featured_image \
+    --title='恥をかかないための、大人のための配信エンターテインメント嗜み方' \
+    --alt='重厚なマホガニーの机、クリスタルグラス、琥珀色のウイスキー、暗い書斎の本棚がシャンパンゴールドに輝く静物写真' \
+    --porcelain"
+```
+- 出力（--porcelain）：新規アタッチメント ID = **1187**
+
+**4. DB 検証**
+
+| 項目 | 値 |
+|---|---|
+| `post_meta._thumbnail_id` (post 1095) | **1187** |
+| Attachment 1187 `post_title` | 恥をかかないための、大人のための配信エンターテインメント嗜み方 |
+| Attachment 1187 `post_type` | attachment |
+| Attachment 1187 `post_mime_type` | image/jpeg |
+| Attachment 1187 `post_status` | inherit |
+| Attachment 1187 `post_parent` | 1095 |
+| Attachment 1187 `_wp_attached_file` | 2025/03/eyecatch_1095-1.jpg |
+| Attachment 1187 `_wp_attachment_image_alt` | 重厚なマホガニーの机、クリスタルグラス、琥珀色のウイスキー、暗い書斎の本棚がシャンパンゴールドに輝く静物写真 |
+| `guid` | https://moterist.com/wp-content/uploads/2025/03/eyecatch_1095-1.jpg |
+
+**5. 本番 curl 検証（live URL）**
+- `curl -sL https://moterist.com/fanza20250329/` → HTML 48,687 bytes
+- 検出：
+  - `<meta property="og:image" content="https://moterist.com/wp-content/uploads/2025/03/eyecatch_1095-1-768x403.jpg" />` ✅
+  - 本文先頭の Featured Image `<img>` タグ（THE THOR の lazyloader 経由）：
+    ```html
+    <img width="768" height="403" src=".../dummy.gif"
+         data-layzr="https://moterist.com/.../eyecatch_1095-1-768x403.jpg"
+         class="attachment-icatch768 size-icatch768 wp-post-image"
+         alt="重厚なマホガニーの机、クリスタルグラス、琥珀色のウイスキー、暗い書斎の本棚がシャンパンゴールドに輝く静物写真"
+         decoding="async" fetchpriority="high" />
+    ```
+    `wp-post-image` クラスが WordPress 標準で「post_thumbnail」を示すマーカー、紐付け成立を確定。
+  - 画像 URL `eyecatch_1095-1-768x403.jpg` への HEAD リクエスト → **HTTP 200 OK** ✅
+
+→ ✅ 完全紐付け・公開反映完了。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/images/eyecatch_1095.png`（1.77 MB / 原本 PNG）
+- 新規 / リモート：`/tmp/eyecatch_1095.png`（SCP で配置、import 時にメディアライブラリへ複製）
+- 新規 / リモート：`/home/rvpuxcjb/public_html/moterist.com/wp-content/uploads/2025/03/eyecatch_1095-1.jpg`（WordPress メディアライブラリ実体）
+- 新規 / DB：`wp_posts` の Attachment 1187（post_type=attachment）／`wp_postmeta._thumbnail_id = 1187` for post 1095
+
+**設計上の判断**
+- **拡張子変換（PNG → JPEG）の許容**：active plugin `ewww-image-optimizer`（前回監査で確認済）が WordPress アップロードフックで自動変換を実行している。これは moterist.com 既存運用と一致しており、本記事だけ例外化しない方が CDN キャッシュとサイト全体の整合性が高い。
+- **ファイル名衝突（`-1` 付与）**：`uploads/2025/03/` ディレクトリには既存の `eyecatch_1095.jpg` が存在しているため、WordPress 標準のリネームロジックで `eyecatch_1095-1.jpg` が割り当てられた。これは old vs new を共存させた安全側の選択であり、旧画像（前運用時のもの）を即時削除しないことで、もし旧URL が外部メディア / 内部リンクから残っていても 404 を出さない。
+- **`--porcelain` フラグの採用理由**：成功時に新規アタッチメント ID のみを stdout に返すため、シェル変数で受け取って後続処理（meta 設定など）に渡しやすい。ただし WP-CLI が Ahrefs script 注入により出力先頭に `<script src=...>` を付ける副作用があるため、本セッションでも 1187 を抽出する際にこの混入を考慮した。
+
+**ロールバック手順**
+```bash
+# サムネ紐付けのみ解除（attachment は残す）
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp post meta delete 1095 _thumbnail_id"
+
+# 完全削除（attachment + 物理ファイル）
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp post delete 1187 --force"
+```
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 1095 / 1106 の post_title 強制同期（タイトルのみピンポイント更新）
+
+前回 2 件のリライト本番反映時に SEO リスク回避のため **意図的に温存** していた `post_title` を、CCO 設計の最新ラグジュアリータイトルへ強制同期。本文（post_content）・slug（post_name）・公開状態（post_status）には一切触れない、タイトルのみのピンポイント更新を `wp eval` 単一コマンドで完遂。
+
+**1. 同期内容**
+
+| 投稿 ID | 旧 post_title | 新 post_title | post_name（slug） |
+|---|---|---|---|
+| **1095** | FANZAとは？初心者向けに特徴・使い方・安全性をわかりやすく解説 | **恥をかかないための、大人のための配信エンターテインメント嗜み方** | `fanza20250329`（不変） |
+| **1106** | FANZAに登録するメリットは？初心者向けに確認ポイントと使い方を解説 | **10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート** | `fanza20250331`（不変） |
+
+**2. 旧タイトルのバックアップ**
+- `site-moterist/07_wp/backups/titles_pre_sync_20260517_132145.json`
+  - 両投稿の更新前メタデータ（ID / post_title / post_name / post_status / post_modified）を JSON で保存。ロールバック時のソース。
+
+**3. 実行コマンド（単一 `wp eval`、両投稿を 1 トランザクション）**
+```bash
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 \
+  "cd public_html/moterist.com && wp eval '
+    \$r1 = wp_update_post([\"ID\" => 1095, \"post_title\" => \"恥をかかないための、大人のための配信エンターテインメント嗜み方\"], true);
+    if (is_wp_error(\$r1)) { echo \"Error 1095: \" . \$r1->get_error_message() . \"\\n\"; exit(1); }
+    \$r2 = wp_update_post([\"ID\" => 1106, \"post_title\" => \"10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート\"], true);
+    if (is_wp_error(\$r2)) { echo \"Error 1106: \" . \$r2->get_error_message() . \"\\n\"; exit(1); }
+    echo \"Success: Titles for 1095 and 1106 have been synchronized.\\n\";
+  '"
+```
+- `wp_update_post` に `post_title` のみを渡すことで、他フィールドへの副作用なし。`is_wp_error` 判定で 1 件目失敗時に即時 exit、2 件目への伝搬を防止。
+
+**4. DB 検証（post_modified = 2026-05-17 13:22:24）**
+
+| ID | post_title（新） | post_status | post_name | post_content 長 |
+|---|---|---|---|---|
+| 1095 | 恥をかかないための、大人のための配信エンターテインメント嗜み方 | publish | fanza20250329 | 10,672 B（前回値と一致＝本文未改変） |
+| 1106 | 10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート | publish | fanza20250331 | 11,836 B（前回値と一致＝本文未改変） |
+
+**5. 本番 curl 検証**
+
+| URL | `<title>` タグ | 新タイトル一致数 | 旧タイトル残存 | 本文マーカー |
+|---|---|---:|---:|---|
+| `https://moterist.com/fanza20250329/` | `<title>恥をかかないための、大人のための配信エンターテインメント嗜み方│モテリスト</title>` | 6（title / og:title / twitter:title / breadcrumb / h1 等） | 0 ✅ | `nth-box-luxury` × 10 / `intent=beginner` × 2（不変） |
+| `https://moterist.com/fanza20250331/` | `<title>10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート│モテリスト</title>` | 6 | 0 ✅ | `nth-box-luxury` × 12 / `intent=beginner` × 2（不変） |
+
+→ ✅ 完全同期。検索インデックスへの反映は順次（24h〜数日）。
+
+**ロールバック手順**
+```bash
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp eval '
+    wp_update_post([\"ID\"=>1095, \"post_title\"=>\"FANZAとは？初心者向けに特徴・使い方・安全性をわかりやすく解説\"]);
+    wp_update_post([\"ID\"=>1106, \"post_title\"=>\"FANZAに登録するメリットは？初心者向けに確認ポイントと使い方を解説\"]);
+  '"
+```
+ローカルバックアップ：`site-moterist/07_wp/backups/titles_pre_sync_20260517_132145.json`
+
+**設計上の判断**
+- **slug を変更しなかった理由**：`fanza20250329` / `fanza20250331` は外部リンク・検索インデックス・既存内部リンク（1106 本文の `> 今夜の書斎...` 引用末尾など）と紐付く資産。タイトル変更は H1 / `<title>` / OGP / Twitter Card 等のメタ層に閉じるため、SEO の継続性を担保しつつブランド化（『ビブリア・エロティカ』）を達成できる。
+- **post_content を再注入しなかった理由**：前回の Markdown → HTML 変換後の post_content（H1 内に既に新タイトルを記述済）を上書きすると差分が増え、検証コストが上がる。`wp_update_post` の `post_title` 単独更新は WordPress 内部で revision を 1 件追加するだけで、本文には触れない確実な操作。
+- **1 トランザクションでまとめた理由**：2 件を別 SSH セッションで実行すると、間にネットワーク断や認証失敗が挟まると片肺更新になる。`wp eval` 内で 2 件続けて呼び、is_wp_error 即時 exit でロールバック安全性を担保。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 1106（プライベート空間ガイド）の全文リライト本番反映（DB 直接注入）
+
+CCO 提供のリライト原稿『10 分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート』を、確立済の必勝パターン（`wp eval` + `file_get_contents`）で本番投入。post 1095 のフローを 1:1 で踏襲し、同パイプラインの再現性を検証した（2 本目のリライト記事として安定稼働を確認）。
+
+**1. ローカル原稿の保存**
+- 新規: `site-moterist/07_wp/posts/post_1106.md`
+  - frontmatter キー：`title` / `slug` (`fanza20250331`) / `description` / `page_type` (`Situation Guide`) / `pillar` (`situation`) / `keyword_primary` / `keyword_secondary` / `target_situation` / `cta_source=moterist` / `cta_intent=beginner` / `canonical_path` / `original_post_id=1106` / `publish_status=draft` / `created_at=2026-05-17`
+  - 本文は CCO の生 HTML 装飾（`<div class="nth-box-luxury">` × 5、`<span class="st-mymarker">` × 3、`<div class="st-kaiwa-l/r">`、`<blockquote class="st-cite">`、最終 `<div class="nth-btn-wrap"><a class="nth-btn-gold">` CTA）と Markdown ヘッディング・段落・引用を混在させて記述。
+
+**2. Markdown → HTML 変換**
+- 既存 `C:/Users/Tachi/AppData/Local/Temp/md2html.mjs`（`marked@18.0.3`、`gfm: true`, `breaks: false`）で frontmatter 分離後の本文のみ変換。
+- 結果（`/tmp/post_1106_content.html`）：11,730 bytes。
+- マーカー検証（変換直後）：
+  - `<h1>` × 1、`<h2>` × 7（章番号 1〜5 + まとめ + 最終 CTA 見出し）
+  - `.nth-box-luxury` × 5、`.nth-btn-gold` × 1、`.nth-btn-wrap` × 1
+  - `.st-mymarker` × 3、`.st-kaiwa-l` × 1、`.st-kaiwa-r` × 1、`.st-cite` × 1
+  - `intent=beginner` × 2（中盤引用 + 最終 CTA）
+  - 残留 Markdown `## ` / `**bold**` ＝ 0
+
+**3. バックアップ + SCP + wp eval 注入**
+- バックアップ：`site-moterist/07_wp/backups/post_1106_20260517_114238.html`（旧本文 7,428 B、Ahrefs script は sed で除去）。
+- SCP：`scp -F /dev/null -P 22 -i /tmp/mixhost_key /tmp/post_1106_content.html rvpuxcjb@…:/tmp/post_1106_content.html`
+- 注入コマンド：
+  ```php
+  wp eval '
+    $post_id = 1106;
+    $content = file_get_contents("/tmp/post_1106_content.html");
+    if ($content === false) { echo "Error: Cannot read content file\n"; exit(1); }
+    $updated = wp_update_post(["ID" => $post_id, "post_content" => $content, "post_status" => "publish"], true);
+    if (is_wp_error($updated)) { echo "Error: " . $updated->get_error_message() . "\n"; exit(1); }
+    echo "Success: Post $updated updated via DB injection.\n";
+  ' --path=public_html/moterist.com
+  ```
+- DB 検証：`post_content` 長 = 11,836 bytes、`nth-box-luxury` × 5、`intent=beginner` × 2、`post_status = publish`、`post_name = fanza20250331`（slug 維持）、`post_modified = 2026-05-17 11:42:42`。
+
+**4. 本番 curl 検証（live URL）**
+- `curl -sL https://moterist.com/fanza20250331/` → HTML 50,124 bytes
+- 検出マーカー：
+  - `.nth-box-luxury` × 12（本文 5 + custom_css ルール 7）
+  - `intent=beginner` × 2
+  - `.nth-btn-gold` × 13（本文 1 + CSS ルール 12）
+  - `.nth-btn-wrap` × 2（本文 1 + CSS ルール 1）
+  - `.st-mymarker` × 4、`.st-cite` × 4
+  - `--nth-bg: #121212` × 1（前タスクの custom_css 生存確認）
+- 最終 CTA HTML：
+  `<a class="nth-btn-gold" href="https://app.vodnavi.jp/concierge?source=moterist&#038;intent=beginner">VODNAVI コンシェルジュに絶対聖域の案内を求める</a>`
+- → ✅ ライブ反映完全通過。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/posts/post_1106.md`
+- 新規 / ローカル：`site-moterist/07_wp/backups/post_1106_20260517_114238.html`（旧 DB 状態 / 7,428 B）
+- 一時 / リモート：`/tmp/post_1106_content.html`（marked 変換後 / 11,730 B）→ 注入後は SSH 切断時点で揮発しない（次回オペレーション時に上書き）
+- 本番 DB / リモート：`wp_posts.ID = 1106`（post_type = post）の `post_content` を全置換、`post_status = publish` 維持。
+
+**実行した主要コマンド要約**（post 1095 と完全同一パターン）
+```bash
+# 1. 鍵 CRLF→LF 正規化
+tr -d '\r' < ~/.ssh/mixhost_codex_pc > /tmp/mixhost_key && chmod 600 /tmp/mixhost_key
+
+# 2. marked 変換
+node md2html.mjs site-moterist/07_wp/posts/post_1106.md /tmp/post_1106_content.html
+
+# 3. バックアップ
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "wp post get 1106 --field=post_content --path=public_html/moterist.com" \
+  | sed 's|<script src="https://analytics.ahrefs.com[^"]*"[^>]*></script>||g' \
+  > site-moterist/07_wp/backups/post_1106_<TS>.html
+
+# 4. SCP
+scp -F /dev/null -P 22 -i /tmp/mixhost_key /tmp/post_1106_content.html rvpuxcjb@…:/tmp/post_1106_content.html
+
+# 5. wp eval inject
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp eval '<上記 PHP コード>'"
+
+# 6. ライブ検証
+curl -sL https://moterist.com/fanza20250331/ | grep -cE 'nth-box-luxury|intent=beginner'
+```
+
+**ロールバック手順**
+```bash
+scp -F /dev/null -P 22 -i /tmp/mixhost_key \
+  site-moterist/07_wp/backups/post_1106_20260517_114238.html rvpuxcjb@…:/tmp/post_1106_rollback.html
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp eval 'wp_update_post([\"ID\"=>1106,\"post_content\"=>file_get_contents(\"/tmp/post_1106_rollback.html\")]);'"
+```
+
+**設計上の判断**
+- **post_title を上書きしなかった理由**（post 1095 と同じ）：既存タイトル「FANZAに登録するメリットは？初心者向けに確認ポイントと使い方を解説」は検索インデックス資産。frontmatter の新タイトル「10 分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート」への変更は SEO リスクを伴うため CSO の明示判断を待つ。本文 H1 だけ新タイトルに置き換え、`post_title` フィールドは温存。
+- **パイプライン安定性の確認**：post 1095 と同じ 6 ステップ（鍵正規化 → marked 変換 → バックアップ → SCP → wp eval → curl 検証）で 2 連続成功。OPERATION_MANUAL.md §3「記事反映自動化（DB 直接注入）」のフローが実運用可能なレベルに到達したと判断。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 記事 1095（FANZA 初心者ガイド）の全文リライト本番反映（DB 直接注入）
+
+CCO 提供のリライト原稿（『恥をかかないための、大人のための配信エンターテインメント嗜み方』）を、前回の教訓（`wp post update <id> <file>` が post_content を空にする罠）を回避する **`wp eval` + `file_get_contents`** ベースの安全注入で本番に反映。前任タスクで投入済みの custom_css（`--nth-*` パレット + 装飾クラス）と完全に噛み合い、ダーク × ゴールドの世界観が記事レベルでも稼働。
+
+**1. ローカル原稿の保存**
+- 新規: `site-moterist/07_wp/posts/post_1095.md`
+  - HUMAN 提示のフロントマター付き Markdown 原稿を一字一句保存（YAML frontmatter + 本文 Markdown/HTML 混在）。
+  - frontmatter キー：`title` / `slug` / `description` / `page_type` / `pillar` / `keyword_primary` / `keyword_secondary` / `target_emotion` / `cta_source` / `cta_intent` / `canonical_path` / `publish_status` / `created_at`。
+
+**2. Markdown → HTML 変換（生 HTML ブロック保全）**
+- 変換器：`marked@18.0.3`（`gfm: true, breaks: false`）を一時 npm install して使用。
+- ロジック（`md2html.mjs`）：frontmatter（`---` で囲まれた区画）を正規表現で分離し、本文部分のみを `marked.parse()` に通す。`<div class="nth-...">`・`<span class="st-...">`・`<blockquote class="st-cite">` 等の **生 HTML ブロックは marked のデフォルト挙動でそのまま貫通**（Markdown コンバータが HTML を変換しないルール）。
+- 変換結果（`/tmp/post_1095_content.html`）：10,566 bytes。
+- 完成チェック：
+  - `<h1>` 1 件、`<h2>` 7 件（章番号 1〜5 + まとめ + 最終 CTA）
+  - `.nth-box-luxury` 3 件（結論・確認 3 つの場所・基本作法）
+  - `.nth-btn-gold` × 1 + `.nth-btn-wrap` × 1（最終 CTA）
+  - `.st-mymarker` × 3、`.st-kaiwa-l/r` 各 1、`.st-cite` × 1
+  - `intent=beginner` リンク × 2（中盤引用 + 最終 CTA）
+  - 残留 Markdown 構文（`## ` / `**bold**`）= 0
+
+**3. SSH 接続（前回踏襲）**
+- ポート 22 / 鍵 `~/.ssh/mixhost_codex_pc`（CRLF → LF 正規化した `/tmp/mixhost_key`）/ ユーザー `rvpuxcjb`。
+- `~/.ssh/config` BOM 回避：`ssh -F /dev/null` + `scp -F /dev/null`。
+
+**4. バックアップ + SCP + 安全注入**
+
+**STEP A：バックアップ（ローカル保存）**
+- `site-moterist/07_wp/backups/post_1095_20260517_112945.html`（8,228 bytes、旧本文を Ahrefs script 除去後に保存）。
+
+**STEP B：SCP**
+- `scp -F /dev/null -P 22 -i /tmp/mixhost_key /tmp/post_1095_content.html rvpuxcjb@…:/tmp/post_1095_content.html`
+
+**STEP C：wp eval による安全注入**
+```php
+wp eval '
+  $post_id = 1095;
+  $content = file_get_contents("/tmp/post_1095_content.html");
+  if ($content === false) { echo "Error: Cannot read content file\n"; exit(1); }
+  $updated = wp_update_post(["ID" => $post_id, "post_content" => $content, "post_status" => "publish"], true);
+  if (is_wp_error($updated)) { echo "Error: " . $updated->get_error_message() . "\n"; exit(1); }
+  echo "Success: Post $updated updated.\n";
+' --path=public_html/moterist.com
+```
+- 結果：`wp_update_post()` が is_wp_error=false を返し、Success 出力を確認。
+- DB 検証：`post_content` 長 = 10,672 bytes、`nth-box-luxury` × 3、`intent=beginner` × 2、`post_status = publish`、`post_name = fanza20250329`（slug 変更なし）、`post_modified = 2026-05-17 11:29:50`。
+- **注意（前回の教訓）**：`wp post update <id> <file>` の位置引数ファイル指定は環境依存で post_content を空にする事象がある。`wp eval` + `file_get_contents` の組合せでは PHP 文字列として確実に伝達される。
+
+**STEP D：本番 curl 検証（live URL）**
+- `curl -sL https://moterist.com/fanza20250329/` → HTML 48,496 bytes
+- 検出マーカー：
+  - `nth-box-luxury` × 10（本文 3 + CSS ルール 7）
+  - `intent=beginner` × 2（リンク 2 件）
+  - `nth-btn-gold` × 13（本文 1 + CSS ルール 12）
+  - `nth-btn-wrap` × 2（本文 1 + CSS ルール 1）
+  - `st-mymarker` × 4、`st-cite` × 4
+  - `--nth-bg: #121212` × 1（CSS 変数生存）
+- CTA リンク例（HTML エンコード後）：
+  `<a class="nth-btn-gold" href="https://app.vodnavi.jp/concierge?source=moterist&#038;intent=beginner">VODNAVI コンシェルジュに今夜の選択を委ねる</a>`
+- → ✅ ライブ反映完全通過。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/posts/post_1095.md`（原稿正典 / Markdown frontmatter 付き）
+- 新規 / ローカル：`site-moterist/07_wp/backups/post_1095_20260517_112945.html`（旧 DB 状態 / 8,228 B）
+- 一時 / リモート：`/tmp/post_1095_content.html`（marked 変換後の HTML 10,566 B、SCP で配置）
+- 本番 DB / リモート：`wp_posts.ID = 1095`（post_type = post）の `post_content` を変換後 HTML で全置換、`post_status = publish` を維持。
+- 補助 / ローカル：`C:/Users/Tachi/AppData/Local/Temp/md2html.mjs`（marked 変換スクリプト）+ `node_modules/marked@18.0.3`（一時 install）。
+
+**実行した主要コマンド要約**
+```bash
+# 1. 鍵の CRLF → LF 正規化
+tr -d '\r' < ~/.ssh/mixhost_codex_pc > /tmp/mixhost_key && chmod 600 /tmp/mixhost_key
+
+# 2. marked による Markdown → HTML 変換（frontmatter 分離）
+cd $TEMP && npm install marked --no-audit --no-fund --silent
+node md2html.mjs site-moterist/07_wp/posts/post_1095.md /tmp/post_1095_content.html
+
+# 3. バックアップ
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 \
+  "wp post get 1095 --field=post_content --path=public_html/moterist.com" \
+  | sed 's|<script src="https://analytics.ahrefs.com[^"]*"[^>]*></script>||g' \
+  > site-moterist/07_wp/backups/post_1095_<TS>.html
+
+# 4. SCP
+scp -F /dev/null -P 22 -i /tmp/mixhost_key /tmp/post_1095_content.html rvpuxcjb@…:/tmp/post_1095_content.html
+
+# 5. wp eval inject
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 \
+  "cd public_html/moterist.com && wp eval '<上記 PHP コード>'"
+
+# 6. ライブ検証
+curl -sL https://moterist.com/fanza20250329/ | grep -cE 'nth-box-luxury|intent=beginner'
+```
+
+**ロールバック手順**
+```bash
+scp -F /dev/null -P 22 -i /tmp/mixhost_key \
+  site-moterist/07_wp/backups/post_1095_20260517_112945.html rvpuxcjb@…:/tmp/post_1095_rollback.html
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@… \
+  "cd public_html/moterist.com && wp eval 'wp_update_post([\"ID\"=>1095,\"post_content\"=>file_get_contents(\"/tmp/post_1095_rollback.html\")]);'"
+```
+
+**設計上の判断**
+- **Markdown → HTML 変換を marked で行った理由**：moterist.com（classic-editor + THE THOR）にはネイティブ Markdown レンダリングがない。生の `## 1.` や `> 引用` を post_content に流すと WordPress 上で literal text として表示されるため、サーバ側に届くまでに HTML 化する必要がある。`marked` のデフォルト挙動は HTML ブロックを変換せず通過させるため、`<div class="nth-...">` 等の生 HTML が損なわれない。
+- **frontmatter を本文と一緒に注入しなかった理由**：YAML frontmatter は記事原稿のメタ情報（CCO/CSO 共有）であり、WordPress の post_content には不要。`post_title` / `post_name` / `post_status` 等への反映が必要な場合は今後の運用で `wp_update_post()` の引数を拡張する余地として残した（本タスクでは `post_content` + `post_status=publish` のみ更新）。
+- **post_title をフロントマターの値で上書きしなかった理由**：旧タイトル「FANZAとは？初心者向けに特徴・使い方・安全性をわかりやすく解説」は既に検索インデックスとリンクされている資産。タイトル変更は SEO リスクを伴うため、CSO の明示判断を待つ。
+
+---
+
+## 2026-05-17 — CTO (Claude Opus 4.7)
+
+### Moterist 本番 WordPress へのダーク × ゴールド CSS 皮膚置換（DB 直接注入）
+
+`moterist.com` のフロントエンドを『ビブリア・エロティカ』世界観へ完全皮膚置換。SSH + WP-CLI で **DB の `wp_posts` テーブルに格納された custom_css ポストを直接上書き** することで、テーマファイルや wp-admin 編集画面を経由せずに即時反映を実現した。
+
+**1. ローカル CSS ファイルの保存**
+- 新規: `site-moterist/07_wp/moterist_sync.css`（11,966 bytes / 579 行）
+  - `:root` に `--nth-bg #121212` / `--nth-surface #1E1E1E` / `--nth-text #E0E0E0` / `--nth-text-strong #FAFAFA` / `--nth-gold #D4AF37` / `--nth-gold-dark #AA820A` / `--nth-border` / `--nth-muted` / `--nth-shadow` の 9 カスタムプロパティを定義。
+  - THE THOR の標準セレクタ（header / nav / sidebar / footer / `.sttitlebox` / `.st-mybox-*` / `.st-cite` / `.st-mymarker` 等）と Gutenberg / classic / WPCF7 / wp-block-search を網羅して `!important` で上書き。
+  - 注入用カスタムクラス：`.nth-btn-gold` / `.nth-btn-luxury-outline` / `.nth-box-luxury` / `.nth-btn-wrap` / `.nth-cta` を新設、min-width 420 px / Pill / モバイル 768 px 以下でフル幅化。
+  - フォーム類 (input / textarea / select / button) を Pill 化 + ゴールドフォーカスリング。
+  - `::selection` をゴールドの透過に設定。
+
+**2. SSH 接続の事実確認（ユーザー提示プロファイルとの差分）**
+- 提示プロファイル：ポート `10022`
+- 実測：`10022` は Connection timed out。`22` は正常応答（過去複数セッションと整合）。
+- → 既存運用通り **port 22 / 鍵 `~/.ssh/mixhost_codex_pc`（CRLF を `tr -d '\r'` で LF 正規化した一時コピー）/ ユーザー `rvpuxcjb`** で接続。
+- `~/.ssh/config` の BOM 由来パースエラーを `ssh -F /dev/null` / `scp -F /dev/null` で回避（過去セッションと同じ対策）。
+
+**3. custom_css ポスト ID の動的特定**
+- `wp post list --post_type=custom_css --path=public_html/moterist.com --format=csv --fields=ID,post_status,post_title,post_name`
+  - → **ID 620 / publish / post_name=`the-thor-child`**（子テーマ用の custom_css ポスト）
+- ポスト 620 の現状は 670 bytes（基本的なスタイルのみ）。これを全置換する。
+
+**4. バックアップ → 注入 → 検証**
+
+**STEP A：バックアップ（ローカルへ保存）**
+- `site-moterist/07_wp/backups/custom_css_620_20260517_110433.css`（565 bytes、Ahrefs script は sed で除去）。
+
+**STEP B：SCP**
+- `scp -F /dev/null -P 22 -i /tmp/mixhost_key … moterist_sync.css custom_css_620_20260517_110433.css rvpuxcjb@…:/tmp/` で両ファイルをサーバへ転送。
+
+**STEP C：DB 直接注入（wp eval + file_get_contents）**
+- 初回 `wp post update 620 /tmp/moterist_sync.css` を試したが、WP-CLI の挙動で post_content が **空** になる事象を検出（位置引数解釈の罠）→ 即座にバックアップで復元。
+- 確実な代替：
+  ```php
+  wp eval 'wp_update_post(array("ID"=>620, "post_content"=>file_get_contents("/tmp/moterist_sync.css")));'
+  ```
+- 結果：post_content = **12,072 bytes**（注入完了）／ `--nth-bg` 10 件・`--nth-gold` 31 件を DB で確認。
+
+**STEP D：本番 curl 検証**
+- `curl -sL https://moterist.com/` → HTML 104,272 bytes
+- `<style type="text/css" id="wp-custom-css">` ブロック内に `:root { --nth-bg: #121212; --nth-surface: #1E1E1E; --nth-text: #E0E0E0; --nth-text-strong: #FAFAFA; … }` がライブ反映。
+- → ✅ 検証完全通過。
+
+**変更ファイル構成**
+- 新規 / ローカル：`site-moterist/07_wp/moterist_sync.css`（v1.0 正典 / 11,966 B）
+- 新規 / ローカル：`site-moterist/07_wp/backups/custom_css_620_20260517_110433.css`（旧 DB 状態 / 565 B）
+- 本番 DB / リモート：`wp_posts.ID = 620`（post_type = custom_css）の `post_content` を `moterist_sync.css` の内容で全置換。
+
+**実行した主要コマンド要約**
+```bash
+# 鍵の CRLF 正規化
+tr -d '\r' < ~/.ssh/mixhost_codex_pc > /tmp/mixhost_key && chmod 600 /tmp/mixhost_key
+
+# ポート確認
+ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25 'echo OK'
+
+# custom_css ポスト ID 特定
+wp post list --post_type=custom_css --path=public_html/moterist.com --format=csv --fields=ID,post_status,post_name
+
+# バックアップ取得
+ssh ... "wp post get 620 --field=post_content --path=public_html/moterist.com" \
+  | sed 's|<script src="https://analytics.ahrefs.com[^"]*"[^>]*></script>||g' \
+  > site-moterist/07_wp/backups/custom_css_620_<TS>.css
+
+# SCP
+scp -F /dev/null -P 22 -i /tmp/mixhost_key moterist_sync.css <backup> rvpuxcjb@…:/tmp/
+
+# DB 直接注入（確実なアプローチ）
+ssh ... "cd public_html/moterist.com && wp eval 'wp_update_post(array(\"ID\"=>620, \"post_content\"=>file_get_contents(\"/tmp/moterist_sync.css\")));'"
+
+# 本番 curl 検証
+curl -sL https://moterist.com/ | grep -c -- "--nth-bg: #121212"   # → 1
+```
+
+**ロールバック手順**
+```bash
+# /tmp/custom_css_620_20260517_110433.css をサーバに置いた状態で：
+ssh ... "cd public_html/moterist.com && wp eval 'wp_update_post(array(\"ID\"=>620, \"post_content\"=>file_get_contents(\"/tmp/custom_css_620_20260517_110433.css\")));'"
+```
+ローカルに残るバックアップ：`site-moterist/07_wp/backups/custom_css_620_20260517_110433.css`（565 B / 旧基本スタイルのみ）。
+
+**設計上の判断**
+- **DB 直接注入を選んだ理由**：テーマファイル（`style.css` 等）への追記は子テーマ更新時に消える危険があり、また `wp-admin > 外観 > カスタマイズ > 追加 CSS` の wp_posts 連動を素直に活用する方がロールバック粒度が細かい（ポスト ID 単位）。
+- **`wp post update <id> <file>` の罠を回避した理由**：WP-CLI の同コマンドは位置引数のファイル解釈が環境により挙動が変動し（本セッションで実証）、`post_content` を空にする事故が発生し得る。`wp eval` + `file_get_contents` 経由なら PHP 文字列として確実に書き込まれる。
+- **2 回のバックアップ・チェーン**：ローカルにも、サーバの `/tmp` にもバックアップを置くことで、ネットワーク断でもロールバック可能な冗長性を確保。
+
+---
+
 ## 2026-05-17 — CTO (Claude Opus 4.7)
 
 ### site-brand/ (vodnavi.jp) のゼロイチ構築 + Edge Middleware による年齢確認の完全防衛

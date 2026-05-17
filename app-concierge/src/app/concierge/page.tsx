@@ -4,6 +4,8 @@ import {
   ConciergeChat,
   type Work,
 } from "@/components/concierge/concierge-chat";
+import { ConciergeGate } from "@/components/concierge/concierge-gate";
+import { ConciergeSessionInit } from "@/components/concierge/session-init";
 import { resolveConciergeSource } from "@/lib/concierge/sources";
 import {
   fetchItemList,
@@ -15,7 +17,11 @@ import { absoluteUrl } from "@/lib/site";
 import { withUtm } from "@/lib/utm";
 
 type Props = {
-  searchParams: Promise<{ cids?: string; source?: string }>;
+  searchParams: Promise<{
+    cids?: string;
+    source?: string;
+    intent?: string;
+  }>;
 };
 
 // cids クエリパラメータがあれば、合成 OG 画像を指す og:image / twitter:image を生成する。
@@ -126,11 +132,19 @@ export default async function ConciergePage({ searchParams }: Props) {
   const cids = parseCids(params.cids);
   const initialWorks = cids.length > 0 ? await resolveCidsToWorks(cids) : [];
   const sourceProfile = resolveConciergeSource(params.source);
+  const intent = params.intent ?? null;
   return (
-    <ConciergeChat
-      initialWorks={initialWorks}
-      source={sourceProfile.id}
-      greeting={sourceProfile.greeting}
-    />
+    <>
+      <ConciergeSessionInit
+        source={params.source ?? null}
+        intent={intent}
+      />
+      <ConciergeChat
+        initialWorks={initialWorks}
+        source={sourceProfile.id}
+        greeting={sourceProfile.greeting}
+      />
+      <ConciergeGate />
+    </>
   );
 }
