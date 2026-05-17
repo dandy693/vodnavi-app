@@ -12,11 +12,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-import { track } from "@/lib/analytics";
+import {
+  track,
+  trackAiAffiliateClick,
+  trackProductClick,
+} from "@/lib/analytics";
+import { type AspName, DEFAULT_ASP } from "@/lib/concierge/asp";
+import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import { isPlaceholderImageUrl } from "@/lib/fanza/client";
 import { cn } from "@/lib/utils";
 
 export interface Work {
+  /** STRATEGY_BRIEF_003: 多 ASP 解放を見据えた識別子。フェーズ 1 は "fanza" 固定。 */
+  asp_name: AspName;
   content_id: string;
   floor_code: string;
   title: string;
@@ -495,7 +503,8 @@ function RecommendationCard({ work }: { work: Work }) {
         href={work.detailHref}
         prefetch={false}
         onClick={() =>
-          track("product_click", {
+          trackProductClick({
+            asp_name: work.asp_name ?? DEFAULT_ASP,
             content_id: work.content_id,
             title: work.title,
             floor_code: work.floor_code,
@@ -536,12 +545,41 @@ function RecommendationCard({ work }: { work: Work }) {
           )}
         </div>
       </Link>
+      <WorkCardCta work={work} />
+    </article>
+  );
+}
+
+/**
+ * 作品カードの CTA セクション。
+ *
+ * - メインの金ボタン: 作品詳細 (FANZA) への直接アフィリエイトリンク。
+ * - 直下のアウトラインリンク: STRATEGY_BRIEF_003 PHASE 2 で導入した
+ *   404 フォールバック検索（女優名 / SKU で FANZA 内を検索）。
+ *
+ * URL は `buildAffiliateURL` 抽象を単一の真実とし、`work.affiliateURL` は
+ * 既存 API から渡されるため、primary はそのまま使用、fallback のみ抽象から生成。
+ */
+function WorkCardCta({ work }: { work: Work }) {
+  const asp: AspName = work.asp_name ?? DEFAULT_ASP;
+
+  // primary は API から既に署名 URL として届くため再構築不要。
+  // fallback だけを共通ビルダで生成し、視線設計を統一する。
+  const { fallbackUrl, affiliateResolved } = buildAffiliateURL({
+    asp,
+    contentId: work.content_id,
+    actressOrSku: work.actresses,
+  });
+
+  return (
+    <div className="flex flex-col">
       <a
         href={work.affiliateURL}
         target="_blank"
         rel="noopener noreferrer sponsored"
         onClick={() => {
-          track("product_click", {
+          trackProductClick({
+            asp_name: asp,
             content_id: work.content_id,
             title: work.title,
             floor_code: work.floor_code,
@@ -549,11 +587,13 @@ function RecommendationCard({ work }: { work: Work }) {
             link_target: "fanza_affiliate",
             transport_type: "beacon",
           });
-          track("ai_affiliate_click", {
+          trackAiAffiliateClick({
+            asp_name: asp,
             content_id: work.content_id,
             title: work.title,
             floor_code: work.floor_code,
             transport_type: "beacon",
+            link_variant: "primary",
           });
         }}
         className="flex h-10 items-center justify-center gap-1 bg-brand-gold font-luxury-heading text-sm font-semibold tracking-wide text-brand-dark transition-all hover:bg-brand-gold-hover active:translate-y-px"
@@ -561,7 +601,29 @@ function RecommendationCard({ work }: { work: Work }) {
         今すぐ視聴
         <ArrowRight className="size-3.5" aria-hidden />
       </a>
-    </article>
+      {/* 404 フォールバック: 作品ページが配信終了 / 限定公開で見つからない時の予備動線。
+         金 CTA の視線を阻害しないようアウトライン + 余白控えめで配置。 */}
+      {affiliateResolved && (
+        <a
+          href={fallbackUrl}
+          target="_blank"
+          rel="noopener noreferrer sponsored"
+          onClick={() => {
+            trackAiAffiliateClick({
+              asp_name: asp,
+              content_id: work.content_id,
+              title: work.title,
+              floor_code: work.floor_code,
+              transport_type: "beacon",
+              link_variant: "fallback_search",
+            });
+          }}
+          className="flex h-7 items-center justify-center gap-1 border-t border-brand-gold/15 text-[11px] text-brand-text-secondary transition-colors hover:bg-brand-gold/5 hover:text-brand-gold"
+        >
+          作品がみつからない場合はこちら（検索一覧へ）
+        </a>
+      )}
+    </div>
   );
 }
 

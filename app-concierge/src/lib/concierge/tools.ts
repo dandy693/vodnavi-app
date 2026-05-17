@@ -4,9 +4,16 @@ import { z } from "zod";
 import { fetchItemList, joinNames, pickImage } from "@/lib/fanza/client";
 import { withUtm } from "@/lib/utm";
 
+import { DEFAULT_ASP, type AspName } from "./asp";
+
 const CONCIERGE_UTM_SOURCE = "concierge";
 
 export interface ConciergeWork {
+  /**
+   * 提案元 ASP（フェーズ 1 は常に "fanza"、フェーズ 2 で "dmm_tv" / "u_next" を解放）。
+   * STRATEGY_BRIEF_003: SQL / API / GA4 を貫通する多 ASP 識別子。
+   */
+  asp_name: AspName;
   content_id: string;
   floor_code: string;
   title: string;
@@ -88,6 +95,7 @@ export function createConciergeTools(
           const image = pickImage(item.imageURL);
           if (!image) continue;
           works.set(item.content_id, {
+            asp_name: DEFAULT_ASP,
             content_id: item.content_id,
             floor_code: item.floor_code,
             title: item.title,

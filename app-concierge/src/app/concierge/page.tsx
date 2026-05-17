@@ -6,6 +6,7 @@ import {
 } from "@/components/concierge/concierge-chat";
 import { ConciergeGate } from "@/components/concierge/concierge-gate";
 import { ConciergeSessionInit } from "@/components/concierge/session-init";
+import { DEFAULT_ASP } from "@/lib/concierge/asp";
 import { resolveConciergeSource } from "@/lib/concierge/sources";
 import {
   fetchItemList,
@@ -103,6 +104,7 @@ async function resolveCidsToWorks(cids: string[]): Promise<Work[]> {
         if (!image || isPlaceholderImageUrl(image)) return null;
 
         const work: Work = {
+          asp_name: DEFAULT_ASP,
           content_id: item.content_id,
           floor_code: item.floor_code,
           title: item.title,
