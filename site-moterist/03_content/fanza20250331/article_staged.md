@@ -1,7 +1,7 @@
 ---
 post_id: 1106
 slug: fanza20250331
-title: "10分後にはじめる、秘匿性の高い至高 of プライベート空間へのパスポート"
+title: "10分後にはじめる、秘匿性の高い至高のプライベート空間へのパスポート"
 pillar: wisdom-lens
 cta_source: moterist
 cta_intent: premium

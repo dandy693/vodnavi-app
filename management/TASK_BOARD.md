@@ -2,17 +2,20 @@
 
 ## [In Progress] フェーズ2：拡大加速期（目標月商100万円・マルチASP裏メニュー限定解放）
 - [ ] [HUMAN] DMMアフィリエイト管理画面での `app.vodnavi.jp`（モテリスト-004）の「審査承認」の最終確認（成果没収リスクの完全排除）
-- [ ] [CTO] app-concierge/ のDBスキーマ（`recommendations` 等のテーブル）への将来の拡張用 `asp_name` カラムの予備配線 (brief: STRATEGY_BRIEF_003_ASP)
-- [ ] [CTO] 商品カードへのアフィリンク404エラー用自動フォールバック関数の実装（女優名・型番検索へのダブルリンク構造の抽象化）
-- [ ] [CSO/CTO] 2026-05-23 10:00 JST 起動の「第1回サタデー・レビュー（データ駆動PDCA）」の自動実行・無人インフラ監視
-  - [ ] `[CTO]` saturday-audit.sh 雛形配置と実在指標(§4b.4)に基づく初期検証 (2026-05-19)
-- [ ] `[CTO]` inject-pillars.sh による5大ピラー記事の本番一斉HTML直接注入テスト (2026-05-20)
+- [ ] [CSO/CTO] 2026-05-23 10:00 JST 起動の「第1回サタデー・レビュー（データ駆動PDCA）」の自動実行・無人インフラ監視（2026-05-23 10:00 JST 起動待機中）
 
 ## [Backlog] フェーズ3：スケール・クラスター展開期（各柱30記事規模への水平展開）
 - [ ] [CCO] 『MARKETING_PILLARS.md』に基づく、感情ナビ / 教養レンズ / シチュエーション最適化の新規クラスター記事量産
 - [ ] [CTO] site-brand/（vodnavi.jp）の骨組みをNext.jsモノレポ内にミニマル再構築（E-E-A-Tハックの完全体化）
 
 ## [Done]
+- [x] [CTO] 本番DB (moterist.com) の post_content を 5ピラー (1095/1106/954/994/1018) 分逆抽出し、`site-moterist/03_content/<slug>/article_live_pure.html` を Sovereign Source of Truth として配置完了 (2026-05-19)
+- [x] [CTO] post 1106 (fanza20250331) のローカル管理メタデータ title 内 "of" 英単語混入を「の」に補正完了 (2026-05-19)
+- [x] [CTO] inject-pillars.sh ドライラン監査により本番が既に完璧装飾済み（12万B超、btn__link=14、PR=3〜4、concierge=3）と実証、--apply を撤回し逆同期方針へ転換 (2026-05-19)
+- [x] [CTO] inject-pillars.sh §3.5 安全弁実装と 5記事 dry-run 完遂（本番書込み0件、commit 75a5f3d, 2026-05-19）
+- [x] [CTO] saturday-audit.sh 雛形配置と §4b.4 指標 JSON 生成（commit a779c54, 2026-05-19）
+- [x] [CTO] 商品カードへのアフィリンク404エラー用自動フォールバック関数の実装（女優名・型番検索ダブルリンク抽象化、commit 18c4fe7, 2026-05-18）
+- [x] [CTO] app-concierge/ のDBスキーマへの `asp_name` カラム予備配線（STRATEGY_BRIEF_003_ASP, commit 18c4fe7, 2026-05-18）
 - [x] [HUMAN/CTO] `management/_metrics/` の冪等生成および 2026-W21 プレースホルダーの配置完了 (2026-05-17)
 - [x] [HUMAN] DMMアフィリエイト側への `app.vodnavi.jp` 副サイト登録申請の執行完了（証跡確認済み） (2026-05-17)
 - [x] [CTO] STRATEGY_BRIEF_002_TOTAL_IGNITION の全PHASE完全執行（5記事資産の本番DB直接注入・Exit 0落成） (2026-05-17)
