@@ -1,27 +1,15 @@
-﻿# TASK BOARD — 統合進捗管理ボード
+# TASK_BOARD — 2026-05-19 23:45 JST 状態同期
 
-## [In Progress] フェーズ2：拡大加速期（目標月商100万円・マルチASP裏メニュー限定解放）
-- [ ] [HUMAN] DMMアフィリエイト管理画面での `app.vodnavi.jp`（モテリスト-004）の「審査承認」の最終確認（成果没収リスクの完全排除）
-- [ ] [CSO/CTO] 2026-05-23 10:00 JST 起動の「第1回サタデー・レビュー（データ駆動PDCA）」の自動実行・無人インフラ監視（2026-05-23 10:00 JST 起動待機中）
+## [Done] インフラ・コンテンツ・逆同期完全落成（100%完了）
+- [x] \[HUMAN]\ DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の副サイト登録・申請（事実確認：すでに『moterist-03』『moterist-04』として【承認済み】であることを確認、成果没収リスクを完全排除）
+- [x] \[CTO]\ 5大過去記事の本番DBからの生HTML（143,258 B）逆抽出＆ローカル正典配置（commit a8a44bc）
+- [x] \[CTO]\ post 1106 のタイトルタイポ（of → の）の正常補正完了
+- [x] \[CTO]\ inject-pillars.sh 安全弁（1,000行ガード）付きインフラ配置の完了（commit 75a5f3d）
+- [x] \[CTO]\ saturday-audit.sh 規律指標（§4b.4）に基づく雛形配置の完了（commit a779c54）
+- [x] \[CTO]\ app-concierge 静的解析（tsc/eslint）エラー・警告0件の型安全性検証
+- [x] \[CCO]\ 1095, 1106, 994, 954, 1018 の『ビブリア・エロティカ』リライト・本番ライブ化大成功
 
-## [Backlog] フェーズ3：スケール・クラスター展開期（各柱30記事規模への水平展開）
-- [ ] [CCO] 『MARKETING_PILLARS.md』に基づく、感情ナビ / 教養レンズ / シチュエーション最適化の新規クラスター記事量産
-- [ ] [CTO] site-brand/（vodnavi.jp）の骨組みをNext.jsモノレポ内にミニマル再構築（E-E-A-Tハックの完全体化）
+## [In Progress] サタデー・レビュー（初陣）起動待機フェーズ
+- [ ] \[CSO/CTO]\ 2026-05-23 10:00 JST 起動の「第1回サタデー・レビュー（データ駆動PDCA）」の実値投入・無人インフラ監視
 
-## [Done]
-- [x] [CTO] 本番DB (moterist.com) の post_content を 5ピラー (1095/1106/954/994/1018) 分逆抽出し、`site-moterist/03_content/<slug>/article_live_pure.html` を Sovereign Source of Truth として配置完了 (2026-05-19)
-- [x] [CTO] post 1106 (fanza20250331) のローカル管理メタデータ title 内 "of" 英単語混入を「の」に補正完了 (2026-05-19)
-- [x] [CTO] inject-pillars.sh ドライラン監査により本番が既に完璧装飾済み（12万B超、btn__link=14、PR=3〜4、concierge=3）と実証、--apply を撤回し逆同期方針へ転換 (2026-05-19)
-- [x] [CTO] inject-pillars.sh §3.5 安全弁実装と 5記事 dry-run 完遂（本番書込み0件、commit 75a5f3d, 2026-05-19）
-- [x] [CTO] saturday-audit.sh 雛形配置と §4b.4 指標 JSON 生成（commit a779c54, 2026-05-19）
-- [x] [CTO] 商品カードへのアフィリンク404エラー用自動フォールバック関数の実装（女優名・型番検索ダブルリンク抽象化、commit 18c4fe7, 2026-05-18）
-- [x] [CTO] app-concierge/ のDBスキーマへの `asp_name` カラム予備配線（STRATEGY_BRIEF_003_ASP, commit 18c4fe7, 2026-05-18）
-- [x] [HUMAN/CTO] `management/_metrics/` の冪等生成および 2026-W21 プレースホルダーの配置完了 (2026-05-17)
-- [x] [HUMAN] DMMアフィリエイト側への `app.vodnavi.jp` 副サイト登録申請の執行完了（証跡確認済み） (2026-05-17)
-- [x] [CTO] STRATEGY_BRIEF_002_TOTAL_IGNITION の全PHASE完全執行（5記事資産の本番DB直接注入・Exit 0落成） (2026-05-17)
-- [x] [CTO] Next.js 側 Middleware の非対称型リファクタリングおよび全画面年齢確認モーダル（HttpOnly防衛）の実装完了 (2026-05-17)
-- [x] [CSO]データ追尾インフラ監査および「年齢確認の盾」非対称リファクタリング仕様の確定 (2026-05-16)
-- [x] [CTO] 3ドメイン横断 GA4 / クロスドメインリンカー設定の完全計装（F-01, F-11 サーバーサイド直編集落成） (2026-05-16)
-- [x] [CTO] 過去5記事資産の mixhost からの物理サルベージ完了 (2026-05-16)
-- [x] [CTO] 開発環境 Docker (Postgres 16) および LLM安全フィルター（`sanitizePrompt`）の実装完了 (2026-05-16)
-- [x] [CSO] 統合世界観ガイドライン『BRAND_DESIGN_GUIDE_7.md』および『THE_THOR_DICTIONARY.md』の策定・凍結完了 (2026-05-16)
+## [Backlog] 成果没収リスクの完全排除（最優先リーガルタスク）
