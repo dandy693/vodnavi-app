@@ -1,0 +1,48 @@
+{
+  "schema_version": "1.0.0",
+  "week": "2026-w21",
+  "generated_at": "2026-05-19T13:38:54Z",
+  "source_of_truth": "management/OPERATION_MANUAL.md §4b.4",
+  "ga4_properties": [
+    "G-GG7JV9MJRW",
+    "G-5HYV772ER9"
+  ],
+  "indicators": {
+    "early_cookie_burn_rate": {
+      "definition": "early_cookie_burn / ai_session_start",
+      "expected_min": 0.50,
+      "anomaly_threshold": 0.30,
+      "observed": null,
+      "samples": {
+        "ai_session_start": null,
+        "early_cookie_burn": null
+      }
+    },
+    "early_cookie_to_affiliate_same_session": {
+      "definition": "same-session( early_cookie_burn -> ai_affiliate_click )",
+      "expected_min": 0.30,
+      "observed": null,
+      "samples": {
+        "early_cookie_burn": null,
+        "ai_affiliate_click_same_session": null
+      }
+    },
+    "affiliate_click_same_session_completion": {
+      "definition": "same-session completion rate of ai_affiliate_click",
+      "expected_min": 0.70,
+      "observed": null,
+      "samples": {
+        "ai_affiliate_click_total": null,
+        "ai_affiliate_click_same_session": null
+      }
+    }
+  },
+  "search_console": {
+    "properties": [],
+    "snapshot": null
+  },
+  "notes": [
+    "本ファイルは saturday-audit.sh による雛形。GA4 / Search Console からの実値投入は別フェーズ。",
+    "observed フィールドが null のまま土曜レビューに突入した場合は §4b.4 のフォールバック判断（CSO 手動）に従う。"
+  ]
+}
