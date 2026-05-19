@@ -4,6 +4,74 @@
 
 ---
 
+## 2026-05-20 — CTO (Claude Opus 4.7) — 3 ドメイン統合監査レポート配置 + 重大 SEO/ブランド issue 4 件本番修復
+
+### 背景
+
+`management/_metrics/CURRENT_AUDIT_REPORT.md` による 3 ドメイン（moterist.com / vodnavi.jp / app.vodnavi.jp）の統合監査の結果、🔴 重大 2 件、🟠 高〜中 5 件を検出。本日はそのうち **安全性の高い 4 件**を本番適用した。残る 2 件（vodnavi.jp linker 拡張 / lastmod 一括 touch）はサタデー・レビュー（2026-05-23）の計測結果を待ってから判断する。
+
+### 適用済みの 4 件
+
+#### 1. moterist.com `<meta name="description">` 改修（🔴 重大）
+
+THE THOR は `blogdescription` をホーム description に流用しているため、WP-CLI で直接更新。
+
+```bash
+ssh ... "cd public_html/moterist.com && wp option update blogdescription '<new>'"
+```
+
+before: 「おすすめの可愛すぎる美顔フェラAV動画をご紹介します！」（ブランド世界観完全乖離）
+after: 「紳士・淑女のための、夜の書斎。FANZA を中心とした成人向け VOD の世界を、知性と没入感で再編する案内所。今夜の孤独に寄り添う、洗練された一本へ最短ルートで導きます。」
+
+curl 検証: live HTML の `<meta name="description">` に新文言が反映済み。
+
+#### 2. moterist.com `<link rel="canonical">` ホーム補完（🔴 重大）
+
+個別記事ページは親テーマが既に canonical を出力しているが、ホーム/フロントページ描画時に欠落していたため child theme へフックを追加。
+
+- Patcher: `tmp/seo_canonical_home_patch.py`（冪等、function_exists ガード付き）
+- 対象: `wp-content/themes/the-thor-child/functions.php`
+- フック: `add_action( 'wp_head', 'vodnavi_emit_canonical_home', 1 )` — `is_front_page() || is_home()` のみで発火、記事ページの親テーマ canonical には干渉しない。
+- 反映: `php -l` 構文チェック clean、curl で `<link rel="canonical" href="https://moterist.com/">` 出力確認済み。
+
+#### 3. moterist.com HTTPS 強制 301 リダイレクト（🟠 中）
+
+mixhost の `.htaccess` に HTTPS 強制ブロックを「BEGIN WordPress」より前に独立配置。WordPress / cPanel / LiteSpeed の自動管理ブロックには触れない。
+
+- Snippet: `tmp/htaccess_https_redirect.snippet`（HTTP_HOST 維持 + `X-Forwarded-Proto` 二重判定）
+- バックアップ: 本番 `/home/.../.htaccess.bak_20260520_043613`
+- 反映: `curl -sI http://moterist.com` → `HTTP/1.1 301 Moved Permanently` / `Location: https://moterist.com/` 確認済み。
+
+#### 4. vodnavi.jp `og:title` ブランド化（🟡 低）
+
+og:title の出処は静的フロントページ post ID 206 の `post_title`（"トップページ"）であることを判定し、WP-CLI で直接更新。
+
+```bash
+ssh ... "cd public_html/vodnavi.jp && wp post update 206 --post_title='VODNAVI — 知性で選ぶ、配信サービス比較の書斎'"
+```
+
+curl 検証: `<meta property="og:title" content="VODNAVI — 知性で選ぶ、配信サービス比較の書斎" />` 出力確認済み。なお `<title>` タグは Site Kit / テーマが別途生成（「あなたにぴったりの動画配信サービスを比較・解説│VODナビ」）のため変更なし。
+
+### 適用見送り（保留）
+
+| 項目 | 理由 |
+|---|---|
+| vodnavi.jp linker クロスドメイン拡張 | サタデー・レビュー（2026-05-23）の実測でクロスドメイン送客の現状値を確認してから判断 |
+| vodnavi.jp 全 post の `post_modified` 一括 touch | コンテンツが本質的に古いまま lastmod だけ更新するとペナルティリスク。コンテンツ刷新計画と併せて判断 |
+
+### 本番副作用
+
+- moterist.com 本番 DB: `blogdescription` option 更新
+- moterist.com 本番ファイル: `functions.php` 追記、`.htaccess` 先頭挿入（バックアップあり）
+- vodnavi.jp 本番 DB: post 206 `post_title` 更新
+
+### 関連コミット
+
+- 監査レポート生成: `(直近のコミット)`
+- 監査参照: `management/_metrics/CURRENT_AUDIT_REPORT.md`
+
+---
+
 ## 2026-05-17 — CTO (Claude Opus 4.7) — Moterist 第5次最終調停（Section 13）：blockquote 文字被り解消 + 検索フォームの黄金反転 — 全大改装落成
 
 ### 目的

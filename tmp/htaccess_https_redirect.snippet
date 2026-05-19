@@ -1,0 +1,17 @@
+# moterist.com .htaccess に挿入する HTTPS 強制 301 リダイレクト
+# 挿入位置: ファイル先頭 "# BEGIN WordPress" の直前
+# Source of Truth: management/_metrics/CURRENT_AUDIT_REPORT.md §6.5
+#
+# 冪等チェック: 既存ファイルに "RewriteCond %{HTTPS} !=on" が存在する場合は挿入をスキップ。
+#
+# 注意: WordPress / cPanel / LiteSpeed の auto-managed ブロックには触れない。
+#       本ブロックは "# BEGIN WordPress" より前に独立して配置する。
+
+# BEGIN HTTPS Enforcement (CTO 2026-05-20)
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</IfModule>
+# END HTTPS Enforcement
