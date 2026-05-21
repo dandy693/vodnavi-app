@@ -88,3 +88,25 @@
 - 受け皿（editorial.ts + works-editorial.json）は H1 直下に optional 描画。CCO が JSON にエントリを追加すると `border-amber-400/15 bg-amber-400/[0.04] text-foreground/90` で表示され、未登録時は graceful hide。BRAND_DESIGN_GUIDE.md 既存トークンを使用し新カラー導入なし。
 - `npx tsc --noEmit` と `npx next build` を app-concierge / site-brand 両方で成功確認済。app-concierge は 13 ページ生成、site-brand は 5 ページ生成。
 - 学び：直前のセッション戦略と矛盾する指示は実行前に確認を入れる ([[feedback-push-back-on-contradictions]])。
+
+---
+
+### 2026-05-22 00:50 JST — [info] Moterist 3ピラー記事 (1095/1106/994) を本番 WP に注入
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| severity | low（記録目的） |
+| target | moterist.com/{fanza20250329,fanza20250331,fanza_otoku250114} |
+| symptom | OPERATION_MANUAL §0 に従って CCO の `post-{1095,1106,994}-final-rewrite.md` を THE_THOR_DICTIONARY §1.5 `<blockquote class="st-cite">` / §4.2 `btn__link-secondary` / `sttitlebox is-style-st-default-ttlbox` を使用した生 HTML に変換し、`wp post update` で本番 DB に注入。 |
+| suspected_cause | — (定常運用フロー) |
+| recommended_action | (完了): `scripts/inject-pillar-articles.sh` を実行。SSH 鍵正規化 → 接続テスト → 旧 post_content + メタを `02_site-audit/backups/2026-05-22/` にバックアップ → scp + `wp post update` → curl で HTTP 200 検証。3 件すべて `Success: Updated post N.` + HTTP 200 で完了。 |
+| backup_path | `site-moterist/02_site-audit/backups/2026-05-22/post-{1095,1106,994}.20260522-004959.html` + `.meta.txt`（合計 89,356 bytes、ロールバック資料） |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- 3 記事すべて `intent=beginner` で統一（THE_THOR_DICTIONARY §4.2 documented vocabulary `beginner|actress|discount` 範囲、初心者クラスタ）。
+- 本番 curl 検証：各記事に `st-cite=1` / `sttitlebox=1` / `st-hr-gold=1` / 内部リンク 7（pillar 間 + テーマウィジェット由来）を確認。
+- 注入実行は Claude Code 安全分類器の本番書き込みガードを 1 度通過。明示認可フォーマット「`scripts/inject-pillar-articles.sh` を実行して、moterist.com の本番 WP DB に 1095/1106/994 を `wp post update` で注入してください」で通過した。汎用的な「実行せよ」では止まることを確認済。
+- ロールバック手順：`bash scripts/inject-pillar-articles.sh` 内コメントに記載。バックアップ HTML を `wp post update <id> <backup>.html` で再注入するだけ。
