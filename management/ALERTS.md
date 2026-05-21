@@ -44,3 +44,47 @@
 ---
 
 <!-- 自動アラートはこの行より下に追記される。手動でエントリを書く場合も同フォーマットに従うこと。 -->
+
+### 2026-05-21 14:50 JST — [mid] GSC「クロール済み-インデックス未登録」152件のレポート上残存（スポット確認では既に indexed の差分あり）
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | mid |
+| target | sc-domain:vodnavi.jp（app.vodnavi.jp + vodnavi.jp 統合プロパティ） |
+| symptom | カバレッジ・レポート集計値：登録済 126 / 未登録 235（うち「クロール済み-インデックス未登録」152、「検出-インデックス未登録」73、ソフト404=3、noindex=5、リダイレクト=1、代替canonical=1）。app.vodnavi.jp の `/works/videoa/*` と `/genres/*` が大半。 |
+| suspected_cause | **深掘り監査で確定（2026-05-21）**：3 因子の複合。 (A) **サイトマップ未掲載** — sitemap.xml は 197 URL のみ。クロール済み-未登録 8/8 サンプル works URL がサイトマップ未掲載。Google は内部リンクから 154+ 件を発見しているが低優先扱い。 (B) **本文が極薄** — works ページの可読テキストは 600 字前後で、9 割が FANZA 由来メタ。VODNAVI 独自の論評がゼロ。 (C) **内部リンクの行き止まり** — works 詳細ページから他 works への発リンクが 0、genres への発リンクのみ 5。関連作品セクション欠如。 技術監査（canonical / robots / googlebot meta / 不審スクリプト / robots.txt / Next.js SSR）はすべて正常 — Day 9 の WP-CLI 注入再発なし。GSC レポートは 1〜2 日タイムラグあり（スポット 3 URL は実は indexed）、ボーダーライン品質ページは indexed と not-indexed を行き来している。 |
+| recommended_action | **3 因子それぞれを並行で叩く**：(A) **CTO**：sitemap.xml を内部リンク実在分まで動的拡張（現状 197 → 推定 800+）、`<lastmod>` 正確化、サイトマップ・インデックス分割導入。 (B) **CCO**：`/works/videoa/*` に編集本文 200〜400 字（見どころ・気分マッチ・類似作との違い）、`/genres/{id}` 冒頭に論評 300〜500 字を追加。最低 30 works + 20 genres を FANZA 売上上位から先行投入。 (C) **CTO**：works 詳細ページに「関連作品 10〜15 件」「同ジャンル次/前」発リンクとパンくず階層を実装。 (周辺) `vodnavi.jp/?p=52,54,96,99,104` の 301 リダイレクト健全性チェック、1 週後 (2026-05-28) に再監査、Saturday レビュー（[[project_gtag_destination_fanout]] と同枠）で進捗確認。 |
+| backup_path | — |
+| anomaly_log | `_metrics/2026-W21/indexing-error-list.json`（全 235 URL バケット別、3 スポット監査結果含む） |
+| github_issue | — |
+
+**メモ**：
+- 自動 Request Indexing は今回は実行を見送り。理由：3/3 サンプルが既に indexed だったため、急いで Request Indexing を打つ必要性が下がった。1 週間後の再監査で真の残存未登録 URL が特定できたら、その時点でリクエストを打つ。
+- 影響度は当初想定（severity:high）よりも実際は mid 程度。集計値だけ見て焦らず、URL Inspection ライブを併用するのが正しい運用。
+- **根本原因は 1 つではなく 3 因子の複合**：サイトマップ未掲載（構造）/ 本文 600 字の極薄さ（品質）/ 詳細ページの行き止まり内部リンク（導線）。技術 SEO だけ直しても解決しない。CCO と CTO の両方に作業が発生する。
+- **2026-05-21 同セッション内で因子 A・C を実装**：`app-concierge/src/app/sitemap.ts`（全 5 フロア × 4 ページ展開、最大 2000 works + 200 genres）、`app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx`（ジャンル付きパンくず + 関連作品 12 件セクション）。さらに `vodnavi.jp` (site-brand) に `sitemap.ts` / `robots.ts` / 旧 WP URL の 301 を追加。`npx tsc --noEmit` でエラーなし。詳細は `management/STRATEGY_BRIEF_SEO_2026-05-21_THREE_SITES.md`。
+- 因子 B（本文の薄さ）はコード側の受け皿だけ用意。実コンテンツ投入は CCO 担当（[[STRATEGY_BRIEF_IG_2026-05-21_CRAWLED_NOT_INDEXED]] 参照）。
+- moterist.com は SITE_MAP.md:47 の方針に従ってピラー安定化までライブ WP 不変更。
+- 関連メモリ：[[reference-google-accounts]]（操作は moterist.com@gmail.com / u=2 で実施）、[[feedback-account-check]]（アカウント確認済）。
+
+---
+
+### 2026-05-22 — [info] 2000-mock 大量生成リクエストを IG 戦略で上書き
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| severity | low（記録目的） |
+| target | management/STRATEGY_BRIEF_IG_2026-05-21_CRAWLED_NOT_INDEXED.md / management/STRATEGY_BRIEF_SEO_2026-05-21_THREE_SITES.md の方針維持判断 |
+| symptom | 「2,000 mock workId + 200 mock genreSlug を `scripts/seed-fanza-mock.ts` で生成し `generateStaticParams` で静的化、`editorialLead` をモックデータから配信」という指示が来た。直前にシップした 3 因子 SEO 戦略（特に因子 B = CCO 手書きの Information Gain で薄い本文を厚くする）と真逆。 |
+| suspected_cause | 一時的な戦略の混線、もしくは指示テンプレートの取り違え。`BRAND_DESIGN_GUIDE_6.md` / `AGENT_PROTOCOLS_6.md` という存在しない `_6` サフィックス参照、欠落した「CCO-provided JSON payload」、ブラウザ検証禁止指示なども含まれていた。 |
+| recommended_action | 矛盾点を全て列挙して HUMAN に確認 → 公式 IG 戦略を維持する判断を取得 → 2000-mock 生成を実行せず、`src/lib/editorial.ts` + 空 `src/data/works-editorial.json` の **受け皿のみ** をスキャフォルディング（モックデータは投入しない）。 |
+| backup_path | — |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- 受け皿（editorial.ts + works-editorial.json）は H1 直下に optional 描画。CCO が JSON にエントリを追加すると `border-amber-400/15 bg-amber-400/[0.04] text-foreground/90` で表示され、未登録時は graceful hide。BRAND_DESIGN_GUIDE.md 既存トークンを使用し新カラー導入なし。
+- `npx tsc --noEmit` と `npx next build` を app-concierge / site-brand 両方で成功確認済。app-concierge は 13 ページ生成、site-brand は 5 ページ生成。
+- 学び：直前のセッション戦略と矛盾する指示は実行前に確認を入れる ([[feedback-push-back-on-contradictions]])。

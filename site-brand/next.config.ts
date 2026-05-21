@@ -22,6 +22,21 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    return [
+      { source: "/wp-admin/:path*", destination: "/", permanent: true },
+      { source: "/wp-content/:path*", destination: "/", permanent: true },
+      { source: "/wp-includes/:path*", destination: "/", permanent: true },
+      { source: "/archives/:path*", destination: "/", permanent: true },
+      { source: "/category/:path*", destination: "/", permanent: true },
+      { source: "/tag/:path*", destination: "/", permanent: true },
+      { source: "/sitemap.html", destination: "/sitemap.xml", permanent: true },
+      { source: "/post-sitemap.html", destination: "/sitemap.xml", permanent: true },
+      { source: "/page-sitemap.html", destination: "/sitemap.xml", permanent: true },
+      { source: "/wordpress-sango-review/:path*", destination: "/", permanent: true },
+      { source: "/d-anime-store-only-title/:path*", destination: "/", permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

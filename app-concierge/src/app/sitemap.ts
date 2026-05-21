@@ -6,7 +6,9 @@ import { absoluteUrl } from "@/lib/site";
 
 export const revalidate = 3600;
 
-const SITEMAP_HITS = 100;
+const HITS_PER_REQUEST = 100;
+const PAGES_PER_FLOOR = 4;
+const MAX_GENRES = 200;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -45,47 +47,63 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
-  try {
-    const data = await fetchItemList({
-      site: "FANZA",
-      service: "digital",
-      floor: "videoa",
-      hits: SITEMAP_HITS,
-      sort: "date",
-    });
-    const items = data.result.items ?? [];
+  const seenWorks = new Set<string>();
+  const works: MetadataRoute.Sitemap = [];
+  const genreMap = new Map<number, Date>();
 
-    const works: MetadataRoute.Sitemap = items.map((item) => ({
-      url: absoluteUrl(`/works/${item.floor_code}/${item.content_id}`),
-      lastModified: item.date
-        ? new Date(item.date.replace(" ", "T"))
-        : now,
-      changeFrequency: "weekly",
-      priority: 0.8,
-    }));
+  for (const floor of FANZA_FLOORS) {
+    for (let page = 0; page < PAGES_PER_FLOOR; page++) {
+      try {
+        const data = await fetchItemList(
+          {
+            site: "FANZA",
+            service: floor.service,
+            floor: floor.code,
+            hits: HITS_PER_REQUEST,
+            offset: page * HITS_PER_REQUEST + 1,
+            sort: "date",
+          },
+          { skipImageValidation: true },
+        );
+        const items = data.result.items ?? [];
+        if (items.length === 0) break;
 
-    const genreMap = new Map<number, Date>();
-    for (const item of items) {
-      const itemDate = item.date
-        ? new Date(item.date.replace(" ", "T"))
-        : now;
-      for (const genre of item.iteminfo?.genre ?? []) {
-        const prev = genreMap.get(genre.id);
-        if (!prev || itemDate > prev) genreMap.set(genre.id, itemDate);
+        for (const item of items) {
+          const path = `/works/${item.floor_code}/${item.content_id}`;
+          if (seenWorks.has(path)) continue;
+          seenWorks.add(path);
+
+          const itemDate = item.date
+            ? new Date(item.date.replace(" ", "T"))
+            : now;
+          works.push({
+            url: absoluteUrl(path),
+            lastModified: itemDate,
+            changeFrequency: "weekly",
+            priority: 0.8,
+          });
+
+          for (const genre of item.iteminfo?.genre ?? []) {
+            const prev = genreMap.get(genre.id);
+            if (!prev || itemDate > prev) genreMap.set(genre.id, itemDate);
+          }
+        }
+
+        if (items.length < HITS_PER_REQUEST) break;
+      } catch {
+        break;
       }
     }
-
-    const genres: MetadataRoute.Sitemap = Array.from(genreMap.entries())
-      .slice(0, 100)
-      .map(([id, lastModified]) => ({
-        url: absoluteUrl(`/genres/${id}`),
-        lastModified,
-        changeFrequency: "weekly" as const,
-        priority: 0.6,
-      }));
-
-    return [...root, ...floors, ...works, ...genres];
-  } catch {
-    return [...root, ...floors];
   }
+
+  const genres: MetadataRoute.Sitemap = Array.from(genreMap.entries())
+    .slice(0, MAX_GENRES)
+    .map(([id, lastModified]) => ({
+      url: absoluteUrl(`/genres/${id}`),
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }));
+
+  return [...root, ...floors, ...works, ...genres];
 }

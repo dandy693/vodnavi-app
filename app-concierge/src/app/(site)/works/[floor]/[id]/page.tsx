@@ -6,6 +6,7 @@ import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { getWorkEditorial } from "@/lib/editorial";
 import {
   fetchItemList,
   formatPrice,
@@ -37,6 +38,31 @@ async function getWork(floor: string, id: string): Promise<DmmItem | null> {
     return data.result.items?.[0] ?? null;
   } catch {
     return null;
+  }
+}
+
+async function getRelatedWorks(
+  floor: string,
+  genreId: number,
+  excludeId: string,
+  limit = 12,
+): Promise<DmmItem[]> {
+  const floorMeta = FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
+  try {
+    const data = await fetchItemList({
+      site: "FANZA",
+      service: floorMeta.service,
+      floor: floorMeta.code,
+      article: "genre",
+      article_id: String(genreId),
+      hits: limit + 4,
+      sort: "rank",
+    });
+    return (data.result.items ?? [])
+      .filter((it) => it.content_id !== excludeId)
+      .slice(0, limit);
+  } catch {
+    return [];
   }
 }
 
@@ -118,6 +144,12 @@ export default async function WorkDetailPage({
   const review = item.review;
   const sampleImages = item.sampleImageURL?.sample_l?.image ?? [];
 
+  const primaryGenre = genres[0];
+  const relatedWorks = primaryGenre
+    ? await getRelatedWorks(floor, primaryGenre.id, id, 12)
+    : [];
+  const editorial = getWorkEditorial(item.content_id);
+
   const description = [
     `${item.title}の作品情報。`,
     actresses.length > 0
@@ -142,6 +174,17 @@ export default async function WorkDetailPage({
         >
           {FANZA_FLOORS.find((f) => f.code === floor)?.label ?? floor}
         </Link>
+        {primaryGenre && (
+          <>
+            <span className="mx-2">›</span>
+            <Link
+              href={`/genres/${primaryGenre.id}`}
+              className="hover:text-amber-300"
+            >
+              {primaryGenre.name}
+            </Link>
+          </>
+        )}
       </div>
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
@@ -162,6 +205,15 @@ export default async function WorkDetailPage({
           <h1 className="font-heading text-2xl font-semibold leading-tight text-foreground sm:text-3xl">
             {item.title}
           </h1>
+
+          {editorial?.editorialLead && (
+            <p
+              data-editorial="lead"
+              className="rounded-lg border border-amber-400/15 bg-amber-400/[0.04] px-4 py-3 text-sm leading-relaxed text-foreground/90"
+            >
+              {editorial.editorialLead}
+            </p>
+          )}
 
           <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
             {date && (
@@ -298,6 +350,62 @@ export default async function WorkDetailPage({
       <section className="prose prose-invert prose-sm max-w-none text-muted-foreground">
         <p>{description}</p>
       </section>
+
+      {relatedWorks.length > 0 && primaryGenre && (
+        <section className="mt-12">
+          <div className="mb-4 flex items-end justify-between gap-2">
+            <h2 className="font-heading text-lg font-semibold text-foreground">
+              関連作品
+              <span className="ml-2 text-xs font-normal text-muted-foreground">
+                同ジャンル「{primaryGenre.name}」より
+              </span>
+            </h2>
+            <Link
+              href={`/genres/${primaryGenre.id}`}
+              className="text-xs text-amber-300 hover:underline"
+            >
+              ジャンル一覧へ
+              <ArrowRight className="ml-0.5 inline size-3" aria-hidden />
+            </Link>
+          </div>
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {relatedWorks.map((rel) => {
+              const relImage = pickImage(rel.imageURL);
+              const relPrice = formatPrice(rel.prices?.price);
+              return (
+                <li key={rel.content_id}>
+                  <Link
+                    href={`/works/${rel.floor_code}/${rel.content_id}`}
+                    className="group block overflow-hidden rounded-lg bg-black/30 ring-1 ring-white/5 transition-all hover:ring-amber-400/40"
+                  >
+                    {relImage && (
+                      <div className="relative aspect-[3/4] w-full bg-black">
+                        <Image
+                          src={relImage}
+                          alt={rel.title}
+                          fill
+                          sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                          className="object-cover transition-transform group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    <div className="p-2">
+                      <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground group-hover:text-amber-300">
+                        {rel.title}
+                      </p>
+                      {relPrice && (
+                        <p className="mt-1 text-[11px] tabular-nums text-amber-300/80">
+                          {relPrice}〜
+                        </p>
+                      )}
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
     </article>
   );
 }
