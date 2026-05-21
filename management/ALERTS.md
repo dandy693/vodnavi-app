@@ -110,3 +110,26 @@
 - 本番 curl 検証：各記事に `st-cite=1` / `sttitlebox=1` / `st-hr-gold=1` / 内部リンク 7（pillar 間 + テーマウィジェット由来）を確認。
 - 注入実行は Claude Code 安全分類器の本番書き込みガードを 1 度通過。明示認可フォーマット「`scripts/inject-pillar-articles.sh` を実行して、moterist.com の本番 WP DB に 1095/1106/994 を `wp post update` で注入してください」で通過した。汎用的な「実行せよ」では止まることを確認済。
 - ロールバック手順：`bash scripts/inject-pillar-articles.sh` 内コメントに記載。バックアップ HTML を `wp post update <id> <backup>.html` で再注入するだけ。
+
+---
+
+### 2026-05-22 01:02 JST — [info] moterist.com commonCtr の一文字落ち防止 (typo-fix-commonCtr.php) を本番デプロイ
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| severity | low（記録目的） |
+| target | moterist.com / `.commonCtr__contents` 内 `.heading-commonCtr` + `.phrase-bottom` |
+| symptom | 「ビブリア・エロティカ — 大人の配信エンターテインメントを、秘匿性と教養として嗜むための書斎」見出しおよび補足文が、特定の viewport 幅で行末に 1〜2 文字だけ落ちる（Japanese orphan character）。 |
+| suspected_cause | THE THOR のデフォルト見出し CSS が `text-wrap: balance` / `word-break: keep-all` / `line-break: strict` を持たず、CJK の禁則処理がブラウザ既定に依存。 |
+| recommended_action | (完了): MU プラグイン `wp-content/mu-plugins/typo-fix-commonCtr.php` を新規作成。`wp_head` priority 9999 で `<style id="typo-fix-commonCtr">` を挿入し、 `.heading-commonCtr` / `.phrase-bottom` に `text-wrap: balance` + `word-break: keep-all` + `line-break: strict` + `overflow-wrap: anywhere` を適用。`.commonCtr__contents` に `padding-inline: clamp(16px, 4vw, 32px)`。THE THOR 本体・DB 不変更。`scripts/deploy-typo-fix-commonCtr.sh` で scp + chmod 644 + curl 反映確認まで自動。 |
+| backup_path | 初回デプロイのため旧バージョン無し。次回更新時は `02_site-audit/backups/<YYYY-MM-DD>/typo-fix-commonCtr.<TIMESTAMP>.php` に自動保存。 |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- 不採用案：`white-space: nowrap` は 40 字超見出しでモバイル横スクロールを誘発するため棄却。
+- レスポンシブ検証（Chrome MCP）：viewport 360 / 414 / 768 px で commonCtr の見出し・補足文が **balanced** に折り返され、orphan character の発生なし。スクリーンショット 3 枚で確認済。
+- 反映確認：本番 `curl https://moterist.com/` の HTML に `id="typo-fix-commonCtr"` を確認（1 件）。
+- ロールバック：`ssh ... 'rm /home/rvpuxcjb/public_html/moterist.com/wp-content/mu-plugins/typo-fix-commonCtr.php'`。
+- 同じ装置パターンで他のテーマ要素（例：archive page 見出し、widget タイトル）にも適用可能。
