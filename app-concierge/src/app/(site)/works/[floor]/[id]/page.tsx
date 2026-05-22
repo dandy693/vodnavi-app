@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { FanzaImage } from "@/components/fanza-image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
@@ -190,7 +190,7 @@ export default async function WorkDetailPage({
       <section className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         {image && (
           <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-black ring-1 ring-white/10">
-            <Image
+            <FanzaImage
               src={image}
               alt={item.title}
               fill
@@ -332,7 +332,7 @@ export default async function WorkDetailPage({
                 rel="noopener noreferrer sponsored"
                 className="relative aspect-video overflow-hidden rounded-lg bg-black ring-1 ring-white/5 transition-all hover:ring-amber-400/40"
               >
-                <Image
+                <FanzaImage
                   src={src}
                   alt={`${item.title} サンプル${idx + 1}`}
                   fill
@@ -380,7 +380,7 @@ export default async function WorkDetailPage({
                   >
                     {relImage && (
                       <div className="relative aspect-[3/4] w-full bg-black">
-                        <Image
+                        <FanzaImage
                           src={relImage}
                           alt={rel.title}
                           fill

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { FanzaImage } from "@/components/fanza-image";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -50,7 +50,7 @@ export function ProductCard({
         aria-label={item.title}
       >
         <div className="relative aspect-[3/4] w-full overflow-hidden bg-black">
-          <Image
+          <FanzaImage
             src={image}
             alt={item.title}
             fill

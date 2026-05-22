@@ -133,3 +133,27 @@
 - 反映確認：本番 `curl https://moterist.com/` の HTML に `id="typo-fix-commonCtr"` を確認（1 件）。
 - ロールバック：`ssh ... 'rm /home/rvpuxcjb/public_html/moterist.com/wp-content/mu-plugins/typo-fix-commonCtr.php'`。
 - 同じ装置パターンで他のテーマ要素（例：archive page 見出し、widget タイトル）にも適用可能。
+
+---
+
+### 2026-05-22 — [low] Vercel Image Optimization Quota Overload — FanzaImage 限定ラッパで遮断
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| severity | low |
+| target | app.vodnavi.jp（app-concierge / Vercel project: vodnavi-app） |
+| symptom | Vercel Image Optimization の月次枠が逼迫したという報告。FANZA サムネ（`pics.dmm.co.jp` / `awsimgsrc.dmm.co.jp` 系統）が `/_next/image` 経由で大量にトランスフォームされていた。 |
+| suspected_cause | `<Image>` の既定挙動が全 src を Vercel 最適化パイプに送るため、FANZA 由来の大量サムネが枠を消費。サイトマップ拡張 (197 → 最大 2000 works) で曝露面が広がり加速。 |
+| recommended_action | (完了): `app-concierge/src/components/fanza-image.tsx` を新設し、`FANZA_IMAGE_HOSTS` セットに合致した src のみ `unoptimized` + passthrough `loader` を適用するスコープ付きラッパに変更。`next.config.ts` の `images.remotePatterns` および `unoptimized` グローバル設定は不変更（OG / opengraph-image / twitter-image / 1st-party assets は引き続き最適化される）。FANZA `<Image>` 5 箇所（`product-card.tsx`、`concierge-chat.tsx`、`works/[floor]/[id]/page.tsx` の hero / sample-grid / related-works）を `<FanzaImage>` に置換。`npx tsc --noEmit` および `npx next build` 両方クリーン（13/13 ページ静的生成成功）。 |
+| backup_path | git diff（コミット未作成。ローカル変更のまま prod デプロイ）。ロールバックは `git checkout HEAD -- app-concierge/src/components/fanza-image.tsx app-concierge/src/components/product-card.tsx app-concierge/src/components/concierge/concierge-chat.tsx 'app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx'` で `<Image>` に戻し再デプロイ。 |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- **本番デプロイ**：`npx vercel --prod --yes` を repo root から実行。`.vercel/project.json` を `app-concierge/` から repo root にミラーすることで Vercel の rootDirectory=`app-concierge` 設定と整合させた（プロジェクト側設定は不変更）。デプロイ ID `dpl_GEJCBRBjJPtRfxWbRnJzhx8tJq7h`、production alias `https://app.vodnavi.jp` に即反映。
+- **本番検証**：`curl https://app.vodnavi.jp/` のレスポンス HTML から `<img>` を抽出した結果、FANZA 直 URL 22 件 / `/_next/image?url=` 経由 0 件。`unoptimized` が HTML 上の literal な marker として現れることはないため、`pics.dmm.co.jp` 直リンクの存在と `/_next/image` 不在を実効指標として採用。
+- **未検証の前提**：Vercel ダッシュボードの「Image Optimization 100% 消費」アラートそのものはこのセッションで HUMAN による画面確認を取っていない。実装の効果（FANZA src が optimizer を通らない）は実証済だが、quota メトリクスの推移は次回 Vercel Usage 画面で要確認。
+- **デプロイ中に発見した別件 500 エラー**：`/works/[floor]/[id]` ルートが `videoa/h_113cb00123`（テスト ID）および `videoa/vrkm01867`（sitemap 由来の有効 ID）の両方で HTTP 500 を返す。ホームページ (`/`) は HTTP 200 で正常。FanzaImage 由来ではない（同コンポーネントを使うホームページが動作）。サイトマップ拡張後の `getRelatedWorks` か FANZA API レート制限が候補。次セッションで切り分け。
+- **副次効果**：1st-party 画像（OG、opengraph-image、twitter-image、`/api/og` の動的画像）は引き続き Vercel 最適化されるため LCP に影響なし。`<Image>` の `fill` / `sizes` / `priority` / `onError` などのプロパティは `<FanzaImage>` 経由でそのまま forwarding されるため CLS リスクなし。
+- 関連メモリ：[[feedback_push_back_on_contradictions]]（前ターンで「Vercel アラート未確認 + 設定名 typo + 不要な mixhost 拒否文」を flag した上で Option B を選んだ経緯）。

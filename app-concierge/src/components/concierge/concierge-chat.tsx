@@ -8,7 +8,7 @@ import {
   Send,
   Sparkles,
 } from "lucide-react";
-import Image from "next/image";
+import { FanzaImage } from "@/components/fanza-image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
@@ -516,7 +516,7 @@ function RecommendationCard({ work }: { work: Work }) {
         className="flex flex-1 flex-col focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/60"
       >
         <div className="relative aspect-[3/4] w-full shrink-0 overflow-hidden bg-brand-dark">
-          <Image
+          <FanzaImage
             src={work.image}
             alt={work.title}
             fill

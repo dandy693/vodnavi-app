@@ -13,3 +13,6 @@
 - [ ] \[CSO/CTO]\ 2026-05-23 10:00 JST 起動の「第1回サタデー・レビュー（データ駆動PDCA）」の実値投入・無人インフラ監視（※注意：CURRENT_AUDIT_REPORT.mdで検出されたGA4 ID断片化（G-5HYV772ER9 / GT-PZQ74Z7D / G-GG7JV9MJRW）を考慮し、saturday-audit.shの集計ロジック側でデータを統合パースすること）
 
 ## [Backlog] 成果没収リスクの完全排除（最優先リーガルタスク）
+
+## [Backlog/Low] Next.js middleware → proxy 規約移行（次サタデー枠）
+- [ ] \[CTO]\ `app-concierge/src/middleware.ts`（年齢ゲート HMAC 判定）を Next.js 16 系の新 `proxy` ファイル規約に移行。ビルド時の deprecation 警告 *"The 'middleware' file convention is deprecated. Please use 'proxy' instead."* を解消する。挙動互換性（age-gate cookie 検証、`/api/concierge` 403 ガード）を維持。2026-05-23 10:00 JST のサタデー・レビュー枠で着手判定。参考：https://nextjs.org/docs/messages/middleware-to-proxy
