@@ -93,16 +93,17 @@ export async function generateMetadata({
       robots: { index: false, follow: false },
     };
   }
-  if (!page.genreName) {
+  if (page.items.length === 0) {
     return {
       title: "ジャンルが見つかりません",
       robots: { index: false, follow: false },
     };
   }
+  const metaName = page.genreName ?? "選択ジャンル";
 
-  const title = compactTitle(`${page.genreName} 一覧｜新作VOD`);
+  const title = compactTitle(`${metaName} 一覧｜新作VOD`);
   const description = compactDescription(
-    `「${page.genreName}」ジャンルの最新 VOD 作品 ${page.totalCount.toLocaleString(
+    `「${metaName}」ジャンルの最新 VOD 作品 ${page.totalCount.toLocaleString(
       "ja-JP",
     )} 件。FANZA から厳選した話題作・新作をスマホで一覧。今夜の極上に最短ルートで。`,
   );
@@ -144,7 +145,8 @@ export default async function GenrePage({
   } catch {
     notFound();
   }
-  if (!page.genreName) notFound();
+  if (page.items.length === 0) notFound();
+  const displayName = page.genreName ?? "選択ジャンル";
 
   const editorial = getGenreEditorial(id);
   const relatedGenres = await getRelatedGenres(id);
@@ -158,12 +160,12 @@ export default async function GenrePage({
         <span className="mx-2">›</span>
         <span>ジャンル</span>
         <span className="mx-2">›</span>
-        <span className="text-foreground/80">{page.genreName}</span>
+        <span className="text-foreground/80">{displayName}</span>
       </nav>
 
       <header className="mb-6">
         <h1 className="font-heading text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-          <span className="text-amber-300">「{page.genreName}」</span>
+          <span className="text-amber-300">「{displayName}」</span>
           の作品一覧
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">

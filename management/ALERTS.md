@@ -157,3 +157,66 @@
 - **デプロイ中に発見した別件 500 エラー（→ 同セッション内で fix 済）**：当初 `/works/[floor]/[id]` が `videoa/h_113cb00123`（テスト ID）および `videoa/vrkm01867`（sitemap 由来の有効 ID）の両方で HTTP 500。ホームページ (`/`) は HTTP 200 で正常。Vercel runtime log で *"Error: Functions cannot be passed directly to Client Components..."* を確認。**真因**：`FanzaImage` 初版が `loader={fanzaPassthroughLoader}` を `NextImage`（Client Component）に渡しており、Server Component である `works/[floor]/[id]/page.tsx` から呼ばれると RSC 境界で関数プロップがシリアライズできず 500。`product-card.tsx` / `concierge-chat.tsx`（共に `"use client"`）経由のホームページでは Client→Client 渡しのため動いていた。**修正**：`FanzaImage` の既定挙動を `unoptimized` のみに簡素化（`loader` 既定値を撤去、`fanzaPassthroughLoader` は名前付きエクスポートとして残置）。加えて `works/[floor]/[id]/error.tsx` を新設（route segment レベルのエラー境界、`reset()` ボタンと「ホームへ戻る」リンク、煽情なし）。再ビルド・再デプロイ後 `dpl_9XwzBKg74952UwjYMfKFYLnkcV8h`、両 URL で HTTP 200・FANZA 直 URL 25 件・`/_next/image` 経由 0 件を確認。
 - **副次効果**：1st-party 画像（OG、opengraph-image、twitter-image、`/api/og` の動的画像）は引き続き Vercel 最適化されるため LCP に影響なし。`<Image>` の `fill` / `sizes` / `priority` / `onError` などのプロパティは `<FanzaImage>` 経由でそのまま forwarding されるため CLS リスクなし。
 - 関連メモリ：[[feedback_push_back_on_contradictions]]（前ターンで「Vercel アラート未確認 + 設定名 typo + 不要な mixhost 拒否文」を flag した上で Option B を選んだ経緯）。
+
+---
+
+### 2026-05-22 11:50 JST — [low] /genres/[id] のパンくず拡張・editorialLead 受け皿・関連ジャンルピル実装で行き止まり解消
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| severity | low |
+| target | app.vodnavi.jp の `/genres/[id]` ルート（GSC 「クロール済み-未登録」134 件のうち 2 件サンプル：`/genres/1036` `/genres/1032`） |
+| symptom | ジャンルページが「タイトル + 件数」のみ・パンくず「ホーム › ジャンル」止まり・他ジャンルへのリンク 0 件、で「行き止まり + 極薄」状態。Factor C と Factor B の合流ケース。works detail で実装済の関連リンク構造がジャンル側に未実装。さらに本番調査中に発見：`getGenrePage` が items を返しても `iteminfo.genre` 内に該当 genreId が無いと `notFound()` を呼ぶ既存ロジックで 404 が頻発（FANZA 側で genre id が deprecated になったケース）。 |
+| suspected_cause | Strategy brief STRATEGY_BRIEF_SEO_2026-05-21_THREE_SITES.md 因子 C（行き止まり）と因子 B（薄コンテンツ）の合流 + 既存ロジックの過剰 404。 |
+| recommended_action | (完了): (1) `app-concierge/src/lib/genre-editorial.ts` + `data/genres-editorial.json` を新設、works editorial と対称構造で CCO 投入の受け皿を確保。(2) `genres/[id]/page.tsx` のパンくずに `<genreName>` を追加、editorial があれば amber トークンで H1 直下に optional 描画、ページ下部に「他のジャンルを探す」セクション（FANZA `sort=rank&hits=30` から重複除外で最大 18 ジャンル ピル）。(3) `notFound()` トリガを `!page.genreName` から `page.items.length === 0` に変更し、items が返れば「選択ジャンル」フォールバック名で 200 を維持（過剰 404 を解消）。コミット `17e4b84`、デプロイ `dpl_FF2obY1bNCDf6QRLZR8hqVx4XHpN` → fallback バグ修正 `dpl_EW4hEARyRh9EfHRga5sbbNLyxqhe`。`npx tsc --noEmit` および `npx next build` 両方クリーン（13/13 ページ静的生成）。 |
+| backup_path | git revert `17e4b84` |
+| anomaly_log | `_metrics/2026-W21/gsc-live-audit.json`（同セッション内の GSC スナップショット） |
+| github_issue | — |
+
+**メモ**：
+- **実測検証は次のインシデント（FANZA outage、下記参照）で阻害された**。curl `/genres/1036` は引き続き 404、ただし真因は本ジャンル改修ではなく FANZA fetch の広域失敗。コード自体は build + tsc 通過、ロジック上正当。FANZA 復旧後に再 curl で 18 ピル + パンくず + editorial スロットを確認すべし。
+- **`editorialLead` の投入は CCO 担当**。`data/genres-editorial.json` は意図的に空で出荷。投入時は `{"<genreId>": {"editorialLead": "..."}}` 形式、`BRAND_DESIGN_GUIDE.md` のトーン「知的でミステリアスな紳士のバーテンダー口調」を遵守。
+- **既存 404 ロジック緩和の SEO 影響**：FANZA が items を 0 で返すジャンル ID は今後 404→200 に変わる（フォールバック名 + 関連ピルのみのページ）。Google が「Soft 404」判定するリスクと「行き止まりではない URL を増やせる」メリットのトレードオフ。次サタデーで GSC の「ソフト 404」バケットを再確認。
+
+---
+
+### 2026-05-22 11:55 JST — [high] FANZA API 広域 fetch 失敗（app.vodnavi.jp 全 `/works/*` および `/genres/*` で 404、ホームページも 0 items）
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | high |
+| target | app.vodnavi.jp（app-concierge / Vercel project: vodnavi-app）全ルートのうち FANZA データに依存する surface — 確認済影響範囲：`/`, `/works/[floor]/[id]`, `/genres/[id]`, `/sitemap.xml`（1,809 → 11 URL 縮退） |
+| symptom | (1) ホーム `https://app.vodnavi.jp/` が HTTP 200 を返すが work カード 0 件（HTML サイズ 197KB → 42KB に縮退）。(2) `/works/videoa/vrkm01867` が同日 10:24 JST の GSC Live Test では 200 だったのに 11:53 では 404。同様に `ure00139` `bebl00047` 等 過去数分の全 work URL が 404。(3) `/sitemap.xml` が 11 URL（root 4 + floors 5 + 他 2）に縮退、works/genres セクションが空。(4) 当該影響で `/genres/[id]` の 18-pill verification が curl 上で確認できない（pills は `getRelatedGenres` の FANZA fetch 経由なので連鎖失敗）。 |
+| suspected_cause | `app-concierge/src/lib/fanza/client.ts:88` の `cache: "no-store"` 設定により FANZA `api.dmm.com/affiliate/v3/ItemList` への全リクエストがキャッシュを経由せず直撃。本日のセッションで sitemap fetch (20 件 × 5 floor) + GSC URL inspections + 複数回のデプロイ + curl 検証が短時間に集中し、FANZA の per-IP レート制限に Vercel hnd1 が引っかかった可能性が高い。コメントに「一時: フィルタ動作を本番で観測するためキャッシュ無効化。動作確認後は `{ next: { revalidate: options.revalidate ?? 300 } }` に戻す。」と意図的な設定の旨が記載されており、勝手な戻しは避けた。`DMM_API_ID` / `DMM_AFFILIATE_ID` env-var は `npx vercel env ls production` で確認済（10 日前から存在）。 |
+| recommended_action | **HUMAN 判断要**：(A) 即時：`cache: "no-store"` を `next: { revalidate: 300 }` に戻して FANZA 直撃を抑える（運用復旧、ただし「フィルタ動作観測」目的が継続中なら一時保留）。(B) FANZA 管理画面でレート制限状況を確認、必要ならクールダウン。(C) 中期：`fetchItemList` に Bottleneck 系の限流ロジックを噛ます or Vercel KV 等で薄キャッシュを噛ます。 |
+| backup_path | コード変更不要、設定 1 行戻すだけ。 |
+| anomaly_log | Vercel runtime log: `λ GET /works/videoa/* 404`（複数）、`λ GET /works/anime/* 404`、`λ GET / 200 (no items)` |
+| github_issue | — |
+
+**メモ**：
+- このインシデントは genres 改修とは独立。改修は build/tsc 通過し正当に landed、デプロイされている。FANZA 復旧後に curl で 18-pill 検証を完了する必要あり。
+- moterist.com 側の影響は不明（同 FANZA API 鍵を別環境で叩いている可能性 = WP 側で `define('VODNAVI_FANZA_AFF_ID', ...)`、API ID は別系統の可能性）。今回確認していない。
+- 関連メモリ：[[feedback_push_back_on_contradictions]]（意図的設定を勝手に戻さず HUMAN に報告するパターン）。
+
+---
+
+### 2026-05-22 12:00 JST — [high/backlog] vodnavi.jp が WordPress 運用継続中、site-brand コードが本番未デプロイ — サタデー枠で判断要
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | high |
+| target | `vodnavi.jp` ルートドメイン（DNS）+ site-brand/ コードベース（ローカル + Vercel ビルド可能だが本番未デプロイ） |
+| symptom | (1) `https://vodnavi.jp/` の HTTP レスポンスヘッダに `Link: <https://vodnavi.jp/wp-json/>; rel="https://api.w.org/"` + `Server: LiteSpeed`（典型的 WP + mixhost 系構成）。`/about` は WordPress page id=150 を返す。(2) site-brand/next.config.ts に `/archives/:path*`、`/d-anime-store-only-title/:path*`、`/wp-admin/:path*` 等の 301 リダイレクトが設定済だが、site-brand が本番に出ていないため効いていない（`curl https://vodnavi.jp/archives/category/test/hulu` → HTTP 404）。(3) GSC 上の vodnavi.jp プロパティで観測される未登録の根源因子の 1 つ：「ソフト 404 (3)」と「noindex (5)」がすべて旧 WP 由来 URL（`/archives/category/<jp>/<slug>`、`/?s=<query>`、`/d-anime-store-only-title/`）。 |
+| suspected_cause | DNS 切替判断・本番デプロイ判断が未実施で WP が稼働継続。STRATEGY_BRIEF_SEO_2026-05-21_THREE_SITES.md §2 で site-brand に 301 を「追加した」と書かれているが、コードを追加しただけでデプロイ + DNS 移行は別工程。 |
+| recommended_action | **2026-05-23 10:00 JST サタデー・レビュー枠で判断**：(A) WP 側の SSH（mixhost）にアクセスし、`.htaccess` または MU プラグインで `/archives/*` `/d-anime-store-only-title/*` を 301 → `/` または 410 Gone に切り替え（moterist.com の typo-fix-commonCtr.php と同パターン適用可能）。(B) または site-brand を Vercel に新規プロジェクトとして link + デプロイ、DNS の vodnavi.jp A レコード/CNAME を Vercel に切り替え。(C) いずれの選択でも、切替前に WP の現行ページ HTML を `02_site-audit/backups/<DATE>/vodnavi-jp-*.html` にバックアップ。 |
+| backup_path | 必要な時点で `02_site-audit/backups/<YYYY-MM-DD>/vodnavi-jp-*.html` |
+| anomaly_log | `_metrics/2026-W21/gsc-live-audit.json`（vodnavi.jp プロパティ部分） |
+| github_issue | — |
+
+**メモ**：
+- このバケットは moterist.com の 3 ピラー注入と同じ運用パターンで対処可能。SSH 鍵が moterist.com と共用（`/home/rvpuxcjb/public_html/moterist.com/`）なら、`vodnavi.jp` も同一ホスティング上で叩ける可能性が高い（要確認）。
+- 影響：旧 WP URL 残骸が GSC のレポートで「未登録」として常駐している。検索クエリ汚染や成果没収リスクは現時点で観測されていないが、SEO スコアの裾野を引き下げ続けている。
+- 関連メモリ：[[reference_google_accounts]]（操作は moterist.com@gmail.com / u=2）。

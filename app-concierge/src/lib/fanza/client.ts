@@ -83,10 +83,8 @@ export async function fetchItemList(
     url.searchParams.set(key, String(value));
   }
 
-  // 一時: フィルタ動作を本番で観測するためキャッシュ無効化。
-  // 動作確認後は { next: { revalidate: options.revalidate ?? 300 } } に戻す。
   const res = await fetch(url, {
-    cache: "no-store",
+    next: { revalidate: options.revalidate ?? 300 },
     signal: options.signal,
   });
 

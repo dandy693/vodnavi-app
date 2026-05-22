@@ -1,0 +1,132 @@
+{
+  "audit_meta": {
+    "captured_at_jst": "2026-05-22T10:25+09:00",
+    "captured_by": "Claude Code (Opus 4.7) + Chrome automation",
+    "active_google_account": "moterist.com@gmail.com (u=2)",
+    "account_verified_via": "aria-label \"Google アカウント: モテリスト  \\n(moterist.com@gmail.com)\"",
+    "gsc_properties_inspected": [
+      "sc-domain:moterist.com",
+      "sc-domain:app.vodnavi.jp"
+    ]
+  },
+
+  "step_1_moterist_data_processing": {
+    "property": "sc-domain:moterist.com",
+    "data_processing_cleared": false,
+    "summary_message_observed": "データを処理しています。1 日後にもう一度ご確認ください",
+    "pages_report_message_observed": "データを処理しています。1 日後にもう一度ご確認ください",
+    "indexed_count": null,
+    "unindexed_count": null,
+    "indexed_count_note": "data still processing; cannot report indexed/unindexed totals yet",
+    "https_pages_valid": 36,
+    "https_pages_invalid": 0,
+    "breadcrumb_valid": 26,
+    "breadcrumb_invalid": 0,
+    "core_web_vitals": "no data",
+    "search_clicks_total": 0,
+    "search_clicks_window_end": "2026/05/19"
+  },
+
+  "step_2_app_vodnavi_sitemap": {
+    "property": "sc-domain:app.vodnavi.jp",
+    "sitemap_submitted": true,
+    "submitted_at_jst": "2026-05-22T10:33+09:00",
+    "submitted_via": "Chrome automation under moterist.com@gmail.com (u=2) — explicit user authorization",
+    "submitted_sitemaps": [
+      {
+        "url": "https://app.vodnavi.jp/sitemap.xml",
+        "type": "サイトマップ",
+        "submitted_date": "2026/05/22",
+        "last_read_date": "2026/05/22",
+        "status_label_observed": "成功しました",
+        "status": "SUCCESS",
+        "discovered_pages": 197,
+        "discovered_videos": 0,
+        "confirmation_toast_observed": "サイトマップを送信しました"
+      }
+    ],
+    "submitted_sitemaps_count": 1,
+    "expected_sitemap_url": "https://app.vodnavi.jp/sitemap.xml",
+    "actual_live_sitemap_url_count": 1809,
+    "user_reported_url_count": 1783,
+    "url_count_discrepancy_note": "user said 1,783; actual curl of live sitemap.xml = 1,809; GSC first-read reported only 197 (matches the OLD pre-expansion baseline per STRATEGY_BRIEF_SEO_2026-05-21). Google may have cached an older response or read a partial set during first crawl — re-check Discovered pages count in 24-48h.",
+    "status_before_session": "NOT_SUBMITTED",
+    "status_after_session": "SUBMITTED_SUCCESS",
+    "submission_path_used": "https://app.vodnavi.jp/sitemap.xml (full URL — relative 'sitemap.xml' was rejected with 'サイトマップ アドレスが無効です' because property is sc-domain not URL-prefix)"
+  },
+
+  "step_3_url_inspections": {
+    "moterist_com_fanza20250329": {
+      "url": "https://moterist.com/fanza20250329/",
+      "property": "sc-domain:moterist.com",
+      "google_index_state": {
+        "indexed": true,
+        "message": "URL は Google に登録されています",
+        "https_check": "passed (このページは HTTPS で配信されています)"
+      },
+      "live_test": {
+        "tested_at_jst": "2026-05-22T10:25",
+        "can_be_indexed": true,
+        "message": "URL は Google に登録できます",
+        "page_availability": "ページをインデックスに登録可能です",
+        "breadcrumb_detected": "1 件の有効なアイテムを検出しました",
+        "mobile_usability_flags": null,
+        "typography_wrapping_flags": null,
+        "googlebot_fetch_success": true
+      }
+    },
+    "app_vodnavi_jp_works_videoa_vrkm01867": {
+      "url": "https://app.vodnavi.jp/works/videoa/vrkm01867",
+      "property": "sc-domain:app.vodnavi.jp",
+      "google_index_state": {
+        "indexed": false,
+        "message": "URL が Google に登録されていません",
+        "page_indexing_message": "ページはインデックスに登録されていません: URL が Google に認識されていません",
+        "referring_sitemap_detected": false,
+        "referring_page_detected": false,
+        "last_crawled": null,
+        "user_canonical": null,
+        "google_canonical": null
+      },
+      "live_test": {
+        "tested_at_jst": "2026-05-22T10:24",
+        "can_be_indexed": true,
+        "message": "URL は Google に登録できます",
+        "page_availability": "ページをインデックスに登録可能です",
+        "enhancements": "URL に拡張機能はありません",
+        "mobile_usability_flags": null,
+        "typography_wrapping_flags": null,
+        "googlebot_fetch_success": true,
+        "post_hotfix_validation_note": "Live test passed after dpl_9XwzBKg74952UwjYMfKFYLnkcV8h restored /works/[floor]/[id] from HTTP 500. Confirms Googlebot can fetch the recovered page."
+      }
+    }
+  },
+
+  "recommended_followups_pending_human_authorization": [
+    {
+      "id": "submit-app-sitemap",
+      "priority": "high",
+      "action": "Submit https://app.vodnavi.jp/sitemap.xml to GSC property sc-domain:app.vodnavi.jp via Sitemaps → 新しいサイトマップの追加 → sitemap.xml → 送信",
+      "why": "1,809 URLs are live but unknown to Google; URL Inspection on vrkm01867 confirms 参照元サイトマップが検出されませんでした",
+      "write_action": true,
+      "executed": true,
+      "executed_at_jst": "2026-05-22T10:33+09:00",
+      "outcome": "SUCCESS — status row '成功しました', discovered pages 197 (vs 1,809 live; re-check in 24-48h)"
+    },
+    {
+      "id": "re-audit-moterist-pages",
+      "priority": "mid",
+      "action": "Re-run this audit 24h+ after 2026-05-22 to capture moterist.com indexed/unindexed counts once data processing clears",
+      "write_action": false,
+      "executed": false
+    },
+    {
+      "id": "verify-discovered-count-recrawl",
+      "priority": "mid",
+      "action": "Re-check Sitemaps report 24-48h after 2026-05-22 to confirm Google re-fetched the sitemap and the Discovered pages count moves from 197 toward 1,809",
+      "write_action": false,
+      "executed": false,
+      "added_during_this_session": true
+    }
+  ]
+}
