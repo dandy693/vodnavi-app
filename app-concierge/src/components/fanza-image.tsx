@@ -17,19 +17,14 @@ export function isFanzaImageSrc(src: ImageProps["src"]): boolean {
   }
 }
 
-// FANZA サムネは Vercel Image Optimization の月次枠を喰い切るため
-// パススルーし、Vercel の /_next/image を経由させない。
+// クライアント側で明示的に loader を差し込みたい場合のみ使用する。
+// 既定では FanzaImage は `unoptimized` のみ付与し、Server Component 経由でも
+// 関数プロップを RSC 境界に漏らさない（Next.js は関数の直接渡しを禁止する）。
 export const fanzaPassthroughLoader: ImageLoader = ({ src }) => src;
 
 export function FanzaImage(props: ImageProps) {
   if (isFanzaImageSrc(props.src)) {
-    return (
-      <NextImage
-        {...props}
-        loader={props.loader ?? fanzaPassthroughLoader}
-        unoptimized
-      />
-    );
+    return <NextImage {...props} unoptimized />;
   }
   return <NextImage {...props} />;
 }
