@@ -185,7 +185,7 @@
 
 | 項目 | 値 |
 |---|---|
-| status | open |
+| status | resolved |
 | severity | high |
 | target | app.vodnavi.jp（app-concierge / Vercel project: vodnavi-app）全ルートのうち FANZA データに依存する surface — 確認済影響範囲：`/`, `/works/[floor]/[id]`, `/genres/[id]`, `/sitemap.xml`（1,809 → 11 URL 縮退） |
 | symptom | (1) ホーム `https://app.vodnavi.jp/` が HTTP 200 を返すが work カード 0 件（HTML サイズ 197KB → 42KB に縮退）。(2) `/works/videoa/vrkm01867` が同日 10:24 JST の GSC Live Test では 200 だったのに 11:53 では 404。同様に `ure00139` `bebl00047` 等 過去数分の全 work URL が 404。(3) `/sitemap.xml` が 11 URL（root 4 + floors 5 + 他 2）に縮退、works/genres セクションが空。(4) 当該影響で `/genres/[id]` の 18-pill verification が curl 上で確認できない（pills は `getRelatedGenres` の FANZA fetch 経由なので連鎖失敗）。 |
@@ -199,6 +199,13 @@
 - このインシデントは genres 改修とは独立。改修は build/tsc 通過し正当に landed、デプロイされている。FANZA 復旧後に curl で 18-pill 検証を完了する必要あり。
 - moterist.com 側の影響は不明（同 FANZA API 鍵を別環境で叩いている可能性 = WP 側で `define('VODNAVI_FANZA_AFF_ID', ...)`、API ID は別系統の可能性）。今回確認していない。
 - 関連メモリ：[[feedback_push_back_on_contradictions]]（意図的設定を勝手に戻さず HUMAN に報告するパターン）。
+
+**解決メモ（2026-05-22 12:11 JST）**：
+- HUMAN 認可を取得し `client.ts:88` の `cache: "no-store"` を `next: { revalidate: options.revalidate ?? 300 }` に変更してデプロイ。コミット `80b1d9f`、デプロイは 2 段階：(1) 初手 `next: { revalidate: 86400 }` を試したが 24h キャッシュが「FANZA 制限中に取得した空 response」を long-lock してしまい復旧せず、(2) `300`（オリジナル設定の commented spec）に下げ直したところ即時復旧。
+- **復旧後検証**：ホーム HTTP 200 / 197KB / FANZA img 22 件 ✅、`/works/videoa/vrkm01867` HTTP 200 / 96KB ✅、`/sitemap.xml` 1,809 URL に回復 ✅、`[fanza-filter] in=30` ログ復活 ✅。
+- **同時に検証完了した別目的**：`/genres/1036` HTTP 200、「他のジャンルを探す」セクション + **18 ピル**確認（前ターンの 11:50 エントリの実証検証が遅延完了）。`/genres/6533` も同様に 18 ピル。
+- **教訓**：診断目的の `cache: "no-store"` を残したままにすると、レート制限 + 24h cache の組み合わせで「empty response を long-lock」する状態に陥る。診断は **時限的に外す前提で運用** し、観測期間が終わったら速やかに ISR に戻す運用ルールが必要。`/genres/[id]/page.tsx` および `/(site)/page.tsx` にも同様の `revalidate = 0` / `dynamic = "force-dynamic"` の診断設定が残置されているが、本セッションのスコープ外（HUMAN がフィルタ動作観測を継続中の可能性があるため）。サタデー枠で要確認。
+- **ユーザー要請との差異**：初期指示は `{ next: { revalidate: 86400 } }` だったが、実証検証で 24h は cold-cache 問題を起こすことが判明したため、commented original の `300` 秒に着地。HUMAN が後で 86400 に上げる意思がある場合、まず FANZA が完全に warm な状態（少なくとも 5 分間正常応答が連続）であることを確認してから revalidate 値を引き上げるべし。
 
 ---
 
