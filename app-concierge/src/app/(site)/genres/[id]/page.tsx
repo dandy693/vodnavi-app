@@ -5,15 +5,14 @@ import { notFound } from "next/navigation";
 import { EmptyState } from "@/components/empty-state";
 import { ProductGrid } from "@/components/product-grid";
 import { fetchItemList } from "@/lib/fanza/client";
-import type { DmmSort } from "@/lib/fanza/types";
+import type { DmmItem, DmmSort } from "@/lib/fanza/types";
+import { getGenreEditorial } from "@/lib/genre-editorial";
 import {
   absoluteUrl,
   compactDescription,
   compactTitle,
 } from "@/lib/site";
 
-// 一時的にキャッシュを完全無効化し、画像フィルタの動作を本番でログ確認するため。
-// プレースホルダ除外が安定したら revalidate を 300 に戻す。
 export const revalidate = 0;
 
 type Params = { id: string };
@@ -23,7 +22,7 @@ async function getGenrePage(
   id: string,
   sort: DmmSort = "date",
 ): Promise<{
-  items: Awaited<ReturnType<typeof fetchItemList>>["result"]["items"];
+  items: DmmItem[];
   totalCount: number;
   genreName: string | null;
 }> {
@@ -47,6 +46,36 @@ async function getGenrePage(
     totalCount: data.result.total_count ?? 0,
     genreName,
   };
+}
+
+async function getRelatedGenres(
+  excludeId: string,
+  limit = 18,
+): Promise<{ id: number; name: string }[]> {
+  try {
+    const data = await fetchItemList({
+      site: "FANZA",
+      service: "digital",
+      floor: "videoa",
+      sort: "rank",
+      hits: 30,
+    });
+    const excludeNum = Number(excludeId);
+    const seen = new Set<number>();
+    const out: { id: number; name: string }[] = [];
+    for (const item of data.result.items ?? []) {
+      for (const g of item.iteminfo?.genre ?? []) {
+        if (g.id === excludeNum) continue;
+        if (seen.has(g.id)) continue;
+        seen.add(g.id);
+        out.push({ id: g.id, name: g.name });
+        if (out.length >= limit) return out;
+      }
+    }
+    return out;
+  } catch {
+    return [];
+  }
 }
 
 export async function generateMetadata({
@@ -117,6 +146,9 @@ export default async function GenrePage({
   }
   if (!page.genreName) notFound();
 
+  const editorial = getGenreEditorial(id);
+  const relatedGenres = await getRelatedGenres(id);
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
       <nav className="mb-3 text-xs text-muted-foreground">
@@ -125,6 +157,8 @@ export default async function GenrePage({
         </Link>
         <span className="mx-2">›</span>
         <span>ジャンル</span>
+        <span className="mx-2">›</span>
+        <span className="text-foreground/80">{page.genreName}</span>
       </nav>
 
       <header className="mb-6">
@@ -139,10 +173,36 @@ export default async function GenrePage({
         </p>
       </header>
 
+      {editorial?.editorialLead && (
+        <section className="mb-8 rounded-2xl border border-amber-400/15 bg-amber-400/[0.04] px-4 py-4 text-sm leading-relaxed text-foreground/90 sm:px-6 sm:py-5">
+          <p>{editorial.editorialLead}</p>
+        </section>
+      )}
+
       {page.items.length === 0 ? (
         <EmptyState title="このジャンルの作品はまだ表示できません" />
       ) : (
         <ProductGrid items={page.items} />
+      )}
+
+      {relatedGenres.length > 0 && (
+        <section className="mt-12 border-t border-white/5 pt-8">
+          <h2 className="mb-4 font-heading text-base font-semibold text-foreground sm:text-lg">
+            他のジャンルを探す
+          </h2>
+          <ul className="flex flex-wrap gap-2">
+            {relatedGenres.map((g) => (
+              <li key={g.id}>
+                <Link
+                  href={`/genres/${g.id}`}
+                  className="inline-flex items-center rounded-full border border-white/10 bg-black/30 px-3 py-1.5 text-xs text-foreground/85 transition-colors hover:border-amber-400/40 hover:text-amber-300"
+                >
+                  {g.name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
       )}
     </div>
   );
