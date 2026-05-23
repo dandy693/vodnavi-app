@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     "FANZA から厳選した最新作・話題作を、価格・レビュー・新着ですぐ見つけられる VOD ナビゲーション。スマホ最適化、ワンタップで視聴開始。",
   keywords: ["VOD", "FANZA", "アフィリエイト", "動画", "新作", "ランキング"],
   alternates: { canonical: "/" },
+  manifest: "/site.webmanifest",
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },

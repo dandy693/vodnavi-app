@@ -15,8 +15,10 @@ import {
   FanzaApiError,
   FanzaConfigError,
   fetchItemList,
+  pickImage,
 } from "@/lib/fanza/client";
 import { FANZA_FLOORS, type DmmSort } from "@/lib/fanza/types";
+import { absoluteUrl } from "@/lib/site";
 
 const DEFAULT_FLOOR = "videoa";
 const DEFAULT_SORT: DmmSort = "date";
@@ -140,8 +142,38 @@ async function ResultsSection({
     }
   }
 
+  // ItemList JSON-LD は items が空（FANZA 失敗 or 該当なし）の時は emit しない。
+  // 空 itemListElement で Google の "missing field" 警告を出さないため。
+  const itemListLd =
+    items.length > 0
+      ? {
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          numberOfItems: items.length,
+          itemListElement: items.map((it, idx) => {
+            const image = pickImage(it.imageURL);
+            const url = absoluteUrl(
+              `/works/${it.floor_code}/${it.content_id}`,
+            );
+            return {
+              "@type": "ListItem",
+              position: idx + 1,
+              url,
+              name: it.title,
+              ...(image ? { image } : {}),
+            };
+          }),
+        }
+      : null;
+
   return (
     <>
+      {itemListLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListLd) }}
+        />
+      )}
       <HeroSection totalCount={totalCount} source={source} copy={heroCopy} />
 
       <section className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
