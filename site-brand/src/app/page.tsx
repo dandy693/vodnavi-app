@@ -113,7 +113,7 @@ export default function BrandPage() {
             </h2>
 
             <dl className="mt-14 grid gap-x-12 gap-y-6 sm:grid-cols-[180px_1fr]">
-              <Row term="法人格" desc="Safari 株式会社" />
+              <Row term="法人格" desc="合同会社トレンドネット" />
               <Row term="運営組織" desc="VODNAVI プロジェクト運営委員会（戦略・制作・コンプライアンスの 3 部門で構成）" />
               <Row term="代表サービス" desc="VODNAVI（vodnavi.jp）／VODNAVI Concierge（app.vodnavi.jp）／Moterist（moterist.com）" />
               <Row term="連絡先" desc="contact@vodnavi.jp（業務時間：平日 10:00–18:00 JST）" />
@@ -153,7 +153,7 @@ export default function BrandPage() {
 
       <footer className="border-t border-brand-gold/10">
         <div className="mx-auto max-w-6xl px-6 py-10 text-center text-xs text-brand-text-secondary/70">
-          © {new Date().getFullYear()} Safari Inc. / VODNAVI プロジェクト運営委員会 ·
+          © {new Date().getFullYear()} 合同会社トレンドネット / VODNAVI プロジェクト運営委員会 ·
           <span className="ml-2">広告を含む · 18 歳以上対象</span>
         </div>
       </footer>
