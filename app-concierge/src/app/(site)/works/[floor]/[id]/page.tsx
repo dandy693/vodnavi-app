@@ -85,6 +85,7 @@ export async function generateMetadata({
   const genres = joinNames(item.iteminfo?.genre, 5);
   const image = pickImage(item.imageURL);
   const path = `/works/${floor}/${id}`;
+  const editorial = getWorkEditorial(item.content_id);
 
   const titleParts = [
     item.title,
@@ -92,14 +93,19 @@ export async function generateMetadata({
   ].filter(Boolean);
   const title = compactTitle(titleParts.join(" ｜ "));
 
-  const description = compactDescription(
-    [
-      item.title,
-      actresses ? `出演:${actresses}。` : "",
-      genres ? `ジャンル:${genres}。` : "",
-      "FANZA で今すぐ視聴できる新作 VOD 作品をスマホでチェック。",
-    ].join(" "),
-  );
+  // CCO-authored editorial leads (data/works-editorial.json) take precedence
+  // over the boilerplate FANZA-meta description so each indexed snippet is
+  // unique. Falls back to a structured FANZA summary when no editorial yet.
+  const description = editorial?.editorialLead
+    ? compactDescription(editorial.editorialLead)
+    : compactDescription(
+        [
+          item.title,
+          actresses ? `出演:${actresses}。` : "",
+          genres ? `ジャンル:${genres}。` : "",
+          "FANZA で今すぐ視聴できる新作 VOD 作品をスマホでチェック。",
+        ].join(" "),
+      );
 
   return {
     title,
@@ -161,8 +167,24 @@ export default async function WorkDetailPage({
     .filter(Boolean)
     .join(" ");
 
+  const productLd = buildProductLd({
+    item,
+    floor,
+    id,
+    image,
+    description: editorial?.editorialLead ?? description,
+    actresses,
+    genres,
+    makers,
+  });
+
   return (
     <article className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+      <script
+        type="application/ld+json"
+        // schema.org payload — string is the canonical wire format
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }}
+      />
       <div className="mb-4 text-xs text-muted-foreground">
         <Link href="/" className="hover:text-amber-300">
           ホーム
@@ -408,6 +430,76 @@ export default async function WorkDetailPage({
       )}
     </article>
   );
+}
+
+type ProductLdInput = {
+  item: DmmItem;
+  floor: string;
+  id: string;
+  image: string | null;
+  description: string;
+  actresses: { id: number; name: string }[];
+  genres: { id: number; name: string }[];
+  makers: { id: number; name: string }[];
+};
+
+function buildProductLd({
+  item,
+  floor,
+  id,
+  image,
+  description,
+  actresses,
+  genres,
+  makers,
+}: ProductLdInput): Record<string, unknown> {
+  const url = absoluteUrl(`/works/${floor}/${id}`);
+  const offerUrl = item.affiliateURL ?? item.URL ?? url;
+  const priceRaw = item.prices?.price ?? "";
+  const priceMatch = priceRaw.match(/\d[\d,]*/);
+  const priceNumber = priceMatch ? priceMatch[0].replace(/,/g, "") : undefined;
+
+  const ld: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: item.title,
+    description,
+    url,
+    sku: item.content_id,
+  };
+  if (image) ld.image = image;
+  if (genres.length > 0) ld.category = genres.map((g) => g.name).join(" / ");
+  if (makers.length > 0) ld.brand = { "@type": "Brand", name: makers[0].name };
+  if (actresses.length > 0) {
+    ld.actor = actresses.slice(0, 8).map((a) => ({
+      "@type": "Person",
+      name: a.name,
+    }));
+  }
+  if (item.date) ld.releaseDate = item.date.split(" ")[0];
+
+  const offer: Record<string, unknown> = {
+    "@type": "Offer",
+    url: offerUrl,
+    priceCurrency: "JPY",
+    availability: "https://schema.org/InStock",
+  };
+  if (priceNumber) offer.price = priceNumber;
+  ld.offers = offer;
+
+  const ratingValue = item.review?.average ? Number(item.review.average) : NaN;
+  const ratingCount = item.review?.count ?? 0;
+  if (Number.isFinite(ratingValue) && ratingValue > 0 && ratingCount > 0) {
+    ld.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue,
+      reviewCount: ratingCount,
+      bestRating: 5,
+      worstRating: 1,
+    };
+  }
+
+  return ld;
 }
 
 function Field({

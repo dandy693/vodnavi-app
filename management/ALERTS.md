@@ -227,3 +227,31 @@
 - このバケットは moterist.com の 3 ピラー注入と同じ運用パターンで対処可能。SSH 鍵が moterist.com と共用（`/home/rvpuxcjb/public_html/moterist.com/`）なら、`vodnavi.jp` も同一ホスティング上で叩ける可能性が高い（要確認）。
 - 影響：旧 WP URL 残骸が GSC のレポートで「未登録」として常駐している。検索クエリ汚染や成果没収リスクは現時点で観測されていないが、SEO スコアの裾野を引き下げ続けている。
 - 関連メモリ：[[reference_google_accounts]]（操作は moterist.com@gmail.com / u=2）。
+
+---
+
+### 2026-05-22 — [info] Ultimate SEO & Brand Polish — favicon suite / works metadata editorial wiring / Product JSON-LD
+
+| 項目 | 値 |
+|---|---|
+| status | resolved（コード変更まで。本番デプロイは別ターン） |
+| severity | low（記録目的） |
+| target | `app-concierge/public/*`、`site-brand/public/*`、`app-concierge/src/app/layout.tsx`、`site-brand/src/app/layout.tsx`、`app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx` |
+| symptom | (1) 両プロジェクトの `public/` にコンプラ用 favicon スイートが不在（`favicon.ico` / `apple-touch-icon.png` / `icon-192.png` / `icon-512.png` のいずれも未配置）。`layout.tsx` の `metadata.icons` も未定義。 (2) `works/[floor]/[id]` の `generateMetadata()` description が `"FANZA で今すぐ視聴できる新作 VOD 作品をスマホでチェック。"` の固定ボイラープレートで終わっており、全 work URL で重複スニペットになる典型パターン。CCO 投入済の `works-editorial.json` を OG/Twitter/description のいずれにも引いていなかった。 (3) リポジトリ全体に `application/ld+json` ゼロ件。Product / Review / Organization / WebSite いずれの schema.org 構造化データも未実装。 |
+| suspected_cause | site-brand は Next.js 雛形からのスキャフォールド直後、editorial 受け皿は導入したが metadata と JSON-LD の結線が未完了だった。 |
+| recommended_action | (完了): (A) `app-concierge/scripts/generate-favicons.mjs` を新設 — sharp ベースで `#121212` 背景 + `#D4AF37` モノグラム V エンブレム の SVG を 16/32/48/180/192/512 にラスタライズし、ICO は 16/32/48 のマルチサイズコンテナ。1 コマンドで両 `public/` に書き出し。(B) `app-concierge/src/app/layout.tsx` と `site-brand/src/app/layout.tsx` の `metadata.icons` に icon (`favicon.ico` + 192 + 512) + apple (180) を宣言。(C) `works/[floor]/[id]/page.tsx` の `generateMetadata()` で `getWorkEditorial(item.content_id)?.editorialLead` を最優先に description / openGraph / twitter へ流す。editorial 未登録時は従来の構造化フォールバックを維持。(D) 同ページに `buildProductLd()` ヘルパーを新設し、`Product` (+ 条件付き `AggregateRating`、`Offer`、`Brand`、`actor[]`) JSON-LD を `<script type="application/ld+json">` で注入。`item.review.average` / `count` が両方正の整数のときのみ AggregateRating を出す（空集計の構造化スパム防止）。 |
+| backup_path | git diff（コミット未作成）。ロールバックは `git checkout HEAD -- app-concierge/public site-brand/public app-concierge/src/app/layout.tsx site-brand/src/app/layout.tsx 'app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx' app-concierge/scripts/generate-favicons.mjs` |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- **検証**：`npx tsc --noEmit` 両プロジェクトクリーン、`npx next build` 両プロジェクト成功（app-concierge 13/13 / site-brand 5/5 静的生成）。デプロイ・DNS 変更は本ターン未実施（指示に従い保留）。
+- **favicon 設計**：BRAND_DESIGN_GUIDE.md §2 のリッチブラック + シャンパンゴールド配色を厳守。視覚要素はミニマル — リッチブラック背景 + ゴールドの細枠 2 重円 + 太線セリフ "V" モノグラム。煽情要素ゼロ、ASP 規約安全。アイコン再生成は `node app-concierge/scripts/generate-favicons.mjs` で冪等再走可能。
+- **JSON-LD 受け皿の意図**：`Product` を主軸、`Offer.priceCurrency=JPY`、`Offer.url=affiliateURL`（クローラから FANZA への成果地点パスを構造化）、`aggregateRating` は欠落データ時に出さない (Google の "missing field" 警告回避)。
+- **発見した別 SEO 漏れ（次のサタデー枠で要対応）**：
+  1. `/genres/[id]/page.tsx` の `generateMetadata()` description も同じ duplicate snippet パターン（`"...の最新 VOD 作品 N 件。FANZA から厳選した話題作・新作をスマホで一覧。今夜の極上に最短ルートで。"`）。`getGenreEditorial(id)?.editorialLead` を fallback ロジックに組み込むべき。本ターンでは works 側の同等改修と整合する形でジャンル側にも同パターンを適用予定だが、`genres-editorial.json` が空のため効果が出るのは CCO 投入後 — 改修は別ターンで OK。
+  2. `site-brand` 側に Organization / WebSite JSON-LD が未実装（公式ブランドサイトの E-E-A-T 強化に直結）。STRATEGY_BRIEF §1.信頼の盾 で謳う「次世代映像検索 AI」「査読体制」を `Organization.foundingDate` / `Organization.description` で構造化する余地あり。
+  3. app-concierge ホーム (`/`) に `ItemList` JSON-LD が未実装。works grid の各カードを `ListItem` 化すれば「サイトリンク」表示の候補になる。
+  4. `manifest.json` (PWA) 未実装。`icon-192` / `icon-512` を `purpose: "any maskable"` で参照する manifest を `public/site.webmanifest` に追加すれば、Android Add-to-Home-Screen 時にブランド表示が安定する。
+- **未検証**：本番 `https://app.vodnavi.jp/favicon.ico` の応答は次デプロイ後に curl 確認。Google Rich Results Test の Product schema 検証も次デプロイ後にライブ URL で実施すべし。
+- 関連メモリ：[[feedback_push_back_on_contradictions]]（受け皿のみで graceful hide する設計を維持、`works-editorial.json` 未登録 work もメタは構造化フォールバックで保護）。

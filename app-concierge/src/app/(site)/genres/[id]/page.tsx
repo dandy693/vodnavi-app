@@ -13,7 +13,7 @@ import {
   compactTitle,
 } from "@/lib/site";
 
-export const revalidate = 0;
+export const revalidate = 300;
 
 type Params = { id: string };
 type Search = { sort?: string };
@@ -102,11 +102,14 @@ export async function generateMetadata({
   const metaName = page.genreName ?? "選択ジャンル";
 
   const title = compactTitle(`${metaName} 一覧｜新作VOD`);
-  const description = compactDescription(
-    `「${metaName}」ジャンルの最新 VOD 作品 ${page.totalCount.toLocaleString(
-      "ja-JP",
-    )} 件。FANZA から厳選した話題作・新作をスマホで一覧。今夜の極上に最短ルートで。`,
-  );
+  const editorial = getGenreEditorial(id);
+  const description = editorial?.editorialLead
+    ? compactDescription(editorial.editorialLead)
+    : compactDescription(
+        `「${metaName}」ジャンルの最新 VOD 作品 ${page.totalCount.toLocaleString(
+          "ja-JP",
+        )} 件。FANZA から厳選した話題作・新作をスマホで一覧。今夜の極上に最短ルートで。`,
+      );
 
   return {
     title,
