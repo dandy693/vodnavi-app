@@ -92,10 +92,16 @@ export async function generateMetadata({
     actresses ? `出演:${actresses}` : null,
   ].filter(Boolean);
   const title = compactTitle(titleParts.join(" ｜ "));
+  // layout.tsx の template "%s | VODNAVI" は head <title> にだけ適用される。
+  // OG/Twitter は template 非経由のため、3 surface 整合のためここで明示付与。
+  // head <title> には付けない（付けると "X | VODNAVI | VODNAVI" の二重付与になる）。
+  const titleWithBrand = `${title} | VODNAVI`;
 
   // CCO-authored editorial leads (data/works-editorial.json) take precedence
   // over the boilerplate FANZA-meta description so each indexed snippet is
   // unique. Falls back to a structured FANZA summary when no editorial yet.
+  // フォールバック時は VODNAVI 固有コンテキストを末尾に動的マージして他サイトとの
+  // FANZA-meta 完全重複を回避し、duplicate content 判定を避ける。
   const description = editorial?.editorialLead
     ? compactDescription(editorial.editorialLead)
     : compactDescription(
@@ -104,6 +110,7 @@ export async function generateMetadata({
           actresses ? `出演:${actresses}。` : "",
           genres ? `ジャンル:${genres}。` : "",
           "FANZA で今すぐ視聴できる新作 VOD 作品をスマホでチェック。",
+          "今夜の作品選びを最速でナビゲーションするVODNAVI（ボドナビ）がお届けする詳細配信ステータス。",
         ].join(" "),
       );
 
@@ -112,7 +119,7 @@ export async function generateMetadata({
     description,
     alternates: { canonical: absoluteUrl(path) },
     openGraph: {
-      title,
+      title: titleWithBrand,
       description,
       url: absoluteUrl(path),
       type: "video.movie",
@@ -122,7 +129,7 @@ export async function generateMetadata({
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: titleWithBrand,
       description,
       images: image ? [image] : [],
     },
