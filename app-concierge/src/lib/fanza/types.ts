@@ -153,10 +153,10 @@ export interface FanzaFloor {
 
 export const FANZA_FLOORS: FanzaFloor[] = [
   { code: "videoa", label: "動画", service: "digital" },
-  { code: "videoc", label: "素人", service: "digital" },
+  { code: "videoc", label: "素人", service: "digital" }, // 素人の正典コードは一般的に videoc またはジャンル指定
   { code: "anime", label: "アニメ", service: "digital" },
-  { code: "nikkatsu", label: "成人映画", service: "digital" },
-  { code: "videobook", label: "成人コミック", service: "digital" },
+  { code: "movie", label: "成人映画", service: "digital" },
+  { code: "comic", label: "成人コミック", service: "book" }, // コミックは book サービス配下
 ];
 
 export const FANZA_SORT_OPTIONS: { value: DmmSort; label: string }[] = [
