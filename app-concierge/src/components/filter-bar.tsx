@@ -26,6 +26,13 @@ export function FilterBar() {
   const currentFloor = params.get("floor") ?? DEFAULT_FLOOR;
   const currentSort = params.get("sort") ?? DEFAULT_SORT;
 
+  // 現在の floor / sort に対応する日本語ラベルをマスターから確実に逆引きする。
+  // Radix の <SelectValue> の自動テキスト推定に頼らず、明示的に正典値を描画。
+  const currentFloorLabel =
+    FANZA_FLOORS.find((f) => f.code === currentFloor)?.label || "動画";
+  const currentSortLabel =
+    FANZA_SORT_OPTIONS.find((s) => s.value === currentSort)?.label || "新着順";
+
   function update(key: string, value: string | null, defaultValue: string) {
     const next = new URLSearchParams(params);
     if (!value || value === defaultValue) next.delete(key);
@@ -53,7 +60,7 @@ export function FilterBar() {
           className="h-9 min-w-[120px] rounded-full border-white/10 bg-white/5 text-xs notranslate"
           translate="no"
         >
-          <SelectValue placeholder="ジャンル" />
+          <SelectValue placeholder="ジャンル">{currentFloorLabel}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           {FANZA_FLOORS.map((floor) => (
@@ -72,7 +79,7 @@ export function FilterBar() {
           className="h-9 min-w-[120px] rounded-full border-white/10 bg-white/5 text-xs notranslate"
           translate="no"
         >
-          <SelectValue placeholder="並び替え" />
+          <SelectValue placeholder="並び替え">{currentSortLabel}</SelectValue>
         </SelectTrigger>
         <SelectContent>
           {FANZA_SORT_OPTIONS.map((option) => (
