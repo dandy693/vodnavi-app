@@ -35,16 +35,24 @@ export function FilterBar() {
     });
   }
 
+  // ブラウザ翻訳 (Google Translate 等) が Radix Select の表示テキストを書き換え、
+  // 内部 state と乖離して "videoa" / "date" のような raw code が露出する事故を
+  // 防止する。`translate="no"` と Google Translate 固有の `notranslate` クラスを
+  // 二重で配線して翻訳対象から完全除外する。
   return (
     <div
       data-pending={isPending ? "" : undefined}
-      className="flex flex-wrap items-center gap-2"
+      className="flex flex-wrap items-center gap-2 notranslate"
+      translate="no"
     >
       <Select
         value={currentFloor}
         onValueChange={(v) => update("floor", v, DEFAULT_FLOOR)}
       >
-        <SelectTrigger className="h-9 min-w-[120px] rounded-full border-white/10 bg-white/5 text-xs">
+        <SelectTrigger
+          className="h-9 min-w-[120px] rounded-full border-white/10 bg-white/5 text-xs notranslate"
+          translate="no"
+        >
           <SelectValue placeholder="ジャンル" />
         </SelectTrigger>
         <SelectContent>
@@ -60,7 +68,10 @@ export function FilterBar() {
         value={currentSort}
         onValueChange={(v) => update("sort", v, DEFAULT_SORT)}
       >
-        <SelectTrigger className="h-9 min-w-[120px] rounded-full border-white/10 bg-white/5 text-xs">
+        <SelectTrigger
+          className="h-9 min-w-[120px] rounded-full border-white/10 bg-white/5 text-xs notranslate"
+          translate="no"
+        >
           <SelectValue placeholder="並び替え" />
         </SelectTrigger>
         <SelectContent>
