@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 
 import { ConfigErrorPanel } from "@/components/config-error";
@@ -31,6 +32,7 @@ type HomeSearchParams = {
   sort?: string;
   floor?: string;
   source?: string;
+  page?: string;
 };
 
 // チャネル別ヒーローコピー。null/undefined/未知の値は default に明示フォールバックする。
@@ -82,6 +84,13 @@ export default async function HomePage({
   const sourceId = resolveConciergeSource(params.source).id;
   const heroCopy = selectHeroCopy(sourceId);
 
+  // ページ番号を型安全に数値化（不正な値 / NaN は 1 にフォールバック）
+  const parsedPage = parseInt(params.page ?? "1", 10);
+  const currentPage =
+    Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+  // FANZA API は 1-indexed offset (page 1 → offset 1, page 2 → offset 31, ...)
+  const currentOffset = (currentPage - 1) * HITS + 1;
+
   const floorMeta =
     FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
 
@@ -91,6 +100,23 @@ export default async function HomePage({
   const apiKeyword = floorMeta.injectKeyword
     ? [floorMeta.injectKeyword, keyword].filter(Boolean).join(" ")
     : keyword;
+
+  // pagination URL builder — URL には raw 値 (params.floor / params.keyword) を保つ。
+  // apiFloor / apiKeyword は internal で URL には現れない。
+  function buildPageUrl(page: number): string {
+    const sp = new URLSearchParams();
+    if (params.floor && params.floor !== DEFAULT_FLOOR)
+      sp.set("floor", params.floor);
+    if (params.sort && params.sort !== DEFAULT_SORT) sp.set("sort", params.sort);
+    if (keyword) sp.set("keyword", keyword);
+    if (params.source) sp.set("source", params.source);
+    if (page > 1) sp.set("page", String(page));
+    const qs = sp.toString();
+    return qs ? `/?${qs}` : "/";
+  }
+
+  const prevPageHref = currentPage > 1 ? buildPageUrl(currentPage - 1) : null;
+  const nextPageHref = buildPageUrl(currentPage + 1);
 
   return (
     <>
@@ -102,6 +128,10 @@ export default async function HomePage({
           keyword={apiKeyword}
           source={sourceId}
           heroCopy={heroCopy}
+          offset={currentOffset}
+          currentPage={currentPage}
+          prevPageHref={prevPageHref}
+          nextPageHref={nextPageHref}
         />
       </Suspense>
     </>
@@ -115,6 +145,10 @@ async function ResultsSection({
   keyword,
   source,
   heroCopy,
+  offset,
+  currentPage,
+  prevPageHref,
+  nextPageHref,
 }: {
   floor: string;
   service: string;
@@ -122,6 +156,10 @@ async function ResultsSection({
   keyword?: string;
   source: ConciergeSource;
   heroCopy: HeroCopy;
+  offset: number;
+  currentPage: number;
+  prevPageHref: string | null;
+  nextPageHref: string;
 }) {
   let totalCount: number | undefined;
   let items: Awaited<ReturnType<typeof fetchItemList>>["result"]["items"] = [];
@@ -135,6 +173,7 @@ async function ResultsSection({
       floor,
       sort,
       hits: HITS,
+      offset,
       keyword,
     });
     items = data.result.items ?? [];
@@ -207,7 +246,22 @@ async function ResultsSection({
         ) : items.length === 0 ? (
           <EmptyState />
         ) : (
-          <ProductGrid items={items} />
+          <>
+            <ProductGrid items={items} />
+            <Pagination
+              currentPage={currentPage}
+              hasNext={
+                totalCount !== undefined && currentPage * HITS < totalCount
+              }
+              prevPageHref={prevPageHref}
+              nextPageHref={nextPageHref}
+              totalPages={
+                totalCount !== undefined
+                  ? Math.max(1, Math.ceil(totalCount / HITS))
+                  : undefined
+              }
+            />
+          </>
         )}
       </section>
     </>
@@ -227,5 +281,56 @@ function HeroSkeleton() {
         ))}
       </div>
     </section>
+  );
+}
+
+function Pagination({
+  currentPage,
+  hasNext,
+  prevPageHref,
+  nextPageHref,
+  totalPages,
+}: {
+  currentPage: number;
+  hasNext: boolean;
+  prevPageHref: string | null;
+  nextPageHref: string;
+  totalPages?: number;
+}) {
+  if (!prevPageHref && !hasNext) return null;
+  return (
+    <nav
+      aria-label="ページネーション"
+      className="mt-8 flex items-center justify-between border-t border-white/10 pt-6 text-sm"
+    >
+      {prevPageHref ? (
+        <Link
+          href={prevPageHref}
+          className="rounded-full border border-white/15 px-4 py-2 text-muted-foreground transition-colors hover:border-amber-300/40 hover:text-amber-200"
+        >
+          ← 前のページ
+        </Link>
+      ) : (
+        <span aria-hidden className="invisible">
+          ← 前のページ
+        </span>
+      )}
+      <span className="text-xs text-muted-foreground">
+        ページ {currentPage}
+        {totalPages !== undefined && ` / ${totalPages}`}
+      </span>
+      {hasNext ? (
+        <Link
+          href={nextPageHref}
+          className="rounded-full border border-amber-300/40 bg-amber-300/10 px-4 py-2 text-amber-200 transition-colors hover:border-amber-300/60 hover:bg-amber-300/15"
+        >
+          次のページ →
+        </Link>
+      ) : (
+        <span aria-hidden className="invisible">
+          次のページ →
+        </span>
+      )}
+    </nav>
   );
 }
