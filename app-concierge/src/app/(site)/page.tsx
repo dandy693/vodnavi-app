@@ -89,7 +89,7 @@ export default async function HomePage({
     <>
       <Suspense fallback={<HeroSkeleton />}>
         <ResultsSection
-          floor={floor}
+          floor={floorMeta.code}
           service={floorMeta.service}
           sort={sort}
           keyword={keyword}
