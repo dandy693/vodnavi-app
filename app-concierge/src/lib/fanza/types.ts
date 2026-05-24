@@ -153,10 +153,9 @@ export interface FanzaFloor {
 
 export const FANZA_FLOORS: FanzaFloor[] = [
   { code: "videoa", label: "動画", service: "digital" },
-  { code: "videoc", label: "素人", service: "digital" }, // FANZA API 受理確認 (200 OK)
+  { code: "videoc", label: "素人", service: "digital" }, // FANZA API 受理確認 (200 OK / 在庫0受領)
   { code: "anime", label: "アニメ", service: "digital" },
-  { code: "nikkatsu", label: "成人映画", service: "digital" }, // 復元: 実測によりこれが正典と証明
-  { code: "videobook", label: "成人コミック", service: "digital" }, // 復元: 実測によりこれが正典と証明
+  { code: "nikkatsu", label: "成人映画", service: "digital" }, // FANZA API 受理確認 (200 OK / 30件取得)
 ];
 
 export const FANZA_SORT_OPTIONS: { value: DmmSort; label: string }[] = [
