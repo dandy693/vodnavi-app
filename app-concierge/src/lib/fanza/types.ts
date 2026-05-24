@@ -155,17 +155,15 @@ export interface FanzaFloor {
 
 export const FANZA_FLOORS: FanzaFloor[] = [
   { code: "videoa", label: "動画", service: "digital" },
-  { code: "anime", label: "アニメ", service: "digital" },
-  { code: "nikkatsu", label: "成人映画", service: "digital" },
-  // 【完全体・素人】
-  // URLは ?floor=amateur、UIは「素人」、通信はvideoa、裏側で「素人」キーワードを完全インジェクション
   {
     code: "amateur",
     label: "素人",
     service: "digital",
     apiFloor: "videoa",
     injectKeyword: "素人",
-  },
+  }, // 需要激高の「素人」を2番手にスピード配置
+  { code: "anime", label: "アニメ", service: "digital" },
+  { code: "nikkatsu", label: "成人映画", service: "digital" },
 ];
 
 export const FANZA_SORT_OPTIONS: { value: DmmSort; label: string }[] = [
