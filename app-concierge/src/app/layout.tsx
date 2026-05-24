@@ -42,15 +42,10 @@ export const metadata: Metadata = {
     "FANZA から厳選した最新作・話題作を、価格・レビュー・新着ですぐ見つけられる VOD ナビゲーション。スマホ最適化、ワンタップで視聴開始。",
   keywords: ["VOD", "FANZA", "アフィリエイト", "動画", "新作", "ランキング"],
   alternates: { canonical: "/" },
-  manifest: "/site.webmanifest",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
-      { url: "/icon-512.png", sizes: "512x512", type: "image/png" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180" }],
-  },
+  // icons / manifest は Next.js App Router の file-convention auto-detect に委譲：
+  //   - app/icon.svg → <link rel="icon" type="image/svg+xml" ...> を自動 emit
+  //   - 追加で apple-icon.png や manifest.webmanifest を app/ 配下に置けば自動拾い上げ
+  // 旧 metadata 明示参照は public/ 不在ファイルへの 404 を量産していたため撤去。
   robots: {
     index: true,
     follow: true,
