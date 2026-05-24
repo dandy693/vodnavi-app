@@ -85,14 +85,21 @@ export default async function HomePage({
   const floorMeta =
     FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
 
+  // FANZA API 送信時の実 floor は apiFloor 指定があればそちら（例: amateur → videoa）。
+  // ユーザ keyword と inject keyword は空白区切りで AND 結合（FANZA の検索は space=AND）。
+  const apiFloor = floorMeta.apiFloor ?? floorMeta.code;
+  const apiKeyword = floorMeta.injectKeyword
+    ? [floorMeta.injectKeyword, keyword].filter(Boolean).join(" ")
+    : keyword;
+
   return (
     <>
       <Suspense fallback={<HeroSkeleton />}>
         <ResultsSection
-          floor={floorMeta.code}
+          floor={apiFloor}
           service={floorMeta.service}
           sort={sort}
-          keyword={keyword}
+          keyword={apiKeyword}
           source={sourceId}
           heroCopy={heroCopy}
         />

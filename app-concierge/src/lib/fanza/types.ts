@@ -146,15 +146,26 @@ export interface DmmErrorResponse {
  * floor_code: API 用のフロアコード
  */
 export interface FanzaFloor {
-  code: string;
-  label: string;
-  service: string;
+  code: string;       // URL・UI識別用
+  label: string;      // UI表示用
+  service: string;    // API送信用サービス
+  apiFloor?: string;  // 【新規】指定時はFANZA APIのfloorパラメータとして上書き送信
+  injectKeyword?: string; // 【新規】指定時は裏側で検索キーワードとして強制結合
 }
 
 export const FANZA_FLOORS: FanzaFloor[] = [
   { code: "videoa", label: "動画", service: "digital" },
   { code: "anime", label: "アニメ", service: "digital" },
-  { code: "nikkatsu", label: "成人映画", service: "digital" }, // これらは確実に30件ロードされる
+  { code: "nikkatsu", label: "成人映画", service: "digital" },
+  // 【完全体・素人】
+  // URLは ?floor=amateur、UIは「素人」、通信はvideoa、裏側で「素人」キーワードを完全インジェクション
+  {
+    code: "amateur",
+    label: "素人",
+    service: "digital",
+    apiFloor: "videoa",
+    injectKeyword: "素人",
+  },
 ];
 
 export const FANZA_SORT_OPTIONS: { value: DmmSort; label: string }[] = [
