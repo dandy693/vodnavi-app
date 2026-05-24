@@ -37,6 +37,9 @@ export function FilterBar() {
     const next = new URLSearchParams(params);
     if (!value || value === defaultValue) next.delete(key);
     else next.set(key, value);
+    // floor / sort 切替時は結果集合そのものが変わるため、page=N の文脈は無効。
+    // 物理的にパージして先頭ページ (page=1 ≡ 省略) に強制リセット。
+    next.delete("page");
     startTransition(() => {
       router.push(`/?${next.toString()}`);
     });

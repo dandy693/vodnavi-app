@@ -19,6 +19,8 @@ export function SearchForm() {
     const trimmed = keyword.trim();
     if (trimmed) next.set("keyword", trimmed);
     else next.delete("keyword");
+    // 検索キーワード変更時は結果集合が変わるため、page=N は無効化して 1 ページ目へ。
+    next.delete("page");
     startTransition(() => {
       router.push(`/?${next.toString()}`);
     });
@@ -28,6 +30,8 @@ export function SearchForm() {
     setKeyword("");
     const next = new URLSearchParams(params);
     next.delete("keyword");
+    // キーワードクリア時も安全に 1 ページ目へフォールバック。
+    next.delete("page");
     startTransition(() => {
       router.push(`/?${next.toString()}`);
     });
