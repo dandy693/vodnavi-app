@@ -110,7 +110,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const PAGINATION_DEPTH = 10;
   const pagination: MetadataRoute.Sitemap = FANZA_FLOORS.flatMap((floor) =>
     Array.from({ length: PAGINATION_DEPTH - 1 }, (_, i) => ({
-      url: absoluteUrl(`/?floor=${floor.code}&page=${i + 2}`),
+      url: absoluteUrl(`/?floor=${floor.code}&amp;page=${i + 2}`),
       lastModified: now,
       changeFrequency: "daily" as const,
       priority: 0.5,
