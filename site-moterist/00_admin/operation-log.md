@@ -1,5 +1,45 @@
 ﻿# Operation Log
 
+## 2026-05-24
+
+### 実施内容
+- `the-thor-child/functions.php` 末尾に `add_filter('the_content', ...)` を追加 — `is_single()` 全件末尾に `app.vodnavi.jp/concierge?source=moterist&intent=actress` への CTA を強制挿入
+- ターゲット: 作品ページ（七沢みあ / 鳥羽みもり / 河北彩伽 等、24h 上位 PV ページ群）
+- リモートバックアップ: `functions.php.bak_20260524_073732`
+- ローカルバックアップ: `site-moterist/07_wp/backups/functions_20260524_073732.php`
+- `php -l` syntax OK / file 17,069 → 19,769 bytes
+- 詳細: `management/CHANGELOG.md` 2026-05-24 エントリ
+
+### 追補（同日中）
+- 上記フィルタに `in_the_loop() && is_main_query()` ガード適用（プロジェクト規約準拠、line 265 の FANZA CTA フィルタと同パターン）
+- リモートバックアップ: `functions.php.bak_mainquery_20260524_074542`
+- `php -l` OK、19,769 → 19,805 bytes
+- 結果: post 1095 / 1106 / home は期待通り。**post 1121 (miru-5) は依然 2 件描画** — THE THOR が同一 post_content を別 `<section>` 内で再描画している兆候、サブループ起因ではない
+
+### 追補（同日中・revert）— static $injected guard 試行と即時ロールバック
+- static $injected = false; ガード実装 → REGRESSION 検出（miru-5/mio-ishikawa2 で CTA 0 化）
+- 即時ロールバック実施。production は guard-only 状態（19,805 bytes, miru-5 = 2 件描画状態）に復帰
+- 真因推定: THE THOR の meta description 抽出フェーズが先に the_content フィルタを走らせ static をロック → **後に検証で誤りと判明**
+
+### 追補（同日中・revert 2 回目）— did_action('wp_head') + static 合成試行
+- 候補 (1) 実装、同じく regression 確認、即時ロールバック
+- `did_action()` は `do_action` 開始時点でインクリメントされる仕様により wp_head callback 内で既に 1 → 早期 return が効かない
+- 真因の最終特定: **`[afTag]` ショートコード（THE THOR `tag.php:23`）の `apply_filters('the_content', get_the_content())` 再帰呼び出しに完全相関**（miru-5/mio-ishikawa2 のみ post_content に `[afTag]` 含む）
+- 真の解法候補: `$wp_current_filter` のネスト深度チェックで再帰呼び出しを除外（次セッション判断）
+- 詳細: `management/CHANGELOG.md` 2026-05-24 エントリ後半参照
+- 失敗版遺骸: `functions.php.regression_static_*`, `functions.php.regression_didaction_*`
+
+### 追補（同日中・final）— インフラ撤去・CCO 責務移管
+- インフラハックでの解決を断念。`add_filter('the_content', ...)` ブロックを functions.php から **完全削除**（line 432-464）
+- ファイルサイズ 19,805 → **17,069 bytes**（2026-05-24 開始時と完全一致）／`php -l` OK
+- curl 全ページで `intent=actress` = **0** 確認、ホーム既存 CTA は健在
+- アクトレス CTA 配置責務は **CCO（コンテンツ層）へ移管**。今後は staging Markdown / OPERATION_MANUAL §3.2 経路で記事ごとに生 HTML 埋込
+- バックアップ系譜 + CCO 引き継ぎ事項は `management/CHANGELOG.md` 2026-05-24「追補（同日中・final）」参照
+
+### 次回作業
+- **CCO**: 24h 上位 PV ページ（七沢みあ / 鳥羽みもり / 河北彩伽 / 乙アリス / 石川澪 / miru 等）への CTA 手動埋込の staging Markdown 生成
+- 2026-05-31 サタデー・レビューで `ai_session_start` の 24h 発火数を観測
+
 ## 2026-05-01
 
 ### 実施内容

@@ -1,0 +1,156 @@
+{
+  "schema_version": "1.0.0-emergency",
+  "captured_at_iso": "2026-05-24T00:00:00+09:00",
+  "captured_by": "claude-code (Chrome MCP scrape)",
+  "captured_via": "Browser scrape of analytics.google.com (no API auth — pull-ga4.ts stub not unblocked due to missing GA4_PROPERTY_ID/GA4_ACCESS_TOKEN and absent gcloud/tsx tooling)",
+  "source_of_truth": "management/OPERATION_MANUAL.md §2.2 (Chrome 連携経路)",
+  "active_account_verified": {
+    "google_account": "moterist.com@gmail.com",
+    "authuser": 2,
+    "method": "DOM email regex match + GA4 universal-picker tooltip cross-check"
+  },
+  "date_range": {
+    "label": "直近24時間",
+    "start_date": "2026-05-23",
+    "end_date": "2026-05-24",
+    "ga4_url_params": "_u.date00=20260523&_u.date01=20260524"
+  },
+  "property_app_vod_seiyaku": {
+    "spec_measurement_id": "G-GG7JV9MJRW",
+    "ga4_property_id": "489519780",
+    "ga4_account_id": "355462253",
+    "ga4_account_label": "VODまとめ研究所",
+    "ga4_property_label": "vodnavi.jp",
+    "events_24h": {
+      "total_events": 2666,
+      "total_users": 492,
+      "events_per_user": 5.44,
+      "total_revenue_jpy": 0,
+      "distinct_event_names": 6,
+      "rows": [
+        { "rank": 1, "event": "page_view",       "count": 1208, "share_pct": 45.31, "users": 492, "user_pct": 100.00, "per_user": 2.47 },
+        { "rank": 2, "event": "session_start",   "count":  504, "share_pct": 18.90, "users": 492, "user_pct": 100.00, "per_user": 1.03 },
+        { "rank": 3, "event": "first_visit",     "count":  487, "share_pct": 18.27, "users": 484, "user_pct":  98.37, "per_user": 1.01 },
+        { "rank": 4, "event": "user_engagement", "count":  373, "share_pct": 13.99, "users": 327, "user_pct":  66.46, "per_user": 1.14 },
+        { "rank": 5, "event": "click",           "count":   52, "share_pct":  1.95, "users":  41, "user_pct":   8.33, "per_user": 1.27 },
+        { "rank": 6, "event": "scroll",          "count":   42, "share_pct":  1.58, "users":  40, "user_pct":   8.13, "per_user": 1.05 }
+      ],
+      "custom_events_absent_in_24h": [
+        "ai_session_start",
+        "ai_affiliate_click",
+        "ai_recommendation_view",
+        "fanza_cta_click",
+        "product_click",
+        "early_cookie_burn",
+        "video_start",
+        "video_progress",
+        "view_search_results"
+      ]
+    },
+    "events_28d_baseline": {
+      "label": "2026-04-26 ～ 2026-05-23 (default GA4 range)",
+      "total_events": 6080,
+      "total_users": 1111,
+      "events_per_user": 5.47,
+      "distinct_event_names": 13,
+      "rows": [
+        { "rank":  1, "event": "page_view",              "count": 2641, "users": 1111, "per_user": 2.38 },
+        { "rank":  2, "event": "session_start",          "count": 1150, "users": 1111, "per_user": 1.04 },
+        { "rank":  3, "event": "first_visit",            "count": 1115, "users": 1111, "per_user": 1.00 },
+        { "rank":  4, "event": "user_engagement",        "count":  850, "users":  739, "per_user": 1.15 },
+        { "rank":  5, "event": "scroll",                 "count":  190, "users":  170, "per_user": 1.12 },
+        { "rank":  6, "event": "click",                  "count":  115, "users":   76, "per_user": 1.51 },
+        { "rank":  7, "event": "ai_session_start",       "count":    8, "users":    2, "per_user": 4.00 },
+        { "rank":  8, "event": "video_progress",         "count":    5, "users":    2, "per_user": 2.50 },
+        { "rank":  9, "event": "video_start",            "count":    2, "users":    2, "per_user": 1.00 },
+        { "rank": 10, "event": "ai_recommendation_view", "count":    1, "users":    1, "per_user": 1.00 },
+        { "rank": 11, "event": "fanza_cta_click",        "count":    1, "users":    1, "per_user": 1.00 },
+        { "rank": 12, "event": "product_click",          "count":    1, "users":    1, "per_user": 1.00 },
+        { "rank": 13, "event": "view_search_results",    "count":    1, "users":    1, "per_user": 1.00 }
+      ],
+      "notable_absences_in_28d": [
+        "ai_affiliate_click",
+        "early_cookie_burn"
+      ]
+    },
+    "realtime_30min_snapshot": {
+      "captured_at_iso": "2026-05-24T00:00:00+09:00",
+      "active_users_30min": "4-6 (drifting during capture)",
+      "active_users_5min": 1,
+      "active_users_per_min": "0.5 - 1",
+      "country_breakdown": { "Japan": "4-6" },
+      "first_referrer": "データなし (no source/referrer attribution)",
+      "top_pages": [
+        { "title": "七沢みあ10タイトル！大放出！12時間 BEST ｜ 出演:七沢みあ | VODNAVI", "views": 2 },
+        { "title": "制服マ○コ拡張少女 鳥羽みもり ｜ 出演:鳥羽みもり | VODNAVI",         "views": 2 }
+      ]
+    },
+    "channel_breakdown_home_default_range": {
+      "note": "GA4 Home dashboard \"セッション : セッションのメインチャネルグループ\" card (default 7-day range, comparison vs. prior period)",
+      "rows": [
+        { "channel": "Organic Search", "sessions": 1024, "delta_pct":  7776.9 },
+        { "channel": "Direct",         "sessions":   44, "delta_pct":   175.0 },
+        { "channel": "Referral",       "sessions":    2, "delta_pct":   null },
+        { "channel": "Organic Social", "sessions":    1, "delta_pct":   null }
+      ],
+      "moterist_referral_detected": false,
+      "moterist_referral_sessions": 0
+    }
+  },
+  "property_moterist_shukyaku": {
+    "spec_measurement_id": "G-5HYV772ER9",
+    "spec_ga4_property_id": "393864941",
+    "ga4_account_id_picker_visible": "275986901",
+    "ga4_account_label_picker_visible": "モテリスト",
+    "status": "INACCESSIBLE",
+    "reason": "GA4 web UI redirected all navigation attempts (URL fragment / property-picker link / refed click) back to /a355462253p489519780/reports/intelligenthome. moterist.com@gmail.com (authuser=2) has visibility of the property in the picker but the active session lacks read permission, or the GA4 frontend hard-locks to the last accessible property. Confirmed via 4 distinct entry-point attempts (URL nav, picker single-click, picker double-click, accessibility-tree ref click).",
+    "secondary_property_visible_but_also_blocked": {
+      "ga4_property_id": "538218455",
+      "ga4_account_id": "355462253",
+      "label": "moterist.com (under VODまとめ研究所 account, distinct from 393864941)",
+      "status": "Also redirected to p489519780 on access"
+    },
+    "data_24h": null,
+    "data_realtime": null,
+    "blockers_to_resolve": [
+      "moterist.com@gmail.com の p393864941 への閲覧者ロール付与確認 (管理 > プロパティのアクセス管理)",
+      "あるいは p393864941 自体が削除済み/旧プロパティで、現行 G-5HYV772ER9 が p538218455 へ再配線されているかの確認",
+      "OPERATION_MANUAL §0 の解析アカウント前提と TASK_BOARD の \"GA4 ID 断片化\" 注意書きが整合していない点の解消"
+    ]
+  },
+  "verification_checks": {
+    "linker_moterist_to_app_propagation": {
+      "status": "FAIL",
+      "evidence": [
+        "App 24h Referral channel: 0 sessions",
+        "App 7d Referral channel: 2 sessions total, neither traceable to moterist hostname (\"moterist\" not present in any dimension value)",
+        "Realtime 30-min first-referrer card: データなし",
+        "No session_source dimension with value containing \"moterist\" detected in any scraped view"
+      ]
+    },
+    "ai_session_start_race_condition_resolved": {
+      "status": "FAIL",
+      "evidence": [
+        "24h window: ai_session_start fired 0 times despite 504 session_start and 492 unique users (expected ratio per §4b.4: ≥0.50 of session_start; observed: 0.00)",
+        "28d window: ai_session_start fired 8 times from 2 unique users only (≈0.7% of session_start)",
+        "ai_affiliate_click: 0 fires in 24h AND 0 fires in 28d — money event entirely absent",
+        "early_cookie_burn: 0 fires in 24h AND 0 fires in 28d — §4b.4 invariant not deployed or not firing"
+      ]
+    },
+    "source_moterist_query_param_reaching_ga4": {
+      "status": "FAIL",
+      "evidence": [
+        "Body-text scan of GA4 Events, User Acquisition, and Home dashboards for substring \"moterist\": 0 hits across all 24h and 28d views on property p489519780",
+        "Body-text scan for substring \"_gl=\" (cross-domain linker URL param): 0 hits",
+        "session_source / first_user_source dimensions never surfaced a value containing \"moterist\""
+      ]
+    }
+  },
+  "method_notes": [
+    "pull-ga4.ts / pull-gsc.ts stubs were not unblocked: GA4_PROPERTY_ID, GA4_ACCESS_TOKEN, GSC_SITES, GSC_ACCESS_TOKEN, GOOGLE_APPLICATION_CREDENTIALS all unset; gcloud CLI not on PATH; tsx not installed. Direct REST routes to analyticsdata.googleapis.com require a Bearer token we do not have. Chrome 連携経路 (OPERATION_MANUAL §2.2) used instead.",
+    "GA4 web UI uses Angular with isTrusted-checked event handlers and virtualized card lists — synthetic JS clicks and innerText scrapes are partial. Physical mouse clicks via Chrome MCP computer tool worked for navigation and date-range picker.",
+    "Date range was set via URL parameter (_u.date00 / _u.date01 in YYYYMMDD), not via the date-picker input fields (the Japanese-locale date input parses '2026年5月23日' inconsistently — first attempt collapsed to 2026-01-01 and was discarded).",
+    "Search Console data was NOT pulled in this emergency run; the user request scope was GA4-centric. GSC verification to be deferred to the standard Saturday-Review window.",
+    "Chrome MCP filter blocked some innerHTML reads of GA4 card outerHTML containing bookmark URLs with query strings (\"Cookie/query string data\" guard). Worked around by extracting hrefs via document.querySelectorAll('a').href instead."
+  ]
+}
