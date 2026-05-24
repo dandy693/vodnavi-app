@@ -4,6 +4,205 @@
 
 ---
 
+## 2026-05-24 — CTO (Claude Opus 4.7) — moterist.com 全 single ページ末尾への concierge CTA 一括配線（functions.php フィルタ注入）
+
+### 背景
+
+24h GA4 緊急監査（`management/_metrics/2026-w21/24h-emergency-raw.json`）で `ai_session_start` の 24h 発火数が **0 件**（28d でも 8 件 / 2 ユーザのみ）と判明。原因解析の結果、24h トラフィック 492 ユーザの大半が **作品ページ（七沢みあ / 鳥羽みもり 等）** に集中している一方、`app.vodnavi.jp/concierge?source=moterist` への CTA がホームページにしか存在せず、流入と動線が断絶していた（linker 設定本体 / live HTML / Service Worker キャッシュ戦略はすべて健全と確認済）。
+
+### 適用変更
+
+`public_html/moterist.com/wp-content/themes/the-thor-child/functions.php` の末尾に `add_filter('the_content', ...)` を追加。`is_single()` が true の全ページ本文末尾に、`BRAND_DESIGN_GUIDE.md` 準拠（dark x champagne gold）の確定送客 CTA を **サーバサイドで物理挿入**。DB の `post_content` には触れないため `wpautop` / TinyMCE 整形バグの影響を受けず、過去全記事を 1 リクエストで動線化。
+
+### CTA 仕様（要点）
+
+- `href="https://app.vodnavi.jp/concierge?source=moterist&intent=actress"`
+- `intent=actress` 固定（Step 1 / 全 single 一括）
+- 見出し: 「今夜の気分を、AIコンシェルジュに『もう少し詳しく』任せる」
+- 注釈: 18歳以上限定 + #PR 明示
+
+### 検証結果
+
+- `php -l` ✓ syntax OK / file size 17,069 → 19,769 bytes (+2,700)
+- `https://moterist.com/fanza20250329/` (post 1095) curl: `intent=actress` href = **1 hit** ✓
+- 最新 post `miru-5` curl: `intent=actress` href = **2 hits**（THE THOR の「関連記事」widget が `the_content` フィルタを再走させている可能性。複数表示を抑制したい場合は `in_the_loop() && is_main_query()` ガード追加で対処可能）
+- `https://moterist.com/` (ホーム) curl: `intent=actress` = **0 hits** ✓（`is_single()` 正常 false）
+- バックアップ: remote `functions.php.bak_20260524_073732` + local `site-moterist/07_wp/backups/functions_20260524_073732.php`
+
+### 効果検証（次回サタデー・レビュー）
+
+- `ai_session_start` 発火数 / 24h（期待: ≥ session_start の数十%）
+- `source=moterist&intent=actress` の URL でランディングしたセッション数
+- moterist.com → app.vodnavi.jp の Referral セッション数
+
+### ロールバック
+
+```bash
+ssh ... "cp public_html/moterist.com/wp-content/themes/the-thor-child/functions.php.bak_20260524_073732 \
+              public_html/moterist.com/wp-content/themes/the-thor-child/functions.php"
+```
+
+### 追補 2026-05-24 — メインクエリガード適用（partial fix）
+
+CHANGELOG 上記エントリ直後、`if (is_single())` を `if (is_single() && in_the_loop() && is_main_query()) {` に書き換え（既存 line 265 の FANZA CTA フィルタと同パターン、プロジェクト規約準拠）。リモートバックアップ: `functions.php.bak_mainquery_20260524_074542`。`php -l` syntax OK（19,769 → 19,805 bytes, +36）。
+
+curl 再検証結果：
+
+| ページ | ガード前 | ガード後 | 期待 |
+|---|---|---|---|
+| `fanza20250329` (post 1095) | 1 | 1 | 1 ✓ |
+| `fanza20250331` (post 1106) | 未測 | 1 | 1 ✓ |
+| `miru-5` (post 1121) | 2 | **2** ← 未解消 | 1 |
+| home | 0 | 0 | 0 ✓ |
+
+`miru-5` の二重描画は **サブループ起因ではない**（`in_the_loop() && is_main_query()` の両方が true な場所で 2 回発火）。HTML positional 分析：
+- 1 件目: 通常 article 内 (`...</div></div>`、heading anchor `outline_1__1`)
+- 2 件目: 別 `<section>` 内 (`...</div>　 </section>`、heading anchor `outline_2__5`)
+
+THE THOR が **同一の post_content を 2 度レンダリング** しているテンプレートが存在（next/previous preview か AMP-style ミラーが推定原因）。
+
+### 追補（同日中・revert）— `static $injected` ガード試行と即時ロールバック
+
+`static $injected = false;` を関数頭に、条件式に `&& !$injected`、`$content .= $cta_html;` 直後に `$injected = true;` の 3 箇所差分で実装（local Edit → scp push）。`php -l` OK / 19,805 → 20,177 bytes。
+
+**結果: REGRESSION 検出 (即時ロールバック実施)**:
+
+| ページ | guard 前 | static 後 | 期待 |
+|---|---|---|---|
+| miru-5 | 2 | **0** | 1 |
+| mio-ishikawa2 | 2 | **0** | 1 |
+| fanza20250329 / 20250331 | 1 | 1 | 1 ✓ |
+| home | 0 | 0 | 0 ✓ |
+
+**真因仮説**: THE THOR が 1 ページ内で `the_content` を 2 回走らせる際、**先頭の呼び出しが meta description / OG description 用の text 抽出フェーズ**（`wp_strip_all_tags` を経るため curl では URL が消えるが、フィルタは確かに走る）。static guard はそこで $injected をロック、後段の本体 render を完全スキップ → CTA 消失。fanza20250329 / fanza20250331 が無事なのは、これらの post に手動 `post_excerpt` が設定されており抽出フェーズが skip される（推定）。
+
+**ロールバック**: `functions.php.bak_static_20260524_075203` から復元、再 `php -l` OK / 19,805 bytes。投入後の挙動は guard-only 状態と同一に復帰確認済（miru-5/mio-ishikawa2 = 2, fanza = 1, home = 0）。失敗版は `functions.php.regression_static_*` として遺骸保存。
+
+**次の打ち手候補（再評価後）**:
+
+1. **`did_action('wp_head')` チェック追加**: `if (! did_action('wp_head')) return $content;` を冒頭に。`<head>` 出力中の text 抽出フェーズで早期 return することで static guard を安全化。
+2. **`get_queried_object_id() === get_the_ID()` チェック**: メインクエリの singular post 本体のみに限定（sub-render が異なる post ID で走るなら効く）。
+3. **post-ID 別 static 配列**: `static $emitted = [];` + post ID キーで「同一 post で 2 回目以降」だけスキップ（meta 抽出も同じ post ID なので根本解決にはならない可能性あり）。
+4. **THE THOR テンプレート (`single.php` / `content.php` / `inc/seo.php` 等) の grep 監査**で 2 つ目の `the_content()` 呼び出し位置を特定し、その文脈を確認してから打ち手選定。**最も慎重で正確**。
+5. **現状受容**: miru-5 等で CTA 2 個並ぶ状態を許容（ユーザ体験への害は限定的、ゼロにするより遥かに良い）。
+
+### 追補（同日中・revert 2 回目）— `did_action('wp_head')` + static の合成ガード試行と即時ロールバック
+
+候補 (1) を実装：`if (! did_action('wp_head')) return $content;` を関数冒頭、static guard と組み合わせ。`php -l` OK / 19,805 → 20,590 bytes。**結果 regression 同じ**（miru-5 / mio-* / fanza20250203 で CTA = 0）。
+
+理由判明：WP コアの `do_action()` 実装は `$wp_actions[$hook] = 1` を callback 実行 *前* にインクリメントする。すなわち wp_head の callback 内で実行される処理でも `did_action('wp_head') === 1` で guard を通過 → 効果なし。
+
+ロールバック → `functions.php.bak_finalguard_20260524_080156` (= 19,805 bytes, main-query guard 状態)。失敗版は `functions.php.regression_didaction_*` として遺骸保存。production は再度全 single ページに CTA 描画（miru-5/mio-* = 2, fanza* = 1, home = 0）の健全状態に復帰確認済。
+
+### 真因の完全特定 — `[afTag]` ショートコードによる `the_content` 再帰呼び出し
+
+curl HTML 中間部分の物理読解で **`afTag-602` JavaScript ブロック** を発見、`wp-content/themes/the-thor/inc/shortcode/tag.php:23` を確認した結果：
+
+```php
+function afTag_Scode($atts) {
+    ...
+    while ( $the_query->have_posts() ) {
+        $the_query->the_post();
+        $title = get_the_title();
+        $content = apply_filters( 'the_content', get_the_content() );  // ← ここで the_content 再起動
+        ...
+    }
+}
+```
+
+**完全相関データ**（rollback 後 curl 実測）:
+
+| post ID (slug) | post_content 内 `[afTag]` | CTA 数 |
+|---|---|---|
+| 1121 (miru-5) | **1 件** | **2** |
+| 1084 (mio-ishikawa2) | **1 件** | **2** |
+| 1095 (fanza20250329) | 0 件 | 1 |
+| 1106 (fanza20250331) | 0 件 | 1 |
+| 1073 (fanza20250203) | 0 件 | 1 |
+
+post_excerpt は全件空、`[afTag]` の有無のみが二重描画と相関。**post_excerpt 仮説は外れ、再帰 apply_filters 仮説が正解**。
+
+### the_content フィルタの完全な登録順序
+
+| priority | filter | 出所 |
+|---|---|---|
+| 9 | `add_image_placeholders` | the-thor/inc/seo/layzr.php |
+| **10** | **our concierge CTA filter** | the-thor-child/functions.php:449 |
+| 11 | `do_shortcode` | WP core ← **ここで `[afTag]` が処理され、入れ子で apply_filters の chain 全体が再起動** |
+| 20 | `fit_add_outline` | the-thor/inc/front/outline.php (heading ID 採番 → `outline_1__1` / `outline_2__5` の出所) |
+| 20 | FANZA CTA filter | the-thor-child/functions.php:264 |
+| 21 | `fit_ad_headline` | the-thor/inc/shortcode/ad.php |
+| 99 | `vodnavi_image_alt_fallback` | the-thor-child/functions.php:386 |
+| 999999999 | `convert_content_amp` | the-thor/inc/amp/convert.php |
+
+### 真の解法（次セッションで提案予定）
+
+ネスト深度チェックを最初の判定にする：
+
+```php
+add_filter('the_content', function($content) {
+    global $wp_current_filter;
+    $depth = count(array_filter($wp_current_filter, fn($f) => $f === 'the_content'));
+    if ($depth > 1) return $content;  // [afTag] からの再帰呼び出しはスキップ
+
+    if (is_single() && in_the_loop() && is_main_query()) {
+        // ... 既存の CTA emit ...
+    }
+    return $content;
+});
+```
+
+これなら：
+- post_content の本体 the_content() 呼び出し（depth=1）: CTA 1 個 emit
+- `[afTag]` 経由の再帰 apply_filters（depth=2）: スキップ
+- static guard 不要（depth で重複排除されるため）
+- did_action / doing_action のような不確実な検知に依存しない
+
+ただし regression リスク再評価が必要なので、本セッションでは実装まで踏み込まず判断仰ぎとした。
+
+### 追補（同日中・final）— インフラ撤去・CCO 責務移管
+
+CSO 判断：THE THOR の `[afTag]` 起因の再帰描画問題をインフラハックで解くことを断念。`the_content` フィルタ経由の自動 CTA 結合を完全撤去し、**アクトレス CTA の配置責務を CCO（コンテンツ層）へ移管**。今後は記事リライト時に staging Markdown / DB 直接注入経路（OPERATION_MANUAL §3）で生 HTML として個別に埋め込む方針。
+
+**実施内容**:
+- `wp-content/themes/the-thor-child/functions.php` の `add_filter('the_content', ...)` ブロック（コメントヘッダ含む line 432-464）を **跡形なく完全削除**
+- ファイルサイズ: 19,805 → **17,069 bytes**（2026-05-24 開始時点と完全一致）
+- `php -l` OK / 残存 `the_content` filter は line 264 (FANZA CTA, 既存) と line 386 (image alt, 既存) のみ
+
+**curl verification** — `intent=actress` 全ページで **0**:
+
+| ページ | intent=actress |
+|---|---|
+| miru-5 / mio-ishikawa2 / mio-ishikawa | 0 ✓ |
+| fanza20250329 / 20250331 / 20250203 | 0 ✓ |
+| home | 0 ✓ |
+
+既存のホームページ `/concierge?source=moterist` リンク（functions.php 由来ではない、テンプレ / 別箇所の既存 CTA）は引き続き 1 件健在。インフラの安全性は 100% 復元。
+
+**バックアップ系譜**（forensics 用）:
+
+| ファイル名 | サイズ | 状態 |
+|---|---|---|
+| `functions.php.bak_20260524_073732` | 17,069 | original (pre-edit) |
+| `functions.php.bak_mainquery_20260524_074542` | 19,769 | first append (`is_single()` only) |
+| `functions.php.bak_static_20260524_075203` | 19,805 | main-query guard 適用後 |
+| `functions.php.regression_static_*` | 20,177 | static guard 実装版（regression） |
+| `functions.php.bak_finalguard_20260524_080156` | 19,805 | wp_head ガード試行 pre-state |
+| `functions.php.regression_didaction_*` | 20,590 | did_action+static 実装版（regression） |
+| `functions.php.bak_pre_removal_20260524_081817` | 19,805 | removal 直前 |
+| **現行 functions.php** | **17,069** | **clean / インフラフィルタ撤去後** |
+
+**CCO 側引き継ぎ事項**（次の指示書発行用メモ）:
+1. アクトレス系記事（[afTag] 含む含まないに関わらず）の本文末尾に手動 CTA 埋込が必要
+2. CTA 仕様は本 CHANGELOG 上記「CTA 仕様（要点）」参照（dark x champagne gold / `intent=actress` / 18歳以上注釈 / `#PR` 表示）
+3. 投入経路は OPERATION_MANUAL §3.2（CCO Markdown → Claude Code DB 直接注入）
+4. 過去記事の一括対応は CCO 側のバッチ生成で進める（site-moterist/03_content/staging/batch/）
+5. 効果検証は 2026-05-31 サタデー・レビューで `ai_session_start` を計測（現行は 24h 0 件 / 28d 8 件）
+
+**学び（memory 化済）**：`[[the-thor-double-the-content]]` — THE THOR の `[afTag]` ショートコードは `apply_filters('the_content', ...)` を再帰呼び出しするため、インフラ層での `the_content` ベース DOM 注入は depth-aware ガード（$wp_current_filter チェック）なしでは安定動作させられない。本案件では設計判断としてインフラ撤去を選択。
+
+---
+
 ## 2026-05-20 — CTO (Claude Opus 4.7) — 3 ドメイン統合監査レポート配置 + 重大 SEO/ブランド issue 4 件本番修復
 
 ### 背景

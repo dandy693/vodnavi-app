@@ -169,11 +169,12 @@ VR作品では、まなざしが主観化され、距離が静かに消えます
 あなたの気分、孤独、知性、そして余白に合う一本。  
 その扉を開くために、河北彩伽の作品棚は、今日も深いシャンパンゴールドの光を湛えています。
 
-<div class="contentBox contentBox-main" style="background-color: #121212; border: 2px solid #D4AF37; padding: 20px; margin-top: 30px; border-radius: 4px; text-align: center;">
-    <h2 style="color: #D4AF37; margin-top: 0; font-size: 1.4em;">今夜の気分を、AIコンシェルジュに「もう少し詳しく」任せる</h2>
-    <p style="color: #E0E0E0; font-size: 0.95em; margin-bottom: 20px;">ご覧いただいた作品世界から、あなたの今の繊細な気分・シチュエーションに合う至高の1本を、VODNAVIのAIがその場で裏メニューとして出力します。</p>
-    <div class="btn btn-center" style="margin-bottom: 10px;">
-        <a class="btn__link btn__link-primary" href="[https://app.vodnavi.jp/concierge?source=moterist&intent=actress](https://app.vodnavi.jp/concierge?source=moterist&intent=actress)" style="background-color: #D4AF37; color: #121212; font-weight: bold; padding: 12px 35px; border-radius: 4px; text-decoration: none; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">VODNAVI コンシェルジュへ相談する（無料）</a>
+<div class="contentBox contentBox-main luxury-cta-box">
+    <h2 class="luxury-cta-h2">今夜の気分を、AIコンシェルジュに「もう少し詳しく」任せる</h2>
+    <p class="luxury-cta-lead">ご覧いただいた作品世界から、あなたの今の繊細な気分・シチュエーションに合う至高の1本を、VODNAVIのAIがその場で裏メニューとして出力します。</p>
+    <div class="btn btn-center">
+        <a class="btn__link btn__link-primary" href="https://app.vodnavi.jp/concierge?source=moterist&intent=actress">VODNAVI コンシェルジュへ相談する（無料）</a>
     </div>
-    <p style="color: #888888; font-size: 0.8em; margin-top: 5px;">※本サービスは18歳以上の成人専用プライベートライブラリです（#PR）</p>
+    <p class="luxury-cta-disclaimer">※本サービスは18歳以上の成人専用プライベートライブラリです（#PR）</p>
 </div>
+
