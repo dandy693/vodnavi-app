@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { FanzaImage } from "@/components/fanza-image";
+import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
@@ -326,10 +327,12 @@ export default async function WorkDetailPage({
             )}
           </div>
 
-          <a
-            href={item.affiliateURL ?? item.URL}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
+          <FanzaAffiliateLink
+            href={item.affiliateURL ?? item.URL ?? ""}
+            content_id={item.content_id}
+            title={item.title}
+            floor_code={floor}
+            placement="detail_main_cta"
             className={cn(
               "group inline-flex h-14 items-center justify-center gap-2 rounded-xl text-base font-semibold",
               "bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 text-black",
@@ -339,7 +342,7 @@ export default async function WorkDetailPage({
           >
             FANZA で今すぐ視聴
             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-          </a>
+          </FanzaAffiliateLink>
 
           <p className="text-[11px] leading-relaxed text-muted-foreground/70">
             ※ クリックすると FANZA 公式サイトに移動します。視聴・購入は FANZA 上で行われます。
@@ -354,11 +357,13 @@ export default async function WorkDetailPage({
           </h2>
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
             {sampleImages.slice(0, 12).map((src, idx) => (
-              <a
+              <FanzaAffiliateLink
                 key={src}
-                href={item.affiliateURL ?? item.URL}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
+                href={item.affiliateURL ?? item.URL ?? ""}
+                content_id={item.content_id}
+                title={item.title}
+                floor_code={floor}
+                placement="detail_sample"
                 className="relative aspect-video overflow-hidden rounded-lg bg-black ring-1 ring-white/5 transition-all hover:ring-amber-400/40"
               >
                 <FanzaImage
@@ -368,7 +373,7 @@ export default async function WorkDetailPage({
                   sizes="(max-width: 640px) 50vw, 25vw"
                   className="object-cover"
                 />
-              </a>
+              </FanzaAffiliateLink>
             ))}
           </div>
         </section>
