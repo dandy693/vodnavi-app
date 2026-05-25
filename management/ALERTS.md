@@ -255,3 +255,19 @@
   4. `manifest.json` (PWA) 未実装。`icon-192` / `icon-512` を `purpose: "any maskable"` で参照する manifest を `public/site.webmanifest` に追加すれば、Android Add-to-Home-Screen 時にブランド表示が安定する。
 - **未検証**：本番 `https://app.vodnavi.jp/favicon.ico` の応答は次デプロイ後に curl 確認。Google Rich Results Test の Product schema 検証も次デプロイ後にライブ URL で実施すべし。
 - 関連メモリ：[[feedback_push_back_on_contradictions]]（受け皿のみで graceful hide する設計を維持、`works-editorial.json` 未登録 work もメタは構造化フォールバックで保護）。
+
+### 2026-05-25 — [mid] moterist 6 本目記事の本番→ローカル正典欠落
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | mid |
+| target | moterist.com (WordPress) / `site-moterist/07_wp/posts/` |
+| symptom | CSO 申告「本番に 6 本稼働」に対し、リポジトリ `posts/` には 5 本（994 / 1095 / 1106 / 1018 / 954）のみ。6 本目の正典が git 管理下に存在しない。 |
+| suspected_cause | 過去のサルベージ漏れ、または直近 (2026-05-24 以降) の手動公開分が逆同期されていない。`functions.php` 由来の自動 CTA インフラは 2026-05-24 に撤去済のため、6 本目には末尾 CTA が手動埋込されていない可能性がある。 |
+| recommended_action | mixhost 本番 DB の `wp_posts` (`post_status='publish' AND post_type='post'`) を WP-CLI/SQL ダンプで全 ID リスト化 → ローカル 5 本と diff → 未管理 ID を `site-moterist/07_wp/posts/post_<ID>.md` として書き戻し、`?source=moterist&intent=...` CTA の有無を併せて検証。詳細手順は `management/TASK_BOARD.md` の同名 Backlog エントリ参照。 |
+| backup_path | — |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：本セッションで実施した「moterist 6 本疎通確認」の副産物として検出。`seo_pioneer` intent の検証依頼が前提と乖離していたため掘り当てたもの。CSO 裁定により intent は記事別現行値で固定（`seo_pioneer` 採用なし）。6 本目特定後は CTA / intent の整備状態を `CURRENT_AUDIT_REPORT.md` に追記する。

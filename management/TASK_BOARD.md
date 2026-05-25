@@ -14,6 +14,13 @@
 
 ## [Backlog] 成果没収リスクの完全排除（最優先リーガルタスク）
 
+## [Backlog] 6本目記事の本番→ローカル逆サルベージ（2026-05-25 セッション派生）
+
+> 出典：2026-05-25 セッション「moterist 6本疎通確認」。CSO 申告 6 本のうち、`site-moterist/07_wp/posts/` に staged されているのは 5 本（post_994/1095/1106/1018/954）のみ。残り 1 本は本番 WordPress にのみ存在し、リポジトリ正典化されていない可能性が高い。
+
+- [ ] \[CTO]\ **本番 WordPress から 6 本目記事を逆サルベージ**：mixhost 本番 DB へ WP-CLI または DB ダンプ経由で接続し、`wp_posts` から `post_status = 'publish'` かつ `post_type = 'post'` の現存記事 ID をフル一覧化、ローカル `site-moterist/07_wp/posts/` の 5 本（994 / 1095 / 1106 / 1018 / 954）と diff を取って未管理 ID を特定。特定後、`post_content` を `posts/post_<ID>.md` として書き戻し、CTA URL に `source=moterist&intent=<該当値>` が含まれているかも同時監査（無ければ追記タスクを別途起票）。手順は `07_wp/posts/post_1095.md` 等の既存サルベージ済みファイルのフォーマットに揃える。完了時は本タスクと併せて `00_admin/operation-log.md` にも記録。
+- [ ] \[CTO\]\ サルベージ後、5+1=6 本すべての末尾 CTA に対し `?source=moterist&intent=...` が漏れなく仕込まれているかを `grep -c "app.vodnavi.jp/concierge?source=moterist"` で再監査し、結果を `management/_metrics/CURRENT_AUDIT_REPORT.md` に追記。
+
 ## [Backlog/Low] Next.js middleware → proxy 規約移行（次サタデー枠）
 - [ ] \[CTO]\ `app-concierge/src/middleware.ts`（年齢ゲート HMAC 判定）を Next.js 16 系の新 `proxy` ファイル規約に移行。ビルド時の deprecation 警告 *"The 'middleware' file convention is deprecated. Please use 'proxy' instead."* を解消する。挙動互換性（age-gate cookie 検証、`/api/concierge` 403 ガード）を維持。2026-05-23 10:00 JST のサタデー・レビュー枠で着手判定。参考：https://nextjs.org/docs/messages/middleware-to-proxy
 
