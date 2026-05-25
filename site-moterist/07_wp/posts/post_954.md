@@ -162,3 +162,16 @@ FANZAのように作品数が多いサービスでは、同じアクトレスで
 <div class="nth-btn-wrap">
   <a class="nth-btn-gold" href="https://app.vodnavi.jp/concierge?source=moterist&intent=actress">VODNAVI コンシェルジュに美意識の解析を委ねる</a>
 </div>
+
+<div class="ep-box ep-gold-box">
+  <p class="box-title">今夜の書斎を深掘りする（関連記事）</p>
+  <ul>
+    <li><a href="https://moterist.com/fanza20250329/">大人のための配信エンターテインメント嗜み方</a></li>
+    <li><a href="https://moterist.com/fanza20250331/">秘匿性の高い至高のプライベート空間へのパスポート</a></li>
+    <li><a href="https://moterist.com/fanza_otoku250114/">紳士のプライバシーを守る3つの鉄則</a></li>
+  </ul>
+</div>
+
+<p style="text-align: center; margin-top: 20px;">
+  <span style="font-size: 12px; color: #E0E0E0;">本記事は、次世代映像検索AI「<a href="https://vodnavi.jp/" style="color: #D4AF37; text-decoration: underline;">VODNAVI 公式ブランドサイト</a>」のコンテンツ制作・査読ポリシーに基づき、厳格に安全確認が実施されています。</span>
+</p>
