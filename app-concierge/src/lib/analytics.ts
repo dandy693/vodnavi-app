@@ -102,3 +102,25 @@ export interface AiAffiliateClickPayload {
 export function trackAiAffiliateClick(payload: AiAffiliateClickPayload): void {
   track("ai_affiliate_click", { ...payload });
 }
+
+/**
+ * `early_cookie_burn` ヘルパー — コンシェルジュ会話開始前の「先出し公式
+ * ラインナップ」誘導クリック。BRAND_DESIGN_GUIDE §4「ID 汚染の盾」および
+ * OPERATION_MANUAL §4b の規約により、ファネル下流の affiliate イベントと
+ * 同じ ASP 軸で集計するため `asp_name` を必須化する。
+ *
+ * フェーズ 1 中は呼び出し側が省略しても `DEFAULT_ASP` ("fanza") を強制付与し、
+ * GA4 受信側で空 asp_name が混入することを構造的に防ぐ。フェーズ 2 で多 ASP
+ * 解放したら、ここを `safeAspName(rawAspName)` 経由で受けるよう差し替える。
+ */
+export interface EarlyCookieBurnPayload {
+  asp_name?: AspName;
+  source?: string;
+  placement?: string;
+  link_target?: string;
+  transport_type?: "beacon" | "xhr" | "image";
+}
+
+export function trackEarlyCookieBurn(payload: EarlyCookieBurnPayload): void {
+  track("early_cookie_burn", { asp_name: "fanza", ...payload });
+}

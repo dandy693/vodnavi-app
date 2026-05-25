@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react";
 import {
   track,
   trackAiAffiliateClick,
+  trackEarlyCookieBurn,
   trackProductClick,
 } from "@/lib/analytics";
 import { type AspName, DEFAULT_ASP } from "@/lib/concierge/asp";
@@ -305,7 +306,8 @@ function EarlyEntryCard({ source }: { source?: string }) {
             target="_blank"
             rel="noopener noreferrer sponsored"
             onClick={() => {
-              track("early_cookie_burn", {
+              trackEarlyCookieBurn({
+                asp_name: DEFAULT_ASP,
                 source: source ?? "default",
                 placement: "mid_session",
                 link_target: "fanza_lineup",
