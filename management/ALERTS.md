@@ -271,3 +271,46 @@
 | github_issue | — |
 
 **メモ**：本セッションで実施した「moterist 6 本疎通確認」の副産物として検出。`seo_pioneer` intent の検証依頼が前提と乖離していたため掘り当てたもの。CSO 裁定により intent は記事別現行値で固定（`seo_pioneer` 採用なし）。6 本目特定後は CTA / intent の整備状態を `CURRENT_AUDIT_REPORT.md` に追記する。
+
+### 2026-05-25 17:30 JST — [high] moterist.com GA4 計測「全ロス」誤検知（プロパティ統合に伴う UI 参照ミス）
+
+| 項目 | 値 |
+|---|---|
+| status | **resolved** （起票即時クローズ） |
+| severity | high（一次申告） → 実体は誤検知 |
+| target | GA4 admin UI / `moterist.com` 計測ストリーム |
+| symptom | 「`moterist.com` のアナリティクスにデータが表示されない（全ロス）」と申告。本番 PHP の linker.domains に self が無いことが疑われた。 |
+| suspected_cause | **HTML 側の欠陥ではない**。2026-05-21 のプロパティ統合（旧 `G-5HYV772ER9` / `p393864941` を廃止し、`G-GG7JV9MJRW` / `p489519780`（vodnavi.jp プロパティ）へ全送信を集約）に伴う **GA4 UI 上の参照プロパティ違い**。旧プロパティ参照時は p489519780 へ強制リダイレクトされる仕様（[[project-ga4-property-access-redirect]]）。 |
+| recommended_action | **【HUMAN への申し送り】GA4 管理画面では『vodnavi.jp』プロパティ (`G-GG7JV9MJRW` / `p489519780`) を開き、リアルタイム または データ探索にて `page_location` または `hostname` に `moterist.com` を指定してフィルタリングすること**。旧 moterist プロパティ (`G-5HYV772ER9` / `p393864941`) を直接見に行ってもデータは流れていない（2026-05-21 で廃止済）。 |
+| backup_path | — （本番 PHP 改変は CSO 裁定により**全面凍結**、ロールバック対象なし） |
+| anomaly_log | 本ファイル本エントリ内に集約（curl 監査ログ・ルーティング検証ログ含む） |
+| github_issue | — |
+
+**監査エビデンス（2026-05-25 17:00 JST 実施）**：
+
+1. **本番ライブ HTML curl 監査**（top page + post 1095 両方）：
+   - (a) `G-GG7JV9MJRW` が HTML L13 で `<script async src=".../gtag/js?id=G-GG7JV9MJRW">` として正常ロード ✅
+   - (b) `gtag('config', 'G-GG7JV9MJRW', { linker: { domains: ['app.vodnavi.jp', 'vodnavi.jp'], accept_incoming: true } })` 出力済 ✅（self をリストに含めない設計は GA4 cross-domain linker 仕様準拠：[Google 公式](https://support.google.com/analytics/answer/10071811) — linker は「遷移**先**ドメイン」のみを `domains` に列挙する。同一ドメイン navigation には作用しないため self 追加は no-op）
+   - (c) `node -e` による gtag config 文字列の構文パース：`JS_SYNTAX_OK`（カンマ抜け／タイポ無し）✅
+   - 追加：post 1095 では `fanza_cta_click` イベントも 2 箇所で `gtag('event', ...)` 出力済（クリック計装健全）✅
+
+2. **Next.js アプリ側 collect エンドポイント routing 検証**：
+   ```
+   layout.tsx:91  measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID="G-GG7JV9MJRW"}
+     └─ google-analytics.tsx:43  <Script src=".../gtag/js?id=G-GG7JV9MJRW">
+        └─ google-analytics.tsx:51  gtag('config', 'G-GG7JV9MJRW', {...linker})
+           └─ lib/analytics.ts:59  window.gtag('event', name, params)
+              └─ gtag.js → POST https://www.google-analytics.com/g/collect?v=2&tid=G-GG7JV9MJRW&...
+        └─ google-analytics.tsx:81  page_view に send_to: measurementId 明示
+   ```
+   単一 ID `G-GG7JV9MJRW` が env → loader URL → config → event の全段で一貫伝搬。NODE_ENV gate により非本番では gtag.js 自体が DOM 未挿入。
+
+3. **本番 PHP 改変パッチの裁定**：CSO により**全面凍結**。`functions.php` の linker.domains に self を追加する案は GA4 仕様上 no-op であり、計測喪失の解消には寄与しないため不採用。
+
+**完全無欠の計測防衛状態の宣言**：
+- **Next.js (app.vodnavi.jp / vodnavi.jp サブドメイン)**：`source` / `intent` / `seed_cid` の URL 層 + API body 層の二重バリデーション壁、`NODE_ENV !== 'production'` 二重ゲート、全イベント `transport_type: 'beacon'` 設定済 → **計測防衛 PASS**
+- **WordPress (moterist.com)**：linker 設定健全、`accept_incoming: true` ライブ反映、JS 構文 PASS、`fanza_cta_click` 計装健全 → **計測防衛 PASS**
+
+両端 PASS。「moterist 計測全ロス」の事象は HTML 側の欠陥ではなく、UI 参照プロパティの選択ミスとして本エントリで履歴クローズ。
+
+関連メモリ：[[project_ga4_property_access_redirect]] / [[project_gtag_destination_fanout]] / [[reference_ga4_url_date_params]]
