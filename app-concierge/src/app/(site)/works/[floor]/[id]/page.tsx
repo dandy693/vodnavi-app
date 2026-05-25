@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cache } from "react";
 import { FanzaImage } from "@/components/fanza-image";
 import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
 import {
@@ -30,21 +31,28 @@ export const revalidate = 300;
 
 type Params = { floor: string; id: string };
 
-async function getWork(floor: string, id: string): Promise<DmmItem | null> {
-  const floorMeta = FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
-  try {
-    const data = await fetchItemList({
-      site: "FANZA",
-      service: floorMeta.service,
-      floor: floorMeta.code,
-      cid: id,
-      hits: 1,
-    });
-    return data.result.items?.[0] ?? null;
-  } catch {
-    return null;
-  }
-}
+// generateMetadata と WorkDetailPage が同一リクエスト内で getWork() を 2 回呼ぶ。
+// React cache() で request-scope メモ化することで、片方が成功し片方が transient
+// 失敗するスプリットブレイン（メタは Product 出力なのに本体は notFound、または
+// その逆）を構造的に排除する。Next 15 + React 19 RSC で安全に使える。
+const getWork = cache(
+  async (floor: string, id: string): Promise<DmmItem | null> => {
+    const floorMeta =
+      FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
+    try {
+      const data = await fetchItemList({
+        site: "FANZA",
+        service: floorMeta.service,
+        floor: floorMeta.code,
+        cid: id,
+        hits: 1,
+      });
+      return data.result.items?.[0] ?? null;
+    } catch {
+      return null;
+    }
+  },
+);
 
 async function getRelatedWorks(
   floor: string,
