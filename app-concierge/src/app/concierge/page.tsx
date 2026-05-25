@@ -140,6 +140,7 @@ export default async function ConciergePage({ searchParams }: Props) {
       <ConciergeSessionInit
         source={params.source ?? null}
         intent={intent}
+        shared={initialWorks.length > 0}
       />
       <ConciergeChat
         initialWorks={initialWorks}

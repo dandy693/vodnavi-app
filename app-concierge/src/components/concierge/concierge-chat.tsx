@@ -109,21 +109,11 @@ export function ConciergeChat({
   const scrollRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const viewedRef = useRef<Set<string>>(new Set());
-  const sessionStartedRef = useRef(false);
 
   const isBusy = status === "submitted" || status === "streaming";
 
-  // /concierge の初回到達時に 1 回だけ ai_session_start を送信。
-  // React Strict Mode の二重マウントに耐えるため ref フラグで重複ガード。
-  useEffect(() => {
-    if (sessionStartedRef.current) return;
-    sessionStartedRef.current = true;
-    track("ai_session_start", {
-      source: source ?? "default",
-      shared: initialWorks && initialWorks.length > 0 ? "1" : "0",
-      transport_type: "beacon",
-    });
-  }, [source, initialWorks]);
+  // ai_session_start は ConciergeSessionInit (session-init.tsx) に集約済。
+  // 旧実装で本コンポーネントからも発火しており GA4 受信側で重複していた。
 
   // 新規メッセージ/ストリームの進行に合わせて最下部へ滑らかにスクロール
   useEffect(() => {
