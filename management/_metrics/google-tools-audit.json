@@ -1,0 +1,387 @@
+{
+  "generatedAt": "2026-05-25T16:02:25.096Z",
+  "expectedGa4Id": "G-GG7JV9MJRW",
+  "summary": {
+    "sitesAudited": 3,
+    "sitesWithExpectedGa4": 2,
+    "gtmExpectedButMissing": [
+      "https://vodnavi.jp/"
+    ],
+    "gtagGatewayDetectedAt": [
+      {
+        "url": "https://vodnavi.jp/",
+        "ids": [
+          "GT-PZQ74Z7D"
+        ]
+      }
+    ],
+    "hostingMismatches": [],
+    "envSchemaIssues": [],
+    "articlesAudited": 6,
+    "articlesReachable": 3,
+    "wpUsersSitemapPatchApplied": true
+  },
+  "sites": [
+    {
+      "kind": "next-app",
+      "url": "https://app.vodnavi.jp/",
+      "status": 200,
+      "finalUrl": "https://app.vodnavi.jp/",
+      "hosting": {
+        "engine": "vercel-nextjs",
+        "evidence": {
+          "server": "vercel",
+          "hasXVercelId": true,
+          "hasXMatchedPath": true
+        }
+      },
+      "responseHeaders": {
+        "server": "Vercel",
+        "x-vercel-cache": "MISS",
+        "x-vercel-id": "kix1::hnd1::kf5vc-1779724943508-f0ee17304e8a",
+        "x-matched-path": "/",
+        "age": "0",
+        "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+        "x-powered-by": "Next.js",
+        "link": "</_next/static/media/01e4147cff8141ee-s.p.10ked.7w885.g.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\", </_next/static/media/797e433ab948586e-s.p.09zddjkbdep5a.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\", </_next/static/media/ad9c66e761fed85a-s.p.0e4b2z5rxsmxh.woff2>; rel=preload; as=\"font\"; crossorigin=\"\"; type=\"font/woff2\""
+      },
+      "ga4": {
+        "tagsFound": [
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "gtag": {
+        "googleTagIdsFound": [],
+        "hasGtagJsScript": false,
+        "present": false
+      },
+      "gtm": {
+        "containerIdsFound": [
+          "GTM-N6ZDK9LR"
+        ],
+        "hasGtmJsScript": false,
+        "hasInitScriptTag": false,
+        "present": true
+      }
+    },
+    {
+      "kind": "next-marketing",
+      "url": "https://vodnavi.jp/",
+      "status": 200,
+      "finalUrl": "https://vodnavi.jp/",
+      "hosting": {
+        "engine": "wordpress",
+        "evidence": {
+          "server": "litespeed",
+          "link": "<https://vodnavi.jp/wp-json/>; rel=\"https://api.w.org/\", <https://vodnavi.jp/wp-json/wp/v2/pages/206>; rel=\"alternate\"; title=\"JSON\"; type=\"application/json\", <https://vodnavi.jp/>; rel=shortlink",
+          "poweredBy": ""
+        }
+      },
+      "responseHeaders": {
+        "server": "LiteSpeed",
+        "link": "<https://vodnavi.jp/wp-json/>; rel=\"https://api.w.org/\", <https://vodnavi.jp/wp-json/wp/v2/pages/206>; rel=\"alternate\"; title=\"JSON\"; type=\"application/json\", <https://vodnavi.jp/>; rel=shortlink"
+      },
+      "ga4": {
+        "tagsFound": [],
+        "hasGtagJsScript": false,
+        "expectedPresent": false
+      },
+      "gtag": {
+        "googleTagIdsFound": [
+          "GT-PZQ74Z7D"
+        ],
+        "hasGtagJsScript": true,
+        "present": true
+      },
+      "gtm": {
+        "containerIdsFound": [],
+        "hasGtmJsScript": false,
+        "hasInitScriptTag": false,
+        "present": false,
+        "diagnosis": "Expected GTM container missing from live HTML. Likely cause: NEXT_PUBLIC_GTM_ID not set in production env (Vercel). Note: as of this audit, NEXT_PUBLIC_GTM_ID is referenced in code (app-concierge/src/app/layout.tsx, site-brand/src/app/layout.tsx) but NOT declared in app-concierge/.env.example — likely overlooked when the human operator set Vercel env vars from the schema template. Note: GT- (Google Tag Gateway) tag(s) [\"GT-PZQ74Z7D\"] detected — these route to GA4 destinations server-side but do NOT satisfy the GTM container requirement."
+      }
+    },
+    {
+      "kind": "wp-thor",
+      "url": "https://moterist.com/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/",
+      "hosting": {
+        "engine": "wordpress",
+        "evidence": {
+          "server": "litespeed",
+          "link": "<https://moterist.com/wp-json/>; rel=\"https://api.w.org/\"",
+          "poweredBy": ""
+        }
+      },
+      "responseHeaders": {
+        "server": "LiteSpeed",
+        "link": "<https://moterist.com/wp-json/>; rel=\"https://api.w.org/\""
+      },
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "gtag": {
+        "googleTagIdsFound": [],
+        "hasGtagJsScript": false,
+        "present": false
+      },
+      "gtm": {
+        "containerIdsFound": [],
+        "hasGtmJsScript": false,
+        "hasInitScriptTag": false,
+        "present": false
+      }
+    }
+  ],
+  "articles": [
+    {
+      "slug": "fanza_premium_view",
+      "url": "https://moterist.com/fanza_premium_view/",
+      "status": 404,
+      "finalUrl": "https://moterist.com/fanza_premium_view/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_premium_view%2F"
+      }
+    },
+    {
+      "slug": "fanza20250329",
+      "url": "https://moterist.com/fanza20250329/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza20250329/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250329%2F"
+      }
+    },
+    {
+      "slug": "fanza20250331",
+      "url": "https://moterist.com/fanza20250331/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza20250331/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250331%2F"
+      }
+    },
+    {
+      "slug": "fanza_actress_search",
+      "url": "https://moterist.com/fanza_actress_search/",
+      "status": 404,
+      "finalUrl": "https://moterist.com/fanza_actress_search/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_actress_search%2F"
+      }
+    },
+    {
+      "slug": "fanza20250327",
+      "url": "https://moterist.com/fanza20250327/",
+      "status": 404,
+      "finalUrl": "https://moterist.com/fanza20250327/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250327%2F"
+      }
+    },
+    {
+      "slug": "fanza-4k-vr-luxury",
+      "url": "https://moterist.com/fanza-4k-vr-luxury/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza-4k-vr-luxury/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza-4k-vr-luxury%2F"
+      }
+    }
+  ],
+  "wpSitemap": {
+    "sitemapIndexStatus": 200,
+    "usersEntriesInIndex": 0,
+    "usersDirectStatus": 200,
+    "usersDirectIsValidSitemap": false,
+    "passed": true,
+    "note": "Pass criteria: (1) wp-sitemap.xml has 0 users entries AND (2) wp-sitemap-users-1.xml does not return a valid users urlset XML. WP serves the homepage with 200 for unmatched sitemap paths (not 404), which is acceptable because no users URLs are exposed to crawlers."
+  },
+  "envSchemas": [
+    {
+      "app": "app-concierge",
+      "envExampleExists": true,
+      "referencedInLayout": [
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_GA_MEASUREMENT_ID"
+      ],
+      "declaredInEnvExample": [
+        "NEXT_PUBLIC_SITE_URL",
+        "NEXT_PUBLIC_GA_MEASUREMENT_ID",
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_MAKE_WEBHOOK_URL"
+      ],
+      "missingFromEnvExample": [],
+      "passed": true,
+      "diagnosis": "Schema and code references aligned."
+    },
+    {
+      "app": "site-brand",
+      "envExampleExists": true,
+      "referencedInLayout": [
+        "NEXT_PUBLIC_GTM_ID",
+        "NEXT_PUBLIC_GA_MEASUREMENT_ID"
+      ],
+      "declaredInEnvExample": [
+        "NEXT_PUBLIC_GA_MEASUREMENT_ID",
+        "NEXT_PUBLIC_GTM_ID"
+      ],
+      "missingFromEnvExample": [],
+      "passed": true,
+      "diagnosis": "Schema and code references aligned."
+    }
+  ],
+  "deferredToAuthenticatedBrowser": {
+    "search_console": {
+      "account_required": "moterist.com@gmail.com (per memory reference_google_accounts)",
+      "tool_to_use": "mcp__claude-in-chrome__navigate + read_page",
+      "property": "sc-domain:moterist.com",
+      "urls_to_inspect": [
+        {
+          "url": "https://moterist.com/fanza_premium_view/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_premium_view%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza20250329/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250329%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza20250331/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250331%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza_actress_search/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_actress_search%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza20250327/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250327%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza-4k-vr-luxury/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza-4k-vr-luxury%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        }
+      ]
+    },
+    "ga4_admin": {
+      "account_required": "moterist.com@gmail.com",
+      "tool_to_use": "mcp__claude-in-chrome__navigate + read_page",
+      "property_id": "p489519780",
+      "property_label": "vodnavi.jp (GA4)",
+      "measurement_id": "G-GG7JV9MJRW",
+      "custom_definitions_url": "https://analytics.google.com/analytics/web/#/p489519780/admin/customdefinitions/hub",
+      "dimensions_to_verify": [
+        {
+          "parameter_name": "asp_name",
+          "scope": "event",
+          "source_event": "early_cookie_burn (per commit bab2bfc)",
+          "why": "型付きヘルパー化で送信は保証されたが、カスタムディメンションが 未登録なら GA4 レポート側で集計軸として現れない。",
+          "memory_link": "[[project_fanza_cta_blank_state]] / [[project_funnel_drop_off_seo_to_concierge]]"
+        }
+      ]
+    }
+  },
+  "notes": [
+    "Generated by scripts/audit-google-tools.mjs (zero npm deps, Node fetch).",
+    "Search Console / GA4 admin checks intentionally deferred — they require an authenticated Google session and a stable DOM. Use the Chrome MCP tools listed in deferredToAuthenticatedBrowser.",
+    "Re-run this script after each production deploy to detect regressions."
+  ]
+}

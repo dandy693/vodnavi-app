@@ -44,18 +44,23 @@ const GTM_ID = process.env.GTM_CONTAINER_ID;
 const GA_ID = process.env.GA_MEASUREMENT_ID;
 const DRY_RUN = process.argv.includes("--dry-run");
 
+// Vercel 上の実プロジェクト slug。ローカルディレクトリ名 (app-concierge) と
+// Vercel 上の表示名 (vodnavi-app) が乖離している場合があるので、ここは
+// 「Vercel ダッシュボードの URL に現れる slug」を真とする。
+// vodnavi-brand は team に未登録 (vodnavi.jp が WP 配信のままで、site-brand は
+// Vercel に未紐付け)。DNS 切替で site-brand を Vercel に出す段階で復活する。
 const PLAN = [
   {
-    project: "app-concierge",
+    project: "vodnavi-app",
     vars: [{ key: "NEXT_PUBLIC_GTM_ID", value: GTM_ID }],
   },
-  {
-    project: "vodnavi-brand",
-    vars: [
-      { key: "NEXT_PUBLIC_GTM_ID", value: GTM_ID },
-      { key: "NEXT_PUBLIC_GA_MEASUREMENT_ID", value: GA_ID },
-    ],
-  },
+  // {
+  //   project: "vodnavi-brand",  // TODO: 実 slug 確定後に有効化
+  //   vars: [
+  //     { key: "NEXT_PUBLIC_GTM_ID", value: GTM_ID },
+  //     { key: "NEXT_PUBLIC_GA_MEASUREMENT_ID", value: GA_ID },
+  //   ],
+  // },
 ];
 
 function die(msg) {
@@ -106,15 +111,23 @@ async function upsertEnvVar(projectName, key, value) {
 
 async function triggerProductionRedeploy(projectName) {
   // 最新の本番デプロイを取得し、その gitSource を再利用して新規 deployment を作成。
+  // 重要: /v6/deployments のサマリレスポンスには gitSource が含まれない
+  // (uid / state / url など最小情報のみ)。gitSource を取るには /v13/deployments/{id}
+  // を個別に叩く必要がある。
   const list = await vercel(
     "GET",
     `/v6/deployments?app=${encodeURIComponent(projectName)}&target=production&limit=1`,
   );
   if (!list.ok) return { ok: false, status: list.status, reason: "list deployments failed", body: list.body };
-  const last = list.body?.deployments?.[0];
-  if (!last) return { ok: false, status: -1, reason: "no previous production deployment found" };
-  const gitSource = last.gitSource;
-  if (!gitSource) return { ok: false, status: -1, reason: "last deployment has no gitSource (cannot rebuild)" };
+  const lastSummary = list.body?.deployments?.[0];
+  if (!lastSummary?.uid) return { ok: false, status: -1, reason: "no previous production deployment found", body: list.body };
+
+  const full = await vercel("GET", `/v13/deployments/${encodeURIComponent(lastSummary.uid)}`);
+  if (!full.ok) return { ok: false, status: full.status, reason: "fetch full deployment failed", body: full.body };
+
+  const gitSource = full.body?.gitSource;
+  if (!gitSource) return { ok: false, status: -1, reason: "last deployment has no gitSource (cannot rebuild)", body: full.body };
+
   return vercel("POST", `/v13/deployments`, {
     name: projectName,
     target: "production",
@@ -154,7 +167,7 @@ async function main() {
     if (dep.ok) {
       console.log(`  redeploy queued: ${dep.body?.url ?? "(no url)"} state=${dep.body?.readyState ?? "?"}`);
     } else {
-      console.error(`  redeploy FAILED: ${dep.reason ?? ""} ${JSON.stringify(dep.body).slice(0, 200)}`);
+      console.error(`  redeploy FAILED: ${dep.reason ?? ""} ${JSON.stringify(dep.body ?? {}).slice(0, 200)}`);
       process.exitCode = 1;
     }
   }
