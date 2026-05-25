@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-05-25T16:02:25.096Z",
+  "generatedAt": "2026-05-25T17:13:25.415Z",
   "expectedGa4Id": "G-GG7JV9MJRW",
   "summary": {
     "sitesAudited": 3,
@@ -18,7 +18,7 @@
     "hostingMismatches": [],
     "envSchemaIssues": [],
     "articlesAudited": 6,
-    "articlesReachable": 3,
+    "articlesReachable": 6,
     "wpUsersSitemapPatchApplied": true
   },
   "sites": [
@@ -38,7 +38,7 @@
       "responseHeaders": {
         "server": "Vercel",
         "x-vercel-cache": "MISS",
-        "x-vercel-id": "kix1::hnd1::kf5vc-1779724943508-f0ee17304e8a",
+        "x-vercel-id": "kix1::hnd1::qv5t7-1779729204144-6982f866aede",
         "x-matched-path": "/",
         "age": "0",
         "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
@@ -59,7 +59,7 @@
       },
       "gtm": {
         "containerIdsFound": [
-          "GTM-N6ZDK9LR"
+          "GTM-TKDHM348"
         ],
         "hasGtmJsScript": false,
         "hasInitScriptTag": false,
@@ -143,10 +143,10 @@
   ],
   "articles": [
     {
-      "slug": "fanza_premium_view",
-      "url": "https://moterist.com/fanza_premium_view/",
-      "status": 404,
-      "finalUrl": "https://moterist.com/fanza_premium_view/",
+      "slug": "fanza-4k-vr-luxury",
+      "url": "https://moterist.com/fanza-4k-vr-luxury/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza-4k-vr-luxury/",
       "ga4": {
         "tagsFound": [
           "G-5HYV772ER9",
@@ -158,7 +158,64 @@
       "indexStatus": {
         "method": "deferred-to-authenticated-browser",
         "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
-        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_premium_view%2F"
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza-4k-vr-luxury%2F"
+      }
+    },
+    {
+      "slug": "fanza20250123",
+      "url": "https://moterist.com/fanza20250123/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza20250123/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250123%2F"
+      }
+    },
+    {
+      "slug": "fanza20250129",
+      "url": "https://moterist.com/fanza20250129/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza20250129/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250129%2F"
+      }
+    },
+    {
+      "slug": "fanza20250203",
+      "url": "https://moterist.com/fanza20250203/",
+      "status": 200,
+      "finalUrl": "https://moterist.com/fanza20250203/",
+      "ga4": {
+        "tagsFound": [
+          "G-5HYV772ER9",
+          "G-GG7JV9MJRW"
+        ],
+        "hasGtagJsScript": true,
+        "expectedPresent": true
+      },
+      "indexStatus": {
+        "method": "deferred-to-authenticated-browser",
+        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
+        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250203%2F"
       }
     },
     {
@@ -197,63 +254,6 @@
         "method": "deferred-to-authenticated-browser",
         "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
         "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250331%2F"
-      }
-    },
-    {
-      "slug": "fanza_actress_search",
-      "url": "https://moterist.com/fanza_actress_search/",
-      "status": 404,
-      "finalUrl": "https://moterist.com/fanza_actress_search/",
-      "ga4": {
-        "tagsFound": [
-          "G-5HYV772ER9",
-          "G-GG7JV9MJRW"
-        ],
-        "hasGtagJsScript": true,
-        "expectedPresent": true
-      },
-      "indexStatus": {
-        "method": "deferred-to-authenticated-browser",
-        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
-        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_actress_search%2F"
-      }
-    },
-    {
-      "slug": "fanza20250327",
-      "url": "https://moterist.com/fanza20250327/",
-      "status": 404,
-      "finalUrl": "https://moterist.com/fanza20250327/",
-      "ga4": {
-        "tagsFound": [
-          "G-5HYV772ER9",
-          "G-GG7JV9MJRW"
-        ],
-        "hasGtagJsScript": true,
-        "expectedPresent": true
-      },
-      "indexStatus": {
-        "method": "deferred-to-authenticated-browser",
-        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
-        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250327%2F"
-      }
-    },
-    {
-      "slug": "fanza-4k-vr-luxury",
-      "url": "https://moterist.com/fanza-4k-vr-luxury/",
-      "status": 200,
-      "finalUrl": "https://moterist.com/fanza-4k-vr-luxury/",
-      "ga4": {
-        "tagsFound": [
-          "G-5HYV772ER9",
-          "G-GG7JV9MJRW"
-        ],
-        "hasGtagJsScript": true,
-        "expectedPresent": true
-      },
-      "indexStatus": {
-        "method": "deferred-to-authenticated-browser",
-        "reason": "Search Console URL inspection requires logged-in Google session (account: moterist.com@gmail.com per memory). DOM scrape against the SPA is fragile; use Chrome MCP with active session instead.",
-        "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza-4k-vr-luxury%2F"
       }
     }
   ],
@@ -306,8 +306,35 @@
       "property": "sc-domain:moterist.com",
       "urls_to_inspect": [
         {
-          "url": "https://moterist.com/fanza_premium_view/",
-          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_premium_view%2F",
+          "url": "https://moterist.com/fanza-4k-vr-luxury/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza-4k-vr-luxury%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza20250123/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250123%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza20250129/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250129%2F",
+          "dom_targets": [
+            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
+            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
+            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
+          ]
+        },
+        {
+          "url": "https://moterist.com/fanza20250203/",
+          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250203%2F",
           "dom_targets": [
             "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
             "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
@@ -326,33 +353,6 @@
         {
           "url": "https://moterist.com/fanza20250331/",
           "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250331%2F",
-          "dom_targets": [
-            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
-            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
-            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
-          ]
-        },
-        {
-          "url": "https://moterist.com/fanza_actress_search/",
-          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza_actress_search%2F",
-          "dom_targets": [
-            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
-            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
-            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
-          ]
-        },
-        {
-          "url": "https://moterist.com/fanza20250327/",
-          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza20250327%2F",
-          "dom_targets": [
-            "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
-            "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",
-            "インデックス未登録の場合の理由テキスト (\"検出 - 未インデックス\" / \"クロール済み - 未インデックス\" 等)"
-          ]
-        },
-        {
-          "url": "https://moterist.com/fanza-4k-vr-luxury/",
-          "inspectionUrl": "https://search.google.com/search-console/inspect?resource_id=sc-domain%3Amoterist.com&id=https%3A%2F%2Fmoterist.com%2Ffanza-4k-vr-luxury%2F",
           "dom_targets": [
             "div[aria-label=\"URL is on Google\"] / \"URL is not on Google\" の本文",
             "\"Coverage\" / \"Discovery\" / \"Crawl\" セクション内のステータス文字列",

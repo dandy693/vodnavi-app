@@ -79,13 +79,17 @@ const SITES = [
   },
 ];
 
+// 本番 moterist.com で実 live 中の FANZA 記事 6 件。
+// site-moterist/07_wp/posts/ 配下の .md frontmatter slug ではなく、
+// WP 公式 sitemap (wp-sitemap-posts-post-1.xml) で 200 OK 確認済の slug を真とする。
+// 2026-05-26 検証: 全 6 件 200 OK + WP sitemap 登載済。
 const ARTICLE_SLUGS = [
-  "fanza_premium_view",
+  "fanza-4k-vr-luxury",
+  "fanza20250123",
+  "fanza20250129",
+  "fanza20250203",
   "fanza20250329",
   "fanza20250331",
-  "fanza_actress_search",
-  "fanza20250327",
-  "fanza-4k-vr-luxury",
 ];
 
 // ─────────────────────────────────────────────────────────────────
