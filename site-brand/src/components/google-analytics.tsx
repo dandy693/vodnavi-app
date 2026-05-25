@@ -1,0 +1,80 @@
+"use client";
+
+import { usePathname, useSearchParams } from "next/navigation";
+import Script from "next/script";
+import { Suspense, useEffect } from "react";
+
+/**
+ * Google Analytics 4 (gtag.js) integration for site-brand (vodnavi.jp).
+ *
+ * app-concierge/src/components/google-analytics.tsx を正典として移植。
+ * vodnavi.jp はクロスサブドメインで app.vodnavi.jp / moterist.com とセッション
+ * 統合する必要があるため linker.domains を 3 サイトに展開する点まで完全一致。
+ *
+ * - 初回ロード時の page_view は gtag('config') が自動送信
+ * - App Router のクライアント遷移は full reload が起きないため、
+ *   usePathname / useSearchParams の変化を監視して page_view を手動送信
+ * - useSearchParams は static prerender を中断するので <Suspense> で隔離
+ *
+ * 計測整合性 (app-concierge と同じ盾):
+ * - vodnavi.jp も G-GG7JV9MJRW に送信 (app.vodnavi.jp と同一プロパティで統合)
+ * - 非本番では一切ロードしないため、開発/プレビュー環境からの本番 GA4 流入はゼロ
+ */
+export function GoogleAnalytics({
+  measurementId,
+}: {
+  measurementId: string | undefined;
+}) {
+  if (!measurementId) return null;
+
+  if (process.env.NODE_ENV !== "production") {
+    return null;
+  }
+
+  return (
+    <>
+      <Script
+        src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`}
+        strategy="afterInteractive"
+      />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', '${measurementId}', {
+  send_page_view: true,
+  linker: {
+    domains: ['moterist.com', 'vodnavi.jp', 'app.vodnavi.jp'],
+    accept_incoming: true
+  }
+});
+        `}
+      </Script>
+      <Suspense fallback={null}>
+        <RouteChangeTracker measurementId={measurementId} />
+      </Suspense>
+    </>
+  );
+}
+
+function RouteChangeTracker({ measurementId }: { measurementId: string }) {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    if (typeof window === "undefined" || typeof window.gtag !== "function") {
+      return;
+    }
+    const query = searchParams?.toString();
+    const url = query ? `${pathname}?${query}` : pathname;
+    window.gtag("event", "page_view", {
+      page_path: url,
+      page_location: window.location.href,
+      page_title: document.title,
+      send_to: measurementId,
+    });
+  }, [pathname, searchParams, measurementId]);
+
+  return null;
+}

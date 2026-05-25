@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP, Cormorant_Garamond } from "next/font/google";
 
+import { GoogleAnalytics } from "@/components/google-analytics";
+import { GoogleTagManager } from "@/components/google-tag-manager";
+
 import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -105,11 +108,19 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        {/* GTM noscript iframe を body 最初の子要素として配置する GTM 公式仕様準拠。
+           NEXT_PUBLIC_GTM_ID 未設定 / 非本番ではコンテナ自体をマウントしない。
+           [[project_funnel_drop_off_seo_to_concierge]] 監査で vodnavi.jp に
+           GA4/GTM 双方が未挿入であることが判明し補完。app-concierge と同一構成。 */}
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(brandJsonLd) }}
         />
         {children}
+        <GoogleAnalytics
+          measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
+        />
       </body>
     </html>
   );
