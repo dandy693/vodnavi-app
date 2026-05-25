@@ -1,4 +1,4 @@
-export type ConciergeSource = "default" | "moterist" | "brand";
+export type ConciergeSource = "default" | "moterist" | "brand" | "app_detail";
 
 export interface ConciergeSourceProfile {
   id: ConciergeSource;
@@ -14,6 +14,9 @@ const MOTERIST_GREETING =
 
 const BRAND_GREETING =
   "VODNAVI 公式から、いらっしゃいませ。コンシェルジュをご指名いただき光栄です。\n\nまずは今夜の気分から伺いましょう。「癒し」「刺激」「没入」── どの方向でも、的確に一本お選びいたします。";
+
+const APP_DETAIL_GREETING =
+  "別の作品をお探しですね。お読みいただいた一本、ご覧くださりありがとうございます。\n\nあの作品の余韻を踏まえて、似た気配のもの、あるいは少し違う扉── どちらでもご案内いたします。今夜のお気持ちを一言、お聞かせください。";
 
 const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
   default: {
@@ -32,6 +35,12 @@ const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
     greeting: BRAND_GREETING,
     systemAddendum:
       "【流入コンテキスト】このユーザーは vodnavi.jp（公式ブランドサイト）からの来訪です。コンシェルジュ体験の信頼性・選定の確かさを、最初の一本でしっかり示してください。提案の根拠を一言だけ丁寧に添えると効果的です。",
+  },
+  app_detail: {
+    id: "app_detail",
+    greeting: APP_DETAIL_GREETING,
+    systemAddendum:
+      "【流入コンテキスト】このユーザーは app.vodnavi.jp の作品詳細ページ (/works/[floor]/[id]) を読了した上でコンシェルジュへ流入しています。直前に閲覧した作品の輪郭は把握済みである前提で、「同じ路線で別の一本」「あえて気分を切り替えた一本」のどちらが良いかを最初の一往復で柔らかく確かめてください。再推薦の文脈なので、初手は『別の作品をお探しですね』に近い、再来訪を歓迎する姿勢で受け止めてください。",
   },
 };
 

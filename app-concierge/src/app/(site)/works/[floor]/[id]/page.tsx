@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { FanzaImage } from "@/components/fanza-image";
 import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
+import {
+  ConciergeCtaLink,
+  ConciergeCtaPanel,
+} from "@/components/concierge-cta-link";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
@@ -347,6 +351,16 @@ export default async function WorkDetailPage({
           <p className="text-[11px] leading-relaxed text-muted-foreground/70">
             ※ クリックすると FANZA 公式サイトに移動します。視聴・購入は FANZA 上で行われます。
           </p>
+
+          {/* セカンダリ動線: FANZA メイン CTA の直下に、視線を阻害しない
+             アウトラインスタイルで AI コンシェルジュへの再推薦動線を置く。
+             SEO 流入の 99% が詳細ページで完結する 2026-05-25 のファネル
+             断絶診断に対応するため、迷ったユーザーを次の一本へ導く脱出口。 */}
+          <ConciergeCtaLink
+            contentId={item.content_id}
+            floorCode={floor}
+            className="mt-2"
+          />
         </div>
       </section>
 
@@ -384,6 +398,8 @@ export default async function WorkDetailPage({
       <section className="prose prose-invert prose-sm max-w-none text-muted-foreground">
         <p>{description}</p>
       </section>
+
+      <ConciergeCtaPanel contentId={item.content_id} floorCode={floor} />
 
       {relatedWorks.length > 0 && primaryGenre && (
         <section className="mt-12">

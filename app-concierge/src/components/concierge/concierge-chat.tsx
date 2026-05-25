@@ -83,10 +83,14 @@ function buildSharedInitialMessages(works: Work[]): UIMessage[] {
 export function ConciergeChat({
   initialWorks,
   source,
+  intent,
+  seedCid,
   greeting,
 }: {
   initialWorks?: Work[];
   source?: string;
+  intent?: string | null;
+  seedCid?: string | null;
   greeting?: string;
 } = {}) {
   // 共有 URL から復元された作品があれば、それを初期メッセージとして使用。
@@ -96,11 +100,18 @@ export function ConciergeChat({
       ? buildSharedInitialMessages(initialWorks)
       : buildDefaultInitialMessages(greeting ?? FALLBACK_GREETING_TEXT);
 
+  // 流入元コンテキストを API に伝搬。route.ts 側で system プロンプト末尾に
+  // addendum を付与する。null/undefined は body に乗せない（最小サーフェス）。
+  const transportBody: Record<string, string> = {};
+  if (source) transportBody.source = source;
+  if (intent) transportBody.intent = intent;
+  if (seedCid) transportBody.seed_cid = seedCid;
+
   const { messages, sendMessage, status, error, stop } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/concierge",
-      // 流入元コンテキストを API に伝搬。route.ts 側で system プロンプトに addendum を追加する。
-      body: source ? { source } : undefined,
+      body:
+        Object.keys(transportBody).length > 0 ? transportBody : undefined,
     }),
     messages: initialMessages,
   });

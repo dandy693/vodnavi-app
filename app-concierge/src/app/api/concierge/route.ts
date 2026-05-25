@@ -105,7 +105,12 @@ export async function POST(req: Request) {
     );
   }
 
-  let body: { messages?: UIMessage[]; source?: string } = {};
+  let body: {
+    messages?: UIMessage[];
+    source?: string;
+    intent?: string;
+    seed_cid?: string;
+  } = {};
   try {
     body = await req.json();
   } catch {
@@ -120,6 +125,18 @@ export async function POST(req: Request) {
   }
 
   const sourceProfile = resolveConciergeSource(body.source);
+  // intent / seed_cid は流入元コンテキストを system プロンプトに反映するために
+  // のみ使用する。値域は厳格に絞り、想定外の文字列はサイレントに破棄して
+  // プロンプト・インジェクションの侵入面を最小化する。
+  const intent =
+    typeof body.intent === "string" && /^[a-z0-9_]{1,32}$/.test(body.intent)
+      ? body.intent
+      : null;
+  const seedCid =
+    typeof body.seed_cid === "string" &&
+    /^[a-zA-Z0-9_-]{1,32}$/.test(body.seed_cid)
+      ? body.seed_cid
+      : null;
 
   const works = new Map<string, ConciergeWork>();
   const selectedIds = { current: [] as string[] };
@@ -182,6 +199,15 @@ export async function POST(req: Request) {
           content: sourceProfile.systemAddendum,
         });
       }
+      // app_detail からの再推薦動線では、直前に観ていた作品 ID を AI に渡し
+      // 「同じ路線か / 切り替えか」の起点として扱わせる。値は厳格な regex
+      // チェック後のみ通すため、ここでテンプレ文に差し込んでも安全。
+      if (sourceProfile.id === "app_detail" && seedCid) {
+        systemMessages.push({
+          role: "system",
+          content: `【流入コンテキスト追補】ユーザーが直前に閲覧していた作品の content_id = ${seedCid}。これは「種となる作品」であり、必要に応じて search_fanza_works のキーワード設計の参考にしてよい（ただし種そのものを推薦してはならない）。`,
+        });
+      }
 
       const result = streamText({
         model: anthropic(MODEL),
@@ -211,7 +237,7 @@ export async function POST(req: Request) {
             }
           }
           console.log(
-            `[concierge] finish source=${sourceProfile.id} steps=${steps.length} input_tokens=${totalUsage.inputTokens ?? "?"} output_tokens=${totalUsage.outputTokens ?? "?"} cached_input=${totalUsage.cachedInputTokens ?? "?"} reasoning_tokens=${totalUsage.reasoningTokens ?? "?"} tool_calls=${JSON.stringify(toolCounts)} search_calls=${toolCounts.search_fanza_works ?? 0} finalize_calls=${toolCounts.finalize_recommendations ?? 0} recommendations=${recommendations.length}`,
+            `[concierge] finish source=${sourceProfile.id} intent=${intent ?? "-"} seed_cid=${seedCid ?? "-"} steps=${steps.length} input_tokens=${totalUsage.inputTokens ?? "?"} output_tokens=${totalUsage.outputTokens ?? "?"} cached_input=${totalUsage.cachedInputTokens ?? "?"} reasoning_tokens=${totalUsage.reasoningTokens ?? "?"} tool_calls=${JSON.stringify(toolCounts)} search_calls=${toolCounts.search_fanza_works ?? 0} finalize_calls=${toolCounts.finalize_recommendations ?? 0} recommendations=${recommendations.length}`,
           );
         },
       });

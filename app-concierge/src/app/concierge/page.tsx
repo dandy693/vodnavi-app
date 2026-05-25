@@ -22,6 +22,7 @@ type Props = {
     cids?: string;
     source?: string;
     intent?: string;
+    seed_cid?: string;
   }>;
 };
 
@@ -135,6 +136,13 @@ export default async function ConciergePage({ searchParams }: Props) {
   const initialWorks = cids.length > 0 ? await resolveCidsToWorks(cids) : [];
   const sourceProfile = resolveConciergeSource(params.source);
   const intent = params.intent ?? null;
+  // seed_cid は app_detail 経由（詳細ページからの再推薦動線）でのみ意味を持つ。
+  // 過剰送信を避け [a-zA-Z0-9_-]{1,32} 程度の content_id 風文字列のみ受理する。
+  const seedCid =
+    typeof params.seed_cid === "string" &&
+    /^[a-zA-Z0-9_-]{1,32}$/.test(params.seed_cid)
+      ? params.seed_cid
+      : null;
   return (
     <>
       <ConciergeSessionInit
@@ -145,6 +153,8 @@ export default async function ConciergePage({ searchParams }: Props) {
       <ConciergeChat
         initialWorks={initialWorks}
         source={sourceProfile.id}
+        intent={intent}
+        seedCid={seedCid}
         greeting={sourceProfile.greeting}
       />
       <ConciergeGate />
