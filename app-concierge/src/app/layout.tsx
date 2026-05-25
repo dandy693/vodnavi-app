@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Noto_Sans_JP, Cormorant_Garamond } from "next/font/google";
 
 import { GoogleAnalytics } from "@/components/google-analytics";
+import { GoogleTagManager } from "@/components/google-tag-manager";
 import { getSiteUrl } from "@/lib/site";
 
 import "./globals.css";
@@ -86,6 +87,11 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        {/* GTM noscript iframe は body 最初の子要素として配置する GTM 公式仕様準拠。
+           インライン GTM ローダ script は <Script afterInteractive> で hydration 後に
+           注入されるため LCP には影響しない。NEXT_PUBLIC_GTM_ID 未設定 / 非本番では
+           コンテナ自体をマウントしないので noscript も emit されない。 */}
+        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         {children}
         <GoogleAnalytics
           measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
