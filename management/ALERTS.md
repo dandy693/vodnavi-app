@@ -314,3 +314,43 @@
 両端 PASS。「moterist 計測全ロス」の事象は HTML 側の欠陥ではなく、UI 参照プロパティの選択ミスとして本エントリで履歴クローズ。
 
 関連メモリ：[[project_ga4_property_access_redirect]] / [[project_gtag_destination_fanout]] / [[reference_ga4_url_date_params]]
+
+---
+
+### 2026-05-26 10:35 JST — [high] Vercel Fluid Active CPU 急騰 — bot 経由 SSR fan-out を構造的遮断（PR #1 検証完了・本番 merge 待ち）
+
+| 項目 | 値 |
+|---|---|
+| status | acknowledged |
+| severity | high |
+| target | app.vodnavi.jp（app-concierge / Vercel project: vodnavi-app）の Fluid Active CPU 無料枠 |
+| symptom | Vercel Fluid Active CPU が急騰し、プロジェクトの自動一時停止リスクが顕在化。コードベース監査の結果、Googlebot を含むクローラーアクセスが SSR 経路で重い fan-out（FANZA API + 画像 HEAD 検証 ×30 件 / req）を引き起こす経路が CPU 燃焼の主因と判明。 |
+| suspected_cause | 4 軸の複合：(A) `app-concierge/src/app/sitemap.ts` が全 FANZA_FLOORS × page=2..10（~80 URL）を indexable に展開、各 URL で 30 件分の FANZA HEAD 検証 fan-out。さらに URL が `&amp;` 二重エンコードで Google fetch エラー → 再試行ループ。(B) `app-concierge/src/app/(site)/page.tsx` の `?page=N` クエリに上限なし → ボットが `?page=999999` 等で無限バリエーション攻撃可能、新規 ISR キャッシュエントリを際限なく生成。(C) `*.vercel.app` の preview deploy（vodnavi-app-git-*）が noindex 化されておらず Google index 候補に乗る経路あり。(D) `robots.ts` が preview / production を区別せず常に `allow:/`。NODE_ENV 防御（`analytics.ts` / `google-tag-manager.tsx`）は完全機能・健全、polling / 暴走 setInterval も発見なし → 開発→本番リーク経路は否定。 |
+| recommended_action | (PR 起票・preview 検証完了): PR #1 `optim/vercel-cpu-defense` で 4 軸を構造的遮断。①`robots.ts`: `VERCEL_ENV !== 'production'` で `disallow:/` のみ、sitemap も emit せず。②`next.config.ts`: `*.vercel.app` host 全般に `X-Robots-Tag: noindex, nofollow` を強制。③`sitemap.ts`: pagination 母集団を 80 URL → 4 URL に縮小（主要 floor `videoa`/`vr` のみ × page=2..3）+ `&amp;` → `&` 修正。④`(site)/page.tsx`: `PAGE_LIMIT=50` 超過で `notFound()`。`tsc --noEmit` / `eslint` クリーン、Vercel preview check ✅ SUCCESS。**HUMAN 判断要**：main へのマージは Claude Code 安全分類器により遮断（"direct merge to default branch bypassing review" 検知）。HUMAN が手動で `gh pr merge 1 --merge --delete-branch` を実行する必要あり。 |
+| backup_path | git revert のみで完全ロールバック可（PR は 4 ファイル / +44 / -6 lines の局所修正） |
+| anomaly_log | — （Vercel CPU メトリクスは Dashboard で要確認） |
+| github_issue | https://github.com/dandy693/vodnavi-app/pull/1 |
+
+**Preview 検証エビデンス（`vercel curl` で SSO bypass、2026-05-26 10:34 JST）**：
+
+- (1) `vodnavi-h13r4cw69-hdktchkw33-gmailcoms-projects.vercel.app/robots.txt` → `User-Agent: * / Disallow: /` ✅（preview env で完全遮断）
+- (2) Preview ホストの `/` 応答に `X-Robots-Tag: noindex, nofollow` ✅（正規 `app.vodnavi.jp` には適用されない、host redirect が前段で正規化）
+- (3) Preview `/?page=99999` → HTTP 404 ✅（PAGE_LIMIT ガード機能）
+
+**Pre-merge baseline（本番は旧版を返している状態、merge で書き換わる予定）**：
+
+```
+$ curl -s https://app.vodnavi.jp/robots.txt
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/
+
+Host: https://app.vodnavi.jp
+Sitemap: https://app.vodnavi.jp/sitemap.xml
+```
+
+**メモ**：
+- HUMAN が merge を実行した後、status を `resolved` に更新し、本番 `curl https://app.vodnavi.jp/robots.txt` で `Disallow:/api/`（production 用、preview 用 `Disallow:/` が来ないこと）と `/?page=99999` → 404 を再確認、Vercel Dashboard で Fluid Active CPU の減衰を翌日以降に観測すること。
+- CPU 削減効果の推定：sitemap pagination 縮小（80→4 URL = 95%減）× 各 URL の fan-out 30 outbound 想定 → クロール起因 outbound リクエスト ~80% 削減見込み。
+- 関連メモリ：[[feedback_push_back_on_contradictions]]（user 指示の `status: resolved` を merge 未実施を理由に `acknowledged` に格下げ、merge 完了後に flip する設計）。
