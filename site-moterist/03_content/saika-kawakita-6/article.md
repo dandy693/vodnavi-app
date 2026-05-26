@@ -13,6 +13,16 @@ publish_status: "review"
 本記事にはアフィリエイトリンクが含まれます（#PR）。  
 各サービスの最新の料金・配信状況は公式サイトでご確認ください。
 
+<div class="nth-box-luxury">
+  <p>
+    <span class="luxury-notice-label">CONCIERGE — 知的好奇心への招待状</span><br>
+    本記事を読み解く前に、もし「今夜の自分の一作」を司書へ直接問うてみたい瞬間があれば、いつでも書斎をお移りください。あなたの気分の輪郭を一言で受け取り、最適な一作を静かに紐解きます。
+  </p>
+  <p style="margin-top: 14px; margin-bottom: 0;">
+    <a href="https://app.vodnavi.jp/concierge?source=moterist" style="display: inline-block; padding: 10px 24px; background: #D4AF37; color: #121212; text-decoration: none; font-weight: 700; letter-spacing: 0.04em; border-radius: 2px;">今夜のあなたに、パーソナルな司書が最適な一作を紐解きます →</a>
+  </p>
+</div>
+
 # 解像度が宿す美のイデア。河北彩伽が紡ぐ、現代エロティシズムの最高到達点
 
 河北彩伽という名を前にしたとき、私たちは単に一人の人気アクトレスを語っているのではありません。
