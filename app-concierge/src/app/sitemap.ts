@@ -105,12 +105,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-  // 全フロアの page=2..10 を indexable に展開（pagination の SEO 母集団拡大）。
-  // FANZA_FLOORS の正典 code のみを使うため、不正 code (例 adult_movie) 混入なし。
-  const PAGINATION_DEPTH = 10;
-  const pagination: MetadataRoute.Sitemap = FANZA_FLOORS.flatMap((floor) =>
+  // pagination の SEO 母集団は重要 floor のみ × 浅い深度に絞る。
+  // 旧実装は 全 floor × page=2..10 (~80 件) を吐き、Google のクロール対象を
+  // 不必要に膨張させて Vercel CPU を浪費していた (1 ページ取得ごとに 30 件分の
+  // FANZA HEAD 検証が走る)。実際にトラフィックがある floor のみに絞り、深度も 3 まで。
+  // sitemap URL は XML エンコード不要 (Next.js が serialize する) — 旧 `&amp;` は二重
+  // エンコードで Google から fetch エラー判定を招いていた。
+  const PAGINATION_FLOORS = new Set(["videoa", "vr"]);
+  const PAGINATION_DEPTH = 3;
+  const pagination: MetadataRoute.Sitemap = FANZA_FLOORS.filter((f) =>
+    PAGINATION_FLOORS.has(f.code),
+  ).flatMap((floor) =>
     Array.from({ length: PAGINATION_DEPTH - 1 }, (_, i) => ({
-      url: absoluteUrl(`/?floor=${floor.code}&amp;page=${i + 2}`),
+      url: absoluteUrl(`/?floor=${floor.code}&page=${i + 2}`),
       lastModified: now,
       changeFrequency: "daily" as const,
       priority: 0.5,
