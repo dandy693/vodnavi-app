@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+# VODNAVI-GROUP pre-commit hook
+#
+# 目的: CCO (ChatGPT 5.5) ほか執筆者が site-moterist/03_content/*/article.md を
+# 編集して commit する瞬間に、CTA URL の破壊・タイポを機械的に弾く。
+# 監視スクリプトは scripts/verify-cco-cta-urls.mjs。
+#
+# 失敗時: EXIT=1 で commit を阻止する (CCO は antipattern を修正して再 commit)。
+# 段階運用方針 (TASK_BOARD.md Backlog より): まず blocking で配備、誤検知が
+# 累積したら audit-only モード (echo only, exit 0) に降格する余地を残す。
+
+set -e
+
+echo "[husky/pre-commit] running CTA URL audit on 5 article.md ..."
+node scripts/verify-cco-cta-urls.mjs
+
+echo "[husky/pre-commit] all checks passed"

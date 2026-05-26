@@ -1,0 +1,12 @@
+{
+  "name": "vodnavi-group-monorepo",
+  "private": true,
+  "description": "VODNAVI-GROUP monorepo root — husky pre-commit hooks のホスト。サブプロジェクト (app-concierge / site-brand / site-moterist) はそれぞれの package.json で管理。",
+  "scripts": {
+    "prepare": "husky",
+    "precommit:test": "node scripts/verify-cco-cta-urls.mjs"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
