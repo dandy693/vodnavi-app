@@ -43,6 +43,18 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // 防壁: vercel.app のプレビューデプロイ(branch / commit 単位の
+      // vodnavi-app-git-xxxx.vercel.app など)が誤クロールされ Vercel CPU を
+      // 燃焼させていた経路を遮断する。host 正規表現で .vercel.app 全般を捕捉し、
+      // X-Robots-Tag で完全 noindex/nofollow を強制する。正規ホストの
+      // app.vodnavi.jp には適用されない (前段の host redirect で正規化されるため)。
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: ".*\\.vercel\\.app" }],
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
     ];
   },
 };

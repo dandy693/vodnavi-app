@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { Suspense } from "react";
 
 import { ConfigErrorPanel } from "@/components/config-error";
@@ -84,8 +85,16 @@ export default async function HomePage({
   const sourceId = resolveConciergeSource(params.source).id;
   const heroCopy = selectHeroCopy(sourceId);
 
-  // ページ番号を型安全に数値化（不正な値 / NaN は 1 にフォールバック）
+  // ページ番号を型安全に数値化（不正な値 / NaN は 1 にフォールバック）。
+  // ボットが ?page=999999 のような無限バリエーションを叩いて Vercel CPU を
+  // 燃焼させる経路を構造的に遮断するため、現実的な最大ページ数を超えたら 404 を返す。
+  // sitemap で開示する pagination 深度 (PAGINATION_DEPTH=3 + 想定広告流入分) に対し
+  // 50 はかなり余裕のある上限で、正規アクセスを取りこぼさない。
+  const PAGE_LIMIT = 50;
   const parsedPage = parseInt(params.page ?? "1", 10);
+  if (Number.isFinite(parsedPage) && parsedPage > PAGE_LIMIT) {
+    notFound();
+  }
   const currentPage =
     Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
   // FANZA API は 1-indexed offset (page 1 → offset 1, page 2 → offset 31, ...)
