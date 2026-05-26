@@ -1,0 +1,12 @@
+title: ""                                          # CCO 記入: H1 と同等の本タイトル (30〜38 字目安)
+slug: "situation-solitude-night"
+pillar: "situation"                                # emotion-navi | wisdom-lens | situation
+keyword_primary: "一人 映画 没頭"
+keyword_secondary:
+  - ""                                             # CCO 記入: サブキーワード 1
+  - ""                                             # CCO 記入: サブキーワード 2
+target_situation: ""                               # CCO 記入: 完全な孤独 / 没入 / 深夜の自室 等
+cta_source: "moterist"
+publish_status: "draft"                            # draft | review | published
+created_by: "CCO (ChatGPT 5.5)"
+created_at: "2026-05-26"
