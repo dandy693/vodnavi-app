@@ -145,6 +145,25 @@ export default async function ConciergePage({ searchParams }: Props) {
       : null;
   return (
     <>
+      {/*
+        TODO(data-hygiene): `source` の raw 値を GA4 へ流すと
+        `?source=Moterist` (大文字) / `?source=moter1st` (タイポ) 等のノイズが
+        `ai_session_start.source` カスタムディメンションに混入し、Saturday
+        Review の流入元別ファネル集計を汚染する。ConciergeChat と同様に
+        `sourceProfile.id` (resolveConciergeSource で正規化済の 4 種に限定)
+        を渡す方針へ寄せたい。
+
+        ただし以下のトレードオフ確認が必要:
+          - 不正値は default に丸めるため、GA4 上で「raw 値で何が来ているか」の
+            可視性が失われる。タイポ実態の把握には GA4 探索レポートで
+            page_location の query 文字列を別途見る運用が必要。
+          - 「moterist 経由なのに大文字 URL を打ち込んだ正規ユーザー」を
+            default としてカウントすることになる（実害は低いが counted-as-default）。
+
+        本 TODO は scripts/verify-cco-cta-urls.mjs と対をなす GA4 入力側の
+        防壁。CCO の article.md は kebab-case をハードコードしているため、
+        現在のリスクは「外部からの直リンクや手入力」に限定される。
+      */}
       <ConciergeSessionInit
         source={params.source ?? null}
         intent={intent}
