@@ -16,7 +16,7 @@
 import type { DmmItem } from "../src/lib/fanza/types.ts";
 
 export const PROMPT_VERSION = "cco-review-v1.1.1";
-export const TARGET_MIN_CHARS = 300;
+export const TARGET_MIN_CHARS = 250;
 export const TARGET_MAX_CHARS = 350;
 
 const SYSTEM_PROMPT = `あなたはVODNAVI-GROUPのCCO（最高コンテンツ責任者）であり、至高の動画検索アプリ『app.vodnavi.jp』の作品詳細ページに配置される「官能の書評」を司る孤高の編集長です。
