@@ -4,6 +4,79 @@
 
 ---
 
+## 2026-05-27 — CTO (Claude Opus 4.7) — `/works/[floor]/[id]` マネタイズ配線 ＋ 年齢確認の盾を (site) 全域へ拡張
+
+### 背景
+
+2026-05-27 物理監査（Chrome MCP / GA4 自由形式探索 / Search Console）で次の生データを取得:
+
+- GA4 hostname 別アクティブユーザー (過去 28 日): **app.vodnavi.jp = 1,872 / 1,930 = 96.99%**、moterist.com = 4 / 1,930 = 0.21%
+- Search Console sc-domain:vodnavi.jp (3 ヶ月): クリック **1,500** / 表示 **51,200**、上位 URL TOP10 はすべて `https://app.vodnavi.jp/works/videoa/{品番}`
+- moterist.com SC: クリック **0** / 表示 **1** のみ
+
+→ 外部検索からの直接着地は `/works/[floor]/[id]` で起きており、そこでアフィリエイト成約とコンシェルジュ回遊への分岐を確実に握ること、および BRAND_DESIGN_GUIDE §3「年齢確認の盾」を作品詳細ページでも有効化することが急務。
+
+### 適用変更
+
+#### A) FANZA メイン CTA を `buildAffiliateURL` 単一情報源へ統合
+
+`app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx`:
+
+- `item.affiliateURL` 直渡しをやめ、`buildAffiliateURL({ asp: "fanza", contentId, actressOrSku })` (`src/lib/concierge/url-builder.ts`) を経由。`af_id` は `NEXT_PUBLIC_FANZA_AFFILIATE_ID` / `DMM_AFFILIATE_ID` を `resolveAffiliateId` が解決するため、ハードコード禁則（BRAND_DESIGN_GUIDE §4-5）を完全準拠。
+- メイン CTA とサンプル画像リンクの `href` を `fanzaAffiliate.primaryUrl` に統一。
+- 文言を BRAND_DESIGN_GUIDE L96 で規定された統一コピー **「FANZA公式で作品の詳細・サンプル映像を確認する（18禁）」** に差し替え。
+- 配色を `btn-luxury-gold` (シャンパンゴールド `#D4AF37` × リッチブラック反転 / `design-tokens.css`) に統一。
+
+#### B) コンシェルジュ CTA をインテント分岐対応に汎用化
+
+`app-concierge/src/components/concierge-cta-link.tsx`:
+
+- `source` / `intent` / `label` を props 化（既定値は `app_detail` / `re_recommend` / 既存文言で完全互換）。
+- 作品詳細ページのメイン CTA 直下の `ConciergeCtaLink` 呼び出しは **`source="app_direct"` / `intent="actress"` / 指定文言** に切替えて、検索エンジン直接着地ユーザー専用ファネルを GA4 で分離可能に。
+- 既存の `ConciergeCtaPanel` (詳細ページ末尾) は `app_detail / re_recommend` のまま据置（内部回遊からの再推薦としての計測継続性を維持）。
+
+#### C) 年齢確認の盾を (site) 全域へ拡張
+
+新規ファイル `app-concierge/src/components/age-gate-overlay.tsx`:
+
+- 既存の `ConciergeGate` (/concierge 専用) と同設計で、(site) 配下 (works / genres / home / about 等) 用のクライアント側オーバーレイを汎用化。
+- SSR では描画しない (Googlebot/SEO クローラには本文を露出し続けインデックス温存)。ハイドレーション後に `vodnavi_age_verified=1` cookie 未通過なら全画面ロックでコンテンツ閲覧を物理遮断。
+- 「はい」→ `/api/age-gate` POST → cookie 発行 → `vodnavi:cookie-updated` イベントで即時アンマウント。
+- body スクロールロック付き。
+
+`app-concierge/src/app/(site)/layout.tsx`:
+
+- `<AgeGateOverlay />` をフッタ直後にマウント。`/works/[floor]/[id]` 直接着地で BRAND_DESIGN_GUIDE §3「アクセス直後にモーダル発火」が初めて成立。
+- API 側 (`/api/concierge/*`) の 403 遮断は `proxy.ts` のまま不変。クライアントゲートと二重防衛で『盾』を構成。
+
+### 検証結果
+
+```text
+$ npx tsc --noEmit
+EXIT=0
+
+$ npx next build
+✓ Compiled successfully in 22.1s
+✓ Generating static pages using 7 workers (14/14) in 9.3s
+EXIT=0
+```
+
+Route `/works/[floor]/[id]` は引き続き `ƒ (Dynamic)` (server-rendered on demand) で出力。Proxy (Middleware) も健全。
+
+### 効果検証（次回サタデー・レビュー）
+
+- GA4 `concierge_entry_click` イベントの `source` 内訳: `app_direct` (新規ファネル) vs `app_detail` (既存ファネル) の比率
+- GA4 `product_click` (placement=detail_main_cta) の発火数推移と `ai_affiliate_click` への接続
+- 年齢確認 cookie 通過率（`vodnavi_age_verified=1` 保有セッション / 全セッション）。SEO トラフィックの離脱率に異常がないか監視
+
+### ロールバック
+
+```bash
+git revert <merge-commit-of-feat/works-detail-monetization-shield>
+```
+
+---
+
 ## 2026-05-24 — CTO (Claude Opus 4.7) — moterist.com 全 single ページ末尾への concierge CTA 一括配線（functions.php フィルタ注入）
 
 ### 背景
