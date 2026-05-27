@@ -32,3 +32,8 @@
 - [ ] \[CTO]\ **erratum-2 / site-brand `Organization` + `WebSite` JSON-LD 実装**：`site-brand/src/app/layout.tsx` に `<script type="application/ld+json">` で `Organization`（`name`, `url`, `logo`, `description`, `foundingDate`, `sameAs[]`）+ `WebSite`（`url`, `name`, `potentialAction.SearchAction`）を埋め込む。`BRAND_DESIGN_GUIDE.md` §3② の「次世代映像検索 AI」「査読体制」表現を構造化データとして機械可読化。
 - [ ] \[CTO]\ **erratum-3 / app-concierge home `ItemList` JSON-LD 実装**：`app-concierge/src/app/(site)/page.tsx` の works grid を `ItemList` + `ListItem`（`position`, `url`, `name`, optional `image`）として `<script type="application/ld+json">` に serialize。サイトリンク候補化を狙う。FANZA fetch 失敗時の空グリッドは JSON-LD も emit しない（空 `itemListElement` で構造化スパム警告を出さないため）。
 - [ ] \[CTO]\ **erratum-4 / PWA manifest 追加**：`app-concierge/public/site.webmanifest` を新設。`name: "VODNAVI"`, `short_name: "VODNAVI"`, `start_url: "/"`, `display: "standalone"`, `theme_color: "#121212"`, `background_color: "#121212"`, `icons[]` で既存 `icon-192.png` / `icon-512.png` を `purpose: "any maskable"` で参照。`layout.tsx` の `metadata.manifest = "/site.webmanifest"` を追加。Android Add-to-Home-Screen 時のブランド表示安定化、Lighthouse PWA スコア改善。site-brand 側にも同等 manifest 追加を検討。
+
+## [Landed] 2026-05-28 CCO LIVE 生成バッチ完遂・本番 main 直接同期
+
+- [x] [HUMAN] ローカルコミット a9fe07b の本番メインへの手動 push 執行完了
+- [x] [CTO] 残り9品番に対する OpenAI LIVE 生成バッチの一括執行（計9品番・1,916文字のローカル完全落成、a9fe07b）
