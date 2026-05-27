@@ -38,7 +38,157 @@
  *   - 出力は markdown 1 ファイル想定。GitHub Issues / PR に貼れる形に。
  */
 
+import { readFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+
 import { CCO_TARGET_CIDS } from "./cco-target-cids.ts";
+
+// ============================================================================
+// CSV ローダ層（4 系統・標準 fs のみ、外部ライブラリ非依存）
+// ============================================================================
+
+/**
+ * funnel-sources/ ディレクトリの絶対パスを ESM 経由で安全に解決。
+ * cwd 依存を排除し、本ファイルからの相対オフセットだけで決める。
+ */
+function resolveFunnelSourcesDir(): string {
+  const here = dirname(fileURLToPath(import.meta.url));
+  return resolve(here, "..", "data", "funnel-sources");
+}
+
+/**
+ * 安全 CSV パーサ — ヘッダ行・空行・コメント (#) をスキップして、
+ * セル単位の文字列配列を返す。ファイル不在は null を返し、
+ * 上位ロジックは「全件 undefined」フォールバックで継続する。
+ */
+function readCsvLines(path: string): string[][] | null {
+  let raw: string;
+  try {
+    raw = readFileSync(path, "utf-8");
+  } catch {
+    return null; // ENOENT / 権限エラーは「未投入」と同義扱い
+  }
+  const all = raw
+    .split(/\r?\n/)
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0 && !l.startsWith("#"));
+  if (all.length <= 1) return []; // ヘッダのみ or 空 → データ 0 行
+  return all.slice(1).map((l) => l.split(",").map((c) => c.trim()));
+}
+
+function parseNumber(s: string | undefined): number | undefined {
+  if (s == null || s === "") return undefined;
+  const n = Number(s);
+  return Number.isFinite(n) ? n : undefined;
+}
+
+// ---- 1) sc-clicks.csv -----------------------------------------------------
+
+interface ScRow {
+  clicks?: number;
+  impressions?: number;
+  ctr?: number;
+  avgPosition?: number;
+}
+
+function loadScClicks(dir: string): Map<string, ScRow> {
+  const map = new Map<string, ScRow>();
+  const rows = readCsvLines(join(dir, "sc-clicks.csv"));
+  if (!rows) return map;
+  for (const cols of rows) {
+    const cid = cols[0];
+    if (!cid) continue;
+    map.set(cid, {
+      clicks: parseNumber(cols[1]),
+      impressions: parseNumber(cols[2]),
+      ctr: parseNumber(cols[3]),
+      avgPosition: parseNumber(cols[4]),
+    });
+  }
+  return map;
+}
+
+// ---- 2) ga4-pageviews.csv -------------------------------------------------
+
+interface PageViewRow {
+  screenViews?: number;
+  sessions?: number;
+  avgEngagementSec?: number;
+}
+
+function loadGa4PageViews(dir: string): Map<string, PageViewRow> {
+  const map = new Map<string, PageViewRow>();
+  const rows = readCsvLines(join(dir, "ga4-pageviews.csv"));
+  if (!rows) return map;
+  for (const cols of rows) {
+    const cid = cols[0];
+    if (!cid) continue;
+    map.set(cid, {
+      screenViews: parseNumber(cols[1]),
+      sessions: parseNumber(cols[2]),
+      avgEngagementSec: parseNumber(cols[3]),
+    });
+  }
+  return map;
+}
+
+// ---- 3) ga4-events.csv ----------------------------------------------------
+
+/**
+ * event_name 動的分流: `affiliate_click` → ga4AffiliateClicks、
+ * `concierge_click` → ga4ConciergeClicks。
+ * 同一 cid に同 event が複数行あれば加算合計する（GA4 export が
+ * 日付別に分解されている場合の合算に対応）。
+ */
+interface EventRow {
+  affiliateClicks?: number;
+  conciergeClicks?: number;
+}
+
+function loadGa4Events(dir: string): Map<string, EventRow> {
+  const map = new Map<string, EventRow>();
+  const rows = readCsvLines(join(dir, "ga4-events.csv"));
+  if (!rows) return map;
+  for (const cols of rows) {
+    const cid = cols[0];
+    const eventName = cols[1];
+    const count = parseNumber(cols[2]);
+    if (!cid || !eventName || count == null) continue;
+    const existing = map.get(cid) ?? {};
+    if (eventName === "affiliate_click") {
+      existing.affiliateClicks = (existing.affiliateClicks ?? 0) + count;
+    } else if (eventName === "concierge_click") {
+      existing.conciergeClicks = (existing.conciergeClicks ?? 0) + count;
+    }
+    map.set(cid, existing);
+  }
+  return map;
+}
+
+// ---- 4) dmm-sales.csv -----------------------------------------------------
+
+interface SalesRow {
+  gross?: number;
+  commission?: number;
+  orderCount?: number;
+}
+
+function loadDmmSales(dir: string): Map<string, SalesRow> {
+  const map = new Map<string, SalesRow>();
+  const rows = readCsvLines(join(dir, "dmm-sales.csv"));
+  if (!rows) return map;
+  for (const cols of rows) {
+    const cid = cols[0];
+    if (!cid) continue;
+    map.set(cid, {
+      gross: parseNumber(cols[1]),
+      commission: parseNumber(cols[2]),
+      orderCount: parseNumber(cols[3]),
+    });
+  }
+  return map;
+}
 
 // ============================================================================
 // データ構造（CSO 仕様: 「TypeScript インターフェースを厳格に定義」）
@@ -130,18 +280,51 @@ export type FunnelReport = ReadonlyArray<FunnelReportRow>;
 // ============================================================================
 
 /**
- * 各データソースが投入された際に CCO_TARGET_CIDS を主キーで突合する組合せ。
- * 現フェーズでは生指標を空で返し、テーブル上に「-」を並べる土台だけ用意する。
+ * CCO_TARGET_CIDS を主キーに、4 系統 CSV を直列マージして 27 行の
+ * `FunnelMetricsRaw` を組み立てる。
+ *
+ * 優先度:
+ *   1. CSV 投入値 (HUMAN による最新 export)
+ *   2. cco-target-cids.ts の SC 監査値 (CSV 未投入時のフォールバック)
+ *   3. undefined (どこにもデータがない)
+ *
+ * CSV 投入欠落 / ファイル不在 / 数値パース失敗のどれが起きてもプロセスは
+ * 落とさず、対応フィールドだけ `undefined` で素通しする。
  */
 function loadFunnelMetrics(): ReadonlyArray<FunnelMetricsRaw> {
-  return CCO_TARGET_CIDS.map((t) => ({
-    contentId: t.contentId,
-    // cco-target-cids.ts に既に SC 監査値が入っていればその時点で採用。
-    // 0 (未計測プロキシ) は SC source 投入時に上書きされる。
-    scClicks: t.scClicks > 0 ? t.scClicks : undefined,
-    scImpressions: t.scImpressions > 0 ? t.scImpressions : undefined,
-    // 他のフィールドは今フェーズでは undefined のまま (CSV ロードで埋める)
-  }));
+  const dir = resolveFunnelSourcesDir();
+  const scMap = loadScClicks(dir);
+  const pvMap = loadGa4PageViews(dir);
+  const evMap = loadGa4Events(dir);
+  const slMap = loadDmmSales(dir);
+
+  return CCO_TARGET_CIDS.map((t) => {
+    const sc = scMap.get(t.contentId);
+    const pv = pvMap.get(t.contentId);
+    const ev = evMap.get(t.contentId);
+    const sl = slMap.get(t.contentId);
+
+    return {
+      contentId: t.contentId,
+      // SC: CSV 投入値 > cco-target-cids.ts の監査値 > undefined
+      scClicks: sc?.clicks ?? (t.scClicks > 0 ? t.scClicks : undefined),
+      scImpressions:
+        sc?.impressions ?? (t.scImpressions > 0 ? t.scImpressions : undefined),
+      scCtr: sc?.ctr,
+      scAveragePosition: sc?.avgPosition,
+      // GA4 page
+      ga4PageViews: pv?.screenViews,
+      ga4Sessions: pv?.sessions,
+      ga4AvgEngagementSec: pv?.avgEngagementSec,
+      // GA4 event (event_name 動的分流)
+      ga4AffiliateClicks: ev?.affiliateClicks,
+      ga4ConciergeClicks: ev?.conciergeClicks,
+      // DMM sales
+      dmmGrossSales: sl?.gross,
+      dmmCommission: sl?.commission,
+      dmmOrderCount: sl?.orderCount,
+    };
+  });
 }
 
 // ============================================================================
