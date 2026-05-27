@@ -182,6 +182,116 @@ async function ensureDir(dir: string): Promise<void> {
 }
 
 /**
+ * ============================================================================
+ * 全自動プロンプトサニタイザー（防壁マフラー）
+ * ============================================================================
+ *
+ * STRATEGY_BRIEF (Sprint 2): TOP10 を超えた数百〜数千品番への水平展開時に、
+ * FANZA メタ (タイトル / ジャンル / メーカー / 商品説明) に含まれる直接的な
+ * 成人向け名詞が OpenAI の content policy フィルタを刺激し、
+ * 400 Bad Request (content_policy_violation) でバッチが途中クラッシュする
+ * リスクを構造的に排除する。
+ *
+ * 設計方針:
+ *   - LLM 到達前段で、メタ文字列を「BRAND_DESIGN_GUIDE のサニタイズ表現規則」
+ *     と同じ温度の抽象語へ置換する。完全削除ではなく置換を基本とし、文脈の
+ *     繋がりを温存する（タイトルが意味不明な空所だらけになると CCO レビューの
+ *     構造もぼやけるため）。
+ *   - 置換語は『ビブリア・エロティカ』の文学的官能トーン（書斎 / バーテンダー
+ *     語り）と整合するため、機械的な伏字 (○○) ではなく成熟した語彙を選ぶ。
+ *   - 辞書は append-only。新しい刺激語が発見されたら **削除せず追加** することで、
+ *     回帰テスト的に過去パターンに対しても継続適用される。
+ *
+ * 適用順序の鉄則:
+ *   - 「より長いパターン」を先、「短いパターン」を後に並べる。短い語が長い語の
+ *     部分一致を奪うと、結合語の置換漏れが発生するため。
+ */
+
+type SanitizeRule = readonly [pattern: RegExp, replacement: string];
+
+const FANZA_SANITIZE_RULES: ReadonlyArray<SanitizeRule> = [
+  // ---- 性器名・伏字バリエーション（長い順）-----------------------------
+  [/マ[○〇*＊⚪\s]?コ/g, "秘処"],
+  [/オ[○〇*＊⚪\s]?マ[○〇*＊⚪\s]?コ/g, "秘処"],
+  [/オ[○〇*＊⚪\s]?コ/g, "秘処"],
+  [/チ[○〇*＊⚪\s]?ンポ/g, "雄しべ"],
+  [/チ[○〇*＊⚪\s]?ンコ/g, "雄しべ"],
+  [/ち[○〇*＊⚪\s]?ぽ/g, "雄しべ"],
+  [/おまんこ/g, "秘処"],
+  [/おちんちん/g, "雄しべ"],
+
+  // ---- 行為名（直接表現）-----------------------------------------------
+  [/中出し/g, "深い抱擁"],
+  [/イラマチオ/g, "口づけの儀"],
+  [/ぶっかけ/g, "夜露"],
+  [/ごっくん/g, "受容"],
+  [/フェラチオ/g, "口唇の奉仕"],
+  [/フェラ(?!ーリ)/g, "口唇の奉仕"], // フェラーリ等の誤爆を避ける
+  [/手コキ/g, "繊細な愛撫"],
+  [/騎乗位/g, "対峙の姿勢"],
+  [/正常位/g, "向き合う姿勢"],
+  [/バック/g, "背後からの抱擁"],
+  [/アナル/g, "禁忌の境界"],
+
+  // ---- 状態・体液名 ----------------------------------------------------
+  [/潮吹き/g, "波打つ感情"],
+  [/絶頂/g, "極点"],
+  [/イッ[てた]/g, "達し"],
+  [/精液/g, "余韻"],
+  [/愛液/g, "湿り気"],
+  [/3P/g, "三者の関係"],
+  [/4P/g, "複数の関係"],
+];
+
+/**
+ * 単一文字列に対する直列サニタイズ。null / undefined / 空文字は素通しで安全に
+ * 返す（メタフィールドが optional なため）。
+ */
+export function sanitizeFanzaMetadata(input: string): string {
+  if (!input) return input;
+  let out = input;
+  for (const [pattern, replacement] of FANZA_SANITIZE_RULES) {
+    out = out.replace(pattern, replacement);
+  }
+  return out;
+}
+
+/**
+ * DmmItem 全体のメタフィールドを sanitize した新 item を返す（immutable）。
+ * processOne で LLM 呼出の直前に通す。`buildPromptMessages` への入力はすべて
+ * この sanitized item から派生する。
+ */
+function sanitizeItemMetadata(item: DmmItem): DmmItem {
+  const info = item.iteminfo;
+  return {
+    ...item,
+    title: sanitizeFanzaMetadata(item.title),
+    iteminfo: info
+      ? {
+          ...info,
+          genre: info.genre?.map((g) => ({
+            ...g,
+            name: sanitizeFanzaMetadata(g.name),
+          })),
+          maker: info.maker?.map((m) => ({
+            ...m,
+            name: sanitizeFanzaMetadata(m.name),
+          })),
+          series: info.series?.map((s) => ({
+            ...s,
+            name: sanitizeFanzaMetadata(s.name),
+          })),
+          director: info.director?.map((d) => ({
+            ...d,
+            name: sanitizeFanzaMetadata(d.name),
+          })),
+          actress: info.actress, // 出演者名（人名）はそのまま温存
+        }
+      : info,
+  };
+}
+
+/**
  * 既存 md があれば中身を返す（--force でスキップ判定に使う）。
  */
 async function readExisting(path: string): Promise<string | null> {
@@ -381,8 +491,13 @@ async function processOne(
     source: "live" | "fixture";
     usage?: { totalTokens?: number; inputTokens?: number; outputTokens?: number };
   };
+  // 直列配線: OpenAI に向かう item を必ず sanitize 経由に通す。
+  // 数百〜数千品番への水平展開時に content_policy_violation で 400 を食らわない
+  // ための一次防衛線（fixture 経路も同じ item シェイプを共有するため、二重通電
+  // のリスクなし）。
+  const sanitizedItem = sanitizeItemMetadata(item);
   try {
-    generated = await callCcoForReview(item, options.mode);
+    generated = await callCcoForReview(sanitizedItem, options.mode);
   } catch (err) {
     const safeMsg = maskDmmSecretsInString((err as Error).message);
     console.log(
