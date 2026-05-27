@@ -24,12 +24,30 @@ export function ConciergeCtaLink({
   contentId,
   floorCode,
   className,
+  source = "app_detail",
+  intent = "re_recommend",
+  label = "この作品の余韻に合う一本を AI に相談する",
 }: {
   contentId: string;
   floorCode: string;
   className?: string;
+  /**
+   * GA4 / URL クエリの `source`。
+   * デフォルト `app_detail` = 内部回遊から詳細ページ経由のクリック。
+   * 検索エンジンから作品ページに「直接着地」したユーザー向け CTA では
+   * `app_direct` を渡し、ファネルを区別する。
+   */
+  source?: string;
+  /**
+   * 推薦インテント。`re_recommend` (詳細ページの代替提案) /
+   * `actress` (女優繋がりの深掘り) など、BRAND_DESIGN_GUIDE §3 の
+   * intent 規約に従う。
+   */
+  intent?: string;
+  /** ボタン本文。世界観に合わせて外部から差し替え可能。 */
+  label?: string;
 }) {
-  const href = `/concierge?source=app_detail&intent=re_recommend&seed_cid=${encodeURIComponent(contentId)}`;
+  const href = `/concierge?source=${encodeURIComponent(source)}&intent=${encodeURIComponent(intent)}&seed_cid=${encodeURIComponent(contentId)}`;
 
   return (
     <Link
@@ -40,8 +58,8 @@ export function ConciergeCtaLink({
           from_page: "detail",
           content_id: contentId,
           floor_code: floorCode,
-          source: "app_detail",
-          intent: "re_recommend",
+          source,
+          intent,
           transport_type: "beacon",
         });
       }}
@@ -65,7 +83,7 @@ export function ConciergeCtaLink({
         className="size-4 transition-transform duration-300 group-hover:rotate-12"
         aria-hidden
       />
-      <span>この作品の余韻に合う一本を AI に相談する</span>
+      <span>{label}</span>
     </Link>
   );
 }

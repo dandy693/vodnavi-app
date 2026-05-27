@@ -13,6 +13,7 @@ import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getWorkEditorial } from "@/lib/editorial";
+import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import {
   fetchItemList,
   formatPrice,
@@ -175,6 +176,14 @@ export default async function WorkDetailPage({
     ? await getRelatedWorks(floor, primaryGenre.id, id, 12)
     : [];
   const editorial = getWorkEditorial(item.content_id);
+
+  // CTA URL は `item.affiliateURL` 直渡しではなく単一ビルダ `buildAffiliateURL`
+  // を通す（BRAND_DESIGN_GUIDE §4-5「af_id ハードコード禁則」+ ASP 抽象化）。
+  const fanzaAffiliate = buildAffiliateURL({
+    asp: "fanza",
+    contentId: item.content_id,
+    actressOrSku: actresses[0]?.name ?? null,
+  });
 
   const description = [
     `${item.title}の作品情報。`,
@@ -339,20 +348,29 @@ export default async function WorkDetailPage({
             )}
           </div>
 
+          {/* メイン CTA: BRAND_DESIGN_GUIDE §3 §4 準拠。
+             - URL は `buildAffiliateURL({ asp: "fanza", contentId, actressOrSku })`
+               を単一情報源として組み立て、`af_id` は環境変数
+               (`NEXT_PUBLIC_FANZA_AFFILIATE_ID` / `DMM_AFFILIATE_ID`) から
+               解決する。`item.affiliateURL` の直渡しはハードコード禁則と
+               同じリスクを抱えるため正規ビルダ経由へ統一。
+             - 文言は BRAND_DESIGN_GUIDE L96 で規定された統一コピー。
+             - 配色は `btn-luxury-gold` (シャンパンゴールド #D4AF37 ×
+               リッチブラック反転) を採用、肉厚 14h + 太字。 */}
           <FanzaAffiliateLink
-            href={item.affiliateURL ?? item.URL ?? ""}
+            href={fanzaAffiliate.primaryUrl}
             content_id={item.content_id}
             title={item.title}
             floor_code={floor}
             placement="detail_main_cta"
             className={cn(
-              "group inline-flex h-14 items-center justify-center gap-2 rounded-xl text-base font-semibold",
-              "bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 text-black",
-              "shadow-[0_0_30px_-5px_rgba(245,200,80,0.5)]",
-              "transition-all duration-300 hover:from-amber-400 hover:to-amber-300 active:translate-y-px",
+              "btn-luxury-gold h-14 w-full rounded-xl text-base font-semibold",
+              "group",
             )}
           >
-            FANZA で今すぐ視聴
+            <span className="text-center leading-snug">
+              FANZA公式で作品の詳細・サンプル映像を確認する（18禁）
+            </span>
             <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
           </FanzaAffiliateLink>
 
@@ -360,14 +378,18 @@ export default async function WorkDetailPage({
             ※ クリックすると FANZA 公式サイトに移動します。視聴・購入は FANZA 上で行われます。
           </p>
 
-          {/* セカンダリ動線: FANZA メイン CTA の直下に、視線を阻害しない
-             アウトラインスタイルで AI コンシェルジュへの再推薦動線を置く。
-             SEO 流入の 99% が詳細ページで完結する 2026-05-25 のファネル
-             断絶診断に対応するため、迷ったユーザーを次の一本へ導く脱出口。 */}
+          {/* セカンダリ動線（回遊の盾）: 検索エンジンから本ページに直接着地した
+             ユーザー (GA4 物理監査で hostname=app.vodnavi.jp が 96.99% を占有)
+             に対し、女優インテントの AI コンシェルジュへ即時遷移できる脱出口を
+             FANZA メイン CTA 直下に配置。`source=app_direct` で内部回遊
+             (`app_detail`) と GA4 / `resolveConciergeSource` の挙動を分離。 */}
           <ConciergeCtaLink
             contentId={item.content_id}
             floorCode={floor}
-            className="mt-2"
+            source="app_direct"
+            intent="actress"
+            label="この作品の余韻に浸るか、あるいは今の気分を AI コンシェルジュに伝えて次の至高の 1 本を検索する（無料）"
+            className="mt-2 h-auto min-h-12 py-3"
           />
         </div>
       </section>
@@ -381,7 +403,7 @@ export default async function WorkDetailPage({
             {sampleImages.slice(0, 12).map((src, idx) => (
               <FanzaAffiliateLink
                 key={src}
-                href={item.affiliateURL ?? item.URL ?? ""}
+                href={fanzaAffiliate.primaryUrl}
                 content_id={item.content_id}
                 title={item.title}
                 floor_code={floor}
