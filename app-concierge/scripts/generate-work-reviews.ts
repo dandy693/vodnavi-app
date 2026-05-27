@@ -82,9 +82,54 @@ async function fetchItemListMinimal(params: {
 
   const res = await fetch(url);
   if (!res.ok) {
-    throw new Error(`FANZA API ${res.status} ${res.statusText}`);
+    // DMM の 400 レスポンスは request parameters を JSON で echo する仕様のため、
+    // api_id / affiliate_id 等の secret 値が body に含まれる。CTO 安全境界の
+    // 観点でこれら secret は **絶対に** ログ出力させない。マスク後のみ emit。
+    let detail = "";
+    try {
+      const raw = await res.text();
+      const masked = maskDmmSecretsInString(raw);
+      detail = ` body=${masked.slice(0, 400).replace(/\s+/g, " ")}`;
+    } catch {
+      // ignore
+    }
+    throw new Error(`FANZA API ${res.status} ${res.statusText}${detail}`);
   }
   return (await res.json()) as DmmItemListResponse;
+}
+
+/**
+ * DMM 認証情報をログ文字列から消去する多段マスク。
+ *
+ * 一段目: JSON フィールド名ベースの正規表現マスク（`"api_id":"…"` 等）
+ *   - DMM 標準の 400 echo フォーマットに対する一次防衛線
+ *   - DMM が将来 response shape を変えても、フィールド名さえ "api_id" /
+ *     "affiliate_id" のままなら通用する
+ *
+ * 二段目: process.env の実値リテラル reverse-mask
+ *   - body の別フィールドに secret 値が偶発混入したケース (例: error message
+ *     の自由文に key 値が echo される) でも、env 値そのものを literal として
+ *     検索置換することで横展開を遮断する
+ *   - 4 文字未満の空文字 / 短い値は false positive (全文字列破壊) のリスクが
+ *     あるため、閾値ガード付きでスキップ
+ *
+ * すべての段は **置換後文字列** を引き渡し、最終出力には secret 原値が
+ * 1 byte たりとも残らないことを構造的に担保する。
+ */
+function maskDmmSecretsInString(input: string): string {
+  let s = input
+    .replace(/"api_id":"[^"]*"/g, '"api_id":"[MASKED_DMM_CREDENTIAL]"')
+    .replace(/"affiliate_id":"[^"]*"/g, '"affiliate_id":"[MASKED_DMM_CREDENTIAL]"');
+
+  const apiId = process.env.DMM_API_ID;
+  if (apiId && apiId.length >= 4) {
+    s = s.split(apiId).join("[MASKED_DMM_CREDENTIAL]");
+  }
+  const affiliateId = process.env.DMM_AFFILIATE_ID;
+  if (affiliateId && affiliateId.length >= 4) {
+    s = s.split(affiliateId).join("[MASKED_DMM_CREDENTIAL]");
+  }
+  return s;
 }
 
 import { CCO_TARGET_CIDS, type CcoTargetCid } from "./cco-target-cids.ts";
@@ -308,15 +353,17 @@ async function processOne(
     item = await fetchWork(target);
   } catch (err) {
     // dry-run では FANZA キー欠落でもパイプを通電させる。fallback を使う。
+    // message 内に secret 値が偶発的に含まれることを想定し、出力直前に mask を通す。
+    const safeMsg = maskDmmSecretsInString(
+      (err as Error).message.split("\n")[0],
+    );
     if (options.mode === "dry") {
       console.log(
-        `  INFO  ${target.contentId} (fanza fetch skipped, dry-run fallback: ${(err as Error).message.split("\n")[0]})`,
+        `  INFO  ${target.contentId} (fanza fetch skipped, dry-run fallback: ${safeMsg})`,
       );
       item = buildOfflineFallbackItem(target);
     } else {
-      console.log(
-        `  FAIL  ${target.contentId} (fanza fetch error: ${(err as Error).message})`,
-      );
+      console.log(`  FAIL  ${target.contentId} (fanza fetch error: ${safeMsg})`);
       return "failed";
     }
   }
@@ -337,8 +384,9 @@ async function processOne(
   try {
     generated = await callCcoForReview(item, options.mode);
   } catch (err) {
+    const safeMsg = maskDmmSecretsInString((err as Error).message);
     console.log(
-      `  FAIL  ${target.contentId} (cco generation error: ${(err as Error).message})`,
+      `  FAIL  ${target.contentId} (cco generation error: ${safeMsg})`,
     );
     return "failed";
   }
