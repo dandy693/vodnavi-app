@@ -432,19 +432,35 @@ export default async function WorkDetailPage({
          でも VODNAVI 独自視座に触れられる SEO 防衛線。fixture ソースの間も UI 上は
          差別化せず（CSO レビュー後に live 切替）、視認は frontmatter で行う。 */}
       {ccoReview && (
-        <section
-          data-work-review-source={ccoReview.source}
-          className="mb-6 rounded-2xl border border-brand-gold/20 bg-brand-dark/40 px-5 py-5 sm:px-7 sm:py-6"
-        >
-          <p className="font-luxury-heading text-[11px] uppercase tracking-[0.25em] text-brand-gold/80">
-            VODNAVI Review
-          </p>
-          <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-text-primary sm:text-base">
-            {ccoReview.body.split(/\n\s*\n/).map((para: string, idx: number) => (
-              <p key={idx}>{para}</p>
-            ))}
-          </div>
-        </section>
+        <>
+          {/* COMPLIANCE_GUIDE.md §1.2 (ステマ規制対応) 準拠の #PR 明示。
+             VODNAVI Review が文学的官能トーンを纏うため広告性が読者に
+             分かりづらい構造ゆえ、レビュー本体の直前に銘記しなければならない。
+             BRAND_DESIGN_GUIDE §2 のリッチブラック (#121212 = brand-dark) +
+             プラチナホワイト (#E0E0E0 = brand-text-primary) + シャンパンゴールド
+             (#D4AF37 = brand-gold) 三色域で構成、原色の警告色は厳禁。 */}
+          <aside
+            role="note"
+            aria-label="アフィリエイト広告に関する明示"
+            data-compliance-pr="true"
+            className="mb-3 rounded-r-lg border-l-2 border-brand-gold bg-brand-surface px-4 py-3 text-xs leading-relaxed text-brand-text-primary sm:text-sm"
+          >
+            本ページにはアフィリエイトリンクが含まれます（#PR）。最新の配信状況は公式サイトでご確認ください。
+          </aside>
+          <section
+            data-work-review-source={ccoReview.source}
+            className="mb-6 rounded-2xl border border-brand-gold/20 bg-brand-dark/40 px-5 py-5 sm:px-7 sm:py-6"
+          >
+            <p className="font-luxury-heading text-[11px] uppercase tracking-[0.25em] text-brand-gold/80">
+              VODNAVI Review
+            </p>
+            <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-text-primary sm:text-base">
+              {ccoReview.body.split(/\n\s*\n/).map((para: string, idx: number) => (
+                <p key={idx}>{para}</p>
+              ))}
+            </div>
+          </section>
+        </>
       )}
 
       <section className="prose prose-invert prose-sm max-w-none text-muted-foreground">
