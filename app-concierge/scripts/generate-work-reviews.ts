@@ -11,7 +11,7 @@
  *   1. CCO_TARGET_CIDS (scripts/cco-target-cids.ts) を入力に取る
  *   2. FANZA Webservice (fetchItemList) から作品メタを取得
  *   3. buildPromptMessages (scripts/cco-review-prompt.ts) でプロンプト構築
- *   4. mode === "live"  → OpenAI API (ChatGPT 5.5) でレビュー本文を生成 [TODO]
+ *   4. mode === "live"  → @ai-sdk/openai + ai.generateText で本物のレビュー生成
  *      mode === "dry"   → buildFixtureReview で構造化フォールバックを返す
  *   5. レビュー本文 + frontmatter を src/data/work-reviews/{contentId}.md に配置
  *   6. 既存ファイルは --force でない限りスキップ
@@ -26,8 +26,10 @@
  *   node --experimental-strip-types scripts/generate-work-reviews.ts \
  *     --dry-run --target=gkok00002 --force
  *
- *   # 実コール (CCO 本番) — モックアップ段階では未実装。`@ai-sdk/openai` 追加と
- *   #   callOpenAIForReview() の本体実装を有効化したのち、--mode=live で起動。
+ *   # LIVE (CCO 本番) — .env.local の OPENAI_API_KEY を OpenAI SDK が自動参照。
+ *   #   モデルは OPENAI_REVIEW_MODEL (env) で上書き可、既定は gpt-4o。
+ *   node --experimental-strip-types scripts/generate-work-reviews.ts \
+ *     --mode=live --target=gkok00002 --force
  *
  * 終了コード:
  *   0  = 1 件以上配置 / 既存 fixture 維持
@@ -37,6 +39,9 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { openai } from "@ai-sdk/openai";
+import { generateText } from "ai";
 
 import type { DmmItem, DmmItemListResponse } from "../src/lib/fanza/types.ts";
 import { FANZA_FLOORS } from "../src/lib/fanza/types.ts";
@@ -183,41 +188,65 @@ function buildOfflineFallbackItem(target: CcoTargetCid): DmmItem {
 }
 
 /**
- * OpenAI 実コール経路の **スタブ**。
+ * OpenAI モデル名のデフォルト。
  *
- * モックアップ段階では fixture フォールバックへ即フォールバックさせる。
- * 実コール解放時の手順:
- *   1. `pnpm add @ai-sdk/openai` で provider 追加
- *   2. 下記 TODO のとおり `openai('gpt-5-...')` + `generateText` を有効化
- *   3. .env.local に OPENAI_API_KEY を投入
- *   4. --mode=live で再実行
+ * 環境変数 `OPENAI_REVIEW_MODEL` で上書き可能（モデル切替を script 変更なしで
+ * 行えるようにする）。BRAND_DESIGN_GUIDE の `gpt-5` 系記述を尊重しつつ、現実に
+ * 提供されているモデル名にデプロイ時点で固定したい場合は env で上書きする運用。
+ */
+const DEFAULT_OPENAI_REVIEW_MODEL = "gpt-4o";
+
+/**
+ * CCO LIVE コール経路 — OPENAI_API_KEY を `process.env` 経由でのみ参照する。
+ *
+ * 厳格な禁則:
+ *   - API キーリテラルをコードに直書きしない
+ *   - キー値をコマンドライン引数に渡さない（shell history への混入防止）
+ *   - キー値を console.log しない
+ *
+ * `dry` モードは fixture フォールバックを即返却（オフラインでもパイプ通電を担保）。
+ * `live` モードは `@ai-sdk/openai` provider + `ai.generateText` で本物のレビューを
+ * 生成し、`source: "live"` で署名する。
+ *
+ * 使用モデル: `process.env.OPENAI_REVIEW_MODEL` が設定されていればそれ、無ければ
+ * `DEFAULT_OPENAI_REVIEW_MODEL`。OpenAI SDK 側で `process.env.OPENAI_API_KEY` を
+ * 自動参照するため、本関数側ではキーに触れない。
  */
 async function callCcoForReview(
   item: DmmItem,
   mode: RunMode,
-): Promise<{ body: string; source: "live" | "fixture" }> {
+): Promise<{ body: string; source: "live" | "fixture"; usage?: { totalTokens?: number; inputTokens?: number; outputTokens?: number } }> {
   if (mode === "dry") {
     return { body: buildFixtureReview(item), source: "fixture" };
   }
 
-  // --- 実コール経路（モックアップ未配線） -------------------------------
-  // import { openai } from "@ai-sdk/openai";
-  // import { generateText } from "ai";
-  // const messages = buildPromptMessages(item);
-  // const { text } = await generateText({
-  //   model: openai("gpt-5"),
-  //   messages: [...messages],
-  //   temperature: 0.8,
-  //   maxOutputTokens: 800,
-  // });
-  // return { body: text.trim(), source: "live" };
-  // ---------------------------------------------------------------------
+  if (!process.env.OPENAI_API_KEY) {
+    throw new Error(
+      "callCcoForReview(live): OPENAI_API_KEY が未設定です。.env.local もしくは Vercel 環境変数で投入してください。",
+    );
+  }
 
-  // 物理パイプとしては必ず何かを返す（live モードでスタブが動くと CSO レビュー時に
-  // 偽生成が混入する事故を防ぐため、ここはあえて throw する）。
-  throw new Error(
-    "callCcoForReview: --mode=live is not wired in mockup. Add @ai-sdk/openai and uncomment the block above before running with real keys.",
-  );
+  const modelName = process.env.OPENAI_REVIEW_MODEL ?? DEFAULT_OPENAI_REVIEW_MODEL;
+  const messages = buildPromptMessages(item);
+  const result = await generateText({
+    model: openai(modelName),
+    messages: [...messages],
+    temperature: 0.8,
+  });
+
+  const body = (result.text ?? "").trim();
+  if (!body) {
+    throw new Error(
+      "callCcoForReview(live): OpenAI から空の応答が返りました。content filter / rate limit / model 名を確認してください。",
+    );
+  }
+
+  // ai@6 の usage シェイプは provider 差異がある。安全に optional フィールドとして拾う。
+  const usage = result.usage as
+    | { totalTokens?: number; inputTokens?: number; outputTokens?: number }
+    | undefined;
+
+  return { body, source: "live", usage };
 }
 
 /**
@@ -300,7 +329,11 @@ async function processOne(
     }
   }
 
-  let generated: { body: string; source: "live" | "fixture" };
+  let generated: {
+    body: string;
+    source: "live" | "fixture";
+    usage?: { totalTokens?: number; inputTokens?: number; outputTokens?: number };
+  };
   try {
     generated = await callCcoForReview(item, options.mode);
   } catch (err) {
@@ -310,8 +343,8 @@ async function processOne(
     return "failed";
   }
 
-  // 長さチェック: fixture は構造的に範囲内 / live でも 300-500 を満たすことを期待。
-  // 外れた場合は警告だけ吐いて配置は続行（CSO レビュー側で取捨）。
+  // 長さチェック: 正典仕様 300-350 字を満たすかを WARN 出力。
+  // 範囲外でも配置は続行（CSO レビュー側で取捨）。
   if (!withinTargetLength(generated.body)) {
     console.log(
       `  WARN  ${target.contentId} body_chars=${generated.body.length} (out of [${TARGET_MIN_CHARS},${TARGET_MAX_CHARS}])`,
@@ -327,14 +360,18 @@ async function processOne(
 
   await writeFile(outPath, md, "utf-8");
 
+  const usageStr = generated.usage
+    ? ` usage=in:${generated.usage.inputTokens ?? "?"} out:${generated.usage.outputTokens ?? "?"} total:${generated.usage.totalTokens ?? "?"}`
+    : "";
+
   if (existing) {
     console.log(
-      `  REWRITE  ${target.contentId} → ${outPath} (chars=${generated.body.length}, source=${generated.source})`,
+      `  REWRITE  ${target.contentId} → ${outPath} (chars=${generated.body.length}, source=${generated.source}${usageStr})`,
     );
     return "rewritten";
   }
   console.log(
-    `  PLACE    ${target.contentId} → ${outPath} (chars=${generated.body.length}, source=${generated.source})`,
+    `  PLACE    ${target.contentId} → ${outPath} (chars=${generated.body.length}, source=${generated.source}${usageStr})`,
   );
   return "placed";
 }
