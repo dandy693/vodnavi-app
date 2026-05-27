@@ -24,6 +24,7 @@ export type CcoTargetCid = {
 };
 
 export const CCO_TARGET_CIDS: ReadonlyArray<CcoTargetCid> = [
+  // ── Sprint 1 TOP 10（物理 SC 監査ベース・2026-05-27 取得値） ───────────
   { contentId: "gkok00002", floor: "videoa", scClicks: 81, scImpressions: 1105, knownTitleHint: "制服マ○コ拡張少女 鳥羽みもり" },
   { contentId: "snos00233", floor: "videoa", scClicks: 70, scImpressions: 1008 },
   { contentId: "savr00978", floor: "videoa", scClicks: 43, scImpressions: 934 },
@@ -34,4 +35,26 @@ export const CCO_TARGET_CIDS: ReadonlyArray<CcoTargetCid> = [
   { contentId: "gqhb00024", floor: "videoa", scClicks: 17, scImpressions: 400 },
   { contentId: "h_1724m794g00002", floor: "videoa", scClicks: 17, scImpressions: 364 },
   { contentId: "1asex00014", floor: "videoa", scClicks: 17, scImpressions: 128 },
+
+  // ── Sprint 2 拡張: FANZA Webservice 実在確認済 17 cids（2026-05-28） ───
+  // CSO 提供 40 cids のうち FANZA で `fanza returned no item` だった 23 件は
+  // 永続パージ (gone-from-history)。実在 17 cids のみを正典化。scClicks /
+  // scImpressions は SC 物理監査未着のため 0 を「未計測」プロキシとして保持。
+  { contentId: "mide00954", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "ipx00821", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "ssis00342", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "tek00078", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "dvdms00811", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "jufe00233", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "mide00142", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "sone00911", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "atid00388", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "meyd00744", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "snis00899", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "soe00912", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "ssni00744", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "team00055", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "venx00022", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "ymdd00211", floor: "videoa", scClicks: 0, scImpressions: 0 },
+  { contentId: "jux00922", floor: "videoa", scClicks: 0, scImpressions: 0 },
 ] as const;
