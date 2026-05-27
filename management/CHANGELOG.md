@@ -4,6 +4,76 @@
 
 ---
 
+## 2026-05-28 — CTO (Claude Opus 4.7) — CCO 自動レビュー注入パイプラインのモックアップ（App 直撃層 SEO 防衛 + Information Gain 注入）
+
+### 背景
+
+2026-05-27 物理監査で `app.vodnavi.jp/works/videoa/{cid}` への検索直撃が GA4 hostname の **96.99%** を占めることが確定。一方、既存 `src/data/works-editorial.json` は別系統 30 件 (`h_*` プレフィックス) のみで、SC TOP 10 品番（gkok00002 / snos00233 / savr00978 / mkmp00726 / dvmm00393 ほか）は editorial 未配備。FANZA 公式あらすじだけでは VODNAVI 独自視座が SERP に立たず、E-E-A-T と CVR の双方を毀損していた。
+
+### 適用変更
+
+**A. 生成パイプライン**
+
+- `app-concierge/scripts/cco-target-cids.ts` — SC 監査ベースの TOP 10 品番リスト（clicks 降順、floor=videoa）
+- `app-concierge/scripts/cco-review-prompt.ts` — BRAND_DESIGN_GUIDE.md 準拠の system + user プロンプト、`PROMPT_VERSION = cco-review-v1.0.0`、`TARGET_MIN_CHARS=300` / `TARGET_MAX_CHARS=500`、ピンク・ネオン語彙の禁則を system に焼き込み
+- `app-concierge/scripts/generate-work-reviews.ts` — メインオーケストレータ。CLI: `--dry-run` / `--mode=live` / `--target=<csv>` / `--force`
+  - dry-run: `.env.local` の DMM_API_ID が無い環境でもオフラインフォールバックで通電（CcoTargetCid → minimal DmmItem 構築 → fixture 本文生成）
+  - live: `callCcoForReview` は **モックアップ段階で意図的に throw**。`@ai-sdk/openai` 導入と TODO ブロック有効化を待機
+
+**B. 配置層**
+
+- `app-concierge/src/data/work-reviews/` — 新規ディレクトリ。`{content_id}.md` 単位、frontmatter + 本文
+- `app-concierge/src/data/work-reviews/README.md` — ファイル契約・走らせ方・live 解放手順
+- フィクスチャ配置済: gkok00002 / snos00233 / savr00978 / mkmp00726 / dvmm00393 / ofje00630 / evis00624 / gqhb00024 / h_1724m794g00002 / 1asex00014 の **10 件全部 (324–331 字 / 全件 TARGET 範囲内 / 末尾に `[FIXTURE]` マーク)**
+
+**C. ローダ + UI 統合**
+
+- `app-concierge/src/lib/work-review.ts` — server-only ローダ。`fs` で `src/data/work-reviews/*.md` を起動時にメモ化、`getWorkReview(content_id)` で型安全に取得。frontmatter パーサ自前実装で外部依存ゼロ
+- `app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx` — Separator 直後に「VODNAVI Review」セクションを SSR。`ccoReview` 変数で既存 `item.review` (DmmReview) と命名分離。`data-work-review-source="fixture|live"` 属性で QA 識別可能
+
+### 検証結果
+
+```
+$ node --experimental-strip-types --no-warnings scripts/generate-work-reviews.ts --dry-run
+  placed=9 rewritten=0 skipped=1 failed=0  (gkok00002 only skipped by --force absence)
+
+$ node --experimental-strip-types --no-warnings scripts/generate-work-reviews.ts --dry-run --target=gkok00002
+  PLACE  gkok00002 → src/data/work-reviews/gkok00002.md (chars=328, source=fixture)
+
+$ npx tsc --noEmit
+TSC_EXIT=0
+
+$ npx next build
+✓ Generating static pages using 7 workers (14/14) in 7.4s
+BUILD_EXIT=0
+```
+
+`/works/[floor]/[id]` は引き続き `ƒ (Dynamic)`。Proxy (Middleware) 健全。
+
+### 実コール (live) 解放手順
+
+1. `pnpm add @ai-sdk/openai`
+2. `scripts/generate-work-reviews.ts` の `callCcoForReview` 内 TODO ブロックを uncomment（`openai("gpt-5")` + `generateText`）
+3. `app-concierge/.env.local` に `OPENAI_API_KEY` を投入
+4. `node --experimental-strip-types --no-warnings scripts/generate-work-reviews.ts --mode=live --force` で再生成
+5. 出力 md の `source: fixture` が `source: live` に置換され、本文末尾の `[FIXTURE]` マークが消滅することで CSO レビュー時に live/fixture が一目区別可能
+
+### 効果検証（次回サタデー・レビュー）
+
+- GA4 `screen_view` で `/works/videoa/{cid}` (TOP 10 品番) の **スクロール深度・滞在時間**が editorial 既配備品番 vs 新規 review 配備品番で改善するか
+- Search Console: TOP 10 品番のクリック数・CTR・平均掲載順位の月次推移（FANZA 公式あらすじ転載サイトとの差別化が SERP に立つか）
+- `ai_affiliate_click` (placement=detail_main_cta) の発火数推移（review 経由でブランド世界観を浴びてからの FANZA CTA 通過率）
+
+### ロールバック
+
+```bash
+git revert <merge-commit-of-feat/cco-work-review-injection-mockup>
+```
+
+または `src/data/work-reviews/` を `rm -rf` するだけで UI 上のセクションは消える（`getWorkReview` が undefined を返し、`{ccoReview && ...}` の条件描画が消滅）。
+
+---
+
 ## 2026-05-27 — CTO (Claude Opus 4.7) — `/works/[floor]/[id]` マネタイズ配線 ＋ 年齢確認の盾を (site) 全域へ拡張
 
 ### 背景

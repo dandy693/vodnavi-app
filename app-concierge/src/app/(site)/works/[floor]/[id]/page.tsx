@@ -13,6 +13,7 @@ import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getWorkEditorial } from "@/lib/editorial";
+import { getWorkReview } from "@/lib/work-review";
 import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import {
   fetchItemList,
@@ -176,6 +177,7 @@ export default async function WorkDetailPage({
     ? await getRelatedWorks(floor, primaryGenre.id, id, 12)
     : [];
   const editorial = getWorkEditorial(item.content_id);
+  const ccoReview = getWorkReview(item.content_id);
 
   // CTA URL は `item.affiliateURL` 直渡しではなく単一ビルダ `buildAffiliateURL`
   // を通す（BRAND_DESIGN_GUIDE §4-5「af_id ハードコード禁則」+ ASP 抽象化）。
@@ -424,6 +426,26 @@ export default async function WorkDetailPage({
       )}
 
       <Separator className="my-10 bg-white/10" />
+
+      {/* CCO 自動生成レビュー (work-reviews/{cid}.md) を Information Gain 段落として
+         FANZA 公式あらすじの上に重ねる。検索エンジン直撃層が editorialLead 未配備
+         でも VODNAVI 独自視座に触れられる SEO 防衛線。fixture ソースの間も UI 上は
+         差別化せず（CSO レビュー後に live 切替）、視認は frontmatter で行う。 */}
+      {ccoReview && (
+        <section
+          data-work-review-source={ccoReview.source}
+          className="mb-6 rounded-2xl border border-brand-gold/20 bg-brand-dark/40 px-5 py-5 sm:px-7 sm:py-6"
+        >
+          <p className="font-luxury-heading text-[11px] uppercase tracking-[0.25em] text-brand-gold/80">
+            VODNAVI Review
+          </p>
+          <div className="mt-3 space-y-3 text-sm leading-relaxed text-brand-text-primary sm:text-base">
+            {ccoReview.body.split(/\n\s*\n/).map((para: string, idx: number) => (
+              <p key={idx}>{para}</p>
+            ))}
+          </div>
+        </section>
+      )}
 
       <section className="prose prose-invert prose-sm max-w-none text-muted-foreground">
         <p>{description}</p>
