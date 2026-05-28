@@ -1,40 +1,25 @@
-# TASK_BOARD — 2026-05-19 23:45 JST 状態同期
+---
+title: "TASK_BOARD — VODNAVI-GROUP 物理進捗管理ボード"
+last_updated: "2026-05-29"
+status: "active"
+---
+# TASK_BOARD — VODNAVI-GROUP 物理進捗管理ボード
 
-## [Done] インフラ・コンテンツ・逆同期完全落成（100%完了）
-- [x] \[HUMAN]\ DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の副サイト登録・申請（事実確認：すでに『moterist-03』『moterist-04』として【承認済み】であることを確認、成果没収リスクを完全排除）
-- [x] \[CTO]\ 5大過去記事の本番DBからの生HTML（143,258 B）逆抽出＆ローカル正典配置（commit a8a44bc）
-- [x] \[CTO]\ post 1106 のタイトルタイポ（of → の）の正常補正完了
-- [x] \[CTO]\ inject-pillars.sh 安全弁（1,000行ガード）付きインフラ配置の完了（commit 75a5f3d）
-- [x] \[CTO]\ saturday-audit.sh 規律指標（§4b.4）に基づく雛形配置の完了（commit a779c54）
-- [x] \[CTO]\ app-concierge 静的解析（tsc/eslint）エラー・警告0件の型安全性検証
-- [x] \[CCO]\ 1095, 1106, 994, 954, 1018 の『ビブリア・エロティカ』リライト・本番ライブ化大成功
+## 現在の HEAD: 2e34236 ✅ (working tree: 長期記憶・規約書込待機)
 
-## [In Progress] サタデー・レビュー（初陣）起動待機フェーズ
-- [ ] \[CSO/CTO]\ 2026-05-23 10:00 JST 起動の「第1回サタデー・レビュー（データ駆動PDCA）」の実値投入・無人インフラ監視（※注意：CURRENT_AUDIT_REPORT.mdで検出されたGA4 ID断片化（G-5HYV772ER9 / GT-PZQ74Z7D / G-GG7JV9MJRW）を考慮し、saturday-audit.shの集計ロジック側でデータを統合パースすること）
+### [Backlog]
+- [ ] [HUMAN] DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の「副サイト」申請承認ステータスの目視確認（成果没収リスクの100%排除）
+- [ ] [HUMAN/CTO] mixhostの `wp-config.php` またはプラグイン自動更新の完全停止設定の物理裏取り（構造崩壊の永久防止）
+- [ ] [CCO] コアアップデート完全通過宣言後、moterist.com を検索表示1回から救い出すための感情・深層心理クエリ特化記事の段階的自動注入
 
-## [Backlog] 成果没収リスクの完全排除（最優先リーガルタスク）
+### [In Progress] (Sprint 3: 2026-05-28 〜 2026-06-04)
+- [ ] [CTO] チャット内で提示された3大Markdownアセット（site-moterist冒頭、作品直撃解説、Sticky定数）のローカルディスクへの物理書き出しの執行
+- [ ] [CTO] 本最高規約（保存指示文の同封）に基づく、`AGENT_PROTOCOLS.md` の長期記憶物理書き換え（Landed）の執行
+- [ ] [CTO] `npx vercel logs` による、PR #25（Sticky固定バー）投入後のモバイル放棄率（旧: 99.86%）の強制的引き下げ定点監視
+- [ ] [CSO] 毎週土曜日 10:00 JST の「週次データ駆動 PDCA ルーティン」における、`detail_sticky_cta` パラメータ経由のクリック数（CTR_prod）の定量的勝率測定
 
-## [Backlog] 6本目記事の本番→ローカル逆サルベージ（2026-05-25 セッション派生）
-
-> 出典：2026-05-25 セッション「moterist 6本疎通確認」。CSO 申告 6 本のうち、`site-moterist/07_wp/posts/` に staged されているのは 5 本（post_994/1095/1106/1018/954）のみ。残り 1 本は本番 WordPress にのみ存在し、リポジトリ正典化されていない可能性が高い。
-
-- [ ] \[CTO]\ **本番 WordPress から 6 本目記事を逆サルベージ**：mixhost 本番 DB へ WP-CLI または DB ダンプ経由で接続し、`wp_posts` から `post_status = 'publish'` かつ `post_type = 'post'` の現存記事 ID をフル一覧化、ローカル `site-moterist/07_wp/posts/` の 5 本（994 / 1095 / 1106 / 1018 / 954）と diff を取って未管理 ID を特定。特定後、`post_content` を `posts/post_<ID>.md` として書き戻し、CTA URL に `source=moterist&intent=<該当値>` が含まれているかも同時監査（無ければ追記タスクを別途起票）。手順は `07_wp/posts/post_1095.md` 等の既存サルベージ済みファイルのフォーマットに揃える。完了時は本タスクと併せて `00_admin/operation-log.md` にも記録。
-- [ ] \[CTO\]\ サルベージ後、5+1=6 本すべての末尾 CTA に対し `?source=moterist&intent=...` が漏れなく仕込まれているかを `grep -c "app.vodnavi.jp/concierge?source=moterist"` で再監査し、結果を `management/_metrics/CURRENT_AUDIT_REPORT.md` に追記。
-
-## [Backlog/Low] Next.js middleware → proxy 規約移行（次サタデー枠）
-- [ ] \[CTO]\ `app-concierge/src/middleware.ts`（年齢ゲート HMAC 判定）を Next.js 16 系の新 `proxy` ファイル規約に移行。ビルド時の deprecation 警告 *"The 'middleware' file convention is deprecated. Please use 'proxy' instead."* を解消する。挙動互換性（age-gate cookie 検証、`/api/concierge` 403 ガード）を維持。2026-05-23 10:00 JST のサタデー・レビュー枠で着手判定。参考：https://nextjs.org/docs/messages/middleware-to-proxy
-
-## [Backlog] SEO follow-ups（2026-05-22 Ultimate SEO & Brand Polish セッション派生）
-
-> 出典：`management/ALERTS.md` 2026-05-22「Ultimate SEO & Brand Polish」エントリ L251-256「発見した別 SEO 漏れ（次のサタデー枠で要対応）」。本日 2026-05-23 サタデー・レビューで正式チケット化（`management/saturday-review.md` §3）。
-
-- [x] \[CTO+CCO]\ **erratum-1 / `/genres/[id]` description 重複スニペット排除**：`app-concierge/src/app/(site)/genres/[id]/page.tsx` の `generateMetadata()` に `getGenreEditorial(id)?.editorialLead` フォールバックを組み込み、未登録時のみ既存構造化文を使う形に refactor。works 側 (`works/[floor]/[id]/page.tsx`) の同等改修と同一パターン。`data/genres-editorial.json` が空のため実効効果は CCO 投入後。`description` だけでなく `openGraph.description` / `twitter.description` まで貫通させること。**[CTO 完了 2026-05-24 / commit `12aed2e` / dpl_EThdRhEmpuVCKb8nsR1r19dd95hY 本番反映]**。CCO 側の `data/genres-editorial.json` 投入は引き続き未着手 — JSON エントリ追加で即時 SERP/OG/Twitter snippet がユニーク化する状態。
-- [ ] \[CTO]\ **erratum-2 / site-brand `Organization` + `WebSite` JSON-LD 実装**：`site-brand/src/app/layout.tsx` に `<script type="application/ld+json">` で `Organization`（`name`, `url`, `logo`, `description`, `foundingDate`, `sameAs[]`）+ `WebSite`（`url`, `name`, `potentialAction.SearchAction`）を埋め込む。`BRAND_DESIGN_GUIDE.md` §3② の「次世代映像検索 AI」「査読体制」表現を構造化データとして機械可読化。
-- [ ] \[CTO]\ **erratum-3 / app-concierge home `ItemList` JSON-LD 実装**：`app-concierge/src/app/(site)/page.tsx` の works grid を `ItemList` + `ListItem`（`position`, `url`, `name`, optional `image`）として `<script type="application/ld+json">` に serialize。サイトリンク候補化を狙う。FANZA fetch 失敗時の空グリッドは JSON-LD も emit しない（空 `itemListElement` で構造化スパム警告を出さないため）。
-- [ ] \[CTO]\ **erratum-4 / PWA manifest 追加**：`app-concierge/public/site.webmanifest` を新設。`name: "VODNAVI"`, `short_name: "VODNAVI"`, `start_url: "/"`, `display: "standalone"`, `theme_color: "#121212"`, `background_color: "#121212"`, `icons[]` で既存 `icon-192.png` / `icon-512.png` を `purpose: "any maskable"` で参照。`layout.tsx` の `metadata.manifest = "/site.webmanifest"` を追加。Android Add-to-Home-Screen 時のブランド表示安定化、Lighthouse PWA スコア改善。site-brand 側にも同等 manifest 追加を検討。
-
-## [Landed] 2026-05-28 CCO LIVE 生成バッチ完遂・本番 main 直接同期
-
-- [x] [HUMAN] ローカルコミット a9fe07b の本番メインへの手動 push 執行完了
-- [x] [CTO] 残り9品番に対する OpenAI LIVE 生成バッチの一括執行（計9品番・1,916文字のローカル完全落成、a9fe07b）
-- [x] [CTO] FANZA API不在の23品番の自動パージ、および実在27拠点のLIVEインジェクションと PR #20 の本番 main マージ完了（06d2138）
+### [Done]
+- [x] [CTO] モバイル限定 Sticky bottom bar 本体、および iOS HIG（h-11拡張）/ Safari自動ズーム防止の完全本番マージ (PR #25 / 0ec465b)
+- [x] [CTO] CLI 引数ネストによるプロンプト切断バグの特定、および対話型直接注入への回避サニタイズ完了
+- [x] [CTO] 個別作品ページにおける「両CTAの視野外配置（スマホ画像縦占有）」によるファネル窒息の構造特定完了
+- [x] [CSO] CSOが今後出力するすべてのMarkdownに「Claude Codeへの保存指示文」を強制同封する最高法律の策定・長期記憶への組み込み完了
