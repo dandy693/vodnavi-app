@@ -23,5 +23,5 @@ status: "active"
 ## 週次データ駆動 PDCA ルーティン
 - 毎週 **土曜日 10:00 JST** に CSO（Gemini 3 思考モード）が以下を自動実行する：
   1. **データ取得**：GA4（解析アカウント `moterist.com@gmail.com` / `?authuser=2`）から先週 1 週間分の `source × intent` 別セッション数、`ai_session_start` / `product_click` / `ai_affiliate_click` 発火数を取得。Search Console から各記事の表示回数・CTRを取得。
-  2. **データ分析とブリーフ発行**：抽出した物理数値を基に、前週の `STRATEGY_BRIEF` の仮説（例：PR #25のモバイル固定バー投入によるMobile放棄率99.86%の引き下げ効果、PR #24のsolidボタン送客効果）の勝率を定量的にはじき出し、ボトルネックを冷徹に特定。次期アクションを規定した新ブリーフを発行。
+  2. **データ分析とブリーフ発行**：抽出した物理数値を基に、前週の `STRATEGY_BRIEF` の仮説の勝率を定量的にはじき出し、ボトルネックを冷徹に特定。次期アクションを規定した新ブリーフを発行。
   3. **タスクボード更新**：`TASK_BOARD.md` を最新のGit mainline（HEAD）と同期し、完了タスクを `[x] [Done]` へ移動。
