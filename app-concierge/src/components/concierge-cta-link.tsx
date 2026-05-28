@@ -27,6 +27,7 @@ export function ConciergeCtaLink({
   source = "app_detail",
   intent = "re_recommend",
   label = "この作品の余韻に合う一本を AI に相談する",
+  variant = "outline",
 }: {
   contentId: string;
   floorCode: string;
@@ -46,6 +47,18 @@ export function ConciergeCtaLink({
   intent?: string;
   /** ボタン本文。世界観に合わせて外部から差し替え可能。 */
   label?: string;
+  /**
+   * 視覚的ヒエラルキー切替。
+   *   - `outline` (default): リッチブラック背景 × ゴールド枠線テキスト。FANZA
+   *     メイン CTA を阻害しないサブ動線で、フッタパネル / 内部回遊で使う。
+   *   - `solid`: シャンパンゴールド背景 × リッチブラックテキスト。FANZA CTA と
+   *     並んでも見劣りしない強調バリアント。検索直撃ユーザーに対する第二の
+   *     成約口として、詳細ページ上部の `source=app_direct` ルートで使う。
+   *
+   * 2026-05-28 物理監査で UU 2,107 vs concierge_entry_click 5 (CVR 0.19%) と
+   * 著しく窒息していたことを受けて、視覚 weight を強化する選択肢として導入。
+   */
+  variant?: "outline" | "solid";
 }) {
   const href = `/concierge?source=${encodeURIComponent(source)}&intent=${encodeURIComponent(intent)}&seed_cid=${encodeURIComponent(contentId)}`;
 
@@ -64,26 +77,41 @@ export function ConciergeCtaLink({
         });
       }}
       className={cn(
-        // 視覚: リッチブラック背景 × シャンパンゴールド枠線・テキスト。
-        // ホバー: 背景ゴールド × 文字ダークへエレガントに反転。
+        // 共通: 大人らしい型枠、グループハバー、フォーカスリング、アクティブ tap-down。
         "group inline-flex items-center justify-center gap-2",
-        "h-12 w-full rounded-xl px-6",
-        "bg-brand-dark text-brand-gold",
-        "border border-brand-gold/70",
-        "font-luxury-heading text-sm font-semibold tracking-wider",
+        "w-full rounded-xl px-6",
+        "font-luxury-heading font-semibold tracking-wider",
         "transition-all duration-300 ease-out",
-        "hover:bg-brand-gold hover:text-brand-dark hover:border-brand-gold",
-        "hover:shadow-[0_0_40px_-10px_rgba(212,175,55,0.45)]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/60 focus-visible:ring-offset-2 focus-visible:ring-offset-brand-dark",
         "active:translate-y-px",
+        variant === "solid"
+          ? [
+              // solid: シャンパンゴールド地・リッチブラック文字。常時 glow + 厚みで
+              //   FANZA メイン CTA と同等の視覚 weight を確保。
+              "h-14 text-base",
+              "bg-brand-gold text-brand-dark border border-brand-gold",
+              "shadow-[0_0_30px_-5px_rgba(212,175,55,0.55)]",
+              "hover:bg-brand-gold-hover hover:border-brand-gold-hover",
+              "hover:shadow-[0_0_45px_-5px_rgba(212,175,55,0.75)]",
+            ].join(" ")
+          : [
+              // outline: 既存通り、暗背景 × 金枠。FANZA メイン CTA を阻害しない弱め。
+              "h-12 text-sm",
+              "bg-brand-dark text-brand-gold border border-brand-gold/70",
+              "hover:bg-brand-gold hover:text-brand-dark hover:border-brand-gold",
+              "hover:shadow-[0_0_40px_-10px_rgba(212,175,55,0.45)]",
+            ].join(" "),
         className,
       )}
     >
       <Sparkles
-        className="size-4 transition-transform duration-300 group-hover:rotate-12"
+        className={cn(
+          "transition-transform duration-300 group-hover:rotate-12",
+          variant === "solid" ? "size-5" : "size-4",
+        )}
         aria-hidden
       />
-      <span>{label}</span>
+      <span className="leading-tight">{label}</span>
     </Link>
   );
 }

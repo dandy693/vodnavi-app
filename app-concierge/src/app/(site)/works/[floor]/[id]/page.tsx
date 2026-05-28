@@ -366,32 +366,38 @@ export default async function WorkDetailPage({
             floor_code={floor}
             placement="detail_main_cta"
             className={cn(
-              "btn-luxury-gold h-14 w-full rounded-xl text-base font-semibold",
+              "btn-luxury-gold w-full rounded-xl text-base font-semibold",
+              "min-h-14 px-5 py-3",
               "group",
             )}
           >
-            <span className="text-center leading-snug">
+            <span className="text-center leading-tight">
               FANZA公式で作品の詳細・サンプル映像を確認する（18禁）
             </span>
-            <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+            <ArrowRight className="size-5 shrink-0 transition-transform group-hover:translate-x-1" />
           </FanzaAffiliateLink>
 
-          <p className="text-[11px] leading-relaxed text-muted-foreground/70">
-            ※ クリックすると FANZA 公式サイトに移動します。視聴・購入は FANZA 上で行われます。
+          <p className="text-[10px] leading-snug text-muted-foreground/60">
+            ※ FANZA 公式サイトへ移動します。視聴・購入は FANZA 上で行われます。
           </p>
 
           {/* セカンダリ動線（回遊の盾）: 検索エンジンから本ページに直接着地した
              ユーザー (GA4 物理監査で hostname=app.vodnavi.jp が 96.99% を占有)
              に対し、女優インテントの AI コンシェルジュへ即時遷移できる脱出口を
              FANZA メイン CTA 直下に配置。`source=app_direct` で内部回遊
-             (`app_detail`) と GA4 / `resolveConciergeSource` の挙動を分離。 */}
+             (`app_detail`) と GA4 / `resolveConciergeSource` の挙動を分離。
+             2026-05-28 監査で concierge_entry_click=5 / CVR 0.19% という窒息を
+             受け、`variant="solid"` を渡して FANZA CTA と同等の視覚 weight に
+             格上げする（FANZA メイン CTA の直下に金面 vs 金面で第二の成約口
+             として並ぶ設計）。 */}
           <ConciergeCtaLink
             contentId={item.content_id}
             floorCode={floor}
             source="app_direct"
             intent="actress"
-            label="この作品の余韻に浸るか、あるいは今の気分を AI コンシェルジュに伝えて次の至高の 1 本を検索する（無料）"
-            className="mt-2 h-auto min-h-12 py-3"
+            variant="solid"
+            label="気分を AI コンシェルジュに伝えて次の 1 本を選ぶ（無料）"
+            className="mt-3"
           />
         </div>
       </section>
@@ -438,12 +444,15 @@ export default async function WorkDetailPage({
              分かりづらい構造ゆえ、レビュー本体の直前に銘記しなければならない。
              BRAND_DESIGN_GUIDE §2 のリッチブラック (#121212 = brand-dark) +
              プラチナホワイト (#E0E0E0 = brand-text-primary) + シャンパンゴールド
-             (#D4AF37 = brand-gold) 三色域で構成、原色の警告色は厳禁。 */}
+             (#D4AF37 = brand-gold) 三色域で構成、原色の警告色は厳禁。
+             2026-05-28 CVR 改善: 文字色を `brand-text-secondary` に下げ、padding
+             を縮め、視覚 weight を弱めて FANZA CTA の誤離脱トリガーを抑制する。
+             景表法の明示要件は文言と margin で担保し続ける。 */}
           <aside
             role="note"
             aria-label="アフィリエイト広告に関する明示"
             data-compliance-pr="true"
-            className="mb-3 rounded-r-lg border-l-2 border-brand-gold bg-brand-surface px-4 py-3 text-xs leading-relaxed text-brand-text-primary sm:text-sm"
+            className="mb-2 rounded-r-md border-l-2 border-brand-gold/70 bg-brand-surface/80 px-3 py-2 text-[11px] leading-snug text-brand-text-secondary"
           >
             本ページにはアフィリエイトリンクが含まれます（#PR）。最新の配信状況は公式サイトでご確認ください。
           </aside>
