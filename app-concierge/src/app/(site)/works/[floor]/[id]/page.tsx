@@ -220,7 +220,7 @@ export default async function WorkDetailPage({
   });
 
   return (
-    <article className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+    <article className="mx-auto max-w-6xl px-4 py-6 pb-20 sm:px-6 sm:py-10 md:pb-10">
       <script
         type="application/ld+json"
         // schema.org payload — string is the canonical wire format
@@ -543,6 +543,52 @@ export default async function WorkDetailPage({
           </ul>
         </section>
       )}
+
+      {/* Sticky モバイル CTA バー — モバイル (md 未満) のみ画面最下部に固定表示。
+         2026-05-28 GA4 監査で UU 2,107 → ai_session_start=8 (0.38%) / concierge_
+         entry_click=4 (0.19%) の CVR ファネル窒息を確認。詳細ページ着地時に
+         アスペクト 3:4 商品画像 (~500px) + H1 + メタが iPhone 11/12/13/14/15
+         ファーストビュー (~667px) を完全に占有し、両 CTA は ~245-320px 下に
+         埋もれている構造的問題への defense in depth。
+         BRAND_DESIGN_GUIDE §2 のリッチブラック (#121212 = brand-dark) + シャン
+         パンゴールド (#D4AF37 = brand-gold) のみで構成、原色禁則を維持。
+         h-12 (48px) で iOS HIG タッチ規範 44px を完全クリア。`md:hidden` で
+         タブレット以上の幅では 2 カラムレイアウトに任せて非表示化。 */}
+      <div
+        data-sticky-mobile-cta="true"
+        className={cn(
+          "fixed bottom-0 left-0 right-0 z-50 md:hidden",
+          "border-t border-brand-gold/30 bg-brand-dark/95 backdrop-blur",
+          "px-3 py-2",
+          "grid grid-cols-2 gap-2",
+        )}
+      >
+        <FanzaAffiliateLink
+          href={fanzaAffiliate.primaryUrl}
+          content_id={item.content_id}
+          title={item.title}
+          floor_code={floor}
+          placement="detail_sticky_cta"
+          className={cn(
+            "flex h-12 items-center justify-center gap-1 rounded-xl",
+            "bg-brand-gold text-brand-dark",
+            "font-luxury-heading text-[13px] font-semibold tracking-wide leading-tight",
+            "transition-all hover:bg-brand-gold-hover active:translate-y-px",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/60",
+          )}
+        >
+          <span className="text-center">FANZAで今すぐ視聴</span>
+        </FanzaAffiliateLink>
+        <ConciergeCtaLink
+          contentId={item.content_id}
+          floorCode={floor}
+          source="app_direct"
+          intent="actress"
+          variant="outline"
+          label="AI 司書に相談"
+          className="h-12 px-3 text-[13px]"
+        />
+      </div>
     </article>
   );
 }
