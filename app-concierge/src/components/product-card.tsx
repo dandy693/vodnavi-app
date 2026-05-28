@@ -12,6 +12,7 @@ import {
   pickImage,
 } from "@/lib/fanza/client";
 import type { DmmItem } from "@/lib/fanza/types";
+import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { cn } from "@/lib/utils";
 
 export function ProductCard({
@@ -32,7 +33,7 @@ export function ProductCard({
   const price = formatPrice(item.prices?.price);
   const review = item.review;
   const isNew = isNewItem(item.date);
-  const detailHref = `/works/${item.floor_code}/${item.content_id}`;
+  const detailHref = `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`;
   const affiliateHref = item.affiliateURL ?? item.URL;
 
   return (

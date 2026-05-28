@@ -166,6 +166,33 @@ export const FANZA_FLOORS: FanzaFloor[] = [
   { code: "nikkatsu", label: "成人映画", service: "digital" },
 ];
 
+/**
+ * 内部 URL の `/works/[floor]/[id]` セグメントを **必ず `FANZA_FLOORS.code`**
+ * に正規化する。`item.floor_code` (FANZA API レスポンスの値) を URL に直接埋め
+ * 込むと、ごく稀に FANZA_FLOORS の `code` リストに無い値 (廃止された floor の
+ * 残骸、未対応の新フロア等) が混入し、詳細ページ (works/[floor]/[id]) で fall-
+ * through → notFound() → 404 化する。GSC で 2026-05-28 に観測された 289 件の
+ * 「見つかりませんでした (404)」の構造発生源を、UI 全域で同一ロジックで遮断
+ * する。
+ *
+ * 一致基準:
+ *   1. `FANZA_FLOORS.code` に完全一致 → そのまま返す
+ *   2. `FANZA_FLOORS.apiFloor` に一致 → 対応する `code` を返す
+ *      (例: API レスポンス `floor_code=videoa` を `amateur` UI に紐付けたい
+ *       ケースは存在しないので 1 のパスで吸収される)
+ *   3. それ以外 → `FANZA_FLOORS[0].code` (= "videoa") にフォールバック
+ *      → 詳細ページ着地時に `apiFloor` 経由で再 fetch される
+ */
+export function normalizeFloorForUrl(floorCode: string | null | undefined): string {
+  const fallback = FANZA_FLOORS[0].code;
+  if (!floorCode) return fallback;
+  const byCode = FANZA_FLOORS.find((f) => f.code === floorCode);
+  if (byCode) return byCode.code;
+  const byApi = FANZA_FLOORS.find((f) => f.apiFloor === floorCode);
+  if (byApi) return byApi.code;
+  return fallback;
+}
+
 export const FANZA_SORT_OPTIONS: { value: DmmSort; label: string }[] = [
   { value: "date", label: "新着順" },
   { value: "rank", label: "人気順" },

@@ -52,13 +52,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const genreMap = new Map<number, Date>();
 
   for (const floor of FANZA_FLOORS) {
+    // FANZA Webservice 側に投げる floor は `apiFloor` 優先（`amateur` のように
+    // UI 上の擬似 floor を本物の `videoa` へ吸い上げるブリッジ）。これを尊重しないと
+    // FANZA は不明 floor として **関係ない items** を返すか、エラーを返す。
+    const apiFloorParam = floor.apiFloor ?? floor.code;
     for (let page = 0; page < PAGES_PER_FLOOR; page++) {
       try {
         const data = await fetchItemList(
           {
             site: "FANZA",
             service: floor.service,
-            floor: floor.code,
+            floor: apiFloorParam,
             hits: HITS_PER_REQUEST,
             offset: page * HITS_PER_REQUEST + 1,
             sort: "date",
@@ -69,7 +73,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         if (items.length === 0) break;
 
         for (const item of items) {
-          const path = `/works/${item.floor_code}/${item.content_id}`;
+          // sitemap が出力する URL の `[floor]` セグメントは **FANZA_FLOORS の
+          // `code`** を単一情報源とする。`item.floor_code` (FANZA API レスポンス
+          // の値) をそのまま使うと `code` リストにない値が混入し、詳細ページ
+          // (works/[floor]/[id]) のフォールバック経路で別 floor で API を叩き、
+          // 当然見つからず notFound() → 404 化する。GSC で本日 289 件観測の
+          // 「見つかりませんでした (404)」の構造発生源。
+          const path = `/works/${floor.code}/${item.content_id}`;
           if (seenWorks.has(path)) continue;
           seenWorks.add(path);
 

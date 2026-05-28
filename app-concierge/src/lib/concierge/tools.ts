@@ -2,6 +2,7 @@ import { tool } from "ai";
 import { z } from "zod";
 
 import { fetchItemList, joinNames, pickImage } from "@/lib/fanza/client";
+import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { withUtm } from "@/lib/utm";
 
 import { DEFAULT_ASP, type AspName } from "./asp";
@@ -107,7 +108,7 @@ export function createConciergeTools(
               item.affiliateURL ?? item.URL,
               CONCIERGE_UTM_SOURCE,
             ),
-            detailHref: `/works/${item.floor_code}/${item.content_id}`,
+            detailHref: `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`,
             image,
           });
         }

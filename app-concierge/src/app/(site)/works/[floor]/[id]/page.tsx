@@ -21,7 +21,11 @@ import {
   joinNames,
   pickImage,
 } from "@/lib/fanza/client";
-import { FANZA_FLOORS, type DmmItem } from "@/lib/fanza/types";
+import {
+  FANZA_FLOORS,
+  normalizeFloorForUrl,
+  type DmmItem,
+} from "@/lib/fanza/types";
 import {
   absoluteUrl,
   compactDescription,
@@ -41,11 +45,16 @@ const getWork = cache(
   async (floor: string, id: string): Promise<DmmItem | null> => {
     const floorMeta =
       FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
+    // FANZA API の floor パラメータは `apiFloor` 優先。`amateur` のように UI 側
+    // 擬似 floor を本物の `videoa` に吸い上げるブリッジを尊重する。これを
+    // 怠ると sitemap が出力した `/works/amateur/{cid}` 等が API 側で空 / 別物
+    // を引いてしまい、notFound() → 404 化する (GSC 289 件の構造発生源)。
+    const apiFloorParam = floorMeta.apiFloor ?? floorMeta.code;
     try {
       const data = await fetchItemList({
         site: "FANZA",
         service: floorMeta.service,
-        floor: floorMeta.code,
+        floor: apiFloorParam,
         cid: id,
         hits: 1,
       });
@@ -63,11 +72,12 @@ async function getRelatedWorks(
   limit = 12,
 ): Promise<DmmItem[]> {
   const floorMeta = FANZA_FLOORS.find((f) => f.code === floor) ?? FANZA_FLOORS[0];
+  const apiFloorParam = floorMeta.apiFloor ?? floorMeta.code;
   try {
     const data = await fetchItemList({
       site: "FANZA",
       service: floorMeta.service,
-      floor: floorMeta.code,
+      floor: apiFloorParam,
       article: "genre",
       article_id: String(genreId),
       hits: limit + 4,
@@ -502,7 +512,7 @@ export default async function WorkDetailPage({
               return (
                 <li key={rel.content_id}>
                   <Link
-                    href={`/works/${rel.floor_code}/${rel.content_id}`}
+                    href={`/works/${normalizeFloorForUrl(rel.floor_code)}/${rel.content_id}`}
                     className="group block overflow-hidden rounded-lg bg-black/30 ring-1 ring-white/5 transition-all hover:ring-amber-400/40"
                   >
                     {relImage && (

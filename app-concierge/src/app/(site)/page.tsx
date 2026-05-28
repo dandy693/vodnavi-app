@@ -19,7 +19,11 @@ import {
   fetchItemList,
   pickImage,
 } from "@/lib/fanza/client";
-import { FANZA_FLOORS, type DmmSort } from "@/lib/fanza/types";
+import {
+  FANZA_FLOORS,
+  normalizeFloorForUrl,
+  type DmmSort,
+} from "@/lib/fanza/types";
 import { absoluteUrl } from "@/lib/site";
 
 const DEFAULT_FLOOR = "videoa";
@@ -208,7 +212,7 @@ async function ResultsSection({
           itemListElement: items.map((it, idx) => {
             const image = pickImage(it.imageURL);
             const url = absoluteUrl(
-              `/works/${it.floor_code}/${it.content_id}`,
+              `/works/${normalizeFloorForUrl(it.floor_code)}/${it.content_id}`,
             );
             return {
               "@type": "ListItem",
