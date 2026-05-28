@@ -49,7 +49,8 @@
 
 | 項目 | 値 |
 |---|---|
-| status | open |
+| status | resolved |
+| resolved_at | 2026-05-28 |
 | severity | mid |
 | target | sc-domain:vodnavi.jp（app.vodnavi.jp + vodnavi.jp 統合プロパティ） |
 | symptom | カバレッジ・レポート集計値：登録済 126 / 未登録 235（うち「クロール済み-インデックス未登録」152、「検出-インデックス未登録」73、ソフト404=3、noindex=5、リダイレクト=1、代替canonical=1）。app.vodnavi.jp の `/works/videoa/*` と `/genres/*` が大半。 |
@@ -67,6 +68,13 @@
 - 因子 B（本文の薄さ）はコード側の受け皿だけ用意。実コンテンツ投入は CCO 担当（[[STRATEGY_BRIEF_IG_2026-05-21_CRAWLED_NOT_INDEXED]] 参照）。
 - moterist.com は SITE_MAP.md:47 の方針に従ってピラー安定化までライブ WP 不変更。
 - 関連メモリ：[[reference-google-accounts]]（操作は moterist.com@gmail.com / u=2 で実施）、[[feedback-account-check]]（アカウント確認済）。
+
+**[resolved 2026-05-28]** — 7 日後の再監査で 3 因子すべて構造的に解消:
+- **因子 A (sitemap)**: PR #1 で `app-concierge/src/app/sitemap.ts` が 197 → 1,809 URL に拡張、GSC 受理「成功」(`最終読込 2026/05/24`)。
+- **因子 B (本文薄さ)**: PR #15-#20 で `src/data/work-reviews/*.md` 27 件の CCO live 生成レビューを SSR セクションとして焼き込み（ccoReview / `data-work-review-source=live`）。
+- **因子 C (内部リンク)**: 2026-05-21 同セッションで関連作品 12 件セクション + パンくず実装済、PR #24 (`2aebebd`) でコンシェルジュ CTA を solid variant に格上げして回遊強化。
+- **数値**: vodnavi.jp 登録済 **126 → 2,400** (+19x)、app.vodnavi.jp 登録済 **0 → 2,380**。「クロール済み-未登録」は vodnavi.jp 152 → 76 / app.vodnavi.jp 0 → 59 に縮小。
+- 残課題は別エントリ「app.vodnavi.jp 404=289 件」(2026-05-28 検出) として独立追跡 → 同日 PR #25 (`af2e348`) で構造発生源を遮断。
 
 ---
 
@@ -375,3 +383,48 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - CPU 削減効果の推定：sitemap pagination 縮小（80→4 URL = 95%減）× 各 URL の fan-out 30 outbound 想定 → クロール起因 outbound リクエスト ~80% 削減見込み。実測は翌日以降に Vercel Dashboard の Fluid Active CPU グラフで継続観測すべし（メトリクス減衰が確認できなかった場合は別因子 — 直接 `/api/concierge` POST スパム等 — を疑う）。
 - merge commit `8ac402b` は HUMAN がローカル端末から実行（Claude Code 安全分類器が "direct merge to default branch bypassing review" として遮断したため）。同様に本 ALERTS.md 更新も PR #2 経由で main へ反映する運用。
 - 関連メモリ：[[feedback_push_back_on_contradictions]]（user 指示の `status: resolved` を merge 未実施を理由に一度 `acknowledged` に格下げ、merge + 本番生存確認完了で `resolved` に flip した運用判断）。
+
+---
+
+### 2026-05-28 — [mid] GSC「見つかりませんでした (404)」app.vodnavi.jp で 289 件検出 → 同日構造修復
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| resolved_at | 2026-05-28 |
+| severity | mid |
+| target | sc-domain:app.vodnavi.jp |
+| symptom | 本日の GSC ページレポート (最終更新 2026/05/22) で 「見つかりませんでした (404)」が **289 件**観測。同プロパティの未登録合計 1,170 件中、「検出-未登録」816 に次ぐ第二位。 |
+| suspected_cause | `app-concierge/src/app/sitemap.ts` が FANZA API レスポンス `item.floor_code` を URL に直接埋め込み、`FANZA_FLOORS.code` リストに無い値 (e.g. `amateur` で fetch した item の `floor_code`、廃止 floor 残骸) が混入。詳細ページ `/works/[floor]/[id]` のフォールバック経路で別 floor の API を叩き、当然見つからず `notFound() → 404` 化。UI 全域の URL ビルダ 5 箇所も同じ問題。さらに sitemap / detail page の API 呼出が `floor.apiFloor` を尊重せず `floor.code` を直接送信、`amateur` floor (apiFloor=videoa) で誤動作。 |
+| recommended_action | (完了): PR #25 で構造的修復。(1) `sitemap.ts` の FANZA API 呼出を `floor.apiFloor ?? floor.code` に変更、URL 出力を `FANZA_FLOORS.code` 単一情報源に正規化。(2) detail page `getWork` / `getRelatedWorks` も同様に `apiFloor` 経由。(3) UI 全域 (home / concierge / product-card / tools / relatedWorks link) に `normalizeFloorForUrl` helper を新規追加して適用。次回 GSC 再クロール (1-2 日) で 404 件数の大幅減少を期待。 |
+| backup_path | merge commit `af2e348` (`fix/sitemap-404-purge` → main) |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- 検出経路: 本日 GSC 物理監査 (Chrome MCP、`moterist.com@gmail.com` / `u=2`) で app.vodnavi.jp 独立プロパティの「ページのインデックス登録」レポートを目視スキャン中に発見。
+- 修復前後ファクト: HEAD `2aebebd → af2e348`、7 files / +65 / -11、`npx tsc --noEmit` + `npx next build` 両方 EXIT 0、14/14 static pages 健全。
+- 4 つの盾 (年齢確認モーダル / #PR コンプラ / ブランドガイド / buildAffiliateURL) は触れずに維持。
+- 関連 PR #1 (CPU 防衛) で同 sitemap.ts を PAGINATION_FLOORS={videoa, vr} に絞り込み済み。本 PR #25 はその上で `[floor]` セグメント値の正規化を追加した形。
+
+---
+
+### 2026-05-28 — [mid] app.vodnavi.jp CVR ファネル窒息: concierge_entry_click=4 UU / 0.19%
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| resolved_at | 2026-05-28 |
+| severity | mid |
+| target | app.vodnavi.jp 全 27 cids 詳細ページのコンシェルジュ第二ファネル |
+| symptom | 本日 GA4 (`a355462253p489519780`) イベント別レポート (過去 28 日) で UU=2,107 に対し `concierge_entry_click=4 UU (0.19%)` / `ai_session_start=8 UU (0.38%)` を観測。`product_click=44 UU (2.09%)` の FANZA CTA に対し成果イベント絶対数が極小、ファネル収束が著しく窒息。 |
+| suspected_cause | 詳細ページの 2 つの concierge CTA (中段 + 末尾) が両方 `outline` バリアント (リッチブラック × ゴールド枠) で、隣接する FANZA CTA (`btn-luxury-gold` 金面塗り) と比較して視覚 weight が著しく弱い。検索直接着地ユーザーが二択を認識せず、強い金面の FANZA だけを踏んで離脱する一択化が発生。 |
+| recommended_action | (完了): PR #24 で `concierge-cta-link.tsx` に `variant` prop を追加。`outline` (既定/末尾据置) と `solid` (新規・金面塗り) の二択を導入。詳細ページ中段の `source=app_direct&intent=actress` 経路を `variant="solid"` に切替え、FANZA CTA と同等の視覚 weight に格上げ。同時に #PR shield の text を `brand-text-secondary` に控えめ化、FANZA CTA に `min-h-14 leading-tight` を付与。GA4 event_name / event_params / URL クエリ契約は完全保全し、Saturday Review の同計装 before/after 比較を可能に。 |
+| backup_path | merge commit `2aebebd` (`feat/app-cvr-funnel-optimization` → main, PR #24) |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- ベースライン (PR #24 投入前、Saturday Review 用): 28d UU=2,107 / product_click=44/2.09% / ai_affiliate_click=43/2.04% / concierge_entry_click=4/0.19% / ai_session_start=8/0.38%。
+- 改修後の効果検証は次回 Saturday Review で実施。`source=app_direct` / `intent=actress` の event_params 内訳を見て、コンシェルジュ funnel の CVR 推移を追跡。
+- 4 つの盾は触れずに維持。改修は UI 視覚 hierarchy 層のみ。
