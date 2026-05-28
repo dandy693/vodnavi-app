@@ -5,10 +5,10 @@ status: "active"
 ---
 # TASK_BOARD — VODNAVI-GROUP 物理進捗管理ボード
 
-## 現在の HEAD: 3526ea3 ✅ (working tree: 100% clean、Sprint 3 移行完了)
+## 現在の HEAD: 3526ea3 ✅ (working tree: 100% clean、Sprint 3 監視フェーズ突入)
 
 ### [Backlog]
-- [ ] [HUMAN] DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の「副サイト」申請承認ステータスの目視確認（成果没収リスクの100%排除）
+- [ ] [HUMAN] DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の「副サイト」申請承認ステータスの目視確認（成果補足・リーガル防衛）
 - [ ] [HUMAN/CTO] mixhostの `wp-config.php` またはプラグイン自動更新の完全停止設定の物理裏取り（構造崩壊の永久防止）
 - [ ] [CCO] コアアップデート完全通過宣言後、moterist.com を検索表示1回から救い出すための感情・深層心理クエリ特化記事の段階的自動注入
 
@@ -22,3 +22,4 @@ status: "active"
 - [x] [CTO] 個別作品ページにおける「両CTAの視野外配置（スマホ画像縦占有）」によるファネル窒息の構造特定完了
 - [x] [CSO] CSOが今後出力するすべてのMarkdownに「Claude Codeへの保存指示文」を強制同封する最高法律の策定・長期記憶への組み込み完了 (PR #28 / 3526ea3)
 - [x] [CTO] CCOが生成した3大テキストのローカルディスクへの物理書き出し、Next.js UIへの定数配線、およびタイポ（tender）のサニタイズ本番マージ完了 (PR #28 / 3526ea3)
+- [x] [CTO] STRATEGY_BRIEF_012 の新規生成保存、タスクボードの実HEAD同期、および PR ベース一括 landed 完了 (feat/strategy-brief-012-and-board-sync)
