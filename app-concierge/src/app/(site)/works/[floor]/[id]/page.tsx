@@ -16,6 +16,10 @@ import { getWorkEditorial } from "@/lib/editorial";
 import { getWorkReview } from "@/lib/work-review";
 import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import {
+  STICKY_MAIN_LABEL,
+  STICKY_SUB_LABEL,
+} from "@/data/copy/sticky-cta-text";
+import {
   fetchItemList,
   formatPrice,
   joinNames,
@@ -577,7 +581,7 @@ export default async function WorkDetailPage({
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold/60",
           )}
         >
-          <span className="text-center">FANZAで今すぐ視聴</span>
+          <span className="text-center">{STICKY_MAIN_LABEL}</span>
         </FanzaAffiliateLink>
         <ConciergeCtaLink
           contentId={item.content_id}
@@ -585,7 +589,7 @@ export default async function WorkDetailPage({
           source="app_direct"
           intent="actress"
           variant="outline"
-          label="AI 司書に相談"
+          label={STICKY_SUB_LABEL}
           className="h-12 px-3 text-[13px]"
         />
       </div>
