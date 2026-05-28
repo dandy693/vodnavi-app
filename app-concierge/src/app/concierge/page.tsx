@@ -14,6 +14,7 @@ import {
   joinNames,
   pickImage,
 } from "@/lib/fanza/client";
+import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { absoluteUrl } from "@/lib/site";
 import { withUtm } from "@/lib/utm";
 
@@ -117,7 +118,7 @@ async function resolveCidsToWorks(cids: string[]): Promise<Work[]> {
             // 共有リンク経由の流入をアフィリエイト計測で識別するため utm_source=shared。
             "shared",
           ),
-          detailHref: `/works/${item.floor_code}/${item.content_id}`,
+          detailHref: `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`,
           image,
         };
         return work;
