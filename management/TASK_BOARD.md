@@ -1,25 +1,15 @@
----
-title: "TASK_BOARD — VODNAVI-GROUP 物理進捗管理ボード"
-last_updated: "2026-05-29"
-status: "active"
----
-# TASK_BOARD — VODNAVI-GROUP 物理進捗管理ボード
+# TASK BOARD — プロジェクト進行管理
 
-## 現在の HEAD: 3526ea3 ✅ (working tree: 100% clean、Sprint 3 監視フェーズ突入)
+現在の HEAD: f5a73d0 (PR #30 landed / 2026-05-29)
+ステータス: Sprint 3 静観体制・完全落成 ➔ 明日 05-30 10:00 週次 PDCA 待機状態
 
-### [Backlog]
-- [ ] [HUMAN] DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の「副サイト」申請承認ステータスの目視確認（成果補足・リーガル防衛）
-- [ ] [HUMAN/CTO] mixhostの `wp-config.php` またはプラグイン自動更新の完全停止設定の物理裏取り（構造崩壊の永久防止）
-- [ ] [CCO] コアアップデート完全通過宣言後、moterist.com を検索表示1回から救い出すための感情・深層心理クエリ特化記事の段階的自動注入
+## [Active] Sprint 3: 静観体制 & 無菌室運用
+- [x] PR #30 統合および物理監査の実施 (2026-05-29)
+- [x] 本番ログのエラーレート 0% 物理確認 (2026-05-29)
+- [ ] 2026-05-30 10:00 JST: 週次データ駆動 PDCA ルーティンの自動実行
 
-### [In Progress] (Sprint 3: 2026-05-28 〜 2026-06-04)
-- [ ] [CTO] `npx vercel logs` による、PR #25（Sticky固定バー）投入後のモバイル放棄率（旧: 99.86%）の強制的引き下げ定点監視
-- [ ] [CSO] 毎週土曜日 10:00 JST の「週次データ駆動 PDCA ルーティン」における、`detail_sticky_cta` パラメータ経由のクリック数（CTR_prod）の定量的勝率測定
-
-### [Done]
-- [x] [CTO] モバイル限定 Sticky bottom bar 本体、および iOS HIG（h-11拡張）/ Safari自動ズーム防止の完全本番マージ (PR #25 / 0ec465b)
-- [x] [CTO] CLI 引数ネストによるプロンプト切断バグの特定、および対話型直接注入への回避サニタイズ完了
-- [x] [CTO] 個別作品ページにおける「両CTAの視野外配置（スマホ画像縦占有）」によるファネル窒息の構造特定完了
-- [x] [CSO] CSOが今後出力するすべてのMarkdownに「Claude Codeへの保存指示文」を強制同封する最高法律の策定・長期記憶への組み込み完了 (PR #28 / 3526ea3)
-- [x] [CTO] CCOが生成した3大テキストのローカルディスクへの物理書き出し、Next.js UIへの定数配線、およびタイポ（tender）のサニタイズ本番マージ完了 (PR #28 / 3526ea3)
-- [x] [CTO] STRATEGY_BRIEF_012 の新規生成保存、タスクボードの実HEAD同期、および PR ベース一括 landed 完了 (feat/strategy-brief-012-and-board-sync)
+## [Backlog] 次期リライト・注入ループ
+- [ ] 過去記事資産5本の無人リライト仕様策定 (CCO指示)
+- [ ] F-06: moterist.com の GA タグ品質「緊急」解消（1106ハンドラ条件緩和、Day 10）
+- [ ] F-08: track() 共通化（transport_type: 'beacon' デフォルト）
+- [ ] F-09: GA4 → Looker Studio 連携設計
