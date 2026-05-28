@@ -5,7 +5,7 @@ status: "active"
 ---
 # TASK_BOARD — VODNAVI-GROUP 物理進捗管理ボード
 
-## 現在の HEAD: 2e34236 ✅ (working tree: 長期記憶・規約書込完了)
+## 現在の HEAD: 3526ea3 ✅ (working tree: 100% clean、Sprint 3 移行完了)
 
 ### [Backlog]
 - [ ] [HUMAN] DMMアフィリエイト管理画面での vodnavi.jp / app.vodnavi.jp の「副サイト」申請承認ステータスの目視確認（成果没収リスクの100%排除）
@@ -20,5 +20,5 @@ status: "active"
 - [x] [CTO] モバイル限定 Sticky bottom bar 本体、および iOS HIG（h-11拡張）/ Safari自動ズーム防止の完全本番マージ (PR #25 / 0ec465b)
 - [x] [CTO] CLI 引数ネストによるプロンプト切断バグの特定、および対話型直接注入への回避サニタイズ完了
 - [x] [CTO] 個別作品ページにおける「両CTAの視野外配置（スマホ画像縦占有）」によるファネル窒息の構造特定完了
-- [x] [CSO] CSOが今後出力するすべてのMarkdownに「Claude Codeへの保存指示文」を強制同封する最高法律の策定・長期記憶への組み込み完了
-- [x] [CTO] CCOが生成した3大テキストのローカルディスクへの物理書き出し、Next.js UIへの定数配線、およびタイポ（tender）のサニタイズ本番マージ完了 (PR #26 / feat/governance-and-copy-sync)
+- [x] [CSO] CSOが今後出力するすべてのMarkdownに「Claude Codeへの保存指示文」を強制同封する最高法律の策定・長期記憶への組み込み完了 (PR #28 / 3526ea3)
+- [x] [CTO] CCOが生成した3大テキストのローカルディスクへの物理書き出し、Next.js UIへの定数配線、およびタイポ（tender）のサニタイズ本番マージ完了 (PR #28 / 3526ea3)
