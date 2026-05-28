@@ -239,7 +239,10 @@ export function ConciergeChat({
             maxLength={2000}
             className={cn(
               "min-h-[44px] flex-1 resize-none rounded-2xl border border-brand-gold/15 bg-brand-surface/70 px-4 py-2.5",
-              "text-sm leading-relaxed text-brand-text-primary placeholder:text-brand-text-secondary/70",
+              // text-base = 16px は iOS Safari の input/textarea 自動 zoom-in
+              // (font-size <16px で発動する画面強制拡大摩擦) を物理的に防ぐ閾値。
+              // sm 以上では UX 上 text-sm に落として情報密度を取り戻す。
+              "text-base leading-relaxed text-brand-text-primary placeholder:text-brand-text-secondary/70 sm:text-sm",
               "outline-none transition-colors focus:border-brand-gold/50 focus:bg-brand-surface",
               "disabled:opacity-50",
             )}
@@ -599,7 +602,7 @@ function WorkCardCta({ work }: { work: Work }) {
             link_variant: "primary",
           });
         }}
-        className="flex h-10 items-center justify-center gap-1 bg-brand-gold font-luxury-heading text-sm font-semibold tracking-wide text-brand-dark transition-all hover:bg-brand-gold-hover active:translate-y-px"
+        className="flex h-11 items-center justify-center gap-1 bg-brand-gold font-luxury-heading text-sm font-semibold tracking-wide text-brand-dark transition-all hover:bg-brand-gold-hover active:translate-y-px"
       >
         今すぐ視聴
         <ArrowRight className="size-3.5" aria-hidden />
