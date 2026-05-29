@@ -18,3 +18,6 @@
 - [x] インフラ・解析・運用自動化・リーガル防衛（5つの盾）の100%完全落成[cite: 4, 5]
 - [x] 解析用フォルダ「SEO-MOTELAB」のモノレポメインフレーム（packages/seo-motelab）への完全統合・物理移動完了[cite: 5]
 - [x] 戦略矛盾の完全サニタイズ（STRATEGY_BRIEF_002のアーカイブ化、およびサタデー・レビュー規定書013の現役復帰配線の落成）[cite: 5, 10]
+
+### Ahrefs Integration & SEO Dominance (Added 2026-05-29)
+- [ ] **T-05**: Register and authenticate `app.vodnavi.jp` on Ahrefs. Extract authentic DR, keyword, and backlink synergy data for all 3 sites once Saturday Review (T-03) freeze lifts.
