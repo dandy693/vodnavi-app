@@ -20,9 +20,9 @@
 - [x] 戦略矛盾の完全サニタイズ（STRATEGY_BRIEF_002のアーカイブ化、およびサタデー・レビュー規定書013の現役復帰配線の落成）[cite: 5, 10]
 
 ### Ahrefs Integration & SEO Dominance (Added 2026-05-29)
-- [ ] T-05 (Ahrefs 認証) [In Progress: 5/31 12個の全コミット整合をもって Workspace 概要データを landed 完了 (`_metrics/2026-W22/ahrefs_raw_report.md`)]
+- [ ] T-05 (Ahrefs 認証) [In Progress: 5/31 Workspace 概要 + middleware crawler 衝突仮説 falsified (UA 関係なく 200 OK、proxy.ts matcher は /concierge 系のみ、cookie 判定のみ。`_metrics/2026-W22/middleware_crawler_verification.md`)]
   - [ ] T-05-AR1: Free Plan 制限を排した Site Explorer drill-down による流入キーワード・アンカーテキストのファクト特定
-  - [ ] T-05-AR2: app.vodnavi.jp の credit 枯渇原因の特定とクロール健全性検証
+  - [x] T-05-AR2: app.vodnavi.jp middleware crawler 衝突仮説検証完了 — middleware 健全 (UA 参照なし)、Ahrefs 上 crawl 停止の唯一 visible 原因は Free Plan credit 枯渇 (アップグレードは HUMAN 判断)
 
 ### 🚨 2026-W22 物理監査残作業 ＆ セキュリティ緊急タスク (2026-05-31 確定)
 - [ ] T-03-SR1: [HUMAN WAIT] ANTHROPIC_API_KEY ローテーション / runbookに基づくキー再発行および.env.local配置
