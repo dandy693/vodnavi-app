@@ -1,0 +1,115 @@
+{
+  "audited_at": "2026-06-01T+09:00",
+  "audited_by": "claude-code-cto",
+  "audit_scope": "STRATEGY_BRIEF_003 Revised — task 3-A (FANZA SKU 突合)",
+  "sources": [
+    "https://affiliate.dmm.com/report/top/",
+    "https://affiliate.dmm.com/report/product/",
+    "https://affiliate.dmm.com/report/reward/"
+  ],
+  "period": "2026-05-01..2026-05-31",
+  "limitation_explicit": "DMM アフィリエイト管理画面の仕様により、商品別レポートは『成約のあった商品』のみを羅列し、クリック数は表示しない。クリックは『レポートトップ』で 日次合計 のみ提供される。よって『5/26 と 5/24 で 1,069 クリックがどの作品 ID に集中したか』の SKU 単位突合は構造上取得不能。BRIEF_003 タスク3-A は『DMM 仕様の限界』で部分達成に留まる。",
+  "monthly_summary_may2026": {
+    "clicks_total": 1140,
+    "conversions_total_count": 4,
+    "revenue_total_jpy": 3584,
+    "breakdown": {
+      "direct_reward": { "count": 3, "jpy": 1484 },
+      "category_reward": { "count": 0, "jpy": 0 },
+      "service_new_reward": { "count": 1, "jpy": 2100 }
+    },
+    "cvr_overall_pct": 0.351
+  },
+  "converted_products_may2026": [
+    {
+      "rank": 1,
+      "service": "動画（アダルト）",
+      "category": "アダルトビデオ（単品動画）",
+      "title_truncated": "他人の男を奪いたくて仕方がないヤリマン姉が妹の彼氏をデ…",
+      "price_jpy": 990,
+      "reward_type": "ダイレクト",
+      "qty": 1,
+      "reward_jpy": 693,
+      "commission_rate_inferred": 0.70,
+      "inferred_conversion_date": "2026-05-23",
+      "inferred_evidence": "amount ¥693 unique-matches 5/23 daily row in レポートトップ"
+    },
+    {
+      "rank": 2,
+      "service": "動画（アダルト）",
+      "category": "アダルトアニメ（単品動画）",
+      "title_truncated": "壁の向こうの妻の嬌声2 〜隣で激しく腰を振る汗だくの妻は…",
+      "price_jpy": 600,
+      "reward_type": "ダイレクト",
+      "qty": 1,
+      "reward_jpy": 420,
+      "commission_rate_inferred": 0.70,
+      "inferred_conversion_date": "2026-05-24",
+      "inferred_evidence": "amount ¥420 unique-matches 5/24 daily row direct reward"
+    },
+    {
+      "rank": 3,
+      "service": "動画（アダルト）",
+      "category": "アダルト成人映画（単品動画）",
+      "title_truncated": "わたしの同級生 肉感の果てに",
+      "price_jpy": 530,
+      "reward_type": "ダイレクト",
+      "qty": 1,
+      "reward_jpy": 371,
+      "commission_rate_inferred": 0.70,
+      "inferred_conversion_date": "2026-05-25",
+      "inferred_evidence": "amount ¥371 unique-matches 5/25 daily row"
+    },
+    {
+      "rank": 4,
+      "service": "(サービス新規)",
+      "category": "サービス新規報酬",
+      "title_truncated": "(個別商品ではなく FANZA 会員サービス新規登録報酬)",
+      "price_jpy": null,
+      "reward_type": "サービス新規",
+      "qty": 1,
+      "reward_jpy": 2100,
+      "inferred_conversion_date": "2026-05-24",
+      "inferred_evidence": "amount ¥2100 matches 5/24 daily service_new column"
+    }
+  ],
+  "zero_conversion_period": {
+    "range": "2026-05-26..2026-05-31",
+    "days": 6,
+    "clicks_daily": {
+      "2026-05-26": 147,
+      "2026-05-27": 127,
+      "2026-05-28": 92,
+      "2026-05-29": 73,
+      "2026-05-30": 84,
+      "2026-05-31": 71
+    },
+    "clicks_sum": 594,
+    "conversions_sum": 0,
+    "revenue_jpy_sum": 0,
+    "statistical_note": "若 5/01-5/25 の平均 CVR ≒ 0.73% (4件/546 click) を maintain したと仮定すると、594 click 期待値 ≒ 4.34件。実測 0件 はゼロを大きく逸脱 (Poisson p ≒ 0.013)。偶然では説明不能、何らかの構造的要因の介入を示唆。"
+  },
+  "june_recovery_signal": {
+    "date_first_check": "2026-06-01 JST",
+    "clicks_so_far": 0,
+    "conversions_so_far": 1,
+    "revenue_jpy_so_far": 912,
+    "reward_type": "ダイレクト",
+    "interpretation": "成約消失ストリークは 6/1 で破れた。コード改修なしで成約が復帰したため、原因は『一過性の外部要因 (FANZA トラッカー側 / 商品配信側)』『traffic profile の一時シフト』『深夜帯の検査キャンペーン』等の構造外要因の可能性が極めて高い。"
+  },
+  "production_affiliate_id_verification": {
+    "method": "curl -sL https://app.vodnavi.jp/ → grep -oE 'moterist-[0-9]{1,4}' のクライアントバンドル静的スキャン",
+    "bytes_scanned": 235876,
+    "value_extracted": "moterist-990",
+    "uniqueness": "unique (1 distinct ID found in production HTML)",
+    "comparison_table": {
+      "production_bundle (https://app.vodnavi.jp/)": "moterist-990",
+      ".env.local (root, 2026-05-15 03:11)": "moterist-990",
+      "app-concierge/.env.local (dev, 2026-05-28 02:51)": "moterist-991",
+      "app-concierge/.env.local.bak (backup, 2026-05-28 02:34)": "moterist-004",
+      "site-moterist/.env (FANZA_AFFILIATE_ID, 2026-05-02)": "(empty)"
+    },
+    "verdict": "本番 = moterist-990。app-concierge/.env.local の moterist-991 は dev のみで本番未反映。env-ID 汚染仮説は falsified。.env.local.bak の moterist-004 は過去ロールバック痕跡。",
+    "remaining_unknown": "Vercel 本番環境の env var を直接列挙する操作 (`vercel env ls production`) は auto-mode classifier により Production Reads として deny。バンドル baked-in 値のみで verification 済 (= 本番デプロイ後にビルド時 substitution された値) のため、追加読み出しは不要。"
+  }
+}
