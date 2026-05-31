@@ -1,24 +1,19 @@
-# VODNAVI-GROUP TASK BOARD
+# TASK BOARD — 開発・運用タスク管理
 
-## [WIP] 認証情報ローテーション・GA4物理データ連携フェーズ
-- [ ] **T-03-SR1**: Anthropic API Key ローテーション検証（HUMANのConsoleステータス確定待ち）
-- [/] **T-03-SR2**: GA4スクリプト（scripts/pull-ga4.ts）のスタブモード検証 (`2026-05-31` 執行)
-- [ ] **T-03-SR3**: 物理環境変数（GA4_PROPERTY_ID / GA4_ACCESS_TOKEN）配備後の本番通信疎通
-- [ ] **T-03-SR4**: _metrics/ への実トラフィックデータ（ホスト名識別）の着弾確認
+## 📋 経営戦略・データ駆動改善（CSO管轄）
+- [x] 🟢 Chrome連携によるGA4およびFANZA管理画面の物理監査完了（2026-06-01）
+- [ ] 🔴 **【緊急・進行中】** 5/26成果消失原因の物理データ突合・真因特定（STRATEGY_BRIEF_003 Revised に基づく）
+- [ ] 🟡 過去記事5資産に対する手動動線リライトの進行管理（STRATEGY_BRIEF_002に基づく・SEO保護優先）
 
-## [Pending] HUMAN判断・決済待ちセクション
-- [ ] Ahrefs 有料プラン契約およびRAWレポートのエクスポート（T-05-AR1）
+## 💻 技術実装・計測生存確認（CTO管轄）
+- [ ] 🔴 **【緊急】** FANZA商品別Click内訳の抽出および本番環境変数のID汚染 `grep` 監査（コード改修は厳禁）
+- [x] 🟢 クロスドメイン計測（vodnavi.jp ⇄ app.vodnavi.jp）の本番検証完了
 
-## [Done] 5月度監査・過去記事サルベージ
-- [x] 過去記事資産5本のサルベージおよび構造解析（4cc190e landed）
-- [x] リンカー設定の直接注入（moterist.com / functions.php 物理補正完了）
-```
+## ✍️ コンテンツ制作・世界観統制（CCO管轄）
+- [ ] 🟡 `THE_THOR_DICTIONARY.md` に準拠した、5記事のラグジュアリーな手動CTA動線最適化（直リンクの順次撤去）
 
-#### 3. Git landed シーケンスの実行
-上記のスタブ実行結果のJSON（もし生成された場合）および更新した `TASK_BOARD.md` をステージングし、ガバナンス規約に則ったコミットメッセージでコミットしてください。
+---
 
-```bash
-git add management/TASK_BOARD.md _metrics/
-git commit -m "chore: state sync to TASK_BOARD and pull-ga4 stub verification [skip ci]"
-```
-執行完了後、物理的な成否（エラーの有無、生成されたファイルの有無）を冷徹に報告してください。
+## 📅 更新履歴 (Landed Logs)
+- 2026-06-01: CTOからの反証警告（middleware競合バイアスの指摘）を受け、CSOが自律的に防衛ラインを発動。STRATEGY_BRIEF_003をデータ突合型に全面改訂し、TASK_BOARDを更新。
+- 2026-05-16: クエリパラメータ拡張フェーズ完了に伴うCHANGELOG同期。
