@@ -452,3 +452,24 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - BRIEF_003 タスク **3-A 部分達成 / 3-B 構造不能 / 3-C 完了**。3-A の SKU 単位突合は DMM 仕様で不可、3-B は対象 SKU が抽出できないため curl 検証不能。<br>3-C は環境変数 ID の汚染なしを物理確証。
 - 関連: [[fanza-cta-blank-state]] (moterist 旧 CTA `fanza_cta_click` トラッカー不発、28日で 1 fire のみ)、[[funnel-drop-off-seo-to-concierge]] (SEO→Concierge 1.02%)。本セッションの監査ファイルが包括的 raw 値を保持。
 - 4 つの盾 (年齢確認モーダル / #PR コンプラ / ブランドガイド / buildAffiliateURL) は触れずに維持。本件で『コード触らず原因突合』の防衛ラインは機能 (BRIEF_023 falsified の反省を構造で活かした)。
+
+---
+
+### 2026-06-01 06:36 JST — [high] トランスクリプト内シークレット露出に伴うキーローテーションの強制発動
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | high |
+| target | ANTHROPIC_API_KEY / OPENAI_API_KEY / NEXT_PUBLIC_MAKE_WEBHOOK_URL |
+| symptom | 同セッション内 STEP 3 (`grep API_KEY \| API_TOKEN \| SECRET \| WEBHOOK` over `**/.env*`) の出力に **本物の API 鍵 2 本 (sk-ant-..., sk-proj-...) と Make.com 実 Webhook URL** が含まれ、会話ログへ確定的に露出した。 |
+| suspected_cause | 監査スクリプトの grep 出力フィルタが値マスクを通さず、`.env.local` の `KEY="real_value"` 行全文を transcript に流出させた。Claude 側でも事前にマスク処理を施さず素通しした。 |
+| recommended_action | HUMAN は以下を物理執行: <br>1. Anthropic console → 当該 `sk-ant-api03-...` を Revoke、新規発行、root `.env.local:2` を上書き。<br>2. OpenAI platform → `sk-proj-30L6...` を Revoke、新規発行、`app-concierge/.env.local:10` を上書き、`.env.local.bak` は **物理削除** または同様に再生成。<br>3. Make.com → 該当 webhook を `Disable + 新規 URL 作成`、root `.env.local:5` を上書き、過去の hook 経由イベントを scenario 履歴で監視 (24h)。<br>4. mixhost cPanel SSH キーは grep 対象外 (リポジトリ内 plaintext 鍵は変わらず) だが、本セッションで `.gitignore` の redundancy 保護 (line 7) を追加済。 |
+| backup_path | — |
+| anomaly_log | (transcript 自身) |
+| github_issue | — |
+
+**メモ**：
+- システム側の Git 汚染防衛（`.gitignore` defense-in-depth）は本セッションで物理 landed 済。`git ls-files` で `site-moterist/.playwright-mcp/` 配下は 0 件、`git check-ignore` でも `.playwright-mcp/` 行 6 がヒット = 鍵は元から非 tracked。
+- 鍵の **実値の無効化と再生成** は HUMAN の手動操作（cPanel / 各社ダッシュボード）が絶対必須。完了後、本エントリの status を resolved に flip すること。
+- 関連: [[mixhost-ssh-classifier-block]] (canonical OPERATION_MANUAL の SSH 手順は auto-mode classifier に block されるため、鍵が漏れても auto Claude は本番 SSH を撃てない構造)。
