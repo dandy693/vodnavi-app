@@ -8,7 +8,7 @@
 - 【ホスト名個別識別計測の厳格化】プロパティ共有状態にある `moterist.com` と `app.vodnavi.jp` のデータ漏斗（ファンネル）は、明朝 10:00 JST のサタデー・レビューにおいてホスト名ディメンションにより厳格に個別追跡・識別する[cite: 5, 7, 8, 10]。
 
 ## 🏃‍♂️ 現在進行中のタスク (In Progress)
-- [ ] T-03 (Saturday Review) [Abort: 5/31 ChromeタブのURL監査にてアカウント不一致（coushilift.com等）を検知。データ汚染防止のため自動抽出を一時停止し、HUMANの切替操作を待機中。]
+- [x] T-03 (Saturday Review) [Done: 5/31 22:30 アカウント切替後 verification 通過 (GA4 p489519780 / GSC sc-domain:vodnavi.jp / FANZA 2026-05-01〜2026-05-31)。5月度物理データを `_metrics/2026-W22/raw_audit_report.md` に landed (DOM 生数値のみ、placeholder/ハードコード ✅ なし、保留項目は明示)]
 - [ ] **T-04**: 成約アプリ（app.vodnavi.jp）側における、アクセス直後の年齢確認モーダル（サーバー側 middleware 403 遮断）および意図（intent）別中間CTAによる早期クッキー着火ロジックの完全落成（担当: CTO）[cite: 4, 5]
 
 ## 📋 バックログ (Todo / Backlog)
