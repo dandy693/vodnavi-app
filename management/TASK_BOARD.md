@@ -20,7 +20,9 @@
 - [x] 戦略矛盾の完全サニタイズ（STRATEGY_BRIEF_002のアーカイブ化、およびサタデー・レビュー規定書013の現役復帰配線の落成）[cite: 5, 10]
 
 ### Ahrefs Integration & SEO Dominance (Added 2026-05-29)
-- [ ] T-05 (Ahrefs 認証) [In Progress: 5/31 23:35 Dashboard 観測完了 (vodnavi.jp DR=21 / ref.dom=182, moterist.com DR=0 / ref.dom=174, app.vodnavi.jp DR=21 / ref.dom=1)、Free Plan credit 枯渇のため Site Explorer drill-down / UR / Link Intersect synergy は別途 (`_metrics/2026-W22/ahrefs_raw_report.md`)]
+- [ ] T-05 (Ahrefs 認証) [In Progress: 5/31 12個の全コミット整合をもって Workspace 概要データを landed 完了 (`_metrics/2026-W22/ahrefs_raw_report.md`)]
+  - [ ] T-05-AR1: Free Plan 制限を排した Site Explorer drill-down による流入キーワード・アンカーテキストのファクト特定
+  - [ ] T-05-AR2: app.vodnavi.jp の credit 枯渇原因の特定とクロール健全性検証
 
 ### 🚨 2026-W22 物理監査残作業 ＆ セキュリティ緊急タスク (2026-05-31 確定)
 - [ ] T-03-SR1: [HUMAN WAIT] ANTHROPIC_API_KEY ローテーション / runbookに基づくキー再発行および.env.local配置
