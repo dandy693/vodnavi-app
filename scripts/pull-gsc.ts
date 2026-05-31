@@ -238,7 +238,6 @@ async function main() {
   const week = lastFullIsoWeek(new Date());
   const outPath = resolve(
     repoRoot,
-    "management",
     "_metrics",
     week.weekIso,
     `gsc-${new Date().toISOString().slice(0, 10)}.json`,
