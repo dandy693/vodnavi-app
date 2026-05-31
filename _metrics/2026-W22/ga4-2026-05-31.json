@@ -1,0 +1,20 @@
+{
+  "pulledAtIso": "2026-05-31T15:14:29.594Z",
+  "weekIso": "2026-W22",
+  "dateRange": {
+    "startDate": "2026-05-01",
+    "endDate": "2026-05-31"
+  },
+  "propertyId": "(unset)",
+  "sessionsBySourceIntent": [],
+  "customEvents": [],
+  "cvr": {
+    "aiSessionStart": 0,
+    "aiAffiliateClick": 0,
+    "rate": null
+  },
+  "isStub": true,
+  "notes": [
+    "GA4_PROPERTY_ID 未設定 — schema ダンプのみ実行"
+  ]
+}
