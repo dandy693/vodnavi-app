@@ -23,8 +23,8 @@
 - [ ] **T-05**: Register and authenticate `app.vodnavi.jp` on Ahrefs. Extract authentic DR, keyword, and backlink synergy data for all 3 sites once Saturday Review (T-03) freeze lifts.
 
 ### 🚨 2026-W22 物理監査残作業 ＆ セキュリティ緊急タスク (2026-05-31 確定)
-- [ ] T-03-SR1: ANTHROPIC_API_KEY / VERCEL_OIDC_TOKEN の即時ローテーション執行
-- [ ] T-03-SR2: GA4 hostname dimension による moterist vs app 物理分離計測の確立
+- [ ] T-03-SR1: [HUMAN WAIT] ANTHROPIC_API_KEY ローテーション / runbookに基づくキー再発行および.env.local配置
+- [ ] T-03-SR2: [ENV WAIT] 認証キー配備後、pull-ga4.ts を --hostname 駆動してホスト名分離ファクトを抽出
 - [ ] T-03-SR3: カスタムディメンション (asp_name/source/intent) 受信ファクトの目視確認
 - [ ] T-03-SR4: GA4 "今月" 全期間で product_click 件数を再抽出し、FANZA 月次クリック (1,069) との期間整合性を取った上でファネル落差の真因 (リダイレクト離脱 / 商品詳細離脱) を特定
 - [ ] T-06: 5記事資産のインデックスを永久保護しつつ、THE_THOR_DICTIONARY.md 準拠で高インテント導線へ部分最適化するリライト計画の策定
