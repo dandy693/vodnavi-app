@@ -459,7 +459,8 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 
 | 項目 | 値 |
 |---|---|
-| status | open |
+| status | resolved |
+| resolved_at | 2026-06-01 |
 | severity | high |
 | target | ANTHROPIC_API_KEY / OPENAI_API_KEY / NEXT_PUBLIC_MAKE_WEBHOOK_URL |
 | symptom | 同セッション内 STEP 3 (`grep API_KEY \| API_TOKEN \| SECRET \| WEBHOOK` over `**/.env*`) の出力に **本物の API 鍵 2 本 (sk-ant-..., sk-proj-...) と Make.com 実 Webhook URL** が含まれ、会話ログへ確定的に露出した。 |
