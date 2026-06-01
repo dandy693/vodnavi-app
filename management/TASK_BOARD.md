@@ -11,8 +11,9 @@
 - [ ] 🔵 T-20260601-04 (CCO): サルベージ 2 記事（SANGO 論 / U-NEXT 無料体験の調律論）の最高品質原稿執筆。`BRAND_DESIGN_GUIDE.md` + `THE_THOR_DICTIONARY.md` 準拠、ピンクネオン排除
 - [x] 🟢 T-20260601-05 (CSO/CTO): SPAM PBN disavow.txt ドラフト生成完了 (`management/disavow.txt`、audit MD §3 由来の実ドメイン ~52 件)。GSC への upload は手動アクション
 - [ ] 🔵 T-20260601-06: `intent=discount` 流入時における app-concierge プロンプト動的最適化の検証（バックログ）
-- [ ] 🟡 T-20260601-07 (CTO): `site-brand/` 配信トポロジー修復。`STRATEGY_BRIEF_004_PRODUCTION.md` §1 により **(b) Vercel Rewrites 方式 または独立 Project 構成**に CSO 絞り込み確定 ((a) middleware は除外)。`https://vodnavi.jp/wordpress-sango-review/` が 404 解消されルーティングされる構成ファイルを配置
+- [x] 🟢 T-20260601-07 (CTO): Vercel Rewrites scaffold 配置完了。`app-concierge/vercel.json` に host=`vodnavi.jp` 条件付き rewrite 2 件追加（`/wordpress-sango-review/:path*` と `/u-next-second-free-trial/:path*` → `https://site-brand-vodnavi.vercel.app/...`、JSON 構文 validate 済）。**残課題**: T-09 (site-brand の Vercel deploy + vodnavi.jp ドメイン紐付け) が完了するまで rewrite は機能しない (destination URL がプレースホルダ)
 - [ ] 🟡 T-20260601-08 (CCO): `site-brand/` サルベージ 2 記事原稿の生成・配置。`STRATEGY_BRIEF_004_PRODUCTION.md` §2 準拠 — 記事A「官能のライブラリを構築する美学：WordPress テーマ『SANGO』の UI/UX 論」(/wordpress-sango-review/, CTA: `app.vodnavi.jp/concierge?source=brand`) / 記事B「孤独な夜を満たす、至高のシネマ体験設計」(/u-next-second-free-trial/, CTA: `?source=brand&intent=discount`)。配置先: `site-brand/03_content/` または指定領域
+- [ ] 🔴 T-20260601-09 (人間操作 + CTO): **配線実体化の前提条件**。(1) `cd site-brand && vercel link` で新規 Vercel project 作成、(2) 実 deploy URL を取得し `app-concierge/vercel.json` の `destination` プレースホルダ (`site-brand-vodnavi.vercel.app`) を実 URL に置換、(3) vodnavi.jp ドメインを vodnavi-app project に紐付け（または site-brand project へ直接紐付ける独立 Project 構成への切替）
 
 ## 💻 技術実装・計測生存確認（CTO管轄）
 - [x] 🟢 app-concierge 本番Next.js 16 routes clean build (exit 0) 検証完了
