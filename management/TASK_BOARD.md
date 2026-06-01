@@ -9,8 +9,9 @@
 - [x] 🟢 T-20260601-02 (CSO): サルベージ戦略確定。`STRATEGY_BRIEF_002_SALVAGE.md` landed — 判定: 復元（301 ではなく直接配置）。SANGO 公式 DR 73 / leawo + videoconverterfactory DR 66/62 を直接受託
 - [x] 🟢 T-20260601-03 (CTO): `site-brand/next.config.ts:36` の `/wordpress-sango-review/:path*` 301 redirect 削除完了 (`tsc --noEmit` 通過)。**配信トポロジー所見**: `site-brand/` には `.vercel/project.json` も `vercel.json` も未配置。root + `app-concierge/` の Vercel mapping は同一 (`projectId=prj_42GkXv2njAJTxYbmDoLdP8JoZbkx` / `projectName=vodnavi-app`) — **site-brand/ は本リポから vodnavi.jp に紐づけられておらず**、サルベージページ配信前に Vercel project 作成 + ドメイン紐付けが必須。`/d-anime-store-only-title/:path*` 301 は BRIEF スコープ外として保持
 - [ ] 🔵 T-20260601-04 (CCO): サルベージ 2 記事（SANGO 論 / U-NEXT 無料体験の調律論）の最高品質原稿執筆。`BRAND_DESIGN_GUIDE.md` + `THE_THOR_DICTIONARY.md` 準拠、ピンクネオン排除
-- [ ] 🔵 T-20260601-05 (CSO/CTO): 60+ 行の SPAM PBN（SEOExpress 系 40+ / CZ-RU aged-domain 10+ / Stats 系 7+）に対する GSC disavow.txt ドラフト生成
+- [x] 🟢 T-20260601-05 (CSO/CTO): SPAM PBN disavow.txt ドラフト生成完了 (`management/disavow.txt`、audit MD §3 由来の実ドメイン ~52 件)。GSC への upload は手動アクション
 - [ ] 🔵 T-20260601-06: `intent=discount` 流入時における app-concierge プロンプト動的最適化の検証（バックログ）
+- [ ] 🟡 T-20260601-07 (CTO): `site-brand/` 配信トポロジー修復。`STRATEGY_BRIEF_003_INFRA.md` に基づき (a) `app-concierge/middleware.ts` の hostname 識別 / (b) Vercel Rewrites / (c) site-brand 独立 Vercel project のいずれかを選定・実装。**注釈**: site-brand と app-concierge は別 Next.js app（独立 next.config.ts / src/）の点を踏まえ、(a) は技術的に non-trivial
 
 ## 💻 技術実装・計測生存確認（CTO管轄）
 - [x] 🟢 app-concierge 本番Next.js 16 routes clean build (exit 0) 検証完了
