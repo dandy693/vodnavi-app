@@ -33,7 +33,6 @@ const nextConfig: NextConfig = {
       { source: "/sitemap.html", destination: "/sitemap.xml", permanent: true },
       { source: "/post-sitemap.html", destination: "/sitemap.xml", permanent: true },
       { source: "/page-sitemap.html", destination: "/sitemap.xml", permanent: true },
-      { source: "/wordpress-sango-review/:path*", destination: "/", permanent: true },
       { source: "/d-anime-store-only-title/:path*", destination: "/", permanent: true },
     ];
   },
