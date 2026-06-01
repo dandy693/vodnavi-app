@@ -1,9 +1,10 @@
 @import "tailwindcss";
 
 /* 共通デザイントークン（『ビブリア・エロティカ』）。
-   monorepo ルート直下の design-tokens.css を単一情報源とする。
-   app-concierge と同じ相対深度（src/app/）で読み込む。 */
-@import "../../../design-tokens.css";
+   monorepo ルート直下の design-tokens.css を canonical source とする。
+   site-brand/design-tokens.css は site-brand を Vercel 単体プロジェクトとして
+   deploy する都合上の同期コピー（root を更新したら本ファイルも sync すること）。 */
+@import "../../design-tokens.css";
 
 /* ───── Tailwind utility への露出
    design-tokens.css の :root カスタムプロパティを @theme inline で
