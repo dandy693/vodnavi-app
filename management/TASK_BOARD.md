@@ -34,5 +34,5 @@
 - [ ] 🌑 T-20260602-05: 旧 `vodnavi.jp` のSEO外部被リンク資産（DR 73等）保護のための URL居ぬき Next.js Dynamicローダー移行（方針A）に伴う、旧記事URL（`/wordpress-sango-review/`等）のモノレポ内マッピング定義
 
 ## [Landed] 🚀 戦略ルート1点火セクション: 集客分母最大化 (2026-06-02 確定)
-- [ ] 🌑 T-20260602-06: `moterist.com` 1106記事（登録ガイド）のGA4クリックハンドラ条件（outline_1__9）緩和のためのNext.jsコード層改修設計
+- [x] 🟢 T-20260602-06: GA4 クリックハンドラ条件 (`outline_1__9`) 緩和 — **物理 verify: 既に 2026-05-20 (Day 10) に解消済**。実コードは Next.js ではなく **WordPress THE THOR child theme の `functions.php`**。994/954/1018/1106 を post_id ベース config に統合、`closest('.content')` && `closest('li')` && al.dmm affiliate URL 形のみで発火に緩和、`outline_1__9` 位置関係 + 厳密 text 一致は廃止。backup: `functions.php.bak_day10_20260520_221713`。証跡: `packages/seo-motelab/analytics-issues-3sites.md:43-47`。1095 は entry CTA 構造が異なるため別ハンドラ据置中。**本タスクの「Next.js コード層改修設計」は前提誤認、新規改修不要**
 - [ ] 🌑 T-20260602-07: CCO（ChatGPT 5.5）に対する「THE_THOR_DICTIONARY」生HTML完全適合型量産リライト指示書の自動生成および発行
