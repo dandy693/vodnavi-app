@@ -37,3 +37,7 @@
 ## [Landed] 🚀 戦略ルート1点火セクション: 集客分母最大化 (2026-06-02 確定)
 - [x] 🟢 T-20260602-06: GA4 クリックハンドラ条件 (`outline_1__9`) 緩和 — **物理 verify: 既に 2026-05-20 (Day 10) に解消済**。実コードは Next.js ではなく **WordPress THE THOR child theme の `functions.php`**。994/954/1018/1106 を post_id ベース config に統合、`closest('.content')` && `closest('li')` && al.dmm affiliate URL 形のみで発火に緩和、`outline_1__9` 位置関係 + 厳密 text 一致は廃止。backup: `functions.php.bak_day10_20260520_221713`。証跡: `packages/seo-motelab/analytics-issues-3sites.md:43-47`。1095 は entry CTA 構造が異なるため別ハンドラ据置中。**本タスクの「Next.js コード層改修設計」は前提誤認、新規改修不要**
 - [x] 🟢 T-20260602-07:         CCO量産指示書の物理落成 (✅ 4箇所のMarkdown構造汚染およびアフィURL不整合をEditで完全調律・落成完了)
+
+
+### CSO-Log 2026-06-02 06:45 JST
+- [Active] T-20260602-04-ENV を正式に CTO (Claude Opus) へアサイン。指示書を `management/_tasks/T-20260602-04-ENV_INSTRUCTION.md` へ landed 完了。
