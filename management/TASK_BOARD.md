@@ -17,7 +17,7 @@
 - [x] 🟢 T-20260601-10 (CTO): `site-brand/src/app/[slug]/page.tsx` 動的コンテンツローダー配線完了。Next.js 16.2.6 async params + SSG (`generateStaticParams`) で `03_content/{slug}/article.md` を fs 読込、ダーク×ゴールド inline style で render (`tsc --noEmit` 通過)。デプロイ後 `/wordpress-sango-review/` `/u-next-second-free-trial/` が SSG で配信される
 - [x] 🟢 T-20260602-01 (CTO/DESIGN): `site-brand/src/app/page.tsx:51` H1 hero 内の `<span className="text-brand-gold">AI コンシェルジュ</span>` に `whitespace-nowrap` を追加。狭幅 viewport 時に「AI コンシェル / ジュ」で改行される視覚バグを最小 fix で解消。`npm run build` 通過 (7/7 SSG)
 - [x] 🟢 T-20260602-02 (CTO): site-brand 本番 Vercel re-deploy 完了 (deployment id `dpl_GRYdWCNRnWVWnp3hhyKxpVeYhkEX`、READY、UI fix bae32b1 を production に反映)。alias `https://site-brand-vodnavi.vercel.app` 200、`https://vodnavi.jp/` 200 物理確認
-- [ ] 🚨 T-20260602-03-FINDING (CCO/CTO): **ID 分離の盾 ガバナンス違反** — `site-moterist/03_content/*.md` の 5 ファイルすべてで `af_id=moterist-001` がハードコード literal で混入 (1018:1件 / 1095:1件 / 1106:1件 / **954:12件** / 994:1件、計 16 件)。template var (`{{AF_ID}}`) または rendering 時の env 注入経路に置換が必要。WP 注入再開前の必須前提
+- [x] 🟢 T-20260602-03-FINDING (CCO/CTO): **[Superseded by Option-A, 2026-06-02]** — 当初は「ID 分離の盾 ガバナンス違反」として起票（`site-moterist/03_content/*.md` の `af_id=moterist-001` 直書き 16 件: 1018:1/1095:1/1106:1/**954:12**/994:1）。HUMAN による DMM 管理画面目視で当該 ID 群が **副サイトID（トラッキングID）** であり、3-ID 並列識別 (001=集客/004=成約/990=データ) が正規仕様と確定。markdown 直書きは仕様準拠のため finding 取り下げ。確定証跡: `management/_metrics/2026-W22/id-subid-audit.md`
 - [ ] 🟦 (注釈) script Step 3 (SSH/WP-CLI 疎通) は echo only theater + `reference_mixhost_ssh_classifier_block` memory 通り classifier block 範囲のため**未実行**
 
 ## 💻 技術実装・計測生存確認（CTO管轄）
@@ -29,8 +29,9 @@
   - [ ] gpt-5.5 reasoning model における temperature 設定の削除
 
 ## [Backlog] 🛡️ ガバナンス・アフィリエイトID抽象化タスク (2026-06-02 確定)
-- [ ] 🌑 T-20260602-03-STEP1: アフィリエイトID抽象化 Step 1 — `site-moterist` 環境変数（.env/.env.example）への `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-001` 配線、および本番WordPress注入用 `render layer`（プレースホルダー展開スクリプト）の実装設計
-- [ ] 🌑 T-20260602-04: アフィリエイトID抽象化 Step 2 — 記事Markdown内（16箇所）の環境変数プレースホルダーへの一括置換、およびローカル環境での展開・注入テスト（Dry-run検証必須）
+- [x] 🟢 T-20260602-03-STEP1: **[Superseded by Option-A, 2026-06-02]** — 当初案は `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-001` での env 配線設計だったが、3-ID 並列識別仕様確定により app-concierge 側 env は **`moterist-004`** が正。site-moterist 側は副サイトID 直書き許容のため env 化不要。代替は T-20260602-04-ENV に集約
+- [x] 🟢 T-20260602-04: **[Superseded by Option-A, 2026-06-02]** — 記事 Markdown 内 16 箇所の env プレースホルダー一括置換は不要化（副サイトID 仕様により直書き許容）
+- [ ] ⚙️ T-20260602-04-ENV (CTO): `app-concierge/.env` および `.env.example` に `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004` を定義し、`src/lib/concierge/url-builder.ts:68` の env 解決経路が確実に `moterist-004` を返すことを `tsc --noEmit` + ローカルブラウザ実機で物理確認。Vercel 本番 env への反映は HUMAN 手動アクション
 - [ ] 🌑 T-20260602-05: 旧 `vodnavi.jp` のSEO外部被リンク資産（DR 73等）保護のための URL居ぬき Next.js Dynamicローダー移行（方針A）に伴う、旧記事URL（`/wordpress-sango-review/`等）のモノレポ内マッピング定義
 
 ## [Landed] 🚀 戦略ルート1点火セクション: 集客分母最大化 (2026-06-02 確定)
