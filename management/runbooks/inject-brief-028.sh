@@ -93,8 +93,9 @@ for ID in "${!POSTS[@]}"; do
     "cd ${WP_PATH} && wp post update ${ID} /tmp/post_body.html"
 
   # Step 5: 本番 HTML 検証 (新 CTA + 既存 body 残存両方を確認)
+  # ※ `-L` 必須: ?p=<id> は canonical slug URL へ 301 redirect されるため
   echo "  [5/5] Verify production HTML"
-  REMOTE_HTML=$(curl -s "https://moterist.com/?p=${ID}")
+  REMOTE_HTML=$(curl -sL "https://moterist.com/?p=${ID}")
   if echo "${REMOTE_HTML}" | grep -qE 'btn__link-primary'; then
     echo "  ✅ post_id=${ID}: new CTA detected"
   else

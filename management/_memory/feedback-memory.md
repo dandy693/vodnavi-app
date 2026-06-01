@@ -25,6 +25,7 @@
 - **禁忌**：本番操作を伴うシェルスクリプトで、`wp post get` / `wp post update` / `ssh` 等の **クリティカルコマンドをコメントアウトしたまま** "実行可能ランブック" として landed させない。
 - **正典アプローチ**：すべてのクリティカルコマンドは uncomment + 実引数を明示。precondition（staging HTML 存在 / 鍵存在）を head で検査し、失敗時は `exit 1`。
 - **shebang は `#!/usr/bin/env bash` または `#!/bin/bash`**。`#!/bash` は kernel が interpreter を解決できず即時 ENOENT で失敗する。
+- **本番 HTML 検証は `curl -sL` 必須**：WordPress の `?p=<id>` は canonical slug URL へ 301 redirect されるため、`-L` (follow redirect) なしでは redirect レスポンスのみ取得し、page body が読めず false negative の verify 失敗となる。2026-06-01 BRIEF_028 injection で 5/5 false negative を観測（実際は 5/5 production 成功）。
 
 ---
 
