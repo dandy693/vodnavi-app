@@ -115,3 +115,15 @@ GoogleのE-E-A-T（専門性・権威性・信頼性）を担保し、検索上�
    - **理由**：ID 変更時に全記事・全コードを横断検索して書き換えるコストを排除し、ASP 移行・サブID 変更・成果地点の付け替えに **1 箇所の環境変数更新だけで対応** できる状態を維持するため。フェーズ 2（DMM TV / U-NEXT 限定解放）への移行時にも、新 ASP の ID を環境変数に追加するだけで配線が完成する。
    - **禁則**：CCO が記事内 CTA URL に `af_id=` の値を直書きすること、CTO が `app-concierge/` 内で文字列リテラルとして ID を埋め込むこと、いずれも PR 拒否事由とする。
    - **抽象化**：CTO は `buildAffiliateURL({ asp, contentId, actressOrSku, ... })` のように **ASP 名 × 環境変数** で URL を組み立てるビルダ関数を新設し、すべてのリンク生成をここに通す。
+
+## ■ 補遺：2026-06-02 追記（案A・3-ID 並列識別仕様への適合例外規定）
+
+§5 の「ID 直書き禁止」原則に対する適用範囲を、commit `5156207` 案A 確定により次のとおり明文化する。
+
+- **集客拠点（Moterist）における移行期資産の扱い**:
+  `site-moterist/` 内の既存サルベージ Markdown（`site-moterist/03_content/*.md` の 5 ファイル、計 16 件の `af_id=moterist-001` 直書き）および `site-moterist/THE_THOR_DICTIONARY.md` 内のリテラル記述は、ドメイン識別用の **副サイトID（トラッキングID）** として例外的に生存・運用を許可する。WordPress 注入時の rendering 層で env 経由置換しないことが正規。
+- **成約拠点（app-concierge）における厳格運用の継続**:
+  `app-concierge/` 内では引き続き `process.env.NEXT_PUBLIC_FANZA_AFFILIATE_ID`（案A 既定: `moterist-004`）経由でのみ ID 注入を許可。文字列リテラル直書き、および `moterist-001` / `moterist-990` その他のサブID の混入は引き続き PR 拒否事由とする。
+- **データ取得層（FANZA API）の扱い**:
+  `DMM_AFFILIATE_ID`（サーバー専用 env）にバインドされる API マスター ID `moterist-990` は §5 原則を維持。クライアントバンドルへの漏洩を絶対禁止する点は不変。
+- **証跡**: `management/_metrics/2026-W22/id-subid-audit.md` および `management/STRATEGY_BRIEF_030_CONCIERGE_OPEN.md` §2 を参照。

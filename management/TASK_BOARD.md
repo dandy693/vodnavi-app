@@ -44,3 +44,7 @@
 
 ### CTO-Log 2026-06-02 06:55 JST
 - [x] 🟢 T-20260602-04-ENV: `app-concierge/.env.example` に `NEXT_PUBLIC_FANZA_AFFILIATE_ID="moterist-004"` を案A 3-ID 並列識別仕様のコメント付きで追記 (line 17-21、DMM section 内、idempotency 担保)。`url-builder.ts:64-75` の `resolveAffiliateId` chain (`override → NEXT_PUBLIC_FANZA_AFFILIATE_ID → DMM_AFFILIATE_ID → null`) は既存ロジックのまま、env populated 後に `moterist-004` を返す。**`npx tsc --noEmit` exit 0 (型エラー 0 件) 物理 verify 済**。**残置 (HUMAN 手動)**: (1) `.env.local` への同値 copy、(2) Vercel Production env への `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004` 反映、(3) ローカルブラウザ実機での `view-source` `af_id=moterist-004` 確認 (production deploy 後)。指示書 §2.2「URL ビルダのリファクタリング」は実態として対象なし — env 参照は元から存在 (前ターン surface 通り、指示書 mis-scope)。STRATEGY_BRIEF_003_CONTENT.md は案A と矛盾するため発行見送り (理由: 「プレースホルダー強制」が直書き許容仕様と衝突)
+
+### CSO/CTO-Log 2026-06-02 07:05 JST
+- [x] 🟢 BRAND_DESIGN_GUIDE.md §5 への補遺 append 完了 (case-A 3-ID 並列識別仕様への適合例外規定)。3 拠点 (集客/成約/データ) ごとの ID 直書き許容範囲を明文化、commit 5156207 と整合。`_gpts_knowledge/THE_THOR_DICTIONARY.md` および `_gpts_knowledge/ARTICLE_TEMPLATE.md` の同等修正は別 commit (本 commit スコープ外)
+- [Active] CCO（ChatGPT）に対するサルベージ 5 記事『ビブリア・エロティカ』トーン無人リライト指示書のパッチ発行フェーズへ移行（CSO 次手）
