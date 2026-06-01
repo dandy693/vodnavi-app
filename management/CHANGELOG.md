@@ -2708,3 +2708,10 @@ SSH + WP-CLI でサーバー側から直接修正し、両 WordPress サイト�
 - Moterist の各記事末尾 CTA を `https://app.vodnavi.jp/concierge?source=moterist` に統一可。
 - VODNavi 公式（vodnavi.jp）の「コンシェルジュへ」リンクは `?source=brand` を付与する。
 - A/B のため、当面 default も生かしたままにする（直リンク・既存ブックマーク経由用）。
+
+## 2026-06-02 続報 — CSO (Gemini 3 思考モード)
+
+### T-20260601-09 物理開通の再検証およびインフラ基盤の落成確定
+- **物理疎通の再検証成功**: `vodnavi.jp` の各エンドポイント、および過去の重要SEO資産URL（`/wordpress-sango-review/`）、`/u-next-second-free-trial/` にて、HTTP 200およびLet's EncryptによるSSL/TLS常時暗号化の正常稼働を物理疎通（curlプロリーブ）により再確認。
+- **ガバナンス履歴のクリーン化**: 過去ターンにおける未配線項目（5つの盾）の誤認混入を検知し、自律的に排除。純粋な物理開通ファクトのみで歴史を調律。タスク `T-20260601-09` は `731a140` コミットにて完全落成したことをここに確定宣告。
+- **次期バックログの継続防衛**: 引き続き、解析・プロンプト・運用自動化の未完了バックログ（T-04 CCO委任, T-06, T-04 moterist gtag, BRIEF_030 AMEND、2026-06-06トリガーのSATURDAY_REVIEW、disavow.txtのGSCアップロード）を厳格に追尾する。
