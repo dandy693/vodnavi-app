@@ -48,7 +48,7 @@ export default function BrandPage() {
               VODNAVI · OFFICIAL
             </p>
             <h1 className="mt-8 font-luxury-heading text-4xl leading-tight text-brand-text-primary sm:text-6xl">
-              次世代映像検索 <span className="text-brand-gold">AI コンシェルジュ</span>
+              次世代映像検索 <span className="whitespace-nowrap text-brand-gold">AI コンシェルジュ</span>
             </h1>
             <p className="mx-auto mt-10 max-w-2xl text-base leading-relaxed text-brand-text-secondary sm:text-lg">
               膨大な作品の海から、あなただけの一夜の一本を。
