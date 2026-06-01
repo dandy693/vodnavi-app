@@ -27,3 +27,8 @@
   - [ ] scripts/generate-work-reviews.ts 冒頭への import 'dotenv/config' 追加による --env-file フラグ不要化
   - [ ] プロンプトインジェクション対策としての system message の system option 移行
   - [ ] gpt-5.5 reasoning model における temperature 設定の削除
+
+## [Backlog] 🛡️ ガバナンス・アフィリエイトID抽象化タスク (2026-06-02 確定)
+- [ ] 🌑 T-20260602-03: アフィリエイトID抽象化 Step 1 — `site-moterist` 環境変数（.env/.env.example）への `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-001` 配線、および本番WordPress注入用 `render layer`（プレースホルダー展開スクリプト）の実装設計
+- [ ] 🌑 T-20260602-04: アフィリエイトID抽象化 Step 2 — 記事Markdown内（16箇所）の環境変数プレースホルダーへの一括置換、およびローカル環境での展開・注入テスト（Dry-run検証必須）
+- [ ] 🌑 T-20260602-05: 旧 `vodnavi.jp` のSEO外部被リンク資産（DR 73等）保護のための URL居ぬき Next.js Dynamicローダー移行（方針A）に伴う、旧記事URL（`/wordpress-sango-review/`等）のモノレポ内マッピング定義
