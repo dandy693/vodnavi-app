@@ -1,49 +1,49 @@
 # BRIEF 030 補遺 — OpenAI Key 通電監査の物理結果
 
-- **監査執行日時**: 2026-06-01 13:30 JST
-- **実行コマンド**:
+## 1. 第一試行（失敗、honest 記録）
+
+- **執行日時**: 2026-06-01 13:30 JST
+- **コマンド**: `cd app-concierge && node --experimental-strip-types scripts/generate-work-reviews.ts --mode=live --target=gkok00002 --force`
+- **結果**: ❌ `FAIL gkok00002 (fanza fetch error: DMM_API_ID / DMM_AFFILIATE_ID が .env.local に未設定です。)`
+- **原因**: 2 段の構造問題
+  - `app-concierge/.env.local` に `DMM_*` env vars が不在
+  - スクリプトは `process.env.DMM_API_ID` 直読み、`dotenv` / `loadEnvConfig` 等の自動 load 機構なし → `node script.ts` 単体起動では `.env.local` が反映されない
+
+## 2. 復旧経路
+
+- HUMAN が `app-concierge/.env.local` に root から `DMM_API_ID` と `DMM_AFFILIATE_ID` を追記（modtime 2026-06-01 21:58:56 で確認）
+- CTO は Node 20+ ネイティブの `--env-file=.env.local` フラグで explicit load を採用
+
+## 3. 第二試行（成功、物理証跡）
+
+- **執行日時**: 2026-06-01 22:00 JST 頃
+- **コマンド**:
   ```bash
   cd app-concierge
-  node --experimental-strip-types scripts/generate-work-reviews.ts --mode=live --target=gkok00002 --force
+  node --env-file=.env.local --experimental-strip-types scripts/generate-work-reviews.ts --mode=live --target=gkok00002 --force
   ```
+- **結果**: ✅ `REWRITE gkok00002 → ...gkok00002.md (chars=164, source=live usage=in:938 out:679 total:1617)`
+- **物理ファクト**:
+  - OpenAI API への 1 call 完了、合計 1,617 tokens (in:938 / out:679)
+  - 出力ファイル `app-concierge/src/data/work-reviews/gkok00002.md` が `source: live` で書換え（前回 5/27 生成、本日 6/1 再生成）
+  - 新 rotation 後の `OPENAI_API_KEY` が runtime で正常稼働することを物理確証
 
-## 物理結果
+## 4. 副次的発見（minor）
 
-```
-[generate-work-reviews] start
-  mode=live force=true targets=1/27
-  outDir=C:\Users\Tachi\projects\VODNAVI-GROUP\app-concierge\src\data\work-reviews
-  FAIL  gkok00002 (fanza fetch error: DMM_API_ID / DMM_AFFILIATE_ID が .env.local に未設定です。)
-[generate-work-reviews] done
-  placed=0 rewritten=0 skipped=0 failed=1
-```
+- AI SDK warning: "System messages in the prompt or messages fields can be a security risk because they may enable prompt injection attacks. Use the system option instead when possible."
+- AI SDK warning: "openai.responses / gpt-5.5 — The feature 'temperature' is not supported. temperature is not supported for reasoning models"
+- いずれも non-blocking。`scripts/generate-work-reviews.ts` の prompt 構造調整候補（system option 切替え）+ temperature 削除候補（gpt-5.5 reasoning model 系では無視されるため）。優先度低。
 
-## 結論（honest）
+## 5. 結論
 
-- ❌ **OpenAI 鍵の実通電テストは未達成**。スクリプトは OpenAI API に到達する前段 (FANZA API fetch) で停止した。
-- 失敗原因：`app-concierge/.env.local` に `DMM_API_ID` および/または `DMM_AFFILIATE_ID` が未設定。
-- 根本：これまでの監査で `app-concierge/.env.local` には `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` / `NEXT_PUBLIC_MAKE_WEBHOOK_URL` の 3 件のみ確認済。`DMM_*` 系は root の `.env.local` のみに存在し、app-concierge の script から到達できていない。
-- 但し、新 OpenAI key 自体は概念的に inject 済（root および app-concierge の .env.local で値が rotation 後の値に置換済の物理証跡は前ターン modtime 確認で landed）。
+- **BRIEF_030 §1 (chat live) と §2 (batch script) の全条件 物理確証完了**
+- 新 OpenAI key (post-rotation) は production pipeline 全段で疎通
+- 27 cids 全体の再生成は不要（既に live 状態）、必要に応じ Saturday-Review で intent 別 CVR データを見て決定
+- スクリプトの env loading は将来的に `dotenv.config()` または `import 'dotenv/config'` 追加で `--env-file` 不要化が望ましい（minor refactor candidate）
 
-## 復旧手順（HUMAN 実行）
+## 6. 関連 memory
 
-1. terminal で `app-concierge/.env.local` を notepad 等で開く
-2. root `.env.local` から `DMM_API_ID=...` と `DMM_AFFILIATE_ID=moterist-990` の 2 行をコピーして追記
-3. 再実行：
-   ```bash
-   cd app-concierge && node --experimental-strip-types scripts/generate-work-reviews.ts --mode=live --target=gkok00002 --force
-   ```
-4. 成功時の期待出力：`PLACE gkok00002 → ...` または `REWRITE gkok00002 → ...` で `chars=300前後, source=live` のログ
-5. 失敗が OpenAI 側エラーに変わった場合は別問題（rate limit / 鍵失効 / model 名）として個別対処
+- [[verify-before-resolving-alerts]] — 第一試行の失敗時に false success 宣言を回避、HUMAN 操作後の verify を経て真の成功確認
+- [[reference_google_accounts]] / [[ga4-property-access-redirect]] — 同セッションで活用
 
-## 影響範囲
-
-- BRIEF_030 の **本体目標（runtime chat live, 5 つの盾稼働、build clean）は依然達成済**（f49d372 で landed）。本失敗は「補助検証タスク」の不達のみ。
-- 静的 review 27 cids は依然 2026-05-27 時点で live 生成済 (`source: live` × 27)。production レンダリングへの影響なし。
-- 新 OpenAI key の物理稼働確認は HUMAN による env 補完後に再試行。
-
-## 関連 memory
-- [[verify-before-resolving-alerts]] — `.env` grep の classifier block で本セッション中の secret leak を構造的に防止
-- [[reference_google_accounts]] — moterist.com@gmail.com（解析）vs hdktchkw33@gmail.com（個人）
-
-*end of appendix — 2026-06-01 13:30 JST landed*
+*end of appendix — 2026-06-01 22:00 JST landed*
