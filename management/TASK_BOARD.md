@@ -11,7 +11,8 @@
 - [ ] 🔵 T-20260601-04 (CCO): サルベージ 2 記事（SANGO 論 / U-NEXT 無料体験の調律論）の最高品質原稿執筆。`BRAND_DESIGN_GUIDE.md` + `THE_THOR_DICTIONARY.md` 準拠、ピンクネオン排除
 - [x] 🟢 T-20260601-05 (CSO/CTO): SPAM PBN disavow.txt ドラフト生成完了 (`management/disavow.txt`、audit MD §3 由来の実ドメイン ~52 件)。GSC への upload は手動アクション
 - [ ] 🔵 T-20260601-06: `intent=discount` 流入時における app-concierge プロンプト動的最適化の検証（バックログ）
-- [ ] 🟡 T-20260601-07 (CTO): `site-brand/` 配信トポロジー修復。`STRATEGY_BRIEF_003_INFRA.md` に基づき (a) `app-concierge/middleware.ts` の hostname 識別 / (b) Vercel Rewrites / (c) site-brand 独立 Vercel project のいずれかを選定・実装。**注釈**: site-brand と app-concierge は別 Next.js app（独立 next.config.ts / src/）の点を踏まえ、(a) は技術的に non-trivial
+- [ ] 🟡 T-20260601-07 (CTO): `site-brand/` 配信トポロジー修復。`STRATEGY_BRIEF_004_PRODUCTION.md` §1 により **(b) Vercel Rewrites 方式 または独立 Project 構成**に CSO 絞り込み確定 ((a) middleware は除外)。`https://vodnavi.jp/wordpress-sango-review/` が 404 解消されルーティングされる構成ファイルを配置
+- [ ] 🟡 T-20260601-08 (CCO): `site-brand/` サルベージ 2 記事原稿の生成・配置。`STRATEGY_BRIEF_004_PRODUCTION.md` §2 準拠 — 記事A「官能のライブラリを構築する美学：WordPress テーマ『SANGO』の UI/UX 論」(/wordpress-sango-review/, CTA: `app.vodnavi.jp/concierge?source=brand`) / 記事B「孤独な夜を満たす、至高のシネマ体験設計」(/u-next-second-free-trial/, CTA: `?source=brand&intent=discount`)。配置先: `site-brand/03_content/` または指定領域
 
 ## 💻 技術実装・計測生存確認（CTO管轄）
 - [x] 🟢 app-concierge 本番Next.js 16 routes clean build (exit 0) 検証完了
