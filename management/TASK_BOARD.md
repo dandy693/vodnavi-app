@@ -41,3 +41,6 @@
 
 ### CSO-Log 2026-06-02 06:45 JST
 - [Active] T-20260602-04-ENV を正式に CTO (Claude Opus) へアサイン。指示書を `management/_tasks/T-20260602-04-ENV_INSTRUCTION.md` へ landed 完了。
+
+### CTO-Log 2026-06-02 06:55 JST
+- [x] 🟢 T-20260602-04-ENV: `app-concierge/.env.example` に `NEXT_PUBLIC_FANZA_AFFILIATE_ID="moterist-004"` を案A 3-ID 並列識別仕様のコメント付きで追記 (line 17-21、DMM section 内、idempotency 担保)。`url-builder.ts:64-75` の `resolveAffiliateId` chain (`override → NEXT_PUBLIC_FANZA_AFFILIATE_ID → DMM_AFFILIATE_ID → null`) は既存ロジックのまま、env populated 後に `moterist-004` を返す。**`npx tsc --noEmit` exit 0 (型エラー 0 件) 物理 verify 済**。**残置 (HUMAN 手動)**: (1) `.env.local` への同値 copy、(2) Vercel Production env への `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004` 反映、(3) ローカルブラウザ実機での `view-source` `af_id=moterist-004` 確認 (production deploy 後)。指示書 §2.2「URL ビルダのリファクタリング」は実態として対象なし — env 参照は元から存在 (前ターン surface 通り、指示書 mis-scope)。STRATEGY_BRIEF_003_CONTENT.md は案A と矛盾するため発行見送り (理由: 「プレースホルダー強制」が直書き許容仕様と衝突)
