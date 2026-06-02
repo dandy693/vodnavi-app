@@ -48,3 +48,9 @@
 ### CSO/CTO-Log 2026-06-02 07:05 JST
 - [x] 🟢 BRAND_DESIGN_GUIDE.md §5 への補遺 append 完了 (case-A 3-ID 並列識別仕様への適合例外規定)。3 拠点 (集客/成約/データ) ごとの ID 直書き許容範囲を明文化、commit 5156207 と整合。`_gpts_knowledge/THE_THOR_DICTIONARY.md` および `_gpts_knowledge/ARTICLE_TEMPLATE.md` の同等修正は別 commit (本 commit スコープ外)
 - [Active] CCO（ChatGPT）に対するサルベージ 5 記事『ビブリア・エロティカ』トーン無人リライト指示書のパッチ発行フェーズへ移行（CSO 次手）
+
+### CTO-Log 2026-06-02 14:35 JST (Physical audit follow-up)
+- [x] 🟢 物理監査 (`management/_metrics/2026-W22/physical_audit_raw.md`) を canonical 規約で landed (commit 無し read-only audit)。主要 finding: (a) vodnavi.jp SSR HTML に GA/GTM タグ 0 件、(b) `.env.local` の `NEXT_PUBLIC_FANZA_AFFILIATE_ID` 未設定、(c) `docker-env/postgres/init/01_schema_conversations.sql` の `asp_name` schema は STRATEGY_BRIEF_003 由来で既に shipped 済
+- [x] 🟢 [Partial] `.env.local` hotfix: `NEXT_PUBLIC_FANZA_AFFILIATE_ID="moterist-004"` を line 34 へ append 完了 (T-20260602-04-ENV §残置 (1) 解消)。**`NEXT_PUBLIC_GA_MEASUREMENT_ID` への `G-GG7JV9MJRW` 一括 set は見送り** — 理由: 既存 `NEXT_PUBLIC_GTM_ID="GTM-TKDHM348"` container 内に GA4 tag が含まれる場合に同一 pageview の double-fire risk、また `G-GG7JV9MJRW` は VODまとめ研究所 プロパティで app-concierge の attribution が `[[project_ga4_property_access_redirect]]` (p393864941 → p489519780 強制リダイレクト) と組み合わさり複雑化、HUMAN による GTM container audit (GTM-TKDHM348 内 GA4 tag 有無) 後に判断
+- [ ] 🚨 **T-20260602-08-MEASUREMENT** (CTO): vodnavi.jp (`site-brand/`) の Vercel deploy における GA/GTM SSR HTML inject 完全不在 finding。`site-brand/src/app/layout.tsx` (または equivalent) の measurement tag 配線、および canonical な property (G-GG7JV9MJRW vs G-5HYV772ER9 vs new dedicated) の policy 確認後に実装
+- [ ] 🟡 **T-20260602-05-REWRITE** (CCO) **[Hold]**: サルベージ 5 記事 (`site-moterist/03_content/*.md`) の『ビブリア・エロティカ』トーン無人リライトループは、T-20260602-08-MEASUREMENT (vodnavi.jp 計測沈黙) 解消まで一時凍結 (リライト後の効果計測が不能なため)。**注**: 既存 T-20260602-05 (URL居ぬき Next.js Dynamic ローダー移行) とは別 task、番号衝突回避のため `-REWRITE` suffix を付与
