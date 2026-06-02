@@ -158,7 +158,8 @@
 ### CTO-Content-Log 2026-06-03 06:30 JST (994 article + BRIEF_005 改訂版 landed)
 - [x] 🟢 **T-20260602-05-REWRITE-994 Done**: `site-moterist/03_content/fanza_otoku250114/article.md` 新規 landed (commit `dfbe1bf`、+63 行)。frontmatter は cf8c8b0 (1095) / 12b405a (1106) と同 pattern: `slug: fanza_otoku250114` / `post_id: 994` / `status: publish` / `future_page_type: Safety / Anxiety Resolution` / `pillar: wisdom-lens` / `publish_status: draft`。本文は biblia-pr-shield + biblia-cta-box (intent=discount) + biblia-final-cta (intent=discount) + §3「案内人の推薦状」 FANZA `af_id=moterist-001` 配置で BRIEF_003 §2 dark+gold + §3 Option-A 完全準拠。
 - [x] 🟢 **STRATEGY_BRIEF_005.md (改訂版) Accepted**: 前ターン拒否した版の §3 が CSO 側で Option-A 整合に修正済を verify。新 §3「集客サイト副サイトID (moterist-001) はリテラル直書き配置 (Option-A) を正典として永久に維持」「`buildAffiliateURL` は T-20260602-04-ENV でデプロイ済」と既存実装を正しく認識。commit `dfbe1bf` で +16 行 landed。
-- [Note] JS script 内の TASK_BOARD `string replace` 3 件 (`│` 区切り table 形式 / `## [Done]` heading 検索) は現 board と書式不一致で silent no-op、本 entry は CTO surgical Edit 経由で補完。
+- [Note] JS script 内の TASK_BOARD `string replace` 3 件 (`│` 区切り table 形式 / `## [Done]
+- [x] [Done] 1018記事の作成 (landed: saika-kawakita-6 最終資産落成)` heading 検索) は現 board と書式不一致で silent no-op、本 entry は CTO surgical Edit 経由で補完。
 - [Status] 残置リライト: **954, 1018 の 2 記事**、CCO 次ターン待機。BRIEF_005 §4 通り 954 (Evergreen Sale Hub) が次の優先順位。
 
 ### CTO-Content-Log 2026-06-03 06:40 JST (954 article landed)
