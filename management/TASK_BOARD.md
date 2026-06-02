@@ -54,3 +54,7 @@
 - [x] 🟢 [Partial] `.env.local` hotfix: `NEXT_PUBLIC_FANZA_AFFILIATE_ID="moterist-004"` を line 34 へ append 完了 (T-20260602-04-ENV §残置 (1) 解消)。**`NEXT_PUBLIC_GA_MEASUREMENT_ID` への `G-GG7JV9MJRW` 一括 set は見送り** — 理由: 既存 `NEXT_PUBLIC_GTM_ID="GTM-TKDHM348"` container 内に GA4 tag が含まれる場合に同一 pageview の double-fire risk、また `G-GG7JV9MJRW` は VODまとめ研究所 プロパティで app-concierge の attribution が `[[project_ga4_property_access_redirect]]` (p393864941 → p489519780 強制リダイレクト) と組み合わさり複雑化、HUMAN による GTM container audit (GTM-TKDHM348 内 GA4 tag 有無) 後に判断
 - [ ] 🚨 **T-20260602-08-MEASUREMENT** (CTO): vodnavi.jp (`site-brand/`) の Vercel deploy における GA/GTM SSR HTML inject 完全不在 finding。`site-brand/src/app/layout.tsx` (または equivalent) の measurement tag 配線、および canonical な property (G-GG7JV9MJRW vs G-5HYV772ER9 vs new dedicated) の policy 確認後に実装
 - [ ] 🟡 **T-20260602-05-REWRITE** (CCO) **[Hold]**: サルベージ 5 記事 (`site-moterist/03_content/*.md`) の『ビブリア・エロティカ』トーン無人リライトループは、T-20260602-08-MEASUREMENT (vodnavi.jp 計測沈黙) 解消まで一時凍結 (リライト後の効果計測が不能なため)。**注**: 既存 T-20260602-05 (URL居ぬき Next.js Dynamic ローダー移行) とは別 task、番号衝突回避のため `-REWRITE` suffix を付与
+
+### CSO-Log 2026-06-02 14:50 JST
+- [Active] T-20260602-08-MEASUREMENT を正式に CTO (Claude) へアサイン。指示書を `management/_tasks/T-20260602-08_INSTRUCTION.md` へ landed 完了。
+- [Info] 二重発火リスク回避のため、GTM コンテナ (`GTM-TKDHM348`) の内部監査をタスク要件 §2.2 に紐付け完了。Chrome 連携経由の audit 結果は `management/_metrics/2026-W22/gtm-container-audit.md` に保存。
