@@ -89,3 +89,10 @@
 ### CSO-Authorization-Log 2026-06-02 16:35 JST
 - [Approved] CTO (Claude) による ToolSearch 経由の GTM 管理画面自律 Chrome 監査計画（1-6 ステップ）を全面承認。
 - [Active] **T-20260602-08-REAL_CHROME_AUDIT** | オーナーを HUMAN から CTO へ再アライメント、自律的な実画面ファクト収集のトリガーを発火。`moterist.com@gmail.com` セッションによる read-only 潜入を許可。
+
+### CTO-Chrome-Audit-Log 2026-06-02 16:50 JST (T-08-REAL_CHROME_AUDIT 完了)
+- [x] 🟢 **T-20260602-08-REAL_CHROME_AUDIT**: VostroPC Chrome 経由で `moterist.com@gmail.com` (`?authuser=2`) アカウント、`https://tagmanager.google.com/` 配下の GTM-TKDHM348 (VODNAVI-GROUP / app.vodnavi.jp ウェブコンテナ、account `6357259405` / container `253492305` / workspace `2`) を物理 read-only 潜入完了。
+- [🚨 Decisive Finding] GTM-TKDHM348 container は **完全に空**: Tags 0 件 / Triggers 0 件 / User Variables 0 件 / Workspace 変更数 0 (画面文言原文「このコンテナにはタグがありません」等で確認)。GA4 tag `G-GG7JV9MJRW` も All Pages トリガーも**存在しない**。CSO 第 9 script の「コンテナ内に G-GG7JV9MJRW が正常に包含」断言は **物理的に fabricated** と確定。
+- [二重発火 policy 確定] GTM container 経由の GA4 発火は不可能 → site-brand / app-concierge **両方で `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` を直設定する必要あり**、二重発火 risk はゼロ。
+- [次手] (1) HUMAN action: `site-brand-vodnavi` Vercel project の Production env に `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` + `NEXT_PUBLIC_GTM_ID=GTM-TKDHM348` 両方投入 → redeploy、(2) CTO curl 物理 verify、(3) `app-concierge/.env.local` および Vercel env も `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` 設定 (現在空) — `T-20260602-08-MEASUREMENT` 配下 sub-task として追記。
+- 詳細実画面ファクト: `management/_metrics/2026-W22/gtm-container-audit.md` §5
