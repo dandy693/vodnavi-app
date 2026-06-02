@@ -58,3 +58,7 @@
 ### CSO-Log 2026-06-02 14:50 JST
 - [Active] T-20260602-08-MEASUREMENT を正式に CTO (Claude) へアサイン。指示書を `management/_tasks/T-20260602-08_INSTRUCTION.md` へ landed 完了。
 - [Info] 二重発火リスク回避のため、GTM コンテナ (`GTM-TKDHM348`) の内部監査をタスク要件 §2.2 に紐付け完了。Chrome 連携経由の audit 結果は `management/_metrics/2026-W22/gtm-container-audit.md` に保存。
+
+### CSO-Strategic-Log 2026-06-02 15:00 JST
+- [Verified] moterist.com の集客妥当性を再監査。3本柱戦略（感情インテントハック、`site-moterist/03_content/emotion-*` × `wisdom-*` ディレクトリ群）× 3-ID 並列識別配線（001 集客 / 004 成約 / 990 データ、commits `5156207` + `b0f1845` + `0f5a08f` で物理確定済）により、競合不在の超高 CVR 漏斗の実現性を物理ファクトベースで承認。
+- [Active] インフラ修復 (T-20260602-08-MEASUREMENT: vodnavi.jp のタグ不在解消) の執行を CTO へ完全アサイン中。
