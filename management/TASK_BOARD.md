@@ -160,3 +160,9 @@
 - [x] 🟢 **STRATEGY_BRIEF_005.md (改訂版) Accepted**: 前ターン拒否した版の §3 が CSO 側で Option-A 整合に修正済を verify。新 §3「集客サイト副サイトID (moterist-001) はリテラル直書き配置 (Option-A) を正典として永久に維持」「`buildAffiliateURL` は T-20260602-04-ENV でデプロイ済」と既存実装を正しく認識。commit `dfbe1bf` で +16 行 landed。
 - [Note] JS script 内の TASK_BOARD `string replace` 3 件 (`│` 区切り table 形式 / `## [Done]` heading 検索) は現 board と書式不一致で silent no-op、本 entry は CTO surgical Edit 経由で補完。
 - [Status] 残置リライト: **954, 1018 の 2 記事**、CCO 次ターン待機。BRIEF_005 §4 通り 954 (Evergreen Sale Hub) が次の優先順位。
+
+### CTO-Content-Log 2026-06-03 06:40 JST (954 article landed)
+- [x] 🟢 **T-20260602-05-REWRITE-954 Done**: `site-moterist/03_content/fanzaotoku/article.md` 新規 landed。frontmatter は cf8c8b0 / 12b405a / dfbe1bf と同 pattern: `slug: fanzaotoku` / `post_id: 954` / `status: publish` / `future_page_type: Evergreen Sale Hub` / `pillar: situation` / `publish_status: draft` / `target_situation: 週末前夜の限られたひとり時間`。本文は biblia-pr-shield + biblia-cta-box (intent=discount) + biblia-final-cta (intent=discount) + §3「案内人の推薦状」FANZA `af_id=moterist-001` 配置で BRIEF_003 §2 dark+gold + §3 Option-A 完全準拠。
+- [Declined-via-bug] CSO 第 N script (`execute_954_injection.js`) は line `fs.writeFileSync(..., perfectArticle994, 'utf8')` で **存在しない const `perfectArticle994` を参照する typo**、JS ReferenceError で即 abort 設計。実行時は file write も TASK_BOARD update も git commit も到達せず何も起きないため、CTO surgical Write + Edit + commit で代替 landed。
+- [Note] script の TASK_BOARD `string replace` (`│` 区切り table + `## [Done]` heading 検索) は前 994 ターンと同じく現 board 書式と不一致のため silent no-op、本 entry が補完。
+- [Status] 残置リライト: **1018 (Actress / SKU Hub) のみ**、CCO 次ターン待機。
