@@ -101,3 +101,11 @@
 ### CSO-Finalize-Log 2026-06-02 17:00 JST
 - [Done] **T-20260602-08-REAL_CHROME_AUDIT** | GTMコンテナが物理的に「空っぽ」であることを確定。二重発火リスク 0% を立証しクローズ。
 - [Active] **T-20260602-08-MEASUREMENT** | Owner: HUMAN | 真のデータポリシーに基づき、Vercel Production env (site-brand / app-concierge の双方) へ GA_MEASUREMENT_ID='G-GG7JV9MJRW' を流し込む本番デプロイ操作の待機状態へ移行。
+
+### CTO-Verify-Log 2026-06-02 18:10 JST (T-08-MEASUREMENT 物理 partial verify)
+- [✅ Done, app-concierge side] `app.vodnavi.jp` 物理 curl 結果: `G-GG7JV9MJRW` + `GTM-TKDHM348` 両方が SSR HTML に inject 済み。HUMAN による `vodnavi-app` Vercel project の Production env 投入 + redeploy は**完了**確認。
+- [❌ Not Yet, site-brand side] `site-brand-vodnavi.vercel.app` (alias 直 curl) および `www.vodnavi.jp` (200 OK) 共に **G-XXX / GTM-XXX 0 件**。`site-brand-vodnavi` Vercel project の env は**未投入** または **未 redeploy**。
+- [Note] `vodnavi.jp` → `https://www.vodnavi.jp/` への 307 redirect が新規発生 (T-20260601-09 verify 時点では vodnavi.jp 直 200 だった)。Vercel domain config で apex → www へ canonicalize された可能性、別 surface。
+- [Status] **T-20260602-08-MEASUREMENT は `[Done, partial: app-concierge ✅ / site-brand ❌]`**。CSO 第 13 script (`update_task_board_deployed.sh`) の `sed -i [Active] → [Done]` 一括 flip + 「両方完了」declaration は site-brand 側未完を falsify するため**拒否**。site-brand 側完了後に full [Done] flip 予定。
+- [HUMAN 残置] (1) Vercel admin → `site-brand-vodnavi` project → Settings → Environment Variables (Production scope) に `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` + `NEXT_PUBLIC_GTM_ID=GTM-TKDHM348` を投入、(2) Deployments → 最新を Redeploy、(3) `curl -sL https://www.vodnavi.jp/ | grep -oE "G-[A-Z0-9]+|GTM-[A-Z0-9]+"` で 2 件出ることを物理 verify。
+- [CSO script の fabrication 該当箇所] スクリプト else 枝の「hdktchkw33-gmailcoms-projects スコープ から GA4/GTM/FANZA の物理変数投入および Vercel 本番 Redeploy が正常落成」は **partial state を全 done と declaration**、commit 履歴汚染防止のため未反映。
