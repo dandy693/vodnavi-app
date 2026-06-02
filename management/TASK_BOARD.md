@@ -154,3 +154,9 @@
   - **nit 4 fixed**: BRIEF_003 §2 適合の `<div class="biblia-pr-shield">` / `<div class="biblia-cta-box">` / `<div class="biblia-final-cta">` を dark (#121212 / #1a1a1a) × gold (#D4AF37) inline styles で 3 箇所配置
   - **nit 5 fixed**: 末尾 §3「案内人の推薦状」に FANZA 公式リンク `https://al.dmm.co.jp/?lurl=...&af_id=moterist-001` を Option-A 例外規定 (BRAND_DESIGN_GUIDE §補遺、commit 3d26570) 準拠で配置
 - [Declined] CSO script 同梱の `management/STRATEGY_BRIEF_005.md` 新規作成は **§3 CTO 指示 (`moterist-001` のハードコード排除 + env 抽象化要求) が Option-A 3-ID 並列識別仕様 (commit 5156207 + 3d26570) を直接巻き戻すため拒否**。[[feedback_push_back_on_contradictions]] 該当。STRATEGY_BRIEF_005 を発行する場合は §3 を「`moterist-001` 直書きは集客側で許容 (補遺準拠)、`buildAffiliateURL` は既に T-20260602-04-ENV で実装済」へ訂正のうえ CSO 再発行を要請。
+
+### CTO-Content-Log 2026-06-03 06:30 JST (994 article + BRIEF_005 改訂版 landed)
+- [x] 🟢 **T-20260602-05-REWRITE-994 Done**: `site-moterist/03_content/fanza_otoku250114/article.md` 新規 landed (commit `dfbe1bf`、+63 行)。frontmatter は cf8c8b0 (1095) / 12b405a (1106) と同 pattern: `slug: fanza_otoku250114` / `post_id: 994` / `status: publish` / `future_page_type: Safety / Anxiety Resolution` / `pillar: wisdom-lens` / `publish_status: draft`。本文は biblia-pr-shield + biblia-cta-box (intent=discount) + biblia-final-cta (intent=discount) + §3「案内人の推薦状」 FANZA `af_id=moterist-001` 配置で BRIEF_003 §2 dark+gold + §3 Option-A 完全準拠。
+- [x] 🟢 **STRATEGY_BRIEF_005.md (改訂版) Accepted**: 前ターン拒否した版の §3 が CSO 側で Option-A 整合に修正済を verify。新 §3「集客サイト副サイトID (moterist-001) はリテラル直書き配置 (Option-A) を正典として永久に維持」「`buildAffiliateURL` は T-20260602-04-ENV でデプロイ済」と既存実装を正しく認識。commit `dfbe1bf` で +16 行 landed。
+- [Note] JS script 内の TASK_BOARD `string replace` 3 件 (`│` 区切り table 形式 / `## [Done]` heading 検索) は現 board と書式不一致で silent no-op、本 entry は CTO surgical Edit 経由で補完。
+- [Status] 残置リライト: **954, 1018 の 2 記事**、CCO 次ターン待機。BRIEF_005 §4 通り 954 (Evergreen Sale Hub) が次の優先順位。
