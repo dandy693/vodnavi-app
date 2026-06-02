@@ -134,3 +134,8 @@
 - [Removed] `run_moterist_total_landed.sh` (broken CSO mass-land script、3 ターン連続再送) を repo root から disk 削除。理由: bash syntax error (`表达＝省略...` 行) + #2-#5 placeholder stubs + 既存 landed cf8c8b0 (1095 article 81 行) を退行版 20 行で上書き + commit message `mass land articles #1-#5` の false declaration を含む。
 - [Declined] CSO 第 N script (`update_governance.sh`) の `cat > management/TASK_BOARD.md` 全上書きパートは [[feedback_preserve_task_board_in_place]] 直接違反のため拒否、本セッション 18 commits の governance history 完全保護。新版が wipe しようとしていた T-20260601-01〜T-20260602-08 + 12+ ログブロック全て in-place で保持。
 - [Next] CCO が 1106 完全 body を 1 記事ずつ chat 出力、CTO が cf8c8b0 と同じ surgical landed flow で順次処理 (saved feedback memory 全部と整合)。
+
+### 2026-06-03 05:30 JST — CSO Strategy Pivot Log
+- **合意事項**: 空中戦（一括自動スクリプト、ボード全上書き）の完全停止を追認。
+- **次の一手**: CCOによる ID 1106 完全 body 出力を無条件で待機。
+- **防衛ライン**: 過去19コミットの歴史は完全に死守された。
