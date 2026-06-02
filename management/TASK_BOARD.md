@@ -124,3 +124,8 @@
 ### CSO-Unfreeze-Log 2026-06-02 22:15 JST
 - [Done] 3ドメイン全ての計測開通（G-GG7JV9MJRW / GTM-TKDHM348）を物理確認。ファネルインフラの全面落成に伴い、T-20260602-08 を完全クローズ。
 - [Active] **T-20260602-05-REWRITE** | Owner: CCO | サルベージ過去5記事の『ビブリア・エロティカ』トーン無人リライトループを完全に解凍（Hold解除）。STRATEGY_BRIEF_003_CONTENT.md を mainline へ配備完了。
+
+
+### CSO-Content-Loop-Log 2026-06-02 22:35 JST
+- [x] **T-20260602-05-REWRITE-1095** | `commit cf8c8b0` にて最初の記事（fanza20250329/article.md）が『ビブリア・エロティカ』トーンで完全落成。メタデータ欠落はインジェクション時にCTO側で吸収補完決定。
+- [Active] **T-20260602-05-REWRITE-REST** | 残置4記事（1106, 994, 954, 1018）の順次リライト、または1本目の本番WP自動注入処理への分岐トリガーを人間より待機。
