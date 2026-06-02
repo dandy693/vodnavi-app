@@ -158,8 +158,7 @@
 ### CTO-Content-Log 2026-06-03 06:30 JST (994 article + BRIEF_005 改訂版 landed)
 - [x] 🟢 **T-20260602-05-REWRITE-994 Done**: `site-moterist/03_content/fanza_otoku250114/article.md` 新規 landed (commit `dfbe1bf`、+63 行)。frontmatter は cf8c8b0 (1095) / 12b405a (1106) と同 pattern: `slug: fanza_otoku250114` / `post_id: 994` / `status: publish` / `future_page_type: Safety / Anxiety Resolution` / `pillar: wisdom-lens` / `publish_status: draft`。本文は biblia-pr-shield + biblia-cta-box (intent=discount) + biblia-final-cta (intent=discount) + §3「案内人の推薦状」 FANZA `af_id=moterist-001` 配置で BRIEF_003 §2 dark+gold + §3 Option-A 完全準拠。
 - [x] 🟢 **STRATEGY_BRIEF_005.md (改訂版) Accepted**: 前ターン拒否した版の §3 が CSO 側で Option-A 整合に修正済を verify。新 §3「集客サイト副サイトID (moterist-001) はリテラル直書き配置 (Option-A) を正典として永久に維持」「`buildAffiliateURL` は T-20260602-04-ENV でデプロイ済」と既存実装を正しく認識。commit `dfbe1bf` で +16 行 landed。
-- [Note] JS script 内の TASK_BOARD `string replace` 3 件 (`│` 区切り table 形式 / `## [Done]
-- [x] [Done] 1018記事の作成 (landed: saika-kawakita-6 最終資産落成)` heading 検索) は現 board と書式不一致で silent no-op、本 entry は CTO surgical Edit 経由で補完。
+- [Note] JS script 内の TASK_BOARD `string replace` 3 件 (`│` 区切り table 形式 / heading 検索) は現 board と書式不一致で silent no-op、本 entry は CTO surgical Edit 経由で補完。
 - [Status] 残置リライト: **954, 1018 の 2 記事**、CCO 次ターン待機。BRIEF_005 §4 通り 954 (Evergreen Sale Hub) が次の優先順位。
 
 ### CTO-Content-Log 2026-06-03 06:40 JST (954 article landed)
@@ -167,3 +166,9 @@
 - [Declined-via-bug] CSO 第 N script (`execute_954_injection.js`) は line `fs.writeFileSync(..., perfectArticle994, 'utf8')` で **存在しない const `perfectArticle994` を参照する typo**、JS ReferenceError で即 abort 設計。実行時は file write も TASK_BOARD update も git commit も到達せず何も起きないため、CTO surgical Write + Edit + commit で代替 landed。
 - [Note] script の TASK_BOARD `string replace` (`│` 区切り table + `## [Done]` heading 検索) は前 994 ターンと同じく現 board 書式と不一致のため silent no-op、本 entry が補完。
 - [Status] 残置リライト: **1018 (Actress / SKU Hub) のみ**、CCO 次ターン待機。
+
+### CTO-Content-Log 2026-06-03 06:45 JST (1018 article landed + 2 post-commit issues)
+- [x] 🟢 **T-20260602-05-REWRITE-1018 Done**: `site-moterist/03_content/saika-kawakita-6/article.md` を commit `6d28425` で landed (CSO JS script `execute_1018_final_landing.js` 経由)。frontmatter は cf8c8b0 (1095) / 12b405a (1106) / dfbe1bf (994) / 74865c3 (954) と同 pattern: `slug: saika-kawakita-6` / `post_id: 1018` / `status: publish` / `future_page_type: Actress / SKU Hub` / `pillar: wisdom-lens` / `publish_status: draft`。本文は biblia-pr-shield + biblia-cta-box (intent=actress) + biblia-final-cta (intent=actress) + §3「案内人の推薦状」FANZA `af_id=moterist-001` 配置で BRIEF_003 §2 dark+gold + §3 Option-A 完全準拠 (5/5 articles compliance 達成)。**1018 const typo bug は CSO 側で根絶済**。
+- [🚨 Regression flagged] 既存 `site-moterist/03_content/saika-kawakita-6/article.md` は git history 上 `ccd53b2` (Restore、179 行) + `93e133d` (Fix actress CTA href + luxury mid CTA + serif normalization、180 行) の経歴を持ち、本 commit で **180 → 63 行 (-117 行) の overwrite**。BRIEF_003 §2/§3 準拠 trim 版で landed したが、prior 180 行版の独自ディテール (luxury mid CTA / serif normalization) は消失。HUMAN 判断要: (a) 退行受容 (新版で OK)、(b) revert + merge (180 行版に biblia-* 追加で両立)、(c) 93e133d 由来差分のみ cherry-pick。
+- [🛠 Fixed] JS script の `board.replace('## [Done]', ...)` は前 994-Log [Note] 行内の literal substring `` `## [Done]` `` (バッククォート内メタ言及) と match → markdown 破損 (1 bullet が 2 行分割 + orphan text) → 本 entry の Edit で literal `` `## [Done]` `` を削除して整形修復。
+- [Note] 残置 0 件、5/5 articles BRIEF_003 §2/§3 + Option-A 完全準拠で landed 完了。次の SATURDAY_REVIEW (2026-06-06) でデータ駆動 PDCA のループ起動条件が揃った。
