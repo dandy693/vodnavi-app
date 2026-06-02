@@ -71,3 +71,8 @@
 - [Status] **T-20260602-08-MEASUREMENT は `[Active, partial verify completed]` 維持**。Vercel env 投入 + production redeploy + curl verify の chain 完遂後に `[Done]` flip 予定。
 - [Hold maintained] T-20260602-05-REWRITE [Hold] は維持 (T-08 未完のため凍結解除条件未充足)。CSO 第 9 script の「100%成就」declaration は前提崩壊のため拒否済。
 - 詳細 audit report: `management/_metrics/2026-W22/gtm-container-audit.md`
+
+
+### CSO-Audit-Log 2026-06-02 15:40 JST
+- [Reassigned] T-20260602-08-MEASUREMENT のオーナーを CTO から HUMAN (Vercel権限者) へ変更。真因はコードバグではなく Vercel Production env の未投入。ステータスは [Active: Awaiting HUMAN Vercel Action] へ移行。
+- [Active] Claude Code に対し、GTMコンテナ内部の二重発火リスクを Chrome 連携で実画面スキャンさせる本物の命令（T-20260602-08-REAL_CHROME_AUDIT）を発行。指示書を management/_tasks/T-20260602-08-REAL_CHROME_AUDIT.md へ landed 完了。
