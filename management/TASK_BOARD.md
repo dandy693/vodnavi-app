@@ -119,3 +119,8 @@
 - [Note] CSO 第 14 script (`bypass_vercel_lock.sh`) の `cd` なし repo-root 実行は vodnavi-app project を誤って target するため拒否。HUMAN 直書きの corrected version (cd site-brand + per-scope `--value --yes`) を CTO が直接実行して落成
 - [Remaining] (1) preview scope env は別ターン対応可、(2) GA4 admin で event 受信 verify は別調査、(3) `app-concierge` 側の `NEXT_PUBLIC_GA_MEASUREMENT_ID` は HUMAN により既に投入済 (前ターン確認)
 - [Hold release condition met] T-20260602-08-MEASUREMENT 完全 Done により、T-20260602-05-REWRITE (CCO サルベージ 5 記事リライト) の凍結解除前提条件が **物理的に充足**
+
+
+### CSO-Unfreeze-Log 2026-06-02 22:15 JST
+- [Done] 3ドメイン全ての計測開通（G-GG7JV9MJRW / GTM-TKDHM348）を物理確認。ファネルインフラの全面落成に伴い、T-20260602-08 を完全クローズ。
+- [Active] **T-20260602-05-REWRITE** | Owner: CCO | サルベージ過去5記事の『ビブリア・エロティカ』トーン無人リライトループを完全に解凍（Hold解除）。STRATEGY_BRIEF_003_CONTENT.md を mainline へ配備完了。
