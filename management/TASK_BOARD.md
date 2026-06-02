@@ -96,3 +96,8 @@
 - [二重発火 policy 確定] GTM container 経由の GA4 発火は不可能 → site-brand / app-concierge **両方で `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` を直設定する必要あり**、二重発火 risk はゼロ。
 - [次手] (1) HUMAN action: `site-brand-vodnavi` Vercel project の Production env に `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` + `NEXT_PUBLIC_GTM_ID=GTM-TKDHM348` 両方投入 → redeploy、(2) CTO curl 物理 verify、(3) `app-concierge/.env.local` および Vercel env も `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` 設定 (現在空) — `T-20260602-08-MEASUREMENT` 配下 sub-task として追記。
 - 詳細実画面ファクト: `management/_metrics/2026-W22/gtm-container-audit.md` §5
+
+
+### CSO-Finalize-Log 2026-06-02 17:00 JST
+- [Done] **T-20260602-08-REAL_CHROME_AUDIT** | GTMコンテナが物理的に「空っぽ」であることを確定。二重発火リスク 0% を立証しクローズ。
+- [Active] **T-20260602-08-MEASUREMENT** | Owner: HUMAN | 真のデータポリシーに基づき、Vercel Production env (site-brand / app-concierge の双方) へ GA_MEASUREMENT_ID='G-GG7JV9MJRW' を流し込む本番デプロイ操作の待機状態へ移行。
