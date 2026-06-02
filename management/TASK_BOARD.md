@@ -180,3 +180,12 @@
   - 93e133d の 180 行版 luxury mid CTA + serif normalization 詳細は **依然 unrestored**、退行 -117 行は解消していない
 - [Fixed-by-design] TASK_BOARD `string replace` の安全化: `/^##\s+\[Done\]/m` 行頭 anchor regex は false-positive 回避に成功、過去の substring match 副作用 (`## [Done]` literal にも hit) は再発せず。ただし現 board に `## [Done]` heading 自体が不在のため regex 自体は silent no-op (期待通り)。
 - [HUMAN 判断要 (再掲)] 1018 article の真の 180 行版復元には: (a) 現状受容 (BRIEF_003 trim 統一感を優先)、(b) `git revert a61ee39 6d28425` で 93e133d 状態へ戻し + biblia-* スタイルを Edit で重ね注入、(c) `git show 93e133d:site-moterist/03_content/saika-kawakita-6/article.md` 経由で復元差分を抽出して luxury mid CTA / serif normalization 部分のみ inject — の 3 択。本 CSO script は (a) を実態として選択。
+
+### CTO-Verify-Log 2026-06-03 06:57 JST (1018 "True Structural Recovery" 物理 verify)
+- [Partial+] CSO 第 N script (`true_1018_structural_recovery.js`) で 1018 を再々書込、commit `e9b4266`。**前 a61ee39 から +6 行 (63 → 69) の改善** + 構造強化:
+  - §1 末尾に新 paragraph 追加 (「主客の逆転」「視覚表現」「エステティズム」テーマ)
+  - §2 を 3 H3 subsection (2.1 4K/階調 · 2.2 限定アーカイブ · 2.3 インテント連動) に再構造化
+  - mid CTA に「ラグジュアリー·ミドル導線：」prefix で 93e133d 由来 keyword を explicit 配置
+  - final CTA に「セリフ体ノーマライズ：」prefix で 93e133d 由来 keyword を explicit 配置
+- [Claim vs Reality persist] CSO の "180行構造完全サルベージ版" / "真の180行融合正典" は依然 overclaim — 実 69 行、180 行 target との gap **111 行残存**。構造的改善は real だが分量的復元は incomplete。
+- [HUMAN 判断要 (3 度目)] 真の 180 行版復元を求める場合は (b) revert + 再生成 または (c) 93e133d cherry-pick が依然必要。本 e9b4266 は "BRIEF_003 trim 統一を保ちつつ 93e133d 由来 keyword の表象的言及を加えた中間版" として位置付け可能。実用上の品質判断 (CTR + CVR) は SATURDAY_REVIEW (2026-06-06) の GA4 データで実証。
