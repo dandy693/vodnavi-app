@@ -33,6 +33,8 @@
 - [x] 🟢 T-20260602-04: **[Superseded by Option-A, 2026-06-02]** — 記事 Markdown 内 16 箇所の env プレースホルダー一括置換は不要化（副サイトID 仕様により直書き許容）
 - [ ] ⚙️ T-20260602-04-ENV (CTO): `app-concierge/.env` および `.env.example` に `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004` を定義し、`src/lib/concierge/url-builder.ts:68` の env 解決経路が確実に `moterist-004` を返すことを `tsc --noEmit` + ローカルブラウザ実機で物理確認。Vercel 本番 env への反映は HUMAN 手動アクション
 - [ ] 🌑 T-20260602-05: 旧 `vodnavi.jp` のSEO外部被リンク資産（DR 73等）保護のための URL居ぬき Next.js Dynamicローダー移行（方針A）に伴う、旧記事URL（`/wordpress-sango-review/`等）のモノレポ内マッピング定義
+- [ ] ⚙️ T-20260603-01 (CTO, BRIEF_008 §2 由来): moterist.com 側クリックハンドラ条件緩和 — **注: BRIEF_008 §2 は 1106 を mention するが T-20260602-06 通り 1106/994/954/1018 のハンドラ緩和は 2026-05-20 (Day 10) に既完了**。**真の残課題は 1095** (entry CTA 構造が異なるため別ハンドラ据置中)。1095 entry CTA の `closest('.content')` + `closest('li')` + al.dmm URL マッチ pattern への統合方針が要 design (要 WordPress THE THOR functions.php への 1095 専用ハンドラ追加 or 既存統合ハンドラへの 1095 構造対応 patch)
+- [ ] 📅 T-20260603-02 (HUMAN/CTO): SATURDAY_REVIEW 2026-06-06 10:00 JST トリガー準備、BRIEF_007 §3 + BRIEF_008 §3 の自動データ抽出 chain (GA4 G-GG7JV9MJRW + GSC + ホスト名 dimension 経由 ai_session_start/product_click/ai_affiliate_click) の最終動作テスト
 
 ## [Landed] 🚀 戦略ルート1点火セクション: 集客分母最大化 (2026-06-02 確定)
 - [x] 🟢 T-20260602-06: GA4 クリックハンドラ条件 (`outline_1__9`) 緩和 — **物理 verify: 既に 2026-05-20 (Day 10) に解消済**。実コードは Next.js ではなく **WordPress THE THOR child theme の `functions.php`**。994/954/1018/1106 を post_id ベース config に統合、`closest('.content')` && `closest('li')` && al.dmm affiliate URL 形のみで発火に緩和、`outline_1__9` 位置関係 + 厳密 text 一致は廃止。backup: `functions.php.bak_day10_20260520_221713`。証跡: `packages/seo-motelab/analytics-issues-3sites.md:43-47`。1095 は entry CTA 構造が異なるため別ハンドラ据置中。**本タスクの「Next.js コード層改修設計」は前提誤認、新規改修不要**
@@ -213,3 +215,9 @@
 - [⚠️ Pre-execution caveat] BRIEF_007 §1 mandate「SSH + WP-CLI 経由生 HTML 注入」は [[reference_mixhost_ssh_classifier_block]] 通り auto-mode classifier で block 範囲、実行には HUMAN 事前認可が必要 (docs として landed しただけで auto 実行はされない)。
 - [Note] CSO 第 N script (`execute_governance_landed_brief007.js`) の TASK_BOARD `^##\s+\[Done\]/m` regex は現 board に `## [Done]` heading 不在のため silent no-op (前 5 試行と同じ)、commit message の `finalize 1018 ... in task board` 部分は実態上 overclaim。本 entry が CTO surgical Edit で補完。
 - [5 articles 最終状態 (post-035c32f)] 全 5 articles BRIEF_003 §2/§3 + Option-A 準拠で landed: 1095 (cf8c8b0) / 1106 (12b405a) / 994 (dfbe1bf) / 954 (74865c3) / **1018 (034c32f、河北彩伽 specific subject 復元済)**。次は SATURDAY_REVIEW トリガー or BRIEF_007 §1 SSH 注入 (HUMAN 認可後)。
+
+### CSO/CTO-Log 2026-06-03 08:00 JST (STRATEGY_BRIEF_008 landed + 2 issue 補正)
+- [x] 🟢 **STRATEGY_BRIEF_008 landed**: 「データ駆動型ファネル追尾、および集客フロント解析インフラの完全クリーンアップ」確定。fanza_cta_click トラッキング精度 100% 化 + F-06 クリーンアップ + SATURDAY_REVIEW 前提条件文書化。
+- [⚠️ §2 mis-scope flag] BRIEF_008 §2 は「1106 クリックハンドラ条件緩和」を要求するが、TASK_BOARD T-20260602-06 通り **1106/994/954/1018 のハンドラ緩和は 2026-05-20 (Day 10) に既完了**。実際の残課題は **1095** (entry CTA 構造が異なるため別ハンドラ据置中)。本セッションでは T-20260603-01 として 1095 への対応を Backlog に追加 (BRIEF_008 §2 由来の意図を 1095 へ redirect)。
+- [🛠 Fixed] CSO 第 N script (`execute_governance_brief008.js`) の `^##\s+\[Backlog\]/m` regex は `## [Backlog] 🛡️ ガバナンス・アフィリエイトID抽象化タスク (2026-06-02 確定)` の section descriptor 部分を bullet 末尾に巻き込む silent corruption pattern (前 `## [Done]` substring 副作用と同類だが現 board の真の section heading を破壊する深刻版)。本 entry の CTO surgical Edit で section heading + descriptor を保護したまま正しい Backlog 配下に 2 新 task を追加。
+- [Note] BRIEF_007 §1 の SSH+WP-CLI 注入 mandate + BRIEF_008 §2 の WordPress functions.php への 1095 専用ハンドラ追加は、両方とも [[reference_mixhost_ssh_classifier_block]] により auto-mode classifier block 範囲。HUMAN 事前認可で classifier をバイパスするか、別経路 (cPanel ファイル編集 / WP admin 経由) で実行する必要あり。
