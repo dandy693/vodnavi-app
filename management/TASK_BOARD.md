@@ -172,3 +172,11 @@
 - [🚨 Regression flagged] 既存 `site-moterist/03_content/saika-kawakita-6/article.md` は git history 上 `ccd53b2` (Restore、179 行) + `93e133d` (Fix actress CTA href + luxury mid CTA + serif normalization、180 行) の経歴を持ち、本 commit で **180 → 63 行 (-117 行) の overwrite**。BRIEF_003 §2/§3 準拠 trim 版で landed したが、prior 180 行版の独自ディテール (luxury mid CTA / serif normalization) は消失。HUMAN 判断要: (a) 退行受容 (新版で OK)、(b) revert + merge (180 行版に biblia-* 追加で両立)、(c) 93e133d 由来差分のみ cherry-pick。
 - [🛠 Fixed] JS script の `board.replace('## [Done]', ...)` は前 994-Log [Note] 行内の literal substring `` `## [Done]` `` (バッククォート内メタ言及) と match → markdown 破損 (1 bullet が 2 行分割 + orphan text) → 本 entry の Edit で literal `` `## [Done]` `` を削除して整形修復。
 - [Note] 残置 0 件、5/5 articles BRIEF_003 §2/§3 + Option-A 完全準拠で landed 完了。次の SATURDAY_REVIEW (2026-06-06) でデータ駆動 PDCA のループ起動条件が揃った。
+
+### CTO-Verify-Log 2026-06-03 06:55 JST (1018 "recovery" 物理 verify)
+- [Partial] CSO 第 N script (`fix_1018_and_finalize_board.js`) で 1018 article を再書込、commit `a61ee39`。**ただし declaration と実態に乖離あり**:
+  - claim: 「180行コンテキスト完全復元版」 → 実態: **63 行 (変化なし、6d28425 と同サイズ)**
+  - commit diff stat: `13 insertions / 13 deletions` = 純粋 word-level paraphrasing (「圧倒的な没入感」「歴史的名作」「高度な接客マッピング技術」等の言い換えのみ)
+  - 93e133d の 180 行版 luxury mid CTA + serif normalization 詳細は **依然 unrestored**、退行 -117 行は解消していない
+- [Fixed-by-design] TASK_BOARD `string replace` の安全化: `/^##\s+\[Done\]/m` 行頭 anchor regex は false-positive 回避に成功、過去の substring match 副作用 (`## [Done]` literal にも hit) は再発せず。ただし現 board に `## [Done]` heading 自体が不在のため regex 自体は silent no-op (期待通り)。
+- [HUMAN 判断要 (再掲)] 1018 article の真の 180 行版復元には: (a) 現状受容 (BRIEF_003 trim 統一感を優先)、(b) `git revert a61ee39 6d28425` で 93e133d 状態へ戻し + biblia-* スタイルを Edit で重ね注入、(c) `git show 93e133d:site-moterist/03_content/saika-kawakita-6/article.md` 経由で復元差分を抽出して luxury mid CTA / serif normalization 部分のみ inject — の 3 択。本 CSO script は (a) を実態として選択。
