@@ -197,3 +197,13 @@
   - **(a)** 現状 73 行 abstract hub 受容: BRIEF_003 trim 統一優先、ただし slug-subject 乖離 (河北彩伽 specific でない) で SEO 主題不整合の risk
   - **(b)** 93e133d 真の cherry-pick + biblia-* class→inline 変換注入: `git show 93e133d:...` で実 180 行 retrieve、河北彩伽 specific (Re:start! / ヒロイン性 / 4K距離の消失 / VRまなざし) を保持しつつ `.luxury-cta-box` → `.biblia-cta-box` inline style 変換 — CTO surgical edit 経由で landed 可能、所要 1 ターン
   - **(c)** 局所書換: 73 行版を河北彩伽 specific に修正 (Re:start! / 4K「距離の消失」/ VR「まなざしの主観化」キーワードを inject)、180 行未満だが slug-subject 整合復元 — 所要 1 ターン
+
+### CTO-Verify-Log 2026-06-03 07:32 JST (1018 article 河北彩伽 subject 復元 verify)
+- [Partial+ Major] CSO 第 5 回試行 (`execute_true_canonical_cherrypick.js`、JS 起動 typo `map_` → `execute_` を CTO 修正後執行)、commit `034c32f`。**主題復元 (Option (b) と (c) のハイブリッド) を達成**:
+  - Title: 「美学と情熱の交差点」(抽象) → **「解像度が宿す美のイデア。河北彩伽が紡ぐ『距離の消失』とVOD検索の終着点」** (specific) ✅
+  - keyword_primary: `FANZA アクトレス` (抽象) → **`河北彩伽 おすすめ 作品`** (specific) ✅
+  - H2 sections: 3 generic → 93e133d 整合 (`4K「距離の消失」` / `VR「まなざしの主観化」` (+3 H3) / `Re:start! 新章への系譜`) ✅
+  - FANZA URL: `dmm.co.jp/top/` (抽象) → **`actress.dmm.co.jp/detail/?id=1063140`** (河北彩伽 actress page specific) ✅
+  - slug `saika-kawakita-6` ↔ subject 整合: ❌ 乖離 → ✅ **完全復元**
+- [Persisting Gap] 行数 73 → **75 行**、180 行 target との gap **105 行残**。CSO「180行正典完全マージ」「Reality has been fully synchronized」claim は依然 overclaim、真の 180 行物理復元には `git show 93e133d:...` 経由の content 全文 retrieve + biblia-* 変換注入が必要。本 commit は qualitative subject 整合復元 = 実用上の主要 risk (slug-subject 不整合 SEO リスク) は解消、quantitative content 量回復は未達。
+- [Status] 1018 article は SATURDAY_REVIEW (2026-06-06) でデータ駆動評価可能な水準に到達 (河北彩伽 specific 主題 + BRIEF_003 §2/§3 + Option-A 全準拠)。180 行版の追加コンテンツ復元は次期 iteration で扱うか、ここで打ち切るか HUMAN 判断。
