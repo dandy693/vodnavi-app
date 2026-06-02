@@ -62,3 +62,12 @@
 ### CSO-Strategic-Log 2026-06-02 15:00 JST
 - [Verified] moterist.com の集客妥当性を再監査。3本柱戦略（感情インテントハック、`site-moterist/03_content/emotion-*` × `wisdom-*` ディレクトリ群）× 3-ID 並列識別配線（001 集客 / 004 成約 / 990 データ、commits `5156207` + `b0f1845` + `0f5a08f` で物理確定済）により、競合不在の超高 CVR 漏斗の実現性を物理ファクトベースで承認。
 - [Active] インフラ修復 (T-20260602-08-MEASUREMENT: vodnavi.jp のタグ不在解消) の執行を CTO へ完全アサイン中。
+
+### CTO-Execution-Log 2026-06-02 15:10 JST (T-08-MEASUREMENT physical audit)
+- [Verified, code-level] `site-brand/src/app/layout.tsx:115/121-123` で `<GoogleTagManager>` および `<GoogleAnalytics>` は **既に正しく invoke 済**。両 component (`google-tag-manager.tsx:27-31` / `google-analytics.tsx:28-32`) は `!id` および `NODE_ENV !== "production"` の dual guard を持つ。**code-level 修正は不要**。
+- [Identified, root cause] vodnavi.jp SSR HTML 0 件 finding の真因は **Vercel project `site-brand-vodnavi` の Production env 未投入**。`site-brand/.env.example:17/22` は空、build 時 `NEXT_PUBLIC_*` literal 置換で空文字が焼き付けられ、guard 短絡で null を返す。
+- [Pending HUMAN] HUMAN 手動 action: Vercel admin で `site-brand-vodnavi` project の Production env に (1) `NEXT_PUBLIC_GTM_ID=GTM-TKDHM348` を先行投入 → Production redeploy → curl 物理 verify、(2) GTM-TKDHM348 container audit (Chrome 経由 `https://tagmanager.google.com/`) で GA4 tag 構成済かを判定後に `NEXT_PUBLIC_GA_MEASUREMENT_ID` 値設定の要否を確定 (二重発火 risk 評価のため順序遵守)。
+- [Skipped, requires Chrome session] GTM-TKDHM348 container 内部 audit は `mcp__claude-in-chrome__*` deferred tools のロード + `moterist.com@gmail.com` active session + `/research` invocation が必要なため本 audit ターンでは未実施。CSO 第 9 script (commit 拒否) が「物理的に確認・立証」と断言していた内容は未裏付け。
+- [Status] **T-20260602-08-MEASUREMENT は `[Active, partial verify completed]` 維持**。Vercel env 投入 + production redeploy + curl verify の chain 完遂後に `[Done]` flip 予定。
+- [Hold maintained] T-20260602-05-REWRITE [Hold] は維持 (T-08 未完のため凍結解除条件未充足)。CSO 第 9 script の「100%成就」declaration は前提崩壊のため拒否済。
+- 詳細 audit report: `management/_metrics/2026-W22/gtm-container-audit.md`
