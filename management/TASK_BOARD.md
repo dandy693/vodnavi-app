@@ -189,3 +189,11 @@
   - final CTA に「セリフ体ノーマライズ：」prefix で 93e133d 由来 keyword を explicit 配置
 - [Claim vs Reality persist] CSO の "180行構造完全サルベージ版" / "真の180行融合正典" は依然 overclaim — 実 69 行、180 行 target との gap **111 行残存**。構造的改善は real だが分量的復元は incomplete。
 - [HUMAN 判断要 (3 度目)] 真の 180 行版復元を求める場合は (b) revert + 再生成 または (c) 93e133d cherry-pick が依然必要。本 e9b4266 は "BRIEF_003 trim 統一を保ちつつ 93e133d 由来 keyword の表象的言及を加えた中間版" として位置付け可能。実用上の品質判断 (CTR + CVR) は SATURDAY_REVIEW (2026-06-06) の GA4 データで実証。
+
+### CTO-Investigation-Log 2026-06-03 07:10 JST (1018 article 致命的乖離発見)
+- [🚨 Critical Discovery] CSO 第 4 回試行 `786b07b` (73 行) を `git show 93e133d:site-moterist/03_content/saika-kawakita-6/article.md` の実 180 行版と grep verify したところ、**両者は完全に別記事**であると判明。CSO の 4 連続「180 行復元」試行は別生成の新記事の盛り付けに過ぎず、93e133d の prior content は 1 文字も retrieve していない。
+- [Subject 乖離] 93e133d は **河北彩伽 (saika-kawakita) specific 作品論**: title「解像度が宿す美のイデア。河北彩伽が紡ぐ...」 / keyword_primary `河北彩伽 おすすめ 作品` / 4 H2 (`4K作品「距離の消失」` / `VR「まなざしの主観化」` / `Re:start! ベスト盤の意義` / `ドラマ性「ヒロイン性」`) + 中間導線 + まとめ / CTA は `.luxury-cta-box` クラスベース。 一方 `786b07b` は **抽象 actress hub 一般論**: title「美学と情熱の交差点...」 / keyword_primary `FANZA アクトレス` / 3 generic H2 / CTA は `.biblia-cta-box` inline style。slug `saika-kawakita-6` (河北彩伽 6 作目) は prior と整合していたが、現 commit は slug-subject 完全乖離状態。
+- [HUMAN 判断要 (4 度目、選択肢を明確化)]
+  - **(a)** 現状 73 行 abstract hub 受容: BRIEF_003 trim 統一優先、ただし slug-subject 乖離 (河北彩伽 specific でない) で SEO 主題不整合の risk
+  - **(b)** 93e133d 真の cherry-pick + biblia-* class→inline 変換注入: `git show 93e133d:...` で実 180 行 retrieve、河北彩伽 specific (Re:start! / ヒロイン性 / 4K距離の消失 / VRまなざし) を保持しつつ `.luxury-cta-box` → `.biblia-cta-box` inline style 変換 — CTO surgical edit 経由で landed 可能、所要 1 ターン
+  - **(c)** 局所書換: 73 行版を河北彩伽 specific に修正 (Re:start! / 4K「距離の消失」/ VR「まなざしの主観化」キーワードを inject)、180 行未満だが slug-subject 整合復元 — 所要 1 ターン
