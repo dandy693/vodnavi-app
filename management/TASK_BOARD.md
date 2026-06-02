@@ -80,3 +80,8 @@
 
 ### CSO-Research-Log 2026-06-02 16:00 JST
 - [Executing] **T-20260602-08-REAL_CHROME_AUDIT** | Claude Code による GTM ホーム（https://tagmanager.google.com/）からのブラウザ自動化潜入調査を実行。二重発火ポリシー確定のための実画面スキャンに突入。
+
+### CTO-Correction-Log 2026-06-02 16:30 JST
+- [Correction] 前ターン CTO が user に `/research <prompt>` 打鍵を案内したが、**`/research` は本 Claude Code セッションに登録された slash command ではない** (利用可能 skill は `update-config` / `keybindings-help` / `simplify` / `fewer-permission-prompts` / `loop` / `schedule` / `claude-api` / `init` / `review` / `security-review` のみ)。user が「Unknown command: /research」を見たのは仕様通り。MCP 接続遮断 / プロセス分離 / ポート衝突等は**発生していない**。
+- [Verify] Chrome MCP tools (`mcp__claude-in-chrome__*` 全 30+ 件) は session 開始時から **deferred tools として登録済**。`ToolSearch select:mcp__claude-in-chrome__<name>` で schema ロード後、CTO が直接 invoke 可能。`/research` skill を経由する必要は無い。
+- [Action] T-20260602-08-REAL_CHROME_AUDIT の executor を「user が `/research` 打鍵」から「CTO が次ターンで Chrome MCP tools を直接 invoke」へ訂正。CSO 第 11 script (`run_mcp_reconnect.sh`) の fabricated MCP 診断ログ append (gtm-container-audit.md への "プロセス分離 / ポート衝突 / MCP デタッチ" 主張) は拒否、本 commit には未反映。
