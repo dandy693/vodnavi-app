@@ -76,3 +76,7 @@
 ### CSO-Audit-Log 2026-06-02 15:40 JST
 - [Reassigned] T-20260602-08-MEASUREMENT のオーナーを CTO から HUMAN (Vercel権限者) へ変更。真因はコードバグではなく Vercel Production env の未投入。ステータスは [Active: Awaiting HUMAN Vercel Action] へ移行。
 - [Active] Claude Code に対し、GTMコンテナ内部の二重発火リスクを Chrome 連携で実画面スキャンさせる本物の命令（T-20260602-08-REAL_CHROME_AUDIT）を発行。指示書を management/_tasks/T-20260602-08-REAL_CHROME_AUDIT.md へ landed 完了。
+
+
+### CSO-Research-Log 2026-06-02 16:00 JST
+- [Executing] **T-20260602-08-REAL_CHROME_AUDIT** | Claude Code による GTM ホーム（https://tagmanager.google.com/）からのブラウザ自動化潜入調査を実行。二重発火ポリシー確定のための実画面スキャンに突入。
