@@ -145,3 +145,12 @@
 - **仕様配線**: `publish_status: draft` として `site-moterist/03_content/fanza20250331/article.md` への単一着地を定義。
 - **インフラ状態**: GA4クロスドメイン（ホスト名別個別識別）、サニタイザー、年齢確認 middleware は100%生存を確認済み。
 - **現在のアクション**: CCO（ChatGPT 5.5）による ID 1106 の『ビブリア・エロティカ』完全本文のチャット出力待ち（無条件待機）。
+
+### CTO-Surgical-Log 2026-06-03 06:15 JST (1106 article 5-nit surgical fix)
+- [x] 🟢 **T-20260602-05-REWRITE-1106 Surgical Fix**: 前 commit `a5860d1` の `fanza20250331/article.md` が抱えていた 5 件の規約 nit を全件修復。修正内容:
+  - **nit 1 fixed**: `slug: "fanza-registration-guide"` → **`slug: "fanza20250331"`** (canonical URL `https://moterist.com/fanza20250331/` と整合、WP sync 衝突解消、1095 cf8c8b0 内部 link `/fanza20250331/` も継続維持)
+  - **nit 2 fixed**: `post_id: 1106` 追加 (WP sync metadata 復元)
+  - **nit 3 fixed**: `status: "publish"` + `future_page_type: "Registration / Benefits Guide"` 追加 (cf8c8b0 frontmatter pattern 準拠)
+  - **nit 4 fixed**: BRIEF_003 §2 適合の `<div class="biblia-pr-shield">` / `<div class="biblia-cta-box">` / `<div class="biblia-final-cta">` を dark (#121212 / #1a1a1a) × gold (#D4AF37) inline styles で 3 箇所配置
+  - **nit 5 fixed**: 末尾 §3「案内人の推薦状」に FANZA 公式リンク `https://al.dmm.co.jp/?lurl=...&af_id=moterist-001` を Option-A 例外規定 (BRAND_DESIGN_GUIDE §補遺、commit 3d26570) 準拠で配置
+- [Declined] CSO script 同梱の `management/STRATEGY_BRIEF_005.md` 新規作成は **§3 CTO 指示 (`moterist-001` のハードコード排除 + env 抽象化要求) が Option-A 3-ID 並列識別仕様 (commit 5156207 + 3d26570) を直接巻き戻すため拒否**。[[feedback_push_back_on_contradictions]] 該当。STRATEGY_BRIEF_005 を発行する場合は §3 を「`moterist-001` 直書きは集客側で許容 (補遺準拠)、`buildAffiliateURL` は既に T-20260602-04-ENV で実装済」へ訂正のうえ CSO 再発行を要請。
