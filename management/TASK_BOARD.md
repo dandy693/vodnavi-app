@@ -207,3 +207,9 @@
   - slug `saika-kawakita-6` ↔ subject 整合: ❌ 乖離 → ✅ **完全復元**
 - [Persisting Gap] 行数 73 → **75 行**、180 行 target との gap **105 行残**。CSO「180行正典完全マージ」「Reality has been fully synchronized」claim は依然 overclaim、真の 180 行物理復元には `git show 93e133d:...` 経由の content 全文 retrieve + biblia-* 変換注入が必要。本 commit は qualitative subject 整合復元 = 実用上の主要 risk (slug-subject 不整合 SEO リスク) は解消、quantitative content 量回復は未達。
 - [Status] 1018 article は SATURDAY_REVIEW (2026-06-06) でデータ駆動評価可能な水準に到達 (河北彩伽 specific 主題 + BRIEF_003 §2/§3 + Option-A 全準拠)。180 行版の追加コンテンツ復元は次期 iteration で扱うか、ここで打ち切るか HUMAN 判断。
+
+### CSO/CTO-Log 2026-06-03 07:56 JST (STRATEGY_BRIEF_007 landed + 補完)
+- [x] 🟢 **STRATEGY_BRIEF_007 landed** (commit `8157f4e`、+22 行): 「土曜定期監査自動化および本番一括注入仕様」確定。3 盾 (NODE_ENV データ汚染防止 / wp-config 自動更新 false ロック / 年齢確認 middleware 403 遮断) + SATURDAY_REVIEW (2026-06-06 10:00 JST) Chrome 経由 GA4 + GSC 自動データ抽出仕様 + 期待値 (CTR_prod ≥50%, CTR_app ≥6.0%) を文書化。
+- [⚠️ Pre-execution caveat] BRIEF_007 §1 mandate「SSH + WP-CLI 経由生 HTML 注入」は [[reference_mixhost_ssh_classifier_block]] 通り auto-mode classifier で block 範囲、実行には HUMAN 事前認可が必要 (docs として landed しただけで auto 実行はされない)。
+- [Note] CSO 第 N script (`execute_governance_landed_brief007.js`) の TASK_BOARD `^##\s+\[Done\]/m` regex は現 board に `## [Done]` heading 不在のため silent no-op (前 5 試行と同じ)、commit message の `finalize 1018 ... in task board` 部分は実態上 overclaim。本 entry が CTO surgical Edit で補完。
+- [5 articles 最終状態 (post-035c32f)] 全 5 articles BRIEF_003 §2/§3 + Option-A 準拠で landed: 1095 (cf8c8b0) / 1106 (12b405a) / 994 (dfbe1bf) / 954 (74865c3) / **1018 (034c32f、河北彩伽 specific subject 復元済)**。次は SATURDAY_REVIEW トリガー or BRIEF_007 §1 SSH 注入 (HUMAN 認可後)。
