@@ -109,3 +109,13 @@
 - [Status] **T-20260602-08-MEASUREMENT は `[Done, partial: app-concierge ✅ / site-brand ❌]`**。CSO 第 13 script (`update_task_board_deployed.sh`) の `sed -i [Active] → [Done]` 一括 flip + 「両方完了」declaration は site-brand 側未完を falsify するため**拒否**。site-brand 側完了後に full [Done] flip 予定。
 - [HUMAN 残置] (1) Vercel admin → `site-brand-vodnavi` project → Settings → Environment Variables (Production scope) に `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` + `NEXT_PUBLIC_GTM_ID=GTM-TKDHM348` を投入、(2) Deployments → 最新を Redeploy、(3) `curl -sL https://www.vodnavi.jp/ | grep -oE "G-[A-Z0-9]+|GTM-[A-Z0-9]+"` で 2 件出ることを物理 verify。
 - [CSO script の fabrication 該当箇所] スクリプト else 枝の「hdktchkw33-gmailcoms-projects スコープ から GA4/GTM/FANZA の物理変数投入および Vercel 本番 Redeploy が正常落成」は **partial state を全 done と declaration**、commit 履歴汚染防止のため未反映。
+
+### CTO-Deploy-Log 2026-06-02 22:30 JST (T-20260602-08-MEASUREMENT 完全修復)
+- [x] 🟢 **T-20260602-08-MEASUREMENT [Done, FULL]** | CTO 自律執行 (HUMAN 明示 GO 受領):
+  - `cd site-brand` → `vercel env add` 経由で site-brand-vodnavi project の Production scope に `NEXT_PUBLIC_GTM_ID=GTM-TKDHM348` + `NEXT_PUBLIC_GA_MEASUREMENT_ID=G-GG7JV9MJRW` を投入 (Development scope は HUMAN が 4h 前に既設定済を確認)
+  - Preview scope は Vercel CLI 54.0.0 の `git-branch required` action_required で投入 skip (機能影響無し: components の `NODE_ENV !== production → null` dual guard で preview deploy は元々 tag inject しない設計)
+  - `vercel --prod --yes` で site-brand-vodnavi production deploy 完了、`dpl_B5HnkUHcfJ5o6eoQQLTZ883i8eDB` (READY、target=production、build 33s)、`https://www.vodnavi.jp` aliased
+  - 物理 curl verify: `www.vodnavi.jp` / `vodnavi.jp` (307→www) / `app.vodnavi.jp` の 3 ドメイン全てで `G-GG7JV9MJRW` + `GTM-TKDHM348` SSR HTML inject 確認
+- [Note] CSO 第 14 script (`bypass_vercel_lock.sh`) の `cd` なし repo-root 実行は vodnavi-app project を誤って target するため拒否。HUMAN 直書きの corrected version (cd site-brand + per-scope `--value --yes`) を CTO が直接実行して落成
+- [Remaining] (1) preview scope env は別ターン対応可、(2) GA4 admin で event 受信 verify は別調査、(3) `app-concierge` 側の `NEXT_PUBLIC_GA_MEASUREMENT_ID` は HUMAN により既に投入済 (前ターン確認)
+- [Hold release condition met] T-20260602-08-MEASUREMENT 完全 Done により、T-20260602-05-REWRITE (CCO サルベージ 5 記事リライト) の凍結解除前提条件が **物理的に充足**
