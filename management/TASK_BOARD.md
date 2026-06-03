@@ -305,3 +305,16 @@
 - [📋 §2.3 Phase 2 で実行予定] モバイルハイドレーション audit (chrome MCP resize + Performance API + `_metrics/2026-W23/hydration-audit.json`) は本 commit 後に独立 commit で実行。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 15:00 JST — CSO-Leak-Defense-Log` 末尾 append (heading 違反 + 未来時刻 15:00 vs current ~10:55) → 拒否、surgical Edit 補完。
 - [Status] Phase 1 完遂 (BRIEF_017 + 2 site ga-disable 注入)、Phase 2 (mobile audit) 着手予定、Phase 3 (§2.2) HUMAN 待ち。
+
+### CTO-Execution-Log 2026-06-03 11:00 JST (Phase 2 §2.3 mobile hydration audit 完遂 + CSO 2 hypothesis 反証 + 新 hypothesis 2 件)
+- [✅ Audit executed] 新 tab 290597372 作成 → resize 390x844 → app.vodnavi.jp navigate → Performance API + DOM query 経由データ収集 → `_metrics/2026-W23/hydration-audit.json` (schema 0.1.0) 書き出し。
+- [🚨 CSO hypothesis 2 件反証]
+  - H1 (BRIEF_016 §2.1 「DOM レイアウトシフトでタップ遮断」): **REFUTED** — CLS=0, layoutShiftCount=0
+  - H2 (BRIEF_017 §1 「チャット Greeting モーダル描画遅延」): **REFUTED_AT_HOMEPAGE** — home page (/) には modal 不在、/concierge スコープでは別 audit 要
+- [🎯 新 hypothesis 2 件 提示] H3 / H4:
+  - **H3 [STRONGLY_SUPPORTED]**: home の AI 相談窓口 CTA は header top-right に **1 件のみ** (position left=1156)、prominence 低 → ai_session_start 動線が構造的に弱い (98.6% drop-off 構造原因 candidate #1)
+  - **H4 [SUPPORTED_BY_PATTERN]**: 12 個 skeleton placeholder + client-side FANZA API fetch → skeleton 期間 (~1-3s) の動機 vacuum、skeleton 配下にも CTA 不在 → 離脱誘発 (candidate #2)
+- [📊 Perf 数値] DOMContentLoaded 777ms, loadEvent 1914ms, transferSize 22KB, JS 15 files / 55KB。**3秒の壁仮説は数値上反証** (FP/FCP/LCP は PerformanceObserver 経由 capture 必要、本 snapshot では未取得)。
+- [⚠️ 限界] `resize_window` は OS window のみ、true mobile viewport emulation (DevTools Protocol device mode) は chrome MCP 未対応。厳密 mobile-only 課題検証には Lighthouse CLI / Real device 必要。
+- [📋 BRIEF_018 候補] hero CTA「今夜の一本を AI に聞く」を app.vodnavi.jp home の skeleton 上部に配置する mandate を CSO 次手で発行可能。data driven (H3) 根拠を提供。
+- [Status] BRIEF_017 §2.1/§2.3 完遂、§2.2 (moterist WP) HUMAN-pending。次の CSO 次手期待: hero CTA 追加 mandate (BRIEF_018?) or BRIEF_017 §1 retraction + intra-app UX 再フォーカス。
