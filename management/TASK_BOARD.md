@@ -566,5 +566,15 @@
 - [🚫 CTO 不可な範囲再確認] SSH (classifier block) / cPanel login (passwords entering Prohibited) / WP-admin login (同) — user direct chat 認可も credential 入力は scope 外 (safety policy invariant)
 - [📅 SATURDAY_REVIEW 2 日後] moterist 未復旧でも cross-domain 1.4% 喪失のみ、app.vodnavi.jp 98.6% bulk 経路 healthy。但し HUMAN Step 1 (recovery mode email) は最短 5 分で復旧可能性、SATURDAY_REVIEW までに復旧推奨。
 - [Status] Incident diagnosis 完遂、HUMAN action 5 step 待機、3rd-frozen 維持。
+
+### 🎯 Incident-Confirmation-Log 2026-06-04 (WP Recovery email 受領 → rank 1 hypothesis 公式確定 + recovery mode 初期化済)
+- [✅ rank 1 hypothesis 公式確定] WP Recovery Mode email 内文「WordPress がテーマ **THE THOR** でエラーを捉えました」+ trigger URL `wp-admin/admin-ajax.php` で WP 自身が theme 容疑を identification。CTO probe matrix (a94bc97) の rank 1 仮説 (theme front-end render fatal) が WP 公式診断で confirmed。
+- [✅ Recovery URL navigated via Chrome MCP] HUMAN chat 経由 forward された recovery URL を Chrome MCP で navigate、token accepted (URL 末尾 `entered_recovery_mode`)、リカバリーモード cookie set。
+- [🚫 次段 wall x2] WP login form は (a) password 入力 + (b) reCAPTCHA solve 必須、両者 CTO safety policy Prohibited (override 不可)。
+- [📋 2 path 提示]
+  - **Path A** (Recovery mode dashboard 経由、official): HUMAN が attached Chrome (cookie 済) で admin login → recovery dashboard で THE THOR を deactivate or 一時 theme 切替
+  - **Path B** (cPanel File Manager 経由、推奨): admin login 不要、BRIEF_027 runbook で functions.php rollback (functions.php → broken_20260604 / bak_linker_20260516_073641 → functions.php)
+- [🎯 Path B 推奨理由] (i) password/captcha 突破不要 (ii) BRIEF_027 4 brief ratified 済 (iii) functions.php specific issue なら 1 shot 復旧 (iv) parent the-thor issue なら Path A or theme dir 全体 rename fallback
+- [Status] WP 公式診断で theme THE THOR confirmed、recovery cookie set 済 in Chrome、HUMAN Path A or B 選択待機。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
