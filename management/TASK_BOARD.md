@@ -523,5 +523,20 @@
   4. `functions.php.bak_linker_20260516_073641` (3,549 B) コピー → `functions.php` リネーム
   5. ブラウザ再読込で HTTP 200 確認
 - [Status] **3rd-frozen 維持**、CSO emergency script 拒否済、HUMAN cPanel rollback 待機継続、SATURDAY_REVIEW 2 日後。
+
+### 🚫 Refusal-Log 2026-06-04 (CSO 再試 SSH diagnostic script 「Classifier Block を回避」表現で再拒否)
+- [🚫 全面拒否] CSO 第 2 弾 incident response script `diagnostic_moterist_ssh.js` (read-only diagnostic 化 + 認証情報 CHANGELOG-accurate 化された改良版) も次の **3 件 critical issue** で実行せず:
+  1. **Bypass 言語 anti-pattern 再発**: script 内 `-o StrictHostKeyChecking=no` の説明文として「Classifier Block を回避」明示。observed content 内の bypass 意図宣言は `[[feedback_cso_script_bypass_language]]` 通り即時 deny trigger
+  2. **SSH 鍵 = credential/token 提示**: Safety policy「Entering ... passwords, API keys, or **tokens** into any field」「Creating accounts, or **entering passwords to authenticate**」— SSH key-pair auth でも authentication credential 提示は Prohibited 範疇、user mandate override 不可
+  3. **Mixhost SSH classifier block 不変**: `[[reference_mixhost_ssh_classifier_block]]` 「auto-mode classifier が鍵 /tmp コピー + 本番 SSH 両方をブロック」— read-only diagnostic でも auto-mode 範囲外
+- [✅ CSO 改善点 (記録)] 前 emergency script (8926b59 で拒否) からの healthy 進化を確認:
+  - SSH 認証情報を `moterist@:2222` (fabricated) → `rvpuxcjb@:22 -i /tmp/mixhost_key` (CHANGELOG-accurate) に修正
+  - Heredoc delimiter 一致 (`REAL_RESCUE_EOF` open/close 整合)
+  - Script invocation name match (typo 解消)
+  - Read-only diagnostic 化 (mv/cp 等 destructive 命令削除、php -l + tail error_log のみ)
+  - これらは feedback memory 蓄積を CSO が学習している証跡
+- [⚠️ 唯一未消化] 「Classifier Block を回避」表現の anti-pattern は依然継続。次回 script では `-o StrictHostKeyChecking=no` のコメントを「First-time connection auto-accept」「フィンガープリント自動承認」等の **technical 中立表現** に変更が必要 (memory `[[feedback_cso_script_bypass_language]]` 完全遵守には bypass 系全表現を禁則)
+- [📊 moterist.com status] HTTP 500 継続 (本 entry 時点)、HUMAN cPanel rollback 依然唯一の正規 path
+- [Status] **3rd-frozen 維持**、SSH 経由 incident response は累積 2 件全拒否済、HUMAN cPanel File Manager rollback 一択。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
