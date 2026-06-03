@@ -275,3 +275,12 @@
 - [📋 UI fork mandate 受領] BRIEF_015 §2.1 UI fork は CTO 即時執行スコープ。実行手順案: GA4 Exploration k1-d8zAwRemPD55mJxHIpw → 内訳 dim「デバイス カテゴリ」を hostName に変更 → 「名前を付けて保存」(Save As) で fork → 新 exploration ID 捕捉 → proper memory entry 追加。
 - [⚠️ GA4 持続的設定変更の scope 注意] Exploration fork は user GA4 account に persistent artifact を生成。本 mandate は user paste 経由で intent 確認済として扱い実行、ただし完了後に proper memory entry + 新 ID を board に記録 (transparency 確保)。
 - [Status] BRIEF_015 docs landed。次: UI fork 実行 → 新 exploration ID 捕捉 → memory + JSON 更新。
+
+### CTO-Execution-Log 2026-06-03 10:25 JST (UI fork 完遂 + CSO 断定の実データ反証発見)
+- [✅ Fork executed end-to-end] Explorations index → 「その他の操作」→「複製」→ open copy → ディメンション追加 (ホスト名 search → checkbox → 確認) → 内訳 chip 削除 → 'add' → ホスト名 select。新 ID **`h4bNtK9ST0KSgZx-yf_9ZQ`** 捕捉、内訳 dim = ホスト名 反映、Step 1-4 × 4 hostname の funnel テーブル抽出成功。
+- [✅ Account 物理確認] Explorations index に Owner = **モテリスト** 表示 → `moterist.com@gmail.com` session 物理確証 (`[[reference_google_accounts]]` 整合、`[[feedback_account_check]]` 充足)。
+- [🚨 STRATEGIC RECLASSIFICATION] **CSO BRIEF_015 §1「mobile handler / `_gl` 不全 が極めて濃厚であると断定」は実データで反証**。Step 1 page_view 3,114 の hostName 内訳: **app.vodnavi.jp 3,070 (98.6%)** / vodnavi.jp 37 (1.2%) / moterist.com 6 (0.2%) / localhost 1。Step 2 起動 12 全件 app.vodnavi.jp。→ 99.61% drop-off は **SEO→コンシェルジュ ではなく app.vodnavi.jp 内 page_view → ai_session_start UX 課題**として再分類。memory `[[project_funnel_intra_app_reclassified]]` 新設で保存。
+- [📌 Sub findings] (i) cross-domain inflow わずか 43 件 (1.4%) — `_gl` linker は機能している規模感、(ii) organic 1,011 → /concierge 10 (memory project_funnel_drop_off_seo_to_concierge) は funnel 外で起きており別問題、(iii) localhost 1 件混入 = dev env leak (BRIEF_007 §3 NODE_ENV 盾 verification candidate)。
+- [📁 Artifacts] (a) `_metrics/2026-W23/saturday-raw-data.json` を schema `0.2.0-hostname-fork` で上書き (predecessor 0.1.0 は git commit f331d4c 保存)、(b) memory 更新: `[[reference_ga4_report_ids]]` (r=top-events stale 化記録) / 新規 `[[reference_vodnavi_funnel_exploration_ids]]` / 新規 `[[project_funnel_intra_app_reclassified]]`。
+- [📋 次の CSO ターン期待] BRIEF_015 §1 断定の正式 retraction + intra-app UX hypothesis への re-anchor を要請。vodnavi.jp / moterist.com page_view fire 物理確認 (GTM-TKDHM348 debug mode) を新規 backlog 候補。
+- [Status] T-20260603-02 UI fork (BRIEF_015 §2.1) 完遂、SATURDAY_REVIEW 本番 (2026-06-06) は fork ID 経由で実行可能。残: (a) F-2026-W23-02 SEO event fire 物理確認、(b) F-2026-W23-03 localhost leak audit、(c) T-20260603-01 (1095 handler) HUMAN classifier 認可待ち。
