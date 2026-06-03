@@ -414,5 +414,24 @@
   - **moterist.com (WordPress)**: ga-disable inline ❌ NOT YET (HUMAN cPanel/WP admin pending、本セッション内未完)
   - SATURDAY_REVIEW 2026-06-06 トリガー時、moterist.com 側 ga-disable 未実装の状態でも intra-app + cross-domain hostName 分析は実行可能 (moterist.com は funnel 中 6 PV / 28d で marginal)
 - [Status] BRIEF_007-022/023 全 landed (011 skip)、Vercel 2 site live、moterist WP HUMAN-pending、SATURDAY_REVIEW 待機。**status: frozen** (本日 governance/implementation 累積終止)。
+
+### CSO/CTO-Log 2026-06-03 12:40 JST (STRATEGY_BRIEF_025 landed + Chrome MCP cPanel/WP login 不可宣言 + measurement ID 整理要請)
+- [x] 🟢 **STRATEGY_BRIEF_025 landed (CSO 原文尊重)**: moterist.com WP header.php への ga-disable 物理 implant mandate (Chrome MCP 経由 cPanel/WP-Admin)。
+- [🚫 §2.1/§2.2 安全 policy 「Prohibited」適用] CSO の「Chrome MCP 経由 cPanel/WP-Admin 管理画面アクセス → header.php 編集」mandate は次の安全 policy 規定により **CTO 自動実行不可**:
+  - 「Entering financial credentials, bank/card/account numbers, SSN/passport/government IDs, passwords, API keys, or tokens into any field」→ cPanel/WP-Admin login = password 入力必須
+  - 「Creating accounts, or entering passwords to authenticate」→ 認証目的の password 入力は禁則
+  - safety policy: 「These actions stay prohibited when the user explicitly asks for them, supplies all the details, or says they authorize it」= user mandate でも override 不可
+- [⚠️ measurement ID 不一致 flag] BRIEF_025 §2.2 snippet は **`ga-disable-G-5HYV772ER9`** を使用、しかし BRIEF_017 §2.2 で HUMAN-pending 化したのは **`ga-disable-G-GG7JV9MJRW`**。memory `[[project_ga4_property_access_redirect]]`: G-5HYV772ER9 = Moterist 旧 property (p393864941、p489519780 vodnavi.jp へ redirect)、G-GG7JV9MJRW = 現 vodnavi-app 統合プロパティ。moterist.com で実際に fire される measurement ID は HUMAN 物理確認要 (両方 fire 中なら snippet を OR で 2 つ書く)。
+- [📋 HUMAN 完全実行手順 (再掲)] CTO 自動実行不可のため HUMAN による以下の手動操作が必要:
+  1. HUMAN がブラウザで mixhost cPanel または WordPress 管理画面に手動 login (password 入力は HUMAN のみ)
+  2. WordPress 外観 → テーマファイルエディター → `the-thor-child/header.php` を選択
+  3. `<head>` 内 GTM/GA タグの直前に以下を追加 (実 fire ID に応じて):
+     - もし G-GG7JV9MJRW のみ: `<script>if (location.hostname === "localhost") { window["ga-disable-G-GG7JV9MJRW"] = true; }</script>`
+     - もし G-5HYV772ER9 のみ: `<script>if (location.hostname === "localhost") { window["ga-disable-G-5HYV772ER9"] = true; }</script>`
+     - もし両方 fire: 両方の flag を OR で記述
+  4. 「ファイルを更新」で保存
+  5. HUMAN がブラウザで moterist.com 開いて DevTools Console で `window['ga-disable-G-XXXXXXXX']` を eval → `undefined` (production)、localhost build では `true` を確認
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 — BRIEF_025 Mode` 末尾 append (heading 違反) → 拒否、surgical Edit 補完。
+- [Status] BRIEF_025 docs landed、moterist WP ga-disable 実装 = **HUMAN cPanel/WP-Admin 手動操作のみ実行可** (CTO 自動実行は安全 policy で恒久 prohibited、user mandate override 不可)。SATURDAY_REVIEW 2026-06-06 は moterist 6PV/28d marginal のため発火 block しない。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
