@@ -318,3 +318,12 @@
 - [⚠️ 限界] `resize_window` は OS window のみ、true mobile viewport emulation (DevTools Protocol device mode) は chrome MCP 未対応。厳密 mobile-only 課題検証には Lighthouse CLI / Real device 必要。
 - [📋 BRIEF_018 候補] hero CTA「今夜の一本を AI に聞く」を app.vodnavi.jp home の skeleton 上部に配置する mandate を CSO 次手で発行可能。data driven (H3) 根拠を提供。
 - [Status] BRIEF_017 §2.1/§2.3 完遂、§2.2 (moterist WP) HUMAN-pending。次の CSO 次手期待: hero CTA 追加 mandate (BRIEF_018?) or BRIEF_017 §1 retraction + intra-app UX 再フォーカス。
+
+### CSO/CTO-Log 2026-06-03 11:15 JST (STRATEGY_BRIEF_018 landed + §2.1/§2.2 物理実装 完遂)
+- [x] 🟢 **STRATEGY_BRIEF_018 landed (CSO 原文尊重)**: top page first view 要塞化 + skeleton 期間動機補強 mandate (H3/H4 hypothesis 対抗策)。CSO は直前 8e89d22 のhydration audit の H1/H2 反証 + H3/H4 新規 hypothesis を正しく取り込み、data driven な strategy update を実現。
+- [✅ §2.1 実装 完遂] `app-concierge/src/components/hero-section.tsx` の hero CTA を **brand gold (#121212 / #D4AF37 / border 2px)** で要塞化。モバイル幅では full-width + 中央寄せ (`w-full justify-center self-stretch text-base py-3`)、desktop では従来の inline `self-start` を維持してレイアウト破壊なし。BRAND_DESIGN_GUIDE biblia-* color scheme と整合、Tailwind amber-* (#fbbf24) から brand 正典 #D4AF37 へ昇格。
+- [✅ §2.2 実装 完遂] `app-concierge/src/app/(site)/page.tsx` の `HeroSkeleton` 関数に skeleton placeholder 上部 motivation copy `*Biblia Erotica — 案内人が今夜の書斎を調律中...*` を注入。serif italic + #D4AF37、中央寄せ。Suspense fallback (= データ取得待ち skeleton 期間) に表示される。
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:00 JST — CSO-UI-UX-Log` 末尾 append (heading 違反 + 未来時刻 16:00 vs current ~11:15) → 拒否、surgical Edit 補完。
+- [📊 期待効果 (CSO BRIEF_018 §1 目標)] `ai_session_start` 転換率 0.39% → target 5%+ (page_view → ai_session_start)、SATURDAY_REVIEW (2026-06-06) で初期効果検証。本実装はデータ駆動 hypothesis (H3 hero CTA prominence + H4 skeleton 動機 vacuum) 対抗策。
+- [⚠️ 検証残] (a) production deploy 必須 (現状 commit のみ、Vercel build & deploy で実体化)、(b) production deploy 前に Vercel CI でビルド成功確認、(c) AGENTS.md warning「This is NOT the Next.js you know」を超える Next.js API 変更は本 commit に無し (純 JSX + Tailwind 変更)。
+- [Status] BRIEF_018 §2.1/§2.2 物理実装 完遂、commit pending。次 CSO 次手期待: production deploy 確認 mandate / SATURDAY_REVIEW 直前 final audit。

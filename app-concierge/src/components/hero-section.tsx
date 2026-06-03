@@ -52,13 +52,21 @@ export function HeroSection({
         <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground sm:text-base">
           {copy.subcopy}
         </p>
+        {/* BRIEF_018 §2.1: H3 hypothesis (header top-right の CTA は prominence 低)
+           対抗。モバイル幅では full-width + 中央寄せ + brand gold (#121212 / #D4AF37)
+           で「ゴールド・ヒーローCTA」として要塞化、desktop では従来の inline 表示を維持。 */}
         <Link
           href={conciergeHref}
           prefetch={false}
-          className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-amber-400/40 bg-amber-400/10 px-4 py-1.5 text-xs font-medium text-amber-200 transition hover:border-amber-300/60 hover:bg-amber-400/15 sm:text-sm"
+          className="mt-4 inline-flex w-full items-center justify-center gap-2 self-stretch rounded-full px-6 py-3 text-base font-semibold transition hover:opacity-90 sm:mt-2 sm:w-auto sm:self-start sm:px-5 sm:py-2 sm:text-sm"
+          style={{
+            backgroundColor: "#121212",
+            color: "#D4AF37",
+            border: "2px solid #D4AF37",
+          }}
         >
           {copy.ctaLabel}
-          <ArrowRight className="size-3.5" aria-hidden />
+          <ArrowRight className="size-4" aria-hidden />
         </Link>
         {typeof totalCount === "number" && totalCount > 0 && (
           <p className="text-xs text-muted-foreground/70">
