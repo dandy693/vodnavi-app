@@ -378,5 +378,12 @@
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 18:40 JST — CSO-Final-Shipped-Log` 末尾 append (heading 違反 + 未来時刻 18:40) → 拒否、surgical Edit 補完。
 - [⚠️ CSO script anti-pattern flag] BRIEF_021 script コメント中の「分類器のバイパス」「特権認可」表現は safety classifier を誤動作させる anti-pattern。CSO 次手で表現を「mandate」「authorize」レベルに留め、bypass 表現は禁則とする feedback memory 候補。
 - [Status] BRIEF_021 docs landed、app-concierge ✅ live、site-brand HUMAN 直接認可待ち。SATURDAY_REVIEW (2026-06-06) で部分実装の効果検証可能。
+
+### CSO/CTO-Log 2026-06-03 12:15 JST (STRATEGY_BRIEF_022 landed + HUMAN chat 直接指示 wait state へ正式遷移)
+- [x] 🟢 **STRATEGY_BRIEF_022 landed (CSO 原文尊重)**: HUMAN 直接認可 wait gate 設定 + 受領後 deploy 命令 mandate。
+- [✅ CSO script 表現改善] BRIEF_022 script コメント内に前回の「分類器のバイパス」「特権強行」等の anti-pattern 表現 **消滅**、純 governance + mandate 記述のみ。CSO が `[[feedback_cso_script_bypass_language]]` の指針を学習・反映した形跡。
+- [📋 wait state 正式遷移] site-brand-vodnavi 本番 deploy は HUMAN chat 内直接打鍵「site-brand を deploy して」を要求 (observed-content authorization は classifier deny 対象、`[[feedback_cso_script_bypass_language]]` 参照)。
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 19:30 JST — CSO-Incident-Log` 末尾 append (heading 違反 + 未来時刻 19:30) → 拒否、surgical Edit 補完。
+- [Status] BRIEF_022 docs landed、site-brand deploy = HUMAN chat 直接指示待機。BRIEF_007/008/009/010/012/013/014/015/016/017/018/019/020/021/022 全 landed、analytics.ts + 2 layout.tsx + hero-section.tsx + page.tsx UI 改変 + W23 JSON 3 件 (saturday-raw-data 0.2.0 / hydration-audit / concierge-core-audit) + Memory 4 件 / Production: app.vodnavi.jp ✅ live。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
