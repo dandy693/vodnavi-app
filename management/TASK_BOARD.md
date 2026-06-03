@@ -284,3 +284,13 @@
 - [📁 Artifacts] (a) `_metrics/2026-W23/saturday-raw-data.json` を schema `0.2.0-hostname-fork` で上書き (predecessor 0.1.0 は git commit f331d4c 保存)、(b) memory 更新: `[[reference_ga4_report_ids]]` (r=top-events stale 化記録) / 新規 `[[reference_vodnavi_funnel_exploration_ids]]` / 新規 `[[project_funnel_intra_app_reclassified]]`。
 - [📋 次の CSO ターン期待] BRIEF_015 §1 断定の正式 retraction + intra-app UX hypothesis への re-anchor を要請。vodnavi.jp / moterist.com page_view fire 物理確認 (GTM-TKDHM348 debug mode) を新規 backlog 候補。
 - [Status] T-20260603-02 UI fork (BRIEF_015 §2.1) 完遂、SATURDAY_REVIEW 本番 (2026-06-06) は fork ID 経由で実行可能。残: (a) F-2026-W23-02 SEO event fire 物理確認、(b) F-2026-W23-03 localhost leak audit、(c) T-20260603-01 (1095 handler) HUMAN classifier 認可待ち。
+
+### CSO/CTO-Log 2026-06-03 10:40 JST (STRATEGY_BRIEF_016 landed + 公式 retraction + localhost 盾強化実装)
+- [x] 🟢 **STRATEGY_BRIEF_016 landed (CSO 原文尊重)**: BRIEF_015 §1 断定の公式撤回 + intra-app UX 再固定 + localhost dev env leak 遮断 mandate。
+- [✅ §2.2 NODE_ENV 盾強化実装] `app-concierge/src/lib/analytics.ts` (BRIEF_007 §3 既存 NODE_ENV 盾、line 47) に **localhost hostname check** を OR で追加。`process.env.NODE_ENV !== "production" || window.location.hostname === "localhost"` で **本番ビルドを localhost で起動した場合 (`npm run build && npm start`) の page_view leak も runtime で捕捉**して送信抑止。Defense-in-depth として完成。
+- [⚠️ §2.1 モバイルハイドレーション「致命的UXバグ」表現] CSO 表現は決め打ち、実 audit 未実施。仮説段階として SATURDAY_REVIEW (2026-06-06) で chromemcp 経由 mobile viewport simulation 監査を実施するか、別 brief で audit T-task 化。Backlog: 「T-20260603-03 mobile viewport hydration audit (BRIEF_016 §2.1 hypothesis 検証)」。
+- [✅ §2.3 W23 path 上書き] commit `ac9d576` で saturday-raw-data.json 0.2.0-hostname-fork 反映済 (`h4bNtK9ST0KSgZx-yf_9ZQ` データ含む)。重複実装は不要、本 entry で landed 状態確認。
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 14:30 JST — CSO-Retraction-Log` 末尾 append (heading 規約違反 + 未来時刻 14:30 vs current ~10:40) → 拒否、surgical Edit で補完。
+- [📌 公式 retraction 受領] CSO BRIEF_016 §1 文中 「99.61% drop-off の original 断定 (mobile handler / `_gl`) を公式撤回し intra-app UX 再固定」を受領、`[[project_funnel_intra_app_reclassified]]` memory と整合確認。
+- [📌 site-brand 側 page_view leak 防御] site-brand には独自 analytics wrapper なし (`@next/third-parties` 経由)、layout.tsx の `<GoogleTagManager gtmId={NEXT_PUBLIC_GTM_ID} />` は env 設定時に無条件 load。site-brand 側 localhost build leak の追加防御は別 task (BRIEF_017 候補 or backlog)。
+- [Status] BRIEF_007/008/009/010/012/013/014/015/016 landed (011 skip)、T-02 UI fork 完遂、analytics.ts 盾強化 commit pending。残: T-01 (1095 handler) / T-03 (mobile hydration audit) / F-02 (SEO event fire 物理確認) / 本番 SATURDAY_REVIEW (2026-06-06)。
