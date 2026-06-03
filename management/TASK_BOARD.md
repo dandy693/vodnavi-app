@@ -433,5 +433,48 @@
   5. HUMAN がブラウザで moterist.com 開いて DevTools Console で `window['ga-disable-G-XXXXXXXX']` を eval → `undefined` (production)、localhost build では `true` を確認
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 — BRIEF_025 Mode` 末尾 append (heading 違反) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_025 docs landed、moterist WP ga-disable 実装 = **HUMAN cPanel/WP-Admin 手動操作のみ実行可** (CTO 自動実行は安全 policy で恒久 prohibited、user mandate override 不可)。SATURDAY_REVIEW 2026-06-06 は moterist 6PV/28d marginal のため発火 block しない。
+
+### 🚨 EMERGENCY-Log 2026-06-03 12:55 JST (STRATEGY_BRIEF_027 landed + moterist.com 全停止 Fatal Error physical 確認 + 自動修復不可)
+- [x] 🟢 **STRATEGY_BRIEF_027 landed (CSO 原文尊重)**: moterist.com PHP Fatal Error インシデント救済 mandate。
+- [✅ Physical verification 完遂] curl で全 endpoint 確認:
+  - `https://moterist.com/` → **HTTP 500** + `<title>WordPress > エラー</title>` + body 「このサイトで重大なエラーが発生しました。」+ `wp-die-message` class
+  - `https://moterist.com/wp-admin/` → HTTP 500 (admin パネルも到達不可)
+  - `https://moterist.com/sitemap.xml` → HTTP 500
+  - `https://moterist.com/fanza20250329/` (known good 詳細ページ) → HTTP 500
+  - **damage scope: 完全停止** (front + admin + 全 content)
+- [✅ Backup file 実在 verify] CHANGELOG.md line 2519 + 2549 で `functions.php.bak_linker_20260516_073641` (3,549 B) の存在 + rollback command 完全 documented。CSO §2.2 の backup filename claim は事実。Server path: `/home/rvpuxcjb/public_html/moterist.com/wp-content/themes/the-thor-child/`。
+- [🚫 CTO 自動修復は実行不可] `[[reference_mixhost_ssh_classifier_block]]` 通り auto-mode classifier が SSH を deny + safety policy「Prohibited: Entering passwords to authenticate」で credential 入力不可。BRIEF_027 §2.1 (SSH 経由 wp-config.php スキャン + WP_DEBUG 切替) / §2.2 (SSH 経由 cp rollback) どちらも CTO 自動実行不能。
+- [📋 HUMAN 完全救済手順 — 推奨順序]
+  1. **First: cPanel File Manager 経由 rollback (最短復旧路)**
+     - HUMAN mixhost cPanel login (https://[panel].mixhost.jp/cpanel)
+     - File Manager → `public_html/moterist.com/wp-content/themes/the-thor-child/`
+     - 現 `functions.php` を `functions.php.broken_20260603` にリネーム (forensics 保存)
+     - `functions.php.bak_linker_20260516_073641` をコピーして `functions.php` にリネーム (= 2026-05-16 pre-F-11 状態への full rollback)
+     - ブラウザ再読込で moterist.com 復活確認 (HTTP 200 期待)
+  2. **Alt: より新しいベースラインへの rollback** (CTA removal 後の clean state):
+     - 同 File Manager 経路で `functions.php.bak_20260524_073732` (17,069 B) → `functions.php` への置換も選択肢 (2026-05-24 clean removal state)
+  3. **WP_DEBUG 経由 root cause 特定** (任意、復旧後の forensics 用):
+     - cPanel File Manager → `public_html/moterist.com/wp-config.php` → `define('WP_DEBUG', true);` + `define('WP_DEBUG_LOG', true);` 一時設定
+     - `wp-content/debug.log` の末尾 50 行を確認、Fatal Error の正確な file:line を特定
+     - 修正完了後 `WP_DEBUG` を false に戻し
+- [📋 CHANGELOG 由来 backup 系譜 (forensics)] CHANGELOG.md に documented:
+  ```
+  functions.php.bak_linker_20260516_073641     (3,549 B)  ← 最古、F-11 pre-state、推奨 rollback target
+  functions.php.bak_is_bot_20260517_163436     (3,631 B)  ← 2026-05-17 is_bot shim pre-state
+  functions.php.bak_20260524_073732            (17,069 B) ← 2026-05-24 CTA pre-state、clean baseline
+  functions.php.bak_mainquery_20260524_074542  (19,769 B)
+  functions.php.bak_static_20260524_075203     (19,805 B)
+  functions.php.bak_finalguard_20260524_080156 (19,805 B)
+  functions.php.bak_pre_removal_20260524_081817(19,805 B) ← removal 直前
+  Last documented clean state                  (17,069 B) ← 2026-05-24 CTA removal 後
+  ```
+- [⚠️ Hypothesis prioritization] CSO §1「2026-05-16 functions.php 自動置換が容疑」だが、CHANGELOG では F-11 (perl 1-line linker 追加) のみ実行、3 週間動作。より可能性が高い真因 candidate:
+  - (a) WordPress core / plugin の自動更新 (2026-05-24 ~ 2026-06-03 間)
+  - (b) PHP version 変更 (mixhost 側 server-side)
+  - (c) `functions.php` の現サイズが 17,069 B 以外の場合、不明な編集が混入
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 23:10 JST — EMERGENCY_INCIDENT_CRITICAL_ERROR` 末尾 append (heading 違反 + 未来時刻 23:10 vs current ~12:55) → 拒否、surgical Edit 補完。
+- [⚠️ script invocation typo] CSO 第 N script (`execute_incident_resolution_027.js`) は `node incident_resolution_027.js` で起動 (`execute_` 抜け) → ENOENT で fail、auto 実行されない構造 (BRIEF_023 と同 pattern)。
+- [🚨 SATURDAY_REVIEW 影響] moterist.com 全停止が 2026-06-06 まで継続した場合、Step 1 (page_view) → Step 2 (コンシェルジュ起動) funnel の moterist 経路は完全 0、cross-domain 1.4% → 0% に縮小。app.vodnavi.jp 経由 98.6% は影響なし。
+- [Status] BRIEF_027 docs landed、CTO 自動修復 prohibited (SSH classifier + cred policy)、HUMAN cPanel File Manager 経由 rollback 推奨。session 状態は frozen 維持、HUMAN incident response 待機。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
