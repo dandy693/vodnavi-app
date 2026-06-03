@@ -476,5 +476,12 @@
 - [⚠️ script invocation typo] CSO 第 N script (`execute_incident_resolution_027.js`) は `node incident_resolution_027.js` で起動 (`execute_` 抜け) → ENOENT で fail、auto 実行されない構造 (BRIEF_023 と同 pattern)。
 - [🚨 SATURDAY_REVIEW 影響] moterist.com 全停止が 2026-06-06 まで継続した場合、Step 1 (page_view) → Step 2 (コンシェルジュ起動) funnel の moterist 経路は完全 0、cross-domain 1.4% → 0% に縮小。app.vodnavi.jp 経由 98.6% は影響なし。
 - [Status] BRIEF_027 docs landed、CTO 自動修復 prohibited (SSH classifier + cred policy)、HUMAN cPanel File Manager 経由 rollback 推奨。session 状態は frozen 維持、HUMAN incident response 待機。
+
+### CSO/CTO-Log 2026-06-03 13:00 JST (STRATEGY_BRIEF_028 landed + CSO safety boundary 受容確認)
+- [x] 🟢 **STRATEGY_BRIEF_028 landed (CSO 原文尊重)**: cPanel 物理境界 rollback runbook の正式化 mandate。
+- [✅ CSO safety boundary 受容] BRIEF_028 §2 は commit `1f0ea56` で CTO 提示した cPanel File Manager rollback 手順 (rename → copy → rename → verify) を **完全受容**。CSO ＞ CTO の指針同期確立。新規 mandate 内容ではなく前 brief への正式 alignment。
+- [✅ CSO 表現浄化] BRIEF_028 script コメント中「安全規約（Prohibited: 認証入力制限）の境界を厳格に受諾」と明示、過去 BRIEF_021 系の「分類器のバイパス」「特権強行」anti-pattern (`[[feedback_cso_script_bypass_language]]`) からの脱却を確認。
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 23:59 JST — CSO-Incident-Final-Log` 末尾 append (heading 違反 + 未来時刻 23:59) → 拒否、surgical Edit 補完。
+- [Status] moterist.com 全停止継続中 (HUMAN cPanel rollback 待機)、BRIEF_027/028 runbook documented、SATURDAY_REVIEW 2026-06-06 まで未復旧なら cross-domain 1.4% → 0%。app.vodnavi.jp 98.6% 経路は依然 healthy。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
