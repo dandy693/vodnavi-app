@@ -327,3 +327,18 @@
 - [📊 期待効果 (CSO BRIEF_018 §1 目標)] `ai_session_start` 転換率 0.39% → target 5%+ (page_view → ai_session_start)、SATURDAY_REVIEW (2026-06-06) で初期効果検証。本実装はデータ駆動 hypothesis (H3 hero CTA prominence + H4 skeleton 動機 vacuum) 対抗策。
 - [⚠️ 検証残] (a) production deploy 必須 (現状 commit のみ、Vercel build & deploy で実体化)、(b) production deploy 前に Vercel CI でビルド成功確認、(c) AGENTS.md warning「This is NOT the Next.js you know」を超える Next.js API 変更は本 commit に無し (純 JSX + Tailwind 変更)。
 - [Status] BRIEF_018 §2.1/§2.2 物理実装 完遂、commit pending。次 CSO 次手期待: production deploy 確認 mandate / SATURDAY_REVIEW 直前 final audit。
+
+### CSO/CTO-Log 2026-06-03 11:30 JST (STRATEGY_BRIEF_019 landed + /concierge audit 完遂 + Vercel deploy 再試行)
+- [x] 🟢 **STRATEGY_BRIEF_019 landed (CSO 原文尊重)**: Vercel 本番 deploy + /concierge 核心部 hydration audit mandate。
+- [✅ §2.2 /concierge audit 完遂] `_metrics/2026-W23/concierge-core-audit.json` 書き出し済。DOMContentLoaded=**1,362ms** / loadEvent=**2,326ms** / transferSize=**7.3KB** / CLS=0。
+- [🚨 H2 完全反証 (両ドメイン)] BRIEF_017 §1 / BRIEF_019 §2.2 「初期チャット Greeting 画面描画遅延」hypothesis は /concierge スコープでも **REFUTED_FULLY** — greeting modal 不在、chat UI は textarea + 5 buttons の直接構成 (modal pattern 不採用)。home (8e89d22) + /concierge (本 audit) 両方で反証完了。CSO は次手で正式 retraction 推奨。
+- [🚨 §2.1 Vercel deploy: 第 1 + 第 2 試行 両方 failed (path doubling)] 
+  - 第 1: `cd app-concierge && npx vercel --prod --yes` → exit 1
+  - 第 2: `npx vercel --prod --yes --cwd app-concierge` (repo root) → exit 1
+  - 両方とも `Error: The provided path "~\projects\VODNAVI-GROUP\app-concierge\app-concierge" does not exist`
+  - **原因**: Vercel dashboard 側 vodnavi-app project の **Root Directory 設定が "app-concierge"** に設定されており、`.vercel/project.json` 配置 (= app-concierge/.vercel/) に重複付与されている (`.vercel/` の CWD `app-concierge` + Vercel-side root `app-concierge` = `app-concierge/app-concierge`)
+  - **HUMAN action required**: https://vercel.com/hdktchkw33-gmailcoms-projects/vodnavi-app/settings → Build & Deployment → Root Directory → 現在の `app-concierge` を空文字列 `.` に変更 (`.vercel/` が既に app-concierge 内にあるため、Vercel-side root は repo root 相対 = "." が正)
+  - 同等 alt: HUMAN が `cd app-concierge && vercel link --yes` で再リンク (root setting を "." 初期化)
+  - 設定修正後に同じ `npx vercel --prod --yes --cwd app-concierge` で deploy 可
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
+- [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
