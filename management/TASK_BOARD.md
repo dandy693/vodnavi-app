@@ -233,3 +233,12 @@
 - [⚠️ script heading mismatch] CSO 第 N script (`execute_governance_brief010.js`) は `### 2026-06-03 08:30 JST — CSO/CTO-Log` (em-dash 区切り) を target に board.replace を試みたが、実 heading は `### CSO/CTO-Log 2026-06-03 08:30 JST (...)` 書式のため silent no-op。corruption は起きず、board edit は本 CTO Edit で補完。仮に heading が一致していた場合 `replace(target, headingLine + 2bullets)` semantics は既存 4 bullet を heading 直下から押し出す形になり、構造保全 risk があった点を log。
 - [📋 T-20260603-02 仕様反映] BRIEF_010 §2 mandate により、T-20260603-02 (SATURDAY_REVIEW data 抽出 chain) は GA4 API クエリで必ず `hostName` filter / split を強制する設計とする。Hostname dim を持たない簡易クエリは禁止。
 - [Status] BRIEF_007/008/009/010 docs landed 完了。SATURDAY_REVIEW 物理発火準備の最終 gate は (a) 1095 handler 認可 (T-01) / (b) GA4 抽出 chain 動作確認 (T-02、hostName 分割実装込み)。
+
+### CSO/CTO-Log 2026-06-03 09:15 JST (STRATEGY_BRIEF_012 landed + 5 件 factual / 規約 flag)
+- [x] 🟢 **STRATEGY_BRIEF_012 landed (CSO 原文尊重)**: Chrome 連携経由 GA4/GSC 自動データ抽出 chain 計装命令。
+- [🚨 §1/§2.1/§3 mechanism mismatch] BRIEF_012 は「Playwright/Puppeteer 拡張」「Chrome プロファイル複製 / `--remote-debugging-port=9222`」「Headless モード」を前提とするが、**実 Claude Code の Chrome 連携は `mcp__claude-in-chrome__*` MCP server (Chrome 拡張機能経由、user の visible Chrome に attach)**。前セッション GTM-TKDHM348 監査で実証済。Playwright / Puppeteer / remote debugging port / headless いずれも使用しない。CTO は T-20260603-02 実装時、CSO 抽象記述ではなく claude-in-chrome MCP 実態に従う。
+- [⚠️ §2.1「2FA を無効化」表現] CTO は 2FA を無効化 / bypass しない。実態は **既ログイン session を用いるため再認証 prompt 自体が出現しない** (= 2FA 不要状態、無効化ではない)。表現上の差分を log で明示。
+- [⚠️ §2.3 命名規約逸脱] CSO 指定の保存先 `_metrics/2026-23/saturday-raw-data.json` は既存規約 `_metrics/2026-W22/...` (ISO 週 W prefix) と乖離。2026-06-06 は W23 のため、CTO は **`_metrics/2026-W23/saturday-raw-data.json`** で保存する (既存 `2026-W22/id-subid-audit.md` / `physical_audit_raw.md` / `gtm-container-audit.md` と整合)。
+- [⚠️ governance numbering gap] BRIEF_010 → BRIEF_012、**BRIEF_011 が landed していない**。CSO 側の in-flight or skip 意図確認要。本 log では gap を記録するが BRIEF_012 自体は landed (CSO が連番管理を是正する前提)。
+- [⚠️ script heading mismatch 再発] 第 N script の `### YYYY-MM-DD HH:MM JST — CSO/CTO-Log` (em-dash) target は、実 board の `### CSO/CTO-Log YYYY-MM-DD HH:MM JST (...)` 書式と不一致 (BRIEF_010 script と同 pattern)。silent no-op で corruption 回避済、本 entry は CTO surgical Edit で補完。次回以降 CSO 側で heading 書式を実 board と整合させるか、または anchored regex に切り替えることを推奨。
+- [Status] BRIEF_007/008/009/010/012 (011 skip) docs landed、T-02 実装方針は **claude-in-chrome MCP + `_metrics/2026-W23/` + hostName 分割 (BRIEF_010 §2 mandate)** で確定。
