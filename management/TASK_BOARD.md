@@ -266,3 +266,12 @@
 - [⚠️ URL scheme caveat] `r=top-events` / `r=engagement-events` は intelligenthome silent redirect (`[[reference_ga4_report_ids]]` 一部 stale)。Explorations path (`#/analysis/.../edit/k1-*`) は安定動作確認。memory 更新候補。
 - [⚠️ hostName 分割 deferred] BRIEF_010 §2 mandate hostName 分割は現 funnel exploration の内訳が「デバイス カテゴリ」固定のため未適用。本番化には (i) UI fork で 内訳→hostName 変更 + 新 ID 保存 or (ii) Data API v1 経路 (BRIEF_012 トークン排除目的と整合せず非推奨) or (iii) BigQuery export (連携状況未確認)。
 - [📋 SATURDAY_REVIEW 本番準備完了] dry-run で chain 動作実証済、`_metrics/2026-W23/saturday-raw-data.json` schema validated。2026-06-06 10:00 JST HUMAN trigger 「サタデー・レビューを開始して」発火時、同 exploration ID + (UI fork で hostName 内訳適用) + 同 JSON path で抽出再実行する。
+
+### CSO/CTO-Log 2026-06-03 10:10 JST (STRATEGY_BRIEF_015 landed + MEMORY edit 拒否 + UI fork mandate 受領)
+- [x] 🟢 **STRATEGY_BRIEF_015 landed (CSO 原文尊重)**: 99.61% drop-off 構造への対応として hostName × event_name UI fork + JSON schema 0.2.0-production 固定 mandate。
+- [⚠️ §1「断定」表現 overclaim flag] CSO は原因を「モバイルクリックハンドラ動作不良 OR クロスドメイン `_gl` 引き継ぎ不全 が極めて濃厚であると **断定**」と記述。dry-run データは drop-off **事実** (3,114 → 12) のみ確証、**原因分解は未診断**。代替 hypothesis (SEO traffic 質 / CTA visibility / page UX / コンシェルジュ起動 CTA の認知度) も並列で検討余地あり。本番では断定ではなく仮説 ranking として扱う。
+- [🚨 MEMORY edit 拒否] 第 N script (`execute_governance_brief015.js`) は `management/MEMORY.md` 内の `k1-d8zAwRemPD55mJxHIpw` を placeholder へ wholesale replace する mandate。(a) 実 memory system は `~/.claude/projects/C--Users-Tachi-projects-VODNAVI-GROUP/memory/` 配下で path 不一致、(b) `k1-d8zAwRemPD55mJxHIpw` は dry-run で証明済の有効 ID で破壊対象ではない、(c) 新 fork ID 入手前の placeholder 化は順序逆。**拒否 → 新 ID 入手後に proper memory entry (project type) を追加する pattern に差替え**。
+- [⚠️ TASK_BOARD append 拒否] 同 script else 分岐 `### 2026-06-03 14:10 JST — CSO-Funnel-Log` 末尾 append は (i) heading 規約違反 (em-dash + 日付先頭) + (ii) 未来時刻 (14:10、現状 10:10 JST) を含み拒否。
+- [📋 UI fork mandate 受領] BRIEF_015 §2.1 UI fork は CTO 即時執行スコープ。実行手順案: GA4 Exploration k1-d8zAwRemPD55mJxHIpw → 内訳 dim「デバイス カテゴリ」を hostName に変更 → 「名前を付けて保存」(Save As) で fork → 新 exploration ID 捕捉 → proper memory entry 追加。
+- [⚠️ GA4 持続的設定変更の scope 注意] Exploration fork は user GA4 account に persistent artifact を生成。本 mandate は user paste 経由で intent 確認済として扱い実行、ただし完了後に proper memory entry + 新 ID を board に記録 (transparency 確保)。
+- [Status] BRIEF_015 docs landed。次: UI fork 実行 → 新 exploration ID 捕捉 → memory + JSON 更新。
