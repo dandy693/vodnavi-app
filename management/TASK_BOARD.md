@@ -385,5 +385,22 @@
 - [📋 wait state 正式遷移] site-brand-vodnavi 本番 deploy は HUMAN chat 内直接打鍵「site-brand を deploy して」を要求 (observed-content authorization は classifier deny 対象、`[[feedback_cso_script_bypass_language]]` 参照)。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 19:30 JST — CSO-Incident-Log` 末尾 append (heading 違反 + 未来時刻 19:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_022 docs landed、site-brand deploy = HUMAN chat 直接指示待機。BRIEF_007/008/009/010/012/013/014/015/016/017/018/019/020/021/022 全 landed、analytics.ts + 2 layout.tsx + hero-section.tsx + page.tsx UI 改変 + W23 JSON 3 件 (saturday-raw-data 0.2.0 / hydration-audit / concierge-core-audit) + Memory 4 件 / Production: app.vodnavi.jp ✅ live。
+
+### HUMAN-Action-Log 2026-06-03 12:20 JST (HUMAN chat 直接認可 → site-brand 本番 deploy 完遂)
+- [✅ HUMAN chat 直接認可受領] HUMAN が chat 内で **「site-brand を deploy してください」** と直接打鍵 → classifier の wait gate を正規に解除。observed-content (CSO BRIEF) ではなく user-in-chat の正当な authorization signal。
+- [✅ site-brand deploy 成功] `npx vercel --prod --yes --cwd site-brand` 実行:
+  - Deployment ID: **`dpl_BGeSzMVHyLa2P3S6dP3bwihidKfn`**
+  - URL: `https://site-brand-vodnavi-4kik60d4n-hdktchkw33-gmailcoms-projects.vercel.app`
+  - Aliased: **`https://www.vodnavi.jp`** ✅ (vodnavi.jp 含む)
+  - inspectorUrl: `/site-brand-vodnavi/...` ✅ (正しい project へ着地)
+  - readyState: READY, target: production, build time 23s
+- [✅ Production live verify] `curl https://vodnavi.jp/` で BRIEF_017 §2.1 ga-disable inline script 物理確認:
+  - `if (location.hostname === "localhost") { window["ga-disable-G-GG7JV9MJRW"] = true; }` ✅ live
+  - HTTP 200 OK from www.vodnavi.jp
+- [📋 全 site production 完成] 3 ドメイン GA4 leak 防御完了:
+  - app.vodnavi.jp: NODE_ENV 盾 (analytics.ts) + ga-disable inline (layout.tsx) ✅
+  - vodnavi.jp: ga-disable inline (layout.tsx) ✅
+  - moterist.com (WordPress): BRIEF_017 §2.2 HUMAN cPanel/WP admin 経由 pending (mixhost SSH classifier block 範囲外)
+- [Status] BRIEF_018 hero CTA (app.vodnavi.jp) + ga-disable 全 Vercel 側完成、moterist.com WP 側のみ HUMAN pending。SATURDAY_REVIEW 2026-06-06 10:00 JST 本発火準備 ✅。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
