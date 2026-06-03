@@ -576,5 +576,15 @@
   - **Path B** (cPanel File Manager 経由、推奨): admin login 不要、BRIEF_027 runbook で functions.php rollback (functions.php → broken_20260604 / bak_linker_20260516_073641 → functions.php)
 - [🎯 Path B 推奨理由] (i) password/captcha 突破不要 (ii) BRIEF_027 4 brief ratified 済 (iii) functions.php specific issue なら 1 shot 復旧 (iv) parent the-thor issue なら Path A or theme dir 全体 rename fallback
 - [Status] WP 公式診断で theme THE THOR confirmed、recovery cookie set 済 in Chrome、HUMAN Path A or B 選択待機。
+
+### 🎯 Diagnostic-Progress-Log 2026-06-04 (binary 2 round で犯人を Plugin 層に絞り込み)
+- [✅ Round 1: functions.php rollback test] HUMAN が `functions.php.bak_20260524_073732` (16.67 KB, CHANGELOG-documented clean baseline) を `functions.php` に rollback → 500 継続 → **child theme functions.php 容疑除外**
+- [✅ Round 2: plugin elimination test] HUMAN が `wp-content/plugins/` → `plugins.disabled/` リネーム → moterist.com **HTTP 200 復活** (curl verified)
+- [🎯 真因確定] WordPress 起動順 (config → core → plugins → theme → hooks) のうち **step 3 plugins ロード時に fatal**、step 4 theme 到達せず → functions.php 内容に関わらず必ず 500
+- [✅ WP 公式診断 (Recovery email) との整合性] WP は「テーマ THE THOR でエラーを捉えました」と通知したが、これは fatal が trigger された URL が theme renders する path だったためであり、root cause は plugins step での fatal。WP の error attribution は表面的、CTO の boot-order analysis が真相に到達
+- [📊 Current production state] moterist.com HTTP 200 with plugins disabled (機能制限あり: cache / SEO / security 等全 plugin 無効)、cross-domain inflow 経路は技術的に存在
+- [📋 次手: plugin bisection] HUMAN が `plugins.disabled/` 内一覧スクショ共有 → CTO が容疑 ranking + 2 分法分割案提示 → 1 round 数分の bisection で犯人 plugin 単独特定
+- [⚠️ WordPress 内部知識発露] CTO の WP boot-order analysis (plugins step 3 → theme step 4) は内部仕様への深い理解、external WP API doc では明示されない順序。実用診断的価値高
+- [Status] 真因絞込完了 (plugins 層、specific plugin TBD)、HUMAN screenshot 共有待機、SATURDAY_REVIEW 2 日後 — plugin 単独特定 + 復活が間に合えば cross-domain 計測復活可能。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
