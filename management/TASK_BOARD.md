@@ -242,3 +242,12 @@
 - [⚠️ governance numbering gap] BRIEF_010 → BRIEF_012、**BRIEF_011 が landed していない**。CSO 側の in-flight or skip 意図確認要。本 log では gap を記録するが BRIEF_012 自体は landed (CSO が連番管理を是正する前提)。
 - [⚠️ script heading mismatch 再発] 第 N script の `### YYYY-MM-DD HH:MM JST — CSO/CTO-Log` (em-dash) target は、実 board の `### CSO/CTO-Log YYYY-MM-DD HH:MM JST (...)` 書式と不一致 (BRIEF_010 script と同 pattern)。silent no-op で corruption 回避済、本 entry は CTO surgical Edit で補完。次回以降 CSO 側で heading 書式を実 board と整合させるか、または anchored regex に切り替えることを推奨。
 - [Status] BRIEF_007/008/009/010/012 (011 skip) docs landed、T-02 実装方針は **claude-in-chrome MCP + `_metrics/2026-W23/` + hostName 分割 (BRIEF_010 §2 mandate)** で確定。
+
+### CSO/CTO-Log 2026-06-03 09:35 JST (STRATEGY_BRIEF_013 landed + T-02 implementation 認可受領)
+- [x] 🟢 **STRATEGY_BRIEF_013 landed (CSO 原文尊重)**: claude-in-chrome MCP 自動データ抽出 chain 最終稼働仕様。BRIEF_012 で CTO が flag した 2 件 (Chrome mechanism / W23 path) を **CSO 側が反映済** (§2.1 で `mcp__claude-in-chrome__*` 明記、§2.3 で W23 path 明記)。
+- [📋 T-02 implementation 認可] BRIEF_013 §2 「データ抽出ロジックを配備せよ」は T-20260603-02 (SATURDAY_REVIEW data 抽出 chain) の実装認可として受領。実装スコープ = MCP attach + GA4 p489519780 hostName 分割クエリ + GSC moterist.com 抽出 + `_metrics/2026-W23/saturday-raw-data.json` 焼き出し。**実発火 (SATURDAY_REVIEW 本番実行) は 2026-06-06 10:00 JST HUMAN trigger 「サタデー・レビューを開始して」待ち** (BRIEF_007 §3 + BRIEF_013 §1)。
+- [⚠️ §2.1 wording] 「シームレスに捕捉・起動」の「起動」(launch) は誤、claude-in-chrome は既存 Chrome に **attach** する mechanism (起動はしない)。実装時 CTO は attach 動作で配備、新規起動はしない。
+- [⚠️ §2.2 wording] 「ミリ単位で個別に識別」の「ミリ単位」(millisecond) は event count 抽出文脈では奇妙。意図は「正確に / ピンポイントで」と読み替え、event 単位での発火実数値抽出として実装する。
+- [⚠️ BRIEF_011 numbering gap 継続] 010 → 012 → 013、011 依然 未 landed。CSO 側 numbering 一貫性確認要。
+- [⚠️ script heading mismatch 慢性継続] 第 N script (`execute_governance_brief013.js`) target `- [x] STRATEGY_BRIEF_012（Chrome連携仕様書）の策定・ landed` は実 board に存在せず (Grep verify) silent no-op。本 entry は CTO surgical Edit で補完。[[feedback_cso_script_heading_mismatch]] 通り。
+- [Status] BRIEF_007/008/009/010/012/013 (011 skip) docs landed、T-02 implementation gate clear。残: (a) T-01 1095 handler HUMAN classifier 認可 (b) T-02 実装着手 or HUMAN dry-run トリガー指示。
