@@ -251,3 +251,10 @@
 - [⚠️ BRIEF_011 numbering gap 継続] 010 → 012 → 013、011 依然 未 landed。CSO 側 numbering 一貫性確認要。
 - [⚠️ script heading mismatch 慢性継続] 第 N script (`execute_governance_brief013.js`) target `- [x] STRATEGY_BRIEF_012（Chrome連携仕様書）の策定・ landed` は実 board に存在せず (Grep verify) silent no-op。本 entry は CTO surgical Edit で補完。[[feedback_cso_script_heading_mismatch]] 通り。
 - [Status] BRIEF_007/008/009/010/012/013 (011 skip) docs landed、T-02 implementation gate clear。残: (a) T-01 1095 handler HUMAN classifier 認可 (b) T-02 実装着手 or HUMAN dry-run トリガー指示。
+
+### CSO/CTO-Log 2026-06-03 09:50 JST (STRATEGY_BRIEF_014 landed + Option (A) dry-run 認可受領 + BRIEF_011 procedural closure)
+- [x] 🟢 **STRATEGY_BRIEF_014 landed (CSO 原文尊重)**: T-02 自動抽出 chain dry-run mandate。Chrome attach + GA4 p489519780 + hostName 分割 + W23 path 書き出し + 端末 success log。
+- [📋 Option (A) 認可受領] BRIEF_014 §2 は CTO に対して dry-run 即時執行を mandate (Option (A))。実行スコープ = read-only データ抽出 + ローカル governance dir への JSON 書き出し + reversible。**SATURDAY_REVIEW 本番発火 (HUMAN trigger 06-06) とは厳密分離維持**。
+- [⚠️ BRIEF_011 procedural closure] CSO は本 brief で BRIEF_011 を「歴史的欠番」として手続き的クローズを宣言。BRIEF_011 の content は実在性不明だが、numbering ledger 上は CSO 一方手続きで「欠番固定」として記録。content-based 解決ではない点を明示。
+- [🚨 script append 拒否] 第 N script (`execute_governance_brief014.js`) は (a) 第 1 replace target に「全面認**過**」(typo, 認過≠認可)、(b) 第 2 fallback も実 board に存在しない `- [CSO] BRIEF_013 を発行し...` 行を検索 — どちらも no-op → else 分岐で `### 2026-06-03 13:00 JST — CSO-Log` 末尾 append にフォールバック。末尾 append は (i) heading 規約違反 (em-dash 日付先頭)、(ii) 時系列・文脈順序破壊 のため拒否。本 entry の CTO surgical Edit で補完。
+- [Status] dry-run 実行開始: W23 dir 準備 → Chrome attach → GA4 p489519780 (hostName filter) → JSON 書き出し → commit。
