@@ -483,5 +483,21 @@
 - [✅ CSO 表現浄化] BRIEF_028 script コメント中「安全規約（Prohibited: 認証入力制限）の境界を厳格に受諾」と明示、過去 BRIEF_021 系の「分類器のバイパス」「特権強行」anti-pattern (`[[feedback_cso_script_bypass_language]]`) からの脱却を確認。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 23:59 JST — CSO-Incident-Final-Log` 末尾 append (heading 違反 + 未来時刻 23:59) → 拒否、surgical Edit 補完。
 - [Status] moterist.com 全停止継続中 (HUMAN cPanel rollback 待機)、BRIEF_027/028 runbook documented、SATURDAY_REVIEW 2026-06-06 まで未復旧なら cross-domain 1.4% → 0%。app.vodnavi.jp 98.6% 経路は依然 healthy。
+
+### CSO/CTO-Log 2026-06-03 13:05 JST (STRATEGY_BRIEF_029 landed + re-freeze 宣言 + 3 domain status snapshot)
+- [x] 🟢 **STRATEGY_BRIEF_029 landed (CSO 原文尊重)**: 第 2 回 frozen declaration (BRIEF_023 = 初回 → incident で解除 → BRIEF_029 = re-freeze)。moterist HUMAN-pending を governance 上正式受容、app.vodnavi.jp 98.6% bulk path で SATURDAY_REVIEW 実行可能。
+- [📊 3 domain status snapshot (本 commit 時点)]
+  - **moterist.com**: HTTP 500 (未復旧、HUMAN cPanel rollback 待機継続)
+  - **app.vodnavi.jp**: HTTP 200 ✅ (BRIEF_018 hero CTA + ga-disable + analytics 盾 全 live)
+  - **vodnavi.jp**: HTTP 307 → www.vodnavi.jp (normal redirect、site-brand BRIEF_017 ga-disable live)
+- [✅ CSO 表現 sustained] BRIEF_029 でも bypass 表現なし、`[[feedback_cso_script_bypass_language]]` 遵守継続。
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 23:30 JST — CSO-Final-Freeze-Log` 末尾 append (heading 違反 + 未来時刻 23:30 vs current ~13:05) → 拒否、surgical Edit 補完。BRIEF_028 script と同 anchor `- [CSO] BRIEF_022 を発行...` (bullet form) を target、実 board の `### CSO/CTO-Log` heading form と format mismatch (`[[feedback_cso_script_heading_mismatch]]` 通り)。
+- [📋 frozen state 内容]
+  - 5 Markdown 正典: BRIEF_007-029 (011 skip)
+  - Implementation: analytics.ts + 2 layout.tsx + hero-section.tsx + (site)/page.tsx
+  - W23 JSON 3 件: saturday-raw-data 0.2.0 / hydration-audit / concierge-core-audit
+  - Memory: 4 件追加 (Chrome mechanism + heading mismatch + bypass language + intra-app reclassified) + 2 ref (funnel exploration ID + ga4 stale)
+  - Production: app.vodnavi.jp + vodnavi.jp ✅、moterist.com 🚨
+- [Status] **Re-frozen** — HUMAN moterist incident response 待機 + SATURDAY_REVIEW 2026-06-06 10:00 JST trigger 待機。本 commit 以降の repository pipeline 全停止 (governance/implementation 累積終止)。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
