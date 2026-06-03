@@ -1,0 +1,137 @@
+{
+  "schema_version": "0.1.0-dry-run",
+  "dry_run": true,
+  "run_label": "BRIEF_014 §2 dry-run / T-20260603-02 chain verify",
+  "captured_at_local": "2026-06-03 ~09:55 JST",
+  "captured_via": "mcp__claude-in-chrome__* (Chrome 拡張機能 attach, authuser=2)",
+  "auth_proxy_verify": "URL ?authuser=2 で VODまとめ研究所 / vodnavi.jp プロパティが正常表示 → moterist.com@gmail.com session 一致 (per reference_google_accounts)",
+
+  "ga4_property": {
+    "id": "p489519780",
+    "account_property_segment": "a355462253p489519780",
+    "name": "VODまとめ研究所",
+    "stream_label": "vodnavi.jp",
+    "measurement_id_referenced": "G-GG7JV9MJRW"
+  },
+
+  "exploration_funnel": {
+    "name": "VODNAVI ファネル: 記事 → コンシェルジュ → product_click",
+    "exploration_id": "k1-d8zAwRemPD55mJxHIpw",
+    "url": "https://analytics.google.com/analytics/web/?authuser=2#/analysis/a355462253p489519780/edit/k1-d8zAwRemPD55mJxHIpw?restoreUserState=true",
+    "period_label": "過去 28 日間",
+    "period_start_local": "2026-05-06",
+    "period_end_local": "2026-06-02",
+    "internal_breakdown_dimension": "デバイス カテゴリ",
+    "steps": [
+      {
+        "step_index": 1,
+        "name": "Step 1: 記事閲覧 (page_view)",
+        "device_breakdown": [
+          {"device": "合計", "active_users": 3114, "completion_pct": 0.39, "abandons": 3102, "abandon_rate_pct": 99.61},
+          {"device": "mobile", "active_users": 2112, "completion_pct": 0.24, "abandons": 2107, "abandon_rate_pct": 99.76},
+          {"device": "desktop", "active_users": 929, "completion_pct": 0.75, "abandons": 922, "abandon_rate_pct": 99.25},
+          {"device": "tablet", "active_users": 73, "completion_pct": 0, "abandons": 73, "abandon_rate_pct": 100}
+        ]
+      },
+      {
+        "step_index": 2,
+        "name": "Step 2: コンシェルジュ起動",
+        "device_breakdown": [
+          {"device": "合計", "active_users": 12, "step1_share_pct": 0.4, "completion_pct": 8.33, "abandons": 11, "abandon_rate_pct": 91.67},
+          {"device": "mobile", "active_users": 5, "step1_share_pct": 0.2, "completion_pct": 0, "abandons": 5, "abandon_rate_pct": 100},
+          {"device": "desktop", "active_users": 7, "step1_share_pct": 0.8, "completion_pct": 14.29, "abandons": 6, "abandon_rate_pct": 85.71},
+          {"device": "tablet", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null}
+        ]
+      },
+      {
+        "step_index": 3,
+        "name": "スクリーン ビュー / ページビュー",
+        "device_breakdown": [
+          {"device": "合計", "active_users": 1, "step1_share_pct": 0.03, "completion_pct": 100, "abandons": 0, "abandon_rate_pct": 0},
+          {"device": "mobile", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+          {"device": "desktop", "active_users": 1, "step1_share_pct": 0.1, "completion_pct": 100, "abandons": 0, "abandon_rate_pct": 0},
+          {"device": "tablet", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null}
+        ]
+      },
+      {
+        "step_index": 4,
+        "name": "購入",
+        "device_breakdown": [
+          {"device": "合計", "active_users": 1, "step1_share_pct": 0.03, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+          {"device": "mobile", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+          {"device": "desktop", "active_users": 1, "step1_share_pct": 0.1, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+          {"device": "tablet", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null}
+        ]
+      }
+    ]
+  },
+
+  "home_dashboard_30d_summary": {
+    "active_users": {"value": 438, "delta_pct": 25.5},
+    "events": {"value": 2282, "delta_pct": 31.8},
+    "key_events": {"value": 44, "delta_pct": 48.2},
+    "new_users": {"value": 428, "delta_pct": 26.2},
+    "country_top": [
+      {"country": "Japan", "active_users": 1243, "delta_pct": 26.6},
+      {"country": "United States", "active_users": 37, "delta_pct": 76.2},
+      {"country": "China", "active_users": 20, "delta_pct": 35.5},
+      {"country": "South Korea", "active_users": 19, "delta_pct": 137.5},
+      {"country": "Taiwan", "active_users": 9, "delta_pct": 18.2},
+      {"country": "Hong Kong", "active_users": 8, "delta_pct": 14.3},
+      {"country": "Indonesia", "active_users": 8, "delta_pct": 33.3}
+    ],
+    "note_discrepancy": "home dashboard top 高位 4 指標 (438/2282/44/428) と 国別 Japan 1,243 は別期間/別比較ベース、本番では同期間に統一する"
+  },
+
+  "realtime_overview": {
+    "active_users_past_30min": 3,
+    "active_users_past_5min": 0,
+    "active_users_per_minute": 0.5,
+    "audience_breakdown": [
+      {"name": "All Users", "count": 3, "pct": 50},
+      {"name": "Japan only (bot filter)", "count": 3}
+    ]
+  },
+
+  "hostName_split_status": {
+    "implemented": false,
+    "reason": "現 Exploration 内訳 dim は デバイス カテゴリ。BRIEF_010 §2 mandate の hostName 分割は内訳変更で実現可。",
+    "next_step_options": [
+      "(i) Explorations UI で 内訳 を hostName に変更 (現 funnel ID k1-d8zAwRemPD55mJxHIpw を fork した新 exploration として保存)",
+      "(ii) GA4 Reporting API (Data API v1) 経由で hostName dimension query — 認証 OAuth or service account 要、トークン切れ risk あり (BRIEF_012 §1 で CSO 排除目的と整合しないため非推奨)",
+      "(iii) BigQuery export 経由 (project 連携要、設定済か未確認)"
+    ]
+  },
+
+  "gsc_extraction_status": {
+    "implemented": false,
+    "reason": "BRIEF_014 §2 は GA4 dry-run のみを mandate。GSC (moterist.com 検索クエリ クリック数 + 平均掲載順位) は本番 SATURDAY_REVIEW で別 chain として実装、または BRIEF_007 §3 trigger 時に追加"
+  },
+
+  "chain_validation": {
+    "chrome_attach": "OK",
+    "ga4_reach": "OK",
+    "property_match": "OK (p489519780 / vodnavi.jp)",
+    "auth_proxy_verify": "OK (authuser=2)",
+    "saved_exploration_reachable": "OK (k1-d8zAwRemPD55mJxHIpw 取得済)",
+    "funnel_data_extractable_via_dom": "OK (<table> innerText から構造化抽出成功)",
+    "hostName_split_via_ui": "DEFERRED (内訳 dim 設定変更必要)",
+    "json_write_path_compliance": "OK (_metrics/2026-W23/ 既存 W22 規約と整合)",
+    "url_scheme_caveat": "r=top-events / r=engagement-events は intelligenthome silent redirect (reference_ga4_report_ids 一部 stale、Exploration 経由は安定)"
+  },
+
+  "key_findings": [
+    "SEO → コンシェルジュ funnel drop-off **99.61%** (3,114 → 12 over 28d, 2026-05-06〜06-02)。memory project_funnel_drop_off_seo_to_concierge (2026-05-25 時点 1,011 → 10) と整合方向、scale 拡大。",
+    "コンシェルジュ起動後の Step 3 (1 件) / Step 4 購入 (1 件) は **sample size 不足**、 final CVR 統計的に評価不能。",
+    "mobile drop-off 99.76% (2,112 → 5) vs desktop 99.25% (929 → 7)。mobile UX 改善余地が顕著、コンシェルジュ起動 CTA の mobile 最適化 candidate。",
+    "コンシェルジュ起動 → 購入到達は desktop のみ (1/7=14.3%)、mobile=0/5。 mobile 上の最終 product_click 配線 (BRIEF_008 §2 trigger 相当) 要検証。",
+    "BRIEF_010 §2 mandate hostName 分割は現 funnel exploration では default 未適用 (内訳=デバイス カテゴリ)、本番化には UI fork or API path 要。"
+  ],
+
+  "next_step_recommendation": [
+    "1. **本番 SATURDAY_REVIEW (2026-06-06 10:00 JST) Trigger 時**: Exploration k1-d8zAwRemPD55mJxHIpw を Chrome attach 経由で同様抽出 + 内訳 dim を hostName に切替 (UI fork) し data を取得。",
+    "2. **GSC chain**: 別 brief or 同 trigger 内 task として、moterist.com property の検索パフォーマンス画面から過去 7 日 click/impression/avg position 抽出。",
+    "3. **mobile drop-off 緊急 hypothesis**: 1095/1106/994/954/1018 全 5 articles の mobile 上 final CTA レンダリング物理確認 (BRIEF_003 §3 inline style biblia-final-cta が mobile で正常 click target になっているか)。",
+    "4. **r= URL scheme stale**: [[reference_ga4_report_ids]] の `r=top-events` `r=all-pages-and-screens` は 2026-06 時点で intelligenthome redirect — memory 更新候補。Explorations 経由 (k1-* path) は安定。"
+  ]
+}

@@ -258,3 +258,11 @@
 - [⚠️ BRIEF_011 procedural closure] CSO は本 brief で BRIEF_011 を「歴史的欠番」として手続き的クローズを宣言。BRIEF_011 の content は実在性不明だが、numbering ledger 上は CSO 一方手続きで「欠番固定」として記録。content-based 解決ではない点を明示。
 - [🚨 script append 拒否] 第 N script (`execute_governance_brief014.js`) は (a) 第 1 replace target に「全面認**過**」(typo, 認過≠認可)、(b) 第 2 fallback も実 board に存在しない `- [CSO] BRIEF_013 を発行し...` 行を検索 — どちらも no-op → else 分岐で `### 2026-06-03 13:00 JST — CSO-Log` 末尾 append にフォールバック。末尾 append は (i) heading 規約違反 (em-dash 日付先頭)、(ii) 時系列・文脈順序破壊 のため拒否。本 entry の CTO surgical Edit で補完。
 - [Status] dry-run 実行開始: W23 dir 準備 → Chrome attach → GA4 p489519780 (hostName filter) → JSON 書き出し → commit。
+
+### CTO-Execution-Log 2026-06-03 09:55 JST (T-20260603-02 dry-run 完遂: VODNAVI ファネル 28d データ物理捕捉)
+- [✅ Chain validation] Chrome attach → GA4 p489519780 reach → exploration `k1-d8zAwRemPD55mJxHIpw` (VODNAVI ファネル: 記事 → コンシェルジュ → product_click) 経由でファネルテーブルを `<table>` innerText から構造化抽出 → `management/_metrics/2026-W23/saturday-raw-data.json` (schema_version 0.1.0-dry-run) 物理書き出し成功。
+- [🎯 Key finding] **SEO → コンシェルジュ funnel drop-off 99.61%** (28d: 3,114 page_view → 12 コンシェルジュ起動)。memory `[[project_funnel_drop_off_seo_to_concierge]]` (2026-05-25 時点 1,011 → 10) と整合方向で scale 拡大、断絶構造維持。`[[project_detail_page_concierge_cta_shipped]]` (2026-05-25 配備) 後の data を含むが drop-off 改善幅は微小。
+- [🎯 Mobile gap] mobile 99.76% vs desktop 99.25% drop-off、コンシェルジュ起動後 mobile=0/5 vs desktop=1/7 → mobile 上の最終 product_click 配線要検証 (BRIEF_008 §2 1095 ハンドラ追加が mobile 上で正常 fire するか含む)。
+- [⚠️ URL scheme caveat] `r=top-events` / `r=engagement-events` は intelligenthome silent redirect (`[[reference_ga4_report_ids]]` 一部 stale)。Explorations path (`#/analysis/.../edit/k1-*`) は安定動作確認。memory 更新候補。
+- [⚠️ hostName 分割 deferred] BRIEF_010 §2 mandate hostName 分割は現 funnel exploration の内訳が「デバイス カテゴリ」固定のため未適用。本番化には (i) UI fork で 内訳→hostName 変更 + 新 ID 保存 or (ii) Data API v1 経路 (BRIEF_012 トークン排除目的と整合せず非推奨) or (iii) BigQuery export (連携状況未確認)。
+- [📋 SATURDAY_REVIEW 本番準備完了] dry-run で chain 動作実証済、`_metrics/2026-W23/saturday-raw-data.json` schema validated。2026-06-06 10:00 JST HUMAN trigger 「サタデー・レビューを開始して」発火時、同 exploration ID + (UI fork で hostName 内訳適用) + 同 JSON path で抽出再実行する。
