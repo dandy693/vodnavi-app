@@ -108,6 +108,15 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="flex min-h-full flex-col">
+        {/* BRIEF_017 §2.1: localhost で production build を起動した場合の page_view leak
+           遮断盾。GTM/GA より先に `ga-disable-G-GG7JV9MJRW` フラグを true にすることで
+           本番 GA4 (G-GG7JV9MJRW) への送信をブラウザレイヤーで凍結する (Google 公式
+           opt-out 機構)。W23 funnel 監査で localhost 1 PV 混入を物理確認、本盾で根絶。 */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `if (location.hostname === "localhost") { window["ga-disable-G-GG7JV9MJRW"] = true; }`,
+          }}
+        />
         {/* GTM noscript iframe を body 最初の子要素として配置する GTM 公式仕様準拠。
            NEXT_PUBLIC_GTM_ID 未設定 / 非本番ではコンテナ自体をマウントしない。
            [[project_funnel_drop_off_seo_to_concierge]] 監査で vodnavi.jp に

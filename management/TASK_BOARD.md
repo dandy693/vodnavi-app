@@ -294,3 +294,14 @@
 - [📌 公式 retraction 受領] CSO BRIEF_016 §1 文中 「99.61% drop-off の original 断定 (mobile handler / `_gl`) を公式撤回し intra-app UX 再固定」を受領、`[[project_funnel_intra_app_reclassified]]` memory と整合確認。
 - [📌 site-brand 側 page_view leak 防御] site-brand には独自 analytics wrapper なし (`@next/third-parties` 経由)、layout.tsx の `<GoogleTagManager gtmId={NEXT_PUBLIC_GTM_ID} />` は env 設定時に無条件 load。site-brand 側 localhost build leak の追加防御は別 task (BRIEF_017 候補 or backlog)。
 - [Status] BRIEF_007/008/009/010/012/013/014/015/016 landed (011 skip)、T-02 UI fork 完遂、analytics.ts 盾強化 commit pending。残: T-01 (1095 handler) / T-03 (mobile hydration audit) / F-02 (SEO event fire 物理確認) / 本番 SATURDAY_REVIEW (2026-06-06)。
+
+### CSO/CTO-Log 2026-06-03 10:55 JST (STRATEGY_BRIEF_017 landed + Phase 1 §2.1 site-brand/app-concierge 両 layout に ga-disable 盾注入)
+- [x] 🟢 **STRATEGY_BRIEF_017 landed (CSO 原文尊重)**: G-GG7JV9MJRW プロパティ全域 localhost リーク遮断 + モバイルハイドレーション物理監査 mandate (3 大同時防衛戦)。
+- [✅ §2.1 実装 完遂 (site-brand + app-concierge 両方)] 両 layout.tsx の `<body>` 直下 (GTM 前) に **Google 公式 opt-out 機構** inline script を注入。`if (location.hostname === "localhost") { window["ga-disable-G-GG7JV9MJRW"] = true; }` を GTM/GA load より先に実行することで、production build を localhost 起動した場合でも GA4 への送信をブラウザレイヤーで凍結。既存 NODE_ENV !== production guard (両 components 内、line ~30) と組み合わせて defense-in-depth 完成。
+- [🚨 §2.2 HUMAN-pending] WordPress (moterist.com) header.php への `ga-disable` 注入は `[[reference_mixhost_ssh_classifier_block]]` 通り auto-mode classifier deny。HUMAN 経路必要: cPanel ファイルマネージャ or WordPress 管理画面 → 外観 → テーマファイルエディター → `the-thor-child/header.php`。注入箇所: `<head>` 内 GTM/GA タグ前。Snippet (HUMAN paste 用):
+  ```html
+  <script>if (location.hostname === "localhost") { window["ga-disable-G-GG7JV9MJRW"] = true; }</script>
+  ```
+- [📋 §2.3 Phase 2 で実行予定] モバイルハイドレーション audit (chrome MCP resize + Performance API + `_metrics/2026-W23/hydration-audit.json`) は本 commit 後に独立 commit で実行。
+- [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 15:00 JST — CSO-Leak-Defense-Log` 末尾 append (heading 違反 + 未来時刻 15:00 vs current ~10:55) → 拒否、surgical Edit 補完。
+- [Status] Phase 1 完遂 (BRIEF_017 + 2 site ga-disable 注入)、Phase 2 (mobile audit) 着手予定、Phase 3 (§2.2) HUMAN 待ち。
