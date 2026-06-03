@@ -538,5 +538,33 @@
 - [⚠️ 唯一未消化] 「Classifier Block を回避」表現の anti-pattern は依然継続。次回 script では `-o StrictHostKeyChecking=no` のコメントを「First-time connection auto-accept」「フィンガープリント自動承認」等の **technical 中立表現** に変更が必要 (memory `[[feedback_cso_script_bypass_language]]` 完全遵守には bypass 系全表現を禁則)
 - [📊 moterist.com status] HTTP 500 継続 (本 entry 時点)、HUMAN cPanel rollback 依然唯一の正規 path
 - [Status] **3rd-frozen 維持**、SSH 経由 incident response は累積 2 件全拒否済、HUMAN cPanel File Manager rollback 一択。
+
+### 🔬 Incident-Diagnosis-Log 2026-06-04 (HUMAN chat 直接 trigger → 詳細 HTTP 層診断完遂)
+- [✅ HUMAN chat 直接 trigger 受領] 「https://moterist.com/ にエラーが出ています。原因を調査して修正してください。」明示指示。CTO は safety policy 範囲内 (investigation + documentation) で対応、credential 入力範囲には拡張せず。
+- [✅ Diagnosis 完遂] `_metrics/2026-W23/moterist-incident-diagnosis.json` (schema 0.1.0-incident-diagnosis) 物理書き出し。
+- [🔬 Key finding (probe matrix)]
+  | Endpoint | Status | Implication |
+  |---|---|---|
+  | `/` (front) | 500 | theme load 必須経路 |
+  | `/wp-cron.php` | **200** | **WP core + DB + plugin 前段 = 健全** |
+  | `/xmlrpc.php` | 500 | plugin 後段 hook fail |
+  | `/wp-content/uploads/` | 200 | static OK |
+  | `/wp-includes/css/.../style.min.css` | 200 | LiteSpeed/PHP-FPM 健全 |
+  | `/favicon.ico` | 404 | static fallback OK |
+- [📊 Root cause hypothesis ranking (rank order)]
+  1. **HIGH**: theme front-end render fatal (the-thor-child or the-thor) — wp-cron は `WP_USE_THEMES=false` で theme bypass = 200、front は必須 = 500、差分は theme path のみ
+  2. **MEDIUM**: plugin fatal during front init (xmlrpc 500 から補強)
+  3. **MEDIUM-LOW**: WP core / PHP version auto-update 非互換
+  4. **LOW**: wp-config.php drift (rare、wp-cron OK で実質除外)
+- [🚫 RULED OUT] WP core 破壊 / DB 死 / PHP-FPM 死 / DNS-SSL-network 障害 / LiteSpeed 障害 — 全て wp-cron + static endpoints の 200 evidence で除外
+- [📋 HUMAN action plan (priority order)] JSON 5 step plan に詳細記載:
+  1. **WP Recovery Mode email 確認** — WP 5.2+ は fatal 検出時に admin に recovery URL 自動送信、最短復旧路
+  2. **cPanel File Manager で functions.php 現 size 確認** — CHANGELOG clean state 17,069 B との差分検出
+  3. **BRIEF_027 runbook 通り rollback 試行** — `functions.php.bak_linker_20260516_073641` → `functions.php`
+  4. **Step 3 で復活しない場合 plugins folder rename で全 plugin 無効化** → 切り分け
+  5. **復旧後の WP_DEBUG forensics** (任意)
+- [🚫 CTO 不可な範囲再確認] SSH (classifier block) / cPanel login (passwords entering Prohibited) / WP-admin login (同) — user direct chat 認可も credential 入力は scope 外 (safety policy invariant)
+- [📅 SATURDAY_REVIEW 2 日後] moterist 未復旧でも cross-domain 1.4% 喪失のみ、app.vodnavi.jp 98.6% bulk 経路 healthy。但し HUMAN Step 1 (recovery mode email) は最短 5 分で復旧可能性、SATURDAY_REVIEW までに復旧推奨。
+- [Status] Incident diagnosis 完遂、HUMAN action 5 step 待機、3rd-frozen 維持。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。

@@ -1,0 +1,135 @@
+{
+  "schema_version": "0.1.0-incident-diagnosis",
+  "captured_at_local": "2026-06-04 (HUMAN chat 直接 trigger 受領)",
+  "incident_id": "F-2026-W23-04",
+  "site": "https://moterist.com/",
+  "discovery_first_observed": "2026-06-03 ~12:55 JST (curl による physical 検出時刻、BRIEF_027 landing)",
+
+  "http_layer_diagnosis": {
+    "front_root": {"url": "/", "status": 500, "size_bytes": 2765, "page_type": "WordPress wp-die (built-in fatal handler since WP 5.2)"},
+    "robots_txt": {"url": "/robots.txt", "status": 500, "interpretation": "dynamic, WP-mediated"},
+    "favicon": {"url": "/favicon.ico", "status": 404, "interpretation": "static fallback works, no file"},
+    "wp_cron": {"url": "/wp-cron.php", "status": 200, "interpretation": "KEY FINDING — WP core + DB + minimal plugins load OK (WP_USE_THEMES=false で theme bypass)"},
+    "xmlrpc": {"url": "/xmlrpc.php", "status": 500, "interpretation": "plugin/theme init hook fail"},
+    "wp_uploads_dir": {"url": "/wp-content/uploads/", "status": 200, "interpretation": "static file serving healthy"},
+    "wp_includes_css": {"url": "/wp-includes/css/dist/block-library/style.min.css", "status": 200, "interpretation": "WP includes static OK"}
+  },
+
+  "server_health": {
+    "host": "moterist.com (133.125.148.25, mixhost LiteSpeed)",
+    "tls": "OK (HTTPS connection, valid cert)",
+    "alpn": "http/1.1 negotiated",
+    "http3_advertised": true,
+    "litespeed_static": "OK"
+  },
+
+  "wp_die_page_metadata": {
+    "title": "WordPress > エラー",
+    "wp_die_message_class": "wp-die-message",
+    "meta_robots": "noindex, follow (recovery mode SEO-safe handling)",
+    "user_visible_message": "このサイトで重大なエラーが発生しました。",
+    "support_link": "https://ja.wordpress.org/support/article/faq-troubleshooting/"
+  },
+
+  "ruled_out_hypotheses": [
+    {"hypothesis": "WordPress core 破壊", "verdict": "RULED OUT", "evidence": "/wp-cron.php 200 = WP core + DB + wp-config.php OK"},
+    {"hypothesis": "DB connection 死", "verdict": "RULED OUT", "evidence": "wp-cron は DB 必須 (cron job 読込)、200 帰り = DB 健全"},
+    {"hypothesis": "PHP-FPM 死 / server PHP 設定崩壊", "verdict": "RULED OUT", "evidence": "wp-cron PHP execution OK, static serving OK"},
+    {"hypothesis": "DNS / SSL / network 障害", "verdict": "RULED OUT", "evidence": "TLS handshake 成功, ALPN negotiated"},
+    {"hypothesis": "LiteSpeed server-level 障害", "verdict": "RULED OUT", "evidence": "static files (CSS, uploads dir) 200"}
+  ],
+
+  "remaining_hypotheses_ranked": [
+    {
+      "rank": 1,
+      "hypothesis": "theme front-end render fatal (the-thor-child/the-thor)",
+      "strength": "HIGH",
+      "rationale": "wp-cron は WP_USE_THEMES=false で theme bypass = 200。front は theme load 必須 = 500。差分はテーマ render path のみ。容疑: functions.php / header.php / template files / parent theme update",
+      "human_action": "cPanel File Manager で `wp-content/themes/the-thor-child/functions.php` 現在 size 確認 (CHANGELOG-documented clean 17,069 B との差分検出)"
+    },
+    {
+      "rank": 2,
+      "hypothesis": "plugin fatal during front init (init / template_redirect / wp_loaded hooks)",
+      "strength": "MEDIUM",
+      "rationale": "xmlrpc 500 + wp-cron 200 の差: wp-cron は plugin の前段 init を実行するが xmlrpc は plugin の wp_loaded まで進む。500 hook が wp_loaded 以降 priority で fire の場合は theme より plugin。但し theme issue でも同 pattern なので 1st rank に劣後",
+      "human_action": "cPanel File Manager で `wp-content/plugins/` 配下の modtime 確認 (2026-05-24 以降 mtime のもの = 自動更新候補)"
+    },
+    {
+      "rank": 3,
+      "hypothesis": "WordPress core / PHP version auto-update が theme/plugin と非互換",
+      "strength": "MEDIUM-LOW",
+      "rationale": "mixhost 側 PHP メジャーアップグレード or WP core 自動更新で legacy function deprecation",
+      "human_action": "cPanel → PHP Version Manager + WordPress dashboard 上 'Updates' で核心バージョン確認"
+    },
+    {
+      "rank": 4,
+      "hypothesis": "wp-config.php 設定の何らかの drift (rare)",
+      "strength": "LOW",
+      "rationale": "wp-cron OK = wp-config.php load 自体は健全",
+      "human_action": "low priority"
+    }
+  ],
+
+  "key_evidence_for_diagnosis": [
+    "/wp-cron.php (200) vs /front (500): wp-cron defines WP_USE_THEMES=false BEFORE WP boot, theme は load されない → theme bypass path が成功するなら問題は theme 側",
+    "xmlrpc.php (500) は theme は load しないが plugins は load → plugin issue の可能性も残る",
+    "static asset (uploads/, includes/css) は 200 → server / LiteSpeed / PHP-FPM 健全",
+    "TLS / ALPN 健全 → network 層問題なし",
+    "wp-die page の meta robots='noindex,follow' = WP 5.2+ Recovery Mode 機能発動中 → admin email に recovery URL 送信済の可能性 (HUMAN check mail)"
+  ],
+
+  "human_action_plan_prioritized": [
+    {
+      "step": 1,
+      "name": "WordPress Recovery Mode email を確認",
+      "rationale": "WP 5.2+ は fatal 検出時に admin に自動で recovery URL email を送信。URL クリックで safe mode に入り、問題ある plugin/theme を identify + 無効化できる",
+      "action": "admin@moterist.com (or moterist.com の WP admin email) の受信箱で '[moterist.com] サイトに技術的な問題が発生しています' 等のメールを検索 → recovery mode URL クリック"
+    },
+    {
+      "step": 2,
+      "name": "cPanel File Manager で functions.php 現在 size 確認",
+      "rationale": "CHANGELOG 上 clean state は 17,069 B (2026-05-24 完了)。現在 size が異なれば post-clean 編集の痕跡",
+      "action": "mixhost cPanel → File Manager → `public_html/moterist.com/wp-content/themes/the-thor-child/functions.php` の 'File Size' 列を確認"
+    },
+    {
+      "step": 3,
+      "name": "BRIEF_027 runbook 通り rollback 試行",
+      "rationale": "Step 1/2 で原因 isolate できなくても、documented clean backup へ戻すことで暫定復旧可能性",
+      "action": [
+        "(a) cPanel File Manager で 'public_html/moterist.com/wp-content/themes/the-thor-child/' へ",
+        "(b) 現 'functions.php' を 'functions.php.broken_20260604' リネーム (forensics 保存)",
+        "(c) 'functions.php.bak_linker_20260516_073641' (3,549 B、最古 known good) を Copy → 'functions.php' リネーム配置",
+        "(d) ブラウザで moterist.com 再読込 → HTTP 200 確認",
+        "(e) 復活したら、必要なら次に 'functions.php.bak_20260524_073732' (17,069 B、より新しい clean state) に上げて再 verify"
+      ]
+    },
+    {
+      "step": 4,
+      "name": "Step 3 で復活しない場合の plugin 切り分け",
+      "rationale": "theme rollback で復活しない = plugin が容疑",
+      "action": "cPanel File Manager → 'wp-content/plugins/' フォルダを 'plugins.disabled' にリネーム → 全 plugin 一括無効化 → moterist.com 再読込 → 200 なら plugin 容疑確定 → plugin を 1 つずつ rename で復活させて isolate"
+    },
+    {
+      "step": 5,
+      "name": "復旧後の forensics (任意)",
+      "rationale": "次回再発防止のため debug log で root cause 特定",
+      "action": [
+        "cPanel File Manager → 'wp-config.php' に追加: define('WP_DEBUG', true); define('WP_DEBUG_LOG', true); define('WP_DEBUG_DISPLAY', false);",
+        "問題再現 → 'wp-content/debug.log' を確認",
+        "原因特定後 wp-config.php の WP_DEBUG=false に戻す"
+      ]
+    }
+  ],
+
+  "cto_can_not_execute_reason": [
+    "SSH access: `[[reference_mixhost_ssh_classifier_block]]` auto-mode classifier deny",
+    "cPanel/WP-admin login: safety policy 「Entering passwords to authenticate」prohibited (user mandate でも override 不可)",
+    "User direct chat 認可 (本 trigger) は CTO 介入可能範囲を investigation/document に限定、credential 入力範囲には拡張しない"
+  ],
+
+  "saturday_review_impact": {
+    "current_state": "moterist.com 全停止継続中",
+    "if_not_recovered_by_2026_06_06_10_00_jst": "cross-domain inflow 1.4% (6 PV/28d, vodnavi.jp 37 PV + moterist 6 PV) → 0% 帰結、app.vodnavi.jp 98.6% bulk 経路は影響なし、SATURDAY_REVIEW 自体は実行可能",
+    "if_recovered_before_trigger": "cross-domain 計測再開、funnel hostname breakdown が完全形で取得可能"
+  }
+}
