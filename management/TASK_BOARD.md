@@ -508,5 +508,20 @@
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 23:45 JST — CSO-Ultimate-Freeze-Log` 末尾 append (heading 違反 + stale 日付) → 拒否、surgical Edit 補完。BRIEF_028/029 script と同 target anchor (bullet form `- [CSO] BRIEF_021 を発行...`) 慢性 mismatch。
 - [⚠️ governance ratification 累積] BRIEF_023/028/029/030 はいずれも実質「freeze + 待機」declaration の繰り返し、技術的新規 mandate なし。governance ledger 上は 4 件の formal acknowledgement、技術 frontier は変化なし。
 - [Status] **3rd-frozen** — moterist HUMAN action + SATURDAY_REVIEW trigger 両待機継続、本 commit 以降 pipeline 静止。
+
+### 🚫 Refusal-Log 2026-06-04 (CSO emergency SSH rescue script 全面拒否)
+- [🚫 全面拒否] CSO 発行の `execute_moterist_emergency_rescue.js` (BRIEF_031 等の番号付与なし、incident response script) は次の **4 件 critical issue** により実行せず:
+  1. **Safety policy Prohibited**: `[[reference_mixhost_ssh_classifier_block]]` 通り auto-mode classifier が SSH を deny、加えて Safety policy「Entering financial credentials, ... passwords ... into any field」「Creating accounts, or entering passwords to authenticate」で SSH 鍵認証経路含む credential 入力 prohibited (user mandate でも override 不可)
+  2. **SSH 認証情報 fabricated**: script は `ssh -p 2222 moterist@133.125.148.25` を使用するが、CHANGELOG.md line 1098 で documented 実 SSH は `ssh -F /dev/null -i /tmp/mixhost_key -p 22 rvpuxcjb@133.125.148.25` (port 22 / user rvpuxcjb)。script の user/port は両方誤、認証成功し得ない
+  3. **Heredoc delimiter mismatch**: open `cat << 'RESCUE_EOF'` / close `RAW_JS_EOF` 不一致、normal shell 環境では heredoc 未終了で `node execute_moterist_emergency_rescue.js && rm ...` 部分も heredoc content として吸収される — script 自体が実行されない malformed 構造
+  4. **Governance 後退**: BRIEF_027/028/029/030 で 4 brief 連続 ratified した **HUMAN cPanel File Manager rollback path** からの backslide。CSO governance 同期性の regression candidate
+- [📊 moterist.com status (本 entry 時点)] HTTP 500 継続、HUMAN cPanel rollback 未実行。BRIEF_027 `1f0ea56` の runbook (rename → copy → rename → verify) が依然唯一の正規 path。
+- [📋 確立された path 再掲]
+  1. HUMAN mixhost cPanel login
+  2. File Manager → `public_html/moterist.com/wp-content/themes/the-thor-child/`
+  3. `functions.php` → `functions.php.broken_20260604` リネーム
+  4. `functions.php.bak_linker_20260516_073641` (3,549 B) コピー → `functions.php` リネーム
+  5. ブラウザ再読込で HTTP 200 確認
+- [Status] **3rd-frozen 維持**、CSO emergency script 拒否済、HUMAN cPanel rollback 待機継続、SATURDAY_REVIEW 2 日後。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
