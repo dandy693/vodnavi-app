@@ -603,5 +603,21 @@
 - [📅 SATURDAY_REVIEW 影響] moterist.com 復活で cross-domain inflow 1.4% (37 vodnavi + 6 moterist PV/28d) は技術的に計測可能、但し plugin 全 disabled で moterist 側の analytic plugin (Site Kit 等) が無効なので moterist の自前 GA4 計測は機能制限あり。GA4 p489519780 への流入は moterist gtag (theme functions.php) 経由のみ。
 - [⚠️ Recovery Mode session 残存可能性] /wp-admin → 302 redirect (recovery cookie 残存の可能性)、必要なら HUMAN が「リカバリーモードを終了」ボタンで明示 exit 推奨
 - [Status] moterist.com latent-stable (5 plugin inactive)、HUMAN は SATURDAY_REVIEW 優先 (Option A) か 真因特定 (Option B) を選択。
+
+### 🎉 Incident-Resolution-Log 2026-06-04 (Option B 順次 activate で 3 domain 完全 healthy state 達成)
+- [✅ Round 1-5 全 plugin 順次 activate 完遂、全 OK]
+  - Round 1: classic-widgets ✓ HTTP 200
+  - Round 2: classic-editor ✓ HTTP 200
+  - Round 3: customizer-export-import ✓ HTTP 200 (slight asset latency 観察、TTFB 0.55s 安定)
+  - Round 4: ewww-image-optimizer ✓ HTTP 200 (webp 配信痕跡確認)
+  - Round 5: advanced-nocaptcha-recaptcha (= CAPTCHA 4WP) ✓ HTTP 200 (reCAPTCHA v3 全ページ注入 + wp-login.php に widget 配備確認)
+- [🔬 CTO hypothesis (advanced-nocaptcha が犯人) 反証] 5 plugin 全 active で site stable = 個別 plugin の互換性破壊ではなく、**WP 7.0 auto-update 時の transient state corruption** (plugin metadata / opcache / DB option) が真因の最有力仮説。診断プロセス自体 (folder rename + Recovery Mode + admin 経由再 activate) が cleanup を兼ねた結果。
+- [📊 3 domain 全 healthy 達成 (本セッション初)] 
+  - moterist.com HTTP 200 (5 plugin active, CAPTCHA 4WP V3 Invisible 配備)
+  - vodnavi.jp HTTP 200 (BRIEF_017 ga-disable)
+  - app.vodnavi.jp HTTP 200 (BRIEF_018 hero + skeleton + ga-disable + analytics 盾)
+- [📅 SATURDAY_REVIEW 2026-06-06 impact] cross-domain inflow 1.4% (vodnavi.jp + moterist 計 43 PV/28d) + app.vodnavi.jp bulk 98.6% (3,070 PV/28d) 完全 funnel データ取得可能、data-driven PDCA 最大効果実現
+- [📋 残 HUMAN action] Recovery Mode 「リカバリーモードを終了」ボタンクリック → 通常モード復帰 (recovery cookie 解除)
+- [Status] **incident 完全解決、moterist.com 全 plugin active で stable、3 domain 全 healthy、SATURDAY_REVIEW 完全準備状態**。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
