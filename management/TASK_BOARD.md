@@ -619,5 +619,23 @@
 - [📅 SATURDAY_REVIEW 2026-06-06 impact] cross-domain inflow 1.4% (vodnavi.jp + moterist 計 43 PV/28d) + app.vodnavi.jp bulk 98.6% (3,070 PV/28d) 完全 funnel データ取得可能、data-driven PDCA 最大効果実現
 - [📋 残 HUMAN action] Recovery Mode 「リカバリーモードを終了」ボタンクリック → 通常モード復帰 (recovery cookie 解除)
 - [Status] **incident 完全解決、moterist.com 全 plugin active で stable、3 domain 全 healthy、SATURDAY_REVIEW 完全準備状態**。
+
+### 🎯 Root-Cause-Refinement-Log 2026-06-04 (functions.php 真因 confirmed + minimal Path B 配備)
+- [✅ Theme directory 監査 で smoking gun 発見] HUMAN cPanel screenshot で `the-thor/` 親 theme の全 file が **2026-06-03 22:46 一括更新** (vendor auto-update or push)、js folder のみ 2026-06-04 06:54 = parent theme 更新が incident の直接 trigger。
+- [🚨 GA tracking 完全消失検出] curl verify で moterist.com HTML 内 G-ID / gtag.js / dataLayer / canonical 全 0 件 → functions.php missing 状態では parent theme 由来の GA tracking なし → SATURDAY_REVIEW で moterist cross-domain inflow 1.4% 計測不能の重大問題。
+- [✅ functions.php 内容自体が真因と confirmed] HUMAN が `functions.php.broken_20260604` を `functions.php` にリネーム復元したところ即 HTTP 500 再発、即 rollback で 200 復活 → **child theme 16.67 KB clean baseline 内容と新 parent theme 間の互換性破壊が真因 (or 一部)** 確証。
+- [✅ Path B 最小 GA-only functions.php 新規作成 successful] HUMAN が `functions.php` を新規作成、最小実装 (BRIEF_017 §2.2 ga-disable + CHANGELOG F-11 equiv gtag linker config) を貼付保存。curl verify 全 pass:
+  - HTTP 200 (3 連続)
+  - `googletagmanager.com/gtag/js?id=G-GG7JV9MJRW` loader 注入
+  - `gtag('config', 'G-GG7JV9MJRW', { send_page_view: true, linker: { domains: ['moterist.com', 'vodnavi.jp', 'app.vodnavi.jp'], accept_incoming: true } })` 完全配備
+  - `ga-disable-G-GG7JV9MJRW` + `ga-disable-G-5HYV772ER9` 両 ID localhost guard
+- [📊 完全 healthy 3-domain state 確立 (本セッション完了)]
+  - moterist.com: 5 plugin active + 最小 functions.php (GA tracking + ga-disable)
+  - vodnavi.jp: BRIEF_017 ga-disable live
+  - app.vodnavi.jp: BRIEF_018 hero CTA + BRIEF_017 ga-disable + BRIEF_016 analytics 盾 live
+- [📋 残作業 (SATURDAY_REVIEW 後)]
+  - CHANGELOG 由来 child theme 機能 (is_bot shim, canonical home, image alt fallback, etc.) を 1 つずつ functions.php に add → 各追加後 curl test で互換性検証
+  - 新 parent theme 仕様確認 (vendor changelog で 2026-06-03 release 内容)、incompatible function/hook の特定
+- [Status] **incident 完全解決 + 3 domain GA tracking 完備 + cross-domain linker 完成**、SATURDAY_REVIEW 2026-06-06 10:00 JST 完璧な funnel データ取得準備完了。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
