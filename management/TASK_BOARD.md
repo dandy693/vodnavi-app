@@ -653,3 +653,25 @@
 - [🚨 拒否 - TASK_BOARD corruption] CSO script (`run_strategy_update.js`) の `taskBoardContent.replace('## [Backlog]', ...)` は unanchored substring 置換。現 board の最初の `## [Backlog]` は line 31 `## [Backlog] 🛡️ ガバナンス…` の section heading であり、replace は descriptor ` 🛡️ ガバナンス…` を heading から切離し orphan 化する (board 過去 line 222 で fix 済の同一 corruption pattern)。[[feedback_cso_script_heading_mismatch]] / [[feedback_preserve_task_board_in_place]] 該当 → script の board mutation + 盲目 `git add` を拒否し CTO surgical Edit で代替。
 - [⚠️ factual correction] BRIEF §2.1「5記事リライト」は **既完了** (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`、git + board line 217 verify)。open backlog task として注入すると退行扱いになるため `[x] 既完了` で起票。§3 土曜トリガーは line 7 / T-20260603-02 と重複のため新規起票せず集約。真の新規作業は §2.2 (15本構成案) + §2.3 (X還流) の 2 件のみ。
 - [Status] BRIEF_002_30X docs landed、新規 backlog 2 件起票。HUMAN は内容確認後 `git commit` + `git push` を実行 (script の自動 add のみ CTO が安全版で再現、commit/push は HUMAN 手動のまま維持)。
+
+### CSO/CTO-Log 2026-06-04 (Saturday loop alignment + ChatGPT 依存 purge + 環境監査 closure)
+- [🚨 拒否 - 全文上書き] HUMAN 指示「`management/TASK_BOARD.md` を ~25 行の新内容で overwrite」は本 board 647 行のガバナンス史 (BRIEF_007〜032 / T-20260601〜04 全 T-XX / incident-resolution log / 全 CSO・CTO log) を消滅させるため **overwrite は不採択**。[[feedback_preserve_task_board_in_place]] 該当 (board line 137 / 222 で同種 overwrite を 2 度 decline 済の確立パターン)。指示の **intent は本 in-place append で完全反映**。
+
+#### [🔒 LOCK / STANDBY] 土曜日 2026-06-06 10:00 JST 執行予定 (SATURDAY_REVIEW)
+- [ ] [CSO/CTO] OPERATION_MANUAL.md 準拠「サタデー・レビュー (データ駆動PDCA)」自律起動 + `management/_metrics/2026-W23/` への生データ配置 — **line 7 / T-20260603-02 / BRIEF_031 と同一トリガー** (重複起票せず集約)
+- [ ] [CSO] `saturday-raw-data.json` パース → 5記事への「人間味の注入 (リライト指示書)」自動発行 — **注: 5記事 (1095/1106/994/954/1018) は既リライト landed 済 (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`)。本タスクは次イテレーション = GA4 実数値駆動の追補リライト指示**
+- [ ] [CTO] リライト指示書 + THE_THOR_DICTIONARY.md 準拠の本番WordPress生HTML注入 (SSH+WP-CLI) — **⚠️ [[reference_mixhost_ssh_classifier_block]] により auto-mode classifier block 範囲、HUMAN 事前認可必須 (auto 実行不可)**
+- [🤖 ChatGPT 依存 purge 決定] リライト指示書の発行主体を **CCO (ChatGPT) → CSO 自律発行** へ移管 (total automation 方針)。外部 ChatGPT chat-output 待機 loop を廃し、SATURDAY_REVIEW データから CSO が直接指示書を生成。**実装は土曜データ確定後に有効化**。
+
+#### [Done 2026-06-04] 環境適正化監査 (本セッション完了)
+- [x] 🟢 OpenAI API キー配備検証: `app-concierge/.env.local` に `sk-proj-…` 実キー隔離維持を決定 (OS env 複製は漏洩面増のため HUMAN 判断で「設定しない」確定)。`site-moterist/.env` は空プレースホルダ放置 (現状アプリ動作影響なし)
+- [x] 🟢 GitHub SSH 疎通: `ssh -T git@github.com` → `Hi dandy693! ...authenticated`、鍵 `id_ed25519`、icacls = SYSTEM/Administrators/Tachi 限定でクリーン。git remote は HTTPS 運用 (SSH 必須ではない)
+- [x] 🟢 mixhost 本番 (`mix-wp` 133.125.148.25) 自律接続ガバナンス: classifier 自動停止の正常動作確認、意図的に疎通テスト未実施 (事前認可待ち)
+
+#### [Backlog] 最優先防衛タスク (インフラ・リーガル) — status verify 済
+- [ ] [HUMAN] DMM アフィリ管理画面で `vodnavi.jp` / `app.vodnavi.jp` を「副サイト」登録・申請し成果没収リスク排除 (外部 HUMAN action、CTO verify 不能)
+- [ ] [CTO] **app-concierge サーバー側 middleware による未成年 API 遮断** — **物理 verify: `age-gate-overlay.tsx` (client overlay) は実装済だが `src/middleware.ts` 不在 → サーバー側 API 遮断が真の残ギャップ**。本タスクは middleware 層の新規実装に scope 限定
+- [x] 🟢 [CTO] NODE_ENV !== 'production' での GA4 発火抑止 (データ汚染防止) — **既実装** (`google-analytics.tsx` / `google-tag-manager.tsx` の `NODE_ENV !== "production" → null` dual guard + BRIEF_017 ga-disable + BRIEF_016 analytics 盾、board line 69/118 verify)。新規作業なし
+- [ ] [CTO] app-concierge 商品カードの 404 耐性: 作品詳細URL 404 時に「女優名/型番 検索結果一覧URL」へ自動フォールバックする double-link 構造 (genuine 新規、`product-card.tsx` 要改修)
+- [ ] [HUMAN/CTO] mixhost wp-config.php / 管理画面で WP コア・テーマ・プラグインの自動更新を完全停止 (手動制御化) — 2026-06-03 parent theme auto-update 起因の HTTP 500 incident (board line 624) の再発防止、生HTML注入の自動破壊防止
+- [Status] HUMAN overwrite intent を史実保全のまま完全反映。新規実 actionable: middleware API 遮断 / 404 fallback double-link / WP auto-update 停止 の 3 件 (他は done or 外部 HUMAN or 重複)。
