@@ -586,5 +586,22 @@
 - [📋 次手: plugin bisection] HUMAN が `plugins.disabled/` 内一覧スクショ共有 → CTO が容疑 ranking + 2 分法分割案提示 → 1 round 数分の bisection で犯人 plugin 単独特定
 - [⚠️ WordPress 内部知識発露] CTO の WP boot-order analysis (plugins step 3 → theme step 4) は内部仕様への深い理解、external WP API doc では明示されない順序。実用診断的価値高
 - [Status] 真因絞込完了 (plugins 層、specific plugin TBD)、HUMAN screenshot 共有待機、SATURDAY_REVIEW 2 日後 — plugin 単独特定 + 復活が間に合えば cross-domain 計測復活可能。
+
+### 🎯 Incident-Recovery-Log 2026-06-04 (latent stable state 到達、真因 plugin は未確定)
+- [✅ moterist.com HTTP 200 連続安定確認] 3 連続 request 全 200、stable state 到達。
+- [📋 全 5 plugin リスト確定] Recovery Mode dashboard screenshot から: (1) advanced-nocaptcha-recaptcha, (2) classic-editor, (3) classic-widgets, (4) customizer-export-import, (5) ewww-image-optimizer。+ 必須 (mu-plugins) 3 件。
+- [📊 WP バージョン判明] **WordPress 7.0** with THE THOR CHILD theme → 2026-05-24 ~ 2026-06-03 間に major version update (7.0) が発生、3rd-party plugin の互換性破壊が真因仮説の核心。
+- [🎯 真の現状: 全 5 plugin file 存在するが NO plugin active] curl 物理確認: front HTML 内 plugin script ref 0 件 / wp-login.php に reCAPTCHA 不在 / /wp-json/ plugin namespace 0 件 → `wp_options.active_plugins` が空 (or 該当 5 を含まない)。**= 全 plugin "files exist but inactive" 状態 = 機能的に plugins.disabled 同等**。
+- [📋 latent state の意味]
+  - ✅ SATURDAY_REVIEW 2026-06-06 まで site stable
+  - ⚠️ 真因 plugin は特定されておらず、admin で activate すれば再発リスク
+  - 🟡 5 plugin の admin-side functionality (spam 防御 / image opt / classic editor) は全て失効中、front-end 計測には影響なし
+- [📋 HUMAN 選択肢提示]
+  - **Option A (推奨、最安全)**: 現状維持で SATURDAY_REVIEW 完遂優先
+  - **Option B (診断完遂)**: WP admin で順次 activate、low-risk → high-risk 順序で犯人特定
+  - **Option C (実用妥協)**: 必要な classic-* / customizer-export-import のみ activate、advanced-nocaptcha + ewww は disabled 放置
+- [📅 SATURDAY_REVIEW 影響] moterist.com 復活で cross-domain inflow 1.4% (37 vodnavi + 6 moterist PV/28d) は技術的に計測可能、但し plugin 全 disabled で moterist 側の analytic plugin (Site Kit 等) が無効なので moterist の自前 GA4 計測は機能制限あり。GA4 p489519780 への流入は moterist gtag (theme functions.php) 経由のみ。
+- [⚠️ Recovery Mode session 残存可能性] /wp-admin → 302 redirect (recovery cookie 残存の可能性)、必要なら HUMAN が「リカバリーモードを終了」ボタンで明示 exit 推奨
+- [Status] moterist.com latent-stable (5 plugin inactive)、HUMAN は SATURDAY_REVIEW 優先 (Option A) か 真因特定 (Option B) を選択。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
