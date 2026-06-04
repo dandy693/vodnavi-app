@@ -36,6 +36,12 @@
 - [ ] ⚙️ T-20260603-01 (CTO, BRIEF_008 §2 由来): moterist.com 側クリックハンドラ条件緩和 — **注: BRIEF_008 §2 は 1106 を mention するが T-20260602-06 通り 1106/994/954/1018 のハンドラ緩和は 2026-05-20 (Day 10) に既完了**。**真の残課題は 1095** (entry CTA 構造が異なるため別ハンドラ据置中)。1095 entry CTA の `closest('.content')` + `closest('li')` + al.dmm URL マッチ pattern への統合方針が要 design (要 WordPress THE THOR functions.php への 1095 専用ハンドラ追加 or 既存統合ハンドラへの 1095 構造対応 patch)
 - [ ] 📅 T-20260603-02 (HUMAN/CTO): SATURDAY_REVIEW 2026-06-06 10:00 JST トリガー準備、BRIEF_007 §3 + BRIEF_008 §3 の自動データ抽出 chain (GA4 G-GG7JV9MJRW + GSC + ホスト名 dimension 経由 ai_session_start/product_click/ai_affiliate_click) の最終動作テスト
 
+## [Backlog] 🚀 30倍スケールフェーズ (STRATEGY_BRIEF_032_30X_SCALE, 2026-06-04 確定)
+- [x] 🟢 T-20260604-30X-1 (CCO): サルベージ5記事 (1095/1106/994/954/1018) 『ビブリア・エロティカ』リライト — **既完了** (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`、5/5 BRIEF_003 §2/§3 + Option-A 準拠)。BRIEF_032 純新規バックログからは除外、完了済資産として記録のみ
+- [ ] 🔵 T-20260604-30X-2 (CCO): 3本柱 (感情・教養・状況) クラスター記事15本の構成案・KW選定 (BRIEF_032 §2.1)。**ステージング Markdown ドラフト先行**、本番一斉注入は SATURDAY_REVIEW 後・空中戦停止方針遵守。CTA URL は `?source=moterist&intent=<beginner|actress|discount>` 動的付与
+- [ ] 🔵 T-20260604-30X-3 (CTO/CCO): X還流エンジン設計 (BRIEF_032 §2.2)。1日4投稿運用 + 年齢確認ゲート経由 moterist.com 高成約ピラーページ動線
+- [📅 重複追跡注意] BRIEF_032 §3 の「土曜トリガー」は line 7 / T-20260603-02 と同一。新規 HUMAN タスクは起票せず既存項目に集約
+
 ## [Landed] 🚀 戦略ルート1点火セクション: 集客分母最大化 (2026-06-02 確定)
 - [x] 🟢 T-20260602-06: GA4 クリックハンドラ条件 (`outline_1__9`) 緩和 — **物理 verify: 既に 2026-05-20 (Day 10) に解消済**。実コードは Next.js ではなく **WordPress THE THOR child theme の `functions.php`**。994/954/1018/1106 を post_id ベース config に統合、`closest('.content')` && `closest('li')` && al.dmm affiliate URL 形のみで発火に緩和、`outline_1__9` 位置関係 + 厳密 text 一致は廃止。backup: `functions.php.bak_day10_20260520_221713`。証跡: `packages/seo-motelab/analytics-issues-3sites.md:43-47`。1095 は entry CTA 構造が異なるため別ハンドラ据置中。**本タスクの「Next.js コード層改修設計」は前提誤認、新規改修不要**
 - [x] 🟢 T-20260602-07:         CCO量産指示書の物理落成 (✅ 4箇所のMarkdown構造汚染およびアフィURL不整合をEditで完全調律・落成完了)
@@ -639,3 +645,11 @@
 - [Status] **incident 完全解決 + 3 domain GA tracking 完備 + cross-domain linker 完成**、SATURDAY_REVIEW 2026-06-06 10:00 JST 完璧な funnel データ取得準備完了。
 - [⚠️ TASK_BOARD append fallback 拒否] script else 分岐 `### 2026-06-03 16:30 JST — CSO-Deploy-Log` 末尾 append (heading 違反 + 未来時刻 16:30 vs current ~11:30) → 拒否、surgical Edit 補完。
 - [Status] BRIEF_019 §2.2 完遂、§2.1 deploy 再試行中。Vercel 通知後に deploy URL 記録。site-brand 側 deploy は app-concierge 成功後に同 pattern で実行予定。
+
+### CTO-Governance-Log 2026-06-04 (BRIEF_002_30X → 032 連番是正 + script corruption 再回避)
+- [x] 🟢 **STRATEGY_BRIEF_032_30X_SCALE.md landed**、暫定 `STRATEGY_BRIEF_002_30X_SCALE.md` (numbering 衝突) を正規連番 032 へ rename。002_30X は未 commit のステージング段階だったため `git restore --staged` + disk 削除で履歴汚染ゼロ。032 は純新規 backlog (15本クラスター / X還流) に整理、完了済 §2.1 (5記事リライト) は除外。
+- [🧹 cleanup] 未追跡 `run_physical_audit.sh` (14行 echo stub、監査ロジック不在、CTO 非作成) を削除。`run_strategy_update.js` は前ターンで削除済。
+- [🚨 拒否 - corruption 再発 (v32 script)] `run_surgical_strategy_v32.js` は「外科的・corruption なし」を標榜するが、`sectionHeader = '### [Backlog] 30倍スケールフェーズ (STRATEGY_BRIEF_032)'` が実 board の `## [Backlog] 🚀 …(STRATEGY_BRIEF_032_30X_SCALE…)` と不一致 → `includes()` false → **else 枝の unanchored `replace('## [Backlog]', …)` に fall through し line 31 `## [Backlog] 🛡️ ガバナンス…` heading を再度 corrupt** する設計 (前ターンと同一バグ)。加えて旧 002_30X brief 未削除 + 既存 board section と重複する `### 032` を新設するため二重化。[[feedback_cso_script_heading_mismatch]] / [[feedback_preserve_task_board_in_place]] 該当 → CTO surgical Edit で代替、既存 section を in-place rename。
+- [🚨 拒否 - TASK_BOARD corruption] CSO script (`run_strategy_update.js`) の `taskBoardContent.replace('## [Backlog]', ...)` は unanchored substring 置換。現 board の最初の `## [Backlog]` は line 31 `## [Backlog] 🛡️ ガバナンス…` の section heading であり、replace は descriptor ` 🛡️ ガバナンス…` を heading から切離し orphan 化する (board 過去 line 222 で fix 済の同一 corruption pattern)。[[feedback_cso_script_heading_mismatch]] / [[feedback_preserve_task_board_in_place]] 該当 → script の board mutation + 盲目 `git add` を拒否し CTO surgical Edit で代替。
+- [⚠️ factual correction] BRIEF §2.1「5記事リライト」は **既完了** (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`、git + board line 217 verify)。open backlog task として注入すると退行扱いになるため `[x] 既完了` で起票。§3 土曜トリガーは line 7 / T-20260603-02 と重複のため新規起票せず集約。真の新規作業は §2.2 (15本構成案) + §2.3 (X還流) の 2 件のみ。
+- [Status] BRIEF_002_30X docs landed、新規 backlog 2 件起票。HUMAN は内容確認後 `git commit` + `git push` を実行 (script の自動 add のみ CTO が安全版で再現、commit/push は HUMAN 手動のまま維持)。
