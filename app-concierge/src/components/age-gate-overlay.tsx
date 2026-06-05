@@ -58,13 +58,16 @@ export function AgeGateOverlay() {
     () => false,
   );
 
-  const [mounted, setMounted] = useState(false);
+  // クライアントにマウント済みかを effect 内 setState を使わず判定する
+  // (react-hooks/set-state-in-effect 回避)。SSR は server snapshot=false で
+  // overlay を描画させず、ハイドレーション後に client snapshot=true へ切替わる。
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const open = mounted && !verified;
 

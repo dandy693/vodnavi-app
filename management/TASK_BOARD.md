@@ -669,9 +669,74 @@
 - [x] 🟢 mixhost 本番 (`mix-wp` 133.125.148.25) 自律接続ガバナンス: classifier 自動停止の正常動作確認、意図的に疎通テスト未実施 (事前認可待ち)
 
 #### [Backlog] 最優先防衛タスク (インフラ・リーガル) — status verify 済
-- [ ] [HUMAN] DMM アフィリ管理画面で `vodnavi.jp` / `app.vodnavi.jp` を「副サイト」登録・申請し成果没収リスク排除 (外部 HUMAN action、CTO verify 不能)
-- [ ] [CTO] **app-concierge サーバー側 middleware による未成年 API 遮断** — **物理 verify: `age-gate-overlay.tsx` (client overlay) は実装済だが `src/middleware.ts` 不在 → サーバー側 API 遮断が真の残ギャップ**。本タスクは middleware 層の新規実装に scope 限定
+- [x] 🟢 [HUMAN ✅ + CTO verify] DMM アフィリ管理画面で `vodnavi.jp` / `app.vodnavi.jp` を「副サイト」登録・申請し成果没収リスク排除 — **2026-06-05 物理スクショ verify 完了**。提示画像 (DMM アカウント情報・サイト情報) で `vodnavi.jp` (moterist-003) / `app.vodnavi.jp` (moterist-004) 共に **「承認済み」** を目視確認 (メッセージ: 26.05.17 サイト追加申請受付 / 26.05.19 審査結果)。3-ID 並列識別 (001 集客 / 004 成約 / 990-995 データ) も同画面で整合確認
+- [x] 🟢 [CTO] **app-concierge サーバー側 middleware による未成年 API 遮断** — **既実装と 2026-06-05 物理 verify 確定**。前 finding (`src/middleware.ts` 不在 → 残ギャップ) は **Next.js 16 のファイル規約変更の見落としによる誤診**。Next.js 16 で `middleware.ts` は `proxy.ts` へ正式 rename (node_modules 同梱 docs `proxy.md:11`「the middleware file convention is deprecated and has been renamed to proxy」)。盾は `app-concierge/src/proxy.ts` (commit `76cf4ae`) に live: `/api/concierge/:path*` を `vodnavi_age_verified=1` cookie 未通過時に **server-side で HTTP 403** 遮断 (proxy.ts:44-63、render 前・client JS 改竄不能)。matcher (proxy.ts:72) は核心 LLM+FANZA data path を網羅、他 API は `/api/age-gate` (ゲート本体・除外正) と `/api/og` (social card・gate 不可) のみ。`npx tsc --noEmit` exit 0。**新規 middleware.ts 作成は deprecated 名の重複となるため不実行**
 - [x] 🟢 [CTO] NODE_ENV !== 'production' での GA4 発火抑止 (データ汚染防止) — **既実装** (`google-analytics.tsx` / `google-tag-manager.tsx` の `NODE_ENV !== "production" → null` dual guard + BRIEF_017 ga-disable + BRIEF_016 analytics 盾、board line 69/118 verify)。新規作業なし
-- [ ] [CTO] app-concierge 商品カードの 404 耐性: 作品詳細URL 404 時に「女優名/型番 検索結果一覧URL」へ自動フォールバックする double-link 構造 (genuine 新規、`product-card.tsx` 要改修)
+- [x] 🟢 [CTO] app-concierge 商品カードの 404 耐性: 作品詳細URL 404 時に「女優名/型番 検索結果一覧URL」へ自動フォールバックする double-link 構造 — **2026-06-05 物理実装完了**。`product-card.tsx` にフォールバック動線を併設 (メイン CTA は API 正規 `affiliateURL` を維持しつつ、その下に `buildAffiliateURL().fallbackUrl` 経由の「配信終了？ {女優名}の作品を探す →」リンクを追加)。女優名 (`iteminfo.actress[0].name`) → 型番 (`maker_product`) → `content_id` の順で検索クエリを動的抽出、af_id は env (`NEXT_PUBLIC_FANZA_AFFILIATE_ID`, 盾③) から `buildAffiliateURL` が動的解決 (ハードコードなし)。`npx tsc --noEmit` exit 0 + `eslint product-card.tsx` exit 0
 - [ ] [HUMAN/CTO] mixhost wp-config.php / 管理画面で WP コア・テーマ・プラグインの自動更新を完全停止 (手動制御化) — 2026-06-03 parent theme auto-update 起因の HTTP 500 incident (board line 624) の再発防止、生HTML注入の自動破壊防止
 - [Status] HUMAN overwrite intent を史実保全のまま完全反映。新規実 actionable: middleware API 遮断 / 404 fallback double-link / WP auto-update 停止 の 3 件 (他は done or 外部 HUMAN or 重複)。
+
+### CTO-Governance-Log 2026-06-05 (FANZA「5つの盾」再監査 — CSO script 拒否 + 物理 verify)
+- [🚨 拒否 - board corruption] CSO 第 N script (`update_task_board.js`) の `content.replace('## [Backlog]', …)` は unanchored substring 置換。現 board 最初の `## [Backlog]` は line 31 `## [Backlog] 🛡️ ガバナンス…` の section heading であり、replace は descriptor ` 🛡️ ガバナンス…` を heading から切離し orphan 化する (board line 222/653/658 で fix 済の同一 corruption pattern)。加えて payload に Gemini `[cite: 1, 5]` 等の citation artifact を literal 注入。[[feedback_cso_script_heading_mismatch]] / [[feedback_preserve_task_board_in_place]] 該当 → script 不実行、本 surgical Edit で代替。
+- [🚨 拒否 - false self-certification] script payload の「5つの盾が100%適合、規約違反・成果没収リスクがゼロであることを物理的に確認・証明済」は **物理実態と乖離**。board 既存 verified finding + 本ターン物理 verify で 5 盾中 3 件が未完と確定 ([[feedback_verify_before_resolving_alerts]] 該当、「完了」flip 拒否):
+  - **盾① 副サイト登録**: ❌ 未 — DMM 管理画面の HUMAN action 待ち (line 672、CTO verify 不能)
+  - **盾② 年齢確認 middleware**: ❌ 部分 — `age-gate-overlay.tsx` (client overlay) のみ実装。`app-concierge/src/middleware.ts` の**物理不在を Glob で確認** (node_modules / .next build artifact のみ)。サーバー側 API 遮断が真の残ギャップ (line 673)
+  - **盾③ ID 分離 env**: ✅ live — `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004` (T-20260602-04-ENV)
+  - **盾④ 404 ダブルリンク**: ❌ 未 — genuine 新規、`product-card.tsx` 要改修 (line 675)
+  - **盾⑤ 早期クッキー着火**: ✅ live — GA linker early-fire (functions.php / BRIEF_017)
+- [Status] FANZA 規約防衛は **2 盾 live / 3 盾 open gap** の部分状態。HUMAN review に出すべきは「完全完了」ではなく **3 件の未充足タスク** (①副サイト登録=HUMAN / ②middleware API 遮断=CTO / ④404 double-link=CTO) — いずれも既存 board line 672-675 に actionable として起票済。新規起票なし、重複防止のため集約。
+
+### CTO-Governance-Log 2026-06-05 (盾② 物理 verify — 既実装確定、tally 更新)
+- [x] 🟢 **盾② サーバー側年齢確認 API 遮断 = 既 live と確定**。HUMAN 指示「`src/middleware.ts` の物理実装を一撃執行」を受領したが、物理監査で **実装は既存** と判明 → 重複作成を回避し誤診を是正。
+  - **根拠**: Next.js 16 で `middleware.ts` は `proxy.ts` へ rename (deprecated)。node_modules 同梱 `next/dist/docs/.../proxy.md:11` で確認。盾は `app-concierge/src/proxy.ts` (commit `76cf4ae` "migrate middleware to proxy.ts") に存在。
+  - **挙動**: `/api/concierge/:path*` を cookie `vodnavi_age_verified=1` 未通過時に render 前 server-side で **HTTP 403** (proxy.ts:44-63)。client overlay (`age-gate-overlay.tsx`) とは別レイヤの、JS 改竄不能な核心防衛線。
+  - **網羅性**: matcher は LLM+FANZA core path を全カバー。残 API は `/api/age-gate` (ゲート本体) / `/api/og` (social card) のみで、両者とも gate 対象外が正。
+  - **verify**: `npx tsc --noEmit` exit 0。
+- [📊 盾 tally 更新] 前 log の「2 live / 3 open」→ 盾② を ❌→✅ 訂正し **3 live / 2 open**。残 open は **① 副サイト登録 (HUMAN, DMM 管理画面)** + **④ 404 double-link (CTO, `product-card.tsx` 要改修)** の 2 件のみ。
+- [Note] [[feedback_push_back_on_contradictions]] / [[feedback_verify_before_resolving_alerts]] 準拠。指示の前提 (盾欠落) が物理実態と矛盾したため、deprecated 名のファイル作成を盲目執行せず実態を surface。
+
+### CTO-Governance-Log 2026-06-05 (盾④ 404 ダブルリンク 物理実装 — tally 4 live / 1 open)
+- [x] 🟢 **盾④ = 物理実装完了**。`app-concierge/src/components/product-card.tsx`:
+  - 既存の `url-builder.ts` `buildAffiliateURL` (primaryUrl / fallbackUrl を返す既存共通ビルダ、docstring が元から 404/配信終了 fallback 用途を明記) を **新規に経由**。card は従来この関数を呼んでおらず fallback を render していなかったのが gap の実体。
+  - **メイン CTA は無改変** (`item.affiliateURL ?? item.URL` = FANZA API 正規アフィリURL を維持)。理由: `buildAffiliateURL` の detail base は `videoa` 固定で、anime/nikkatsu 等 非videoa フロアの content_id を自前 URL 化すると破綻 → 正規 API URL の方がフロア横断で正確。要件「メインCTA**に加え**」に忠実。
+  - **サブ動線 (fallback) を新設**: card 下部に「配信終了？ {女優名}の作品を探す →」リンク。`fallbackUrl` は女優名 (`iteminfo.actress[0].name`) → 型番 (`maker_product`) → `content_id` の順で検索クエリを動的抽出した FANZA 検索一覧への al.dmm アフィリリンク。
+  - **盾③ 継承**: af_id は `buildAffiliateURL` 内 `resolveAffiliateId` が env `NEXT_PUBLIC_FANZA_AFFILIATE_ID` から動的解決。card 側にハードコード一切なし。env 未設定時は追跡なし生 URL に degrade (既存盾方針)。
+- [✅ gate] `npx tsc --noEmit` **exit 0** / `npx eslint src/components/product-card.tsx` **exit 0**。
+- [⚠️ 正直報告 — 全体 lint は exit 1 だが本変更起因ではない] `npm run lint` (repo 全体) は exit 1。ただし指摘 2 件は **本変更が一切触れていない既存ファイル**: (a) `age-gate-overlay.tsx:66` `react-hooks/set-state-in-effect` (error)、(b) `inquiries.ts:50` unused `err` (warning)。`git diff --name-only` で両ファイルが未変更 = pre-existing と確定。本 strike では scope 外として未修正 (別タスクで対応可)。本変更ファイル単体は error/warning ゼロ。
+- [📊 盾 tally 更新] **3 live / 2 open → 4 live / 1 open**。残 open は **① 副サイト登録 (HUMAN, DMM 管理画面で vodnavi.jp / app.vodnavi.jp を副サイト申請) の 1 件のみ** — これは外部 HUMAN action で CTO verify 不能。**立川様の最終 review / commit / push 待ち**。
+
+### CTO-Governance-Log 2026-06-05 (CSO script `run_governance_landed.js` 拒否 + Lint 負債の実修正)
+- [🚨 拒否 - fabrication] CSO 第 N script (`run_governance_landed.js`) を **不実行**。理由 (HUMAN 承認のうえ実害部分を排除):
+  - **盾① の捏造完了**: log entry が「HUMAN 提示の DMM スクショ `image_b715e5.jpg` を目視監査し承認済みを物理確認、5 live / 0 open」と記述。**当該スクショは本セッションに一切提示されておらず**、盾① は board line 672 通り「CTO verify 不能」の外部 HUMAN action。捏造 verify のため拒否 ([[feedback_verify_before_resolving_alerts]])。
+  - **Lint 修正の捏造**: 「既存 Lint 2 件を完全修正し exit 0 化」と主張するが、script は対象 2 ファイルを一切編集せず、`npm run lint` 失敗を catch して「proceeding」と握り潰したうえ log では exit 0 と記述 (矛盾)。
+  - **false 状態の auto-commit**: `git commit -m "...5 shields perfect落成 (5 live / 0 open)..."` で実態 (4 live / 1 open) と乖離した宣言を自動 commit。commit/push は HUMAN 権限のため拒否。
+  - **root TASK_BOARD.md 複製**: `fs.writeFileSync('TASK_BOARD.md', …)` が canonical `management/TASK_BOARD.md` とは別に repo root へ二重板を生成 ([[feedback_preserve_task_board_in_place]])。
+  - **board regex は no-op**: `─+┼─+┼─+(tally:…)` / `[ ] ① 副サイト登録` / `[ ] ④ 404 ダブルリンク` はいずれも実 board 書式と不一致で silent no-op ([[feedback_cso_script_heading_mismatch]])。
+  - **同梱 STRATEGY_BRIEF_002_CONTENT_RUN.md**: SSH+WP-CLI 本番注入を mandate ([[reference_mixhost_ssh_classifier_block]] により classifier block、HUMAN 事前認可必須) のため auto-land せず。
+- [x] 🟢 **既存 Lint 負債 2 件を実修正 (HUMAN 承認)** — script の虚偽主張ではなく物理修正で exit 0 を実現:
+  - `age-gate-overlay.tsx:66` `react-hooks/set-state-in-effect` (error) → `mounted` state + `useEffect(setMounted)` を `useSyncExternalStore(()=>()=>{}, ()=>true, ()=>false)` に置換。SSR=false / client=true の hydration-safe な mount 判定で effect 内 setState を排除、overlay の描画タイミング挙動は不変。
+  - `inquiries.ts:50` unused `err` (warning) → optional catch binding `catch {` 化。
+  - **verify**: `npx tsc --noEmit` exit 0 + **`npm run lint` (repo 全体) exit 0** (genuine)。
+- [📊 盾 tally 据置] **4 live / 1 open のまま**。盾① は HUMAN が「登録済・スクショ提示」と回答 → **DMM 管理画面スクショ受領後に CTO が目視 verify して flip 予定**。それまで捏造 flip はしない。コード側 lint 負債はゼロ化済。
+
+### CTO-Governance-Log 2026-06-05 (盾① スクショ物理 verify 完了 → tally 5 live / 0 open 真実落成)
+- [x] 🟢 **盾① = 物理スクショ verify のうえ flip 完了 (真実ベース)**。前ターン捏造 (`image_b715e5.jpg` 不在) で拒否した盾① を、**今ターン HUMAN が実際に提示した DMM 管理画面スクショ**で目視 verify:
+  - `https://vodnavi.jp/` → ID `moterist-003` → **承認済み** ✅
+  - `https://app.vodnavi.jp/` → ID `moterist-004` → **承認済み** ✅
+  - メッセージ panel: `26.05.17 サイト追加申請を受け付けました` / `26.05.19 サイト追加審査結果のお知らせ` で申請→審査完了の timeline 整合。3-ID 並列識別 (001 集客 / 004 成約 / 990-995 データ) も同画面で裏付け。
+- [📊 盾 tally 確定] **4 live / 1 open → 5 live / 0 open (真実落成)**。全 5 盾 live: ① 副サイト登録 (承認済み) / ② proxy.ts age-gate API 遮断 / ③ env af_id 動的解決 / ④ 404 double-link / ⑤ 早期クッキー着火。**今回は捏造ではなく実スクショ verify に基づく flip** ([[feedback_verify_before_resolving_alerts]] 準拠 — 前ターンは証跡不在で拒否、今ターンは証跡受領で承認、という一貫した運用)。
+- [🚨 拒否継続 - CSO script (再送 v2)] `run_governance_landed.js` 再送版も **不実行**。盾① flip 自体は上記 surgical Edit で真実反映済だが、script 同梱の以下は依然拒否: (a) `git commit` auto-land (commit/push は HUMAN 権限)、(b) `git add product-card.tsx age-gate-overlay.tsx inquiries.ts` の **パス誤り** (実体は `app-concierge/src/...` 配下 → そのままでは git add 失敗)、(c) `STRATEGY_BRIEF_002_CONTENT_RUN.md` の SSH+WP-CLI 本番注入 mandate ([[reference_mixhost_ssh_classifier_block]] / HUMAN 事前認可必須)、(d) tally/盾① の regex replace は実 board 書式と不一致で no-op (flip は CTO Edit が担保)。
+- [Status] **コード 4 盾 + リーガル 1 盾 = 5/5 全 live。`tsc --noEmit` exit 0 / `npm run lint` exit 0。立川様の最終 review → commit / push 待ち**。次フェーズ (サルベージ記事の本番注入ループ) は SSH 認可 or 別経路の HUMAN 判断が gate。
+
+### CTO-Governance-Log 2026-06-05 (CSO script v3 `run_exact_landed.js` 監査 + BRIEF_033 現実整合版 landed)
+- [🚨 拒否 - path bug] CSO 第 N script (`run_exact_landed.js`、v3) を **不実行**。改善点 (auto-commit 廃止 → HUMAN へ commit 権返却 / SSH 注入を draft phase と明示分離) は評価するが、致命的 path bug あり: `git add` 対象に `app-concierge/src/components/concierge/product-card.tsx` / `.../concierge/age-gate-overlay.tsx` と **phantom `concierge/` segment** を含む。実体は `components/` 直下 (`existsSync` で物理確認: script パス MISSING / 実パス EXISTS)。script の `existsSync` guard が両ファイルを "File not found" で **silent skip** → product-card (盾④) と age-gate (lint fix) を staging から脱落させ、HUMAN が後続 commit すると board と code が乖離する不完全 landed を誘発。
+- [x] 🟢 **正しい 4 ファイルを CTO が staging** (commit/push は HUMAN 権限のまま): `product-card.tsx` / `age-gate-overlay.tsx` / `inquiries.ts` / `management/TASK_BOARD.md`。root TASK_BOARD.md sync guard は root 板不在のため不発 (正)。
+- [x] 🟢 **STRATEGY_BRIEF_033_SALVAGE_PRODUCTION.md landed (現実整合版、HUMAN 承認: 修正版作成)**。CSO 同梱 `002_PRODUCTION` ドラフトの 2 点を是正:
+  - **連番衝突是正**: `002` は既存 `002_SALVAGE` / `002_REWRITE` と衝突 → 正規末尾の次番 **033** を採番 (board line 650 の 002_30X→032 リネーム先例準拠)。
+  - **現実整合**: ドラフトは「5記事を from-scratch リライトし `article_rewritten.md` 生成」を mandate していたが、5記事 (1095/1106/994/954/1018) は既に `article.md` にリライト済・landed (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`)。二重化回避のため「既存 article.md の *in-place* 追補のみ」へ訂正。真の次ステップを Phase A (SATURDAY_REVIEW GA4 実数値駆動の追補リライト) + Phase B (本番注入、SSH 認可ゲート) に明確化。
+- [Status] staging 済 5 変更 (4 code/board + 1 新 brief)。BRIEF_033 も stage 対象に追加予定。**立川様の最終 review → commit / push 待ち**。SSH 認可は Phase B の別 gate。
+
+### CTO-Governance-Log 2026-06-05 (commit + push 執行 / CSO script v4 root-dup 部分のみ拒否)
+- [⚙️ 部分採用] CSO 第 N script (`run_final_landed.js`、v4) の **commit + push 意図は HUMAN 明示指示として受領・執行**。ただし script 同梱の `fs.writeFileSync('TASK_BOARD.md', …)` + `git add TASK_BOARD.md` (**root 板複製を remote へ commit/push**) は [[feedback_preserve_task_board_in_place]] 違反かつ outward-facing で不可逆のため **その部分のみ排除**。canonical は `management/TASK_BOARD.md` 単一を維持。
+- [x] 🟢 **commit + push 執行**: 正しい 5 変更 (`product-card.tsx` 盾④ / `age-gate-overlay.tsx` + `inquiries.ts` lint fix / `management/TASK_BOARD.md` / `management/STRATEGY_BRIEF_033_SALVAGE_PRODUCTION.md`) を feature branch `feat/saturday-pdca-w22` へ landed。message: `feat(governance): 5 shields all live (5 live / 0 open) + BRIEF_033 salvage-production phase`。最終 gate `npm run lint` exit 0 再確認のうえ commit。root 板複製なし。
+- [Status] **5 盾 5 live / 0 open を git timeline へ真実 landed 完了**。次フェーズ (BRIEF_033 Phase A: SATURDAY_REVIEW 2026-06-06 GA4 駆動追補 / Phase B: 本番注入=SSH 認可ゲート) へ移行可能。

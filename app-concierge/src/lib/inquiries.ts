@@ -47,7 +47,7 @@ export async function submitInquiry(input: InquiryInput): Promise<void> {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
     });
-  } catch (err) {
+  } catch {
     throw new InquirySubmitError(
       "ネットワークエラーが発生しました。通信環境をご確認のうえ、再度お試しください。",
     );
