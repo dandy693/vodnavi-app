@@ -1,0 +1,16 @@
+{
+  "task": "T-20260614-01 — W25 ドライラン CTA 監査 (BRIEF_041)",
+  "captured_at_local": "2026-06-07 JST",
+  "method": "read-only curl（ライブ moterist.com 記事の rendered HTML から concierge CTA anchor を抽出）。SSH/WP-CLI 不使用。",
+  "finding_summary": "全5記事に intent 付き CTA が既存し、BRIEF_041 のマッピングと一致。各記事に `?source=moterist` 単体（intent 無し）の旧 CTA が 1 箇所ずつ残存（計5箇所）。",
+  "articles": [
+    {"post_id": 1095, "url": "/fanza20250329/", "concierge_cta_total": 3, "with_intent": 2, "intent_present": "beginner", "legacy_no_intent_cta": 1},
+    {"post_id": 1106, "url": "/fanza20250331/", "concierge_cta_total": 3, "with_intent": 2, "intent_present": "beginner", "legacy_no_intent_cta": 1},
+    {"post_id": 994, "url": "/fanza_otoku250114/", "concierge_cta_total": 3, "with_intent": 2, "intent_present": "beginner", "legacy_no_intent_cta": 1},
+    {"post_id": 954, "url": "/fanzaotoku/", "concierge_cta_total": 4, "with_intent": 3, "intent_present": "discount", "legacy_no_intent_cta": 1},
+    {"post_id": 1018, "url": "/saika-kawakita-6/", "concierge_cta_total": 4, "with_intent": 3, "intent_present": "actress", "legacy_no_intent_cta": 1}
+  ],
+  "implication_for_T02": "置換対象は各記事の旧 `?source=moterist` 単体 CTA 1 箇所のみ（intent 値は記事ごとに既存マッピング通り: beginner×3 / discount / actress）。本文・パーマリンク不変で当該 anchor のみ upgrade。",
+  "encoding_note": "同一 intent CTA が HTML エンティティ 2 形（`&#038;` と `&amp;`）で出現する箇所あり。置換時は両エンコード形を考慮すること。",
+  "ssh_script_note": "CSO 提供の SSH 監査スクリプトは未配備: mixhost SSH は classifier block 履歴あり、server creds (rvpuxcjb@133.125.148.25) 未検証、生成 script の `node -e '...'` 内に単一引用符エスケープ/未終端 regex のバグ。read-only curl で代替し目的達成。"
+}
