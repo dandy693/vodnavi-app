@@ -2,7 +2,7 @@
 
 ## 📋 経営戦略・データ駆動改善（CSO管轄）
 - [x] 🟢 T-20260607-01 (CSO, 2026-06-07): **ハイブリッド二重装甲戦略 (Option 3：両建て) を HUMAN 採択** → `STRATEGY_BRIEF_037_HYBRID_ADOPTION.md`。vodnavi.jp clean面 = E-E-A-T 盾 + 教養コラム clean 集客 (BRIEF_035 retained, supersede せず) を維持しつつ、X/SNS→app.vodnavi.jp 成約核心へ火力集中。
-- [ ] 🔵 T-20260607-02 (CTO): `app.vodnavi.jp` の UI/UX 改善 + X(旧Twitter)連携の URL パラメータ `?source=sns_x&intent=*` 配線設計。年齢確認ゲート(`proxy.ts`)経由でコンシェルジュ成約へ誘導
+- [/] 🔵 T-20260607-02 (CTO): `app.vodnavi.jp` の UI/UX 改善 + X(旧Twitter)連携の URL パラメータ `?source=sns_x&intent=*` 配線。年齢確認ゲート(`proxy.ts`)経由でコンシェルジュ成約へ誘導。**進捗 2026-06-07**: `source=sns_x` の `ConciergeSource` プロファイル（greeting + systemAddendum）を `sources.ts` に登録、`tsc --noEmit` exit 0（型は `Record<ConciergeSource,...>` で網羅確認）。**残**: app.vodnavi.jp UI/UX 改善 + 実 X 連携の動線設置・運用（HUMAN/CTO）
 - [x] ✅ T-20260607-03 (CCO, 策定完了 2026-06-07): SNS特化型アフィリエイトポスト 指示書 → **`STRATEGY_BRIEF_038`（仕様）+ `STRATEGY_BRIEF_039`（プロフィール+3軸実弾ドラフト）策定済**。**実行（X 投稿・アカウント変更）は HUMAN/CCO**。境界: 成人文脈動線=app 年齢ゲート / 非成人 clean コピーのみ vodnavi.jp 可。**CTO 残**: `source=sns_x` を `sources.ts` に登録（`intent=wisdom` は GA4 登録不要）
 - [x] 🟢 Option α (Safe Append) ランブックによる過去記事5資産の本番WordPress直接注入完了（Landed: f6b6b6e）
 - [x] 🟢 BRIEF_029: GA4 クロスドメインLinker物理監査完了（verdict: セッション属性疎通・client_id断跡受託）
