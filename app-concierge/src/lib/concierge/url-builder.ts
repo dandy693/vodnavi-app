@@ -145,23 +145,25 @@ export function buildAffiliateURL(
 }
 
 /**
- * STRATEGY_BRIEF_040 — 早期クッキー着火 (early cookie burn) 用 URL。
+ * STRATEGY_BRIEF_040 (Option 3) — 早期クッキー着火 (early cookie burn) 用 URL。
  *
- * コンシェルジュの最終提案より前に FANZA アフィリエイト Cookie を着火させるため、
- * 既存の検証済み FANZA 検索動線 (FANZA_SEARCH_BASE) を intent 別キーワードで再利用する。
+ * コンシェルジュの最終提案より前に FANZA アフィリエイト Cookie を着火させるための導線。
+ * 検索キーワード版は 0 件ヒットの懸念があるため、検証済みの FANZA リスト動線へ変更:
+ *   discount → セール特集 (article=sale) / それ以外 → ランキング (sort=ranking)。
+ *   いずれも 2026-06-07 に 302→age_check（rurl にパス保持）でパス到達を物理確認。
  * `resolveAffiliateId` / `wrapWithDmmAffiliate` を通し、ID 未解決時は追跡なしの生 URL を返す
- * （盾: アフィリエイト ID をハードコードしない）。新規 URL は捏造せず既存資産のみ使用。
+ * （盾: アフィリエイト ID をハードコードしない）。新規 URL は捏造せず検証済みパスのみ使用。
  */
-const EARLY_BURN_KEYWORDS: Record<string, string> = {
-  beginner: "初心者",
-  actress: "専属",
-  discount: "セール",
+const EARLY_BURN_LIST_PATHS: Record<string, string> = {
+  discount: "digital/videoa/-/list/=/article=sale/",
 };
+const EARLY_BURN_DEFAULT_PATH = "digital/videoa/-/list/=/sort=ranking/";
 
 export function buildEarlyCookieURL(intent: string | null | undefined): string {
-  const keyword = (intent && EARLY_BURN_KEYWORDS[intent]) || "ランキング";
-  const searchTarget = `${FANZA_SEARCH_BASE}${encodeURIComponent(keyword)}/`;
+  const path =
+    (intent && EARLY_BURN_LIST_PATHS[intent]) || EARLY_BURN_DEFAULT_PATH;
+  const target = `https://www.dmm.co.jp/${path}`;
   const affId = resolveAffiliateId("fanza");
-  if (!affId) return searchTarget; // 盾: ID 未解決なら生 URL（追跡なし）
-  return wrapWithDmmAffiliate(searchTarget, affId);
+  if (!affId) return target; // 盾: ID 未解決なら追跡なし生 URL
+  return wrapWithDmmAffiliate(target, affId);
 }

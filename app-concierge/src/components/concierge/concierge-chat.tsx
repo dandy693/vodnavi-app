@@ -19,7 +19,7 @@ import {
   trackProductClick,
 } from "@/lib/analytics";
 import { type AspName, DEFAULT_ASP } from "@/lib/concierge/asp";
-import { buildAffiliateURL } from "@/lib/concierge/url-builder";
+import { buildAffiliateURL, buildEarlyCookieURL } from "@/lib/concierge/url-builder";
 import { isPlaceholderImageUrl } from "@/lib/fanza/client";
 import { cn } from "@/lib/utils";
 
@@ -193,7 +193,7 @@ export function ConciergeChat({
 
           {showSuggestions && (
             <>
-              <EarlyEntryCard source={source} />
+              <EarlyEntryCard source={source} intent={intent} />
               <div className="ml-0 flex flex-wrap gap-2 sm:ml-12">
                 {SUGGESTIONS.map((s) => (
                   <button
@@ -285,14 +285,20 @@ export function ConciergeChat({
 // セッション最初の suggestions 表示と同じタイミングで提示し、ユーザーが
 // 「会話前」にも軽く FANZA ドメインを踏める導線を作る。
 // 押しつけがましさを排し、読者の知的好奇心を刺激する静かな招待状として書く。
-function EarlyEntryCard({ source }: { source?: string }) {
+function EarlyEntryCard({
+  source,
+  intent,
+}: {
+  source?: string;
+  intent?: string | null;
+}) {
   const affId = process.env.NEXT_PUBLIC_FANZA_AFFILIATE_ID;
   // 環境変数が設定されていない場合は何も表示しない（ハードコード禁止の盾に準拠）。
   if (!affId) return null;
 
-  const earlyHref =
-    `https://al.dmm.co.jp/?lurl=${encodeURIComponent("https://www.dmm.co.jp/digital/videoa/-/list/")}` +
-    `&af_id=${encodeURIComponent(affId)}&ch=link_tool&ch_id=link`;
+  // STRATEGY_BRIEF_040 (Option 3): intent 別の検証済みリスト動線（discount→sale / 他→ranking）へ
+  // 着火 URL を集約。affId は内部 resolveAffiliateId で解決され wrapWithDmmAffiliate で追跡付与される。
+  const earlyHref = buildEarlyCookieURL(intent);
 
   return (
     <aside className="ml-0 sm:ml-12">
