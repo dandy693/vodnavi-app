@@ -21,7 +21,7 @@
 - [ ] 🟦 (注釈) script Step 3 (SSH/WP-CLI 疎通) は echo only theater + `reference_mixhost_ssh_classifier_block` memory 通り classifier block 範囲のため**未実行**
 
 ## 💻 技術実装・計測生存確認（CTO管轄）
-- [ ] 🆕 T-20260606-04 (CTO, BRIEF_035): `site-brand/` E-E-A-T 拡充 — **注: site-brand/ は既に存在・本番 deploy 済** (Next.js app-router `src/app/`, `[slug]` content route, `03_content/` clean 記事あり)。scratch 構築ではなく **既存への追加**。スコープ = 運営者情報/利用規約/プライバシー等の **E-E-A-T ポリシーページ** + 教養コラム受け皿。**規約**: 色は frozen `design-tokens.css`(CSS vars) を参照し TS 重複定義を作らない (text=#FAFAFA / dark=#121212 / gold=#D4AF37)、Tailwind+CSS-var 慣習に準拠。運営者法人格は **合同会社トレンドネット**(layout.tsx JSON-LD 検証済、"Safari株式会社" は誤り)。法的文面は捏造せず HUMAN 提供待ち。**clean領域のみ**(成人要素 vodnavi.jp 直載せ禁止)。前提: BRIEF_034 §4 承認済 (fd70895)
+- [/] 🆕 T-20260606-04 (CTO, BRIEF_035, 着手 2026-06-07): `site-brand/` E-E-A-T 拡充 — **注: site-brand/ は既に存在・本番 deploy 済** (Next.js app-router `src/app/`, `[slug]` content route, `03_content/` clean 記事あり)。scratch 構築ではなく **既存への追加**。スコープ = 運営者情報/利用規約/プライバシー等の **E-E-A-T ポリシーページ** + 教養コラム受け皿。**規約**: 色は frozen `design-tokens.css`(CSS vars) を参照し TS 重複定義を作らない (text=#FAFAFA / dark=#121212 / gold=#D4AF37)、Tailwind+CSS-var 慣習に準拠。運営者法人格は **合同会社トレンドネット**(layout.tsx JSON-LD 検証済、"Safari株式会社" は誤り)。法的文面は捏造せず HUMAN 提供待ち。**clean領域のみ**(成人要素 vodnavi.jp 直載せ禁止)。前提: BRIEF_034 §4 承認済 (fd70895)。**進捗 2026-06-07**: `/about` `/privacy` `/terms` の3ページを既存 `brand-*` トークン/`btn-luxury-*` 準拠で追加（検証済 entity 合同会社トレンドネット、法的本文は HUMAN placeholder、成人/_gl クロスドメイン断定の捏造なし、homepage の既存記述と整合）。**残**: リーガル本文の HUMAN 提供 + `next build`/`tsc` での physical verify
 - [x] 🟢 app-concierge 本番Next.js 16 routes clean build (exit 0) 検証完了
 - [ ] 🟡 T-04: moterist 側 gtag.js 初期化順序の修復（async解除およびlinkerParamタイムアウトの解決、子テーマ検証経由限定）
 - [ ] 🔵 **【優先度:低・クリーンアップ】** BRIEF_030_AMEND: AI SDK 警告および環境変数のマイナーリファクタ
