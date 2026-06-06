@@ -21,3 +21,6 @@ moterist.com の完全冬眠（Freeze）へ移行する**前段階として、�
 
 ### ■ 最終同期監査（2026-06-07）
 本ブリーフをもって、W25 の Moterist 5記事 CTA 修正（T-20260614-*）の執行と、その後の完全冬眠（Freeze）プロトコルの順序関係を完全固定した。ボード履歴および副サイト登録等の Done ステータスは非破壊のまま保護される。
+
+### ■ W25 CTA 修正(T-02)の中止と moterist 凍結確定 (2026-06-07)
+T-02 の 5アンカー CTA 修正は、本番 DB 書き込みリスク（過去スクリプトの二重 `&intent=` / `post_content` 全置換バグ）に対し便益が marginal と判断し**中止**。curl 物理確認で本番5記事は intact（bare CTA 1/記事・二重 intent なし・本文無傷）、bare CTA は default 動線として機能継続。以後 moterist への直接 DB オペレーションは行わず **as-is 凍結**、リソースは vodnavi.jp/app に集中。→ board: T-20260614-02 / -03 は「中止（freeze as-is）」へ更新。
