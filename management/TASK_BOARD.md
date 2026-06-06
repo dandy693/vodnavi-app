@@ -8,6 +8,7 @@
 - [x] ✅ T-20260614-01 (CTO, BRIEF_041 / W25, 完了 2026-06-07): 5記事のドライラン CTA 監査 — **read-only curl で実施**（SSH 不使用）。**結果**: 全5記事に intent CTA 既存・BRIEF_041 マッピングと一致（1095/1106/994=beginner, 954=discount, 1018=actress）、各記事に旧 `?source=moterist` 単体 CTA が 1 箇所ずつ残存（計5）。→ **T-02 置換対象 = 各記事 1 anchor のみ**（本文/URL 不変）。詳細: `management/_metrics/2026-W23/w25-cta-dryrun-audit.json`
 - [/] 🆕 T-20260614-02 (CTO/HUMAN, BRIEF_042 仕様 ready): 5記事の旧無印 CTA を `?source=moterist&intent=<beginner|discount|actress>` へ置換（SEO本文・パーマリンク不変、`href` のみ、無人SSH不採用）。置換マトリクス = BRIEF_042 §2（各記事 1 anchor）。**実行 = HUMAN の WP-CLI/Safe-Append**、置換後 curl 確認は T-03
 - [ ] 🆕 T-20260614-03 (CSO, BRIEF_041 / W25): 置換後 GA4 クロスドメイン（moterist.com hostName）遷移ログ疎通監査。**ROI**: 漏斗底上げ目的（T-02 で検索純増は見込まず）
+- [x] 📌 BRIEF_043 採択 (CSO, 2026-06-07, 方針確定): **Option 1** — W25 CTA 修正 (T-20260614-*) + T-03 検証 完了後に moterist.com を**完全凍結**（新規記事/リライト 0、既存5記事の SEO本文/パーマリンク/GA4(G-5HYV772ER9) はホールド、**ドメイン廃止・一斉削除はしない**）。集客リソースは vodnavi.jp/app に集中（BRIEF_037 Option 3 の確定延長）。`STRATEGY_BRIEF_043_ALIGNMENT.md`
 - [x] 🟢 Option α (Safe Append) ランブックによる過去記事5資産の本番WordPress直接注入完了（Landed: f6b6b6e）
 - [x] 🟢 BRIEF_029: GA4 クロスドメインLinker物理監査完了（verdict: セッション属性疎通・client_id断跡受託）
 - [x] 🟢 BRIEF_030: 新回転 OpenAI Key 疎通テスト成功および DMM 環境変数補完完了（Landed: 21d4810、1,617 tokens 再生成確認済）
