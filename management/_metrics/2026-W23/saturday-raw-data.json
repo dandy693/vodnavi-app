@@ -119,5 +119,64 @@
     "3. **BRIEF_015 §1 断定の正式 retraction**: 次の CSO brief で「mobile handler / `_gl` 不全 断定」を撤回し、intra-app UX 課題への hypothesis re-anchor を要請",
     "4. **localhost 1 件混入 audit** (F-2026-W23-03): dev 環境 guard 検証、BRIEF_007 §3 NODE_ENV 盾の動作確認",
     "5. **本番 SATURDAY_REVIEW (2026-06-06)**: 同 fork ID h4bNtK9ST0KSgZx-yf_9ZQ + 同 chain で再抽出、新たな仮説 (intra-app UX) ベースで分析"
-  ]
+  ],
+
+  "saturday_pull_2026_06_06": {
+    "captured_at_local": "2026-06-06 JST",
+    "captured_via": "claude-in-chrome MCP, authuser=2, account 'moterist.com@gmail.com' physically confirmed (DOM email + property no-redirect)",
+    "window_note": "GA4 events と GSC は既定 ~過去28日 (GA4: 2026-05-09〜06-05 / GSC: ~05/10 起点)。GA4 SPA レポートは URL の _u.date00/date01 を無視したため週次(W23 Jun1-6)の物理分離は未実施。既存 funnel_hostname_breakdown と同じ ~28d スケールで比較可能",
+    "ga4_vodnavi": {
+      "property_id": "p489519780",
+      "measurement_id": "G-GG7JV9MJRW",
+      "report": "Reports > Engagement > Events (r=top-events)",
+      "window": "過去28日 (2026-05-09〜2026-06-05)",
+      "event_counts": {
+        "ai_session_start": 27,
+        "product_click": 240,
+        "ai_affiliate_click": 239,
+        "concierge_entry_click": 15,
+        "fanza_cta_click": 0,
+        "session_start": 4013,
+        "page_view": 9258,
+        "first_visit": 3832
+      },
+      "source_intent_breakdown": "PENDING — source/intent カスタムディメンション分割は Exploration 構築が必要。本パスでは未取得 (要次パス)"
+    },
+    "ga4_moterist": {
+      "property_id": "p393864941",
+      "measurement_id": "G-5HYV772ER9",
+      "status": "BLOCKED — p393864941 直アクセスが bare Analytics home (#/) に bounce、既知 access-redirect (project_ga4_property_access_redirect) を再現",
+      "weekly_pv": null,
+      "top_articles": []
+    },
+    "search_console": {
+      "moterist_com_domain": {
+        "resource": "sc-domain:moterist.com",
+        "window": "~過去28日 (axis ~2026-05-19 起点)",
+        "clicks": 0,
+        "impressions": 1,
+        "avg_ctr_pct": 0,
+        "avg_position": 26,
+        "note": "near-zero。GA4 funnel hostname (moterist.com=6 users) と corroborate → property mismatch ではなく実態として moterist.com 検索流入が ~ゼロ"
+      },
+      "moterist_com_urlprefix": {
+        "resource": "https://moterist.com/",
+        "status": "ACCESS_DENIED (このプロパティへのアクセス権がありません) under authuser=2"
+      },
+      "vodnavi_jp_domain": {
+        "resource": "sc-domain:vodnavi.jp",
+        "window": "~過去28日 (axis ~2026-05-10 起点)",
+        "clicks": 2640,
+        "impressions": 81800,
+        "avg_ctr_pct": 3.2,
+        "avg_position": 8.7
+      }
+    },
+    "headline_findings": [
+      "F-W23-PULL-01 (CRITICAL/集客): moterist.com 検索流入が実態として ~ゼロ (GSC domain clicks 0 / impr 1 + GA4 hostname 6 users で二重確証)。M1 集客目標 15,000 PV/月 に対し top-of-funnel 未機能。サルベージ5記事の re-index/ranking 未発現の可能性 (salvage-production phase と整合)",
+      "F-W23-PULL-02 (POSITIVE/視認性): vodnavi.jp は GSC impr 81.8k / clicks 2,640 / CTR 3.2% / pos 8.7 と健全。集客の実体は vodnavi.jp 側。戦略前提 '集客=moterist' と実データ '集客=vodnavi.jp' が乖離",
+      "F-W23-PULL-03 (送客/成約): 28d で product_click 240 ≈ ai_affiliate_click 239 のほぼ1:1 (product クリック→アフィリエイトクリックの追随は良好)。一方 ai_session_start 27 << product_click 240 → product_click はコンシェルジュ AI セッション外 (カタログ/一覧) で支配的に発火している可能性、event scope/定義の再確認要",
+      "F-W23-PULL-04: fanza_cta_click 0 を再確認 (project_fanza_cta_blank_state と整合、対象 anchor 不在で発火ゼロ継続)"
+    ]
+  }
 }
