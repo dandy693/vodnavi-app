@@ -151,13 +151,6 @@ export default function BrandPage() {
         </section>
       </main>
 
-      <footer className="border-t border-brand-gold/10">
-        <div className="mx-auto max-w-6xl px-6 py-10 text-center text-xs text-brand-text-secondary/70">
-          © {new Date().getFullYear()} 合同会社トレンドネット / VODNAVI プロジェクト運営委員会 ·
-          <span className="ml-2">広告を含む · 18 歳以上対象</span>
-        </div>
-      </footer>
-
       {/* 「明滅するゴールド」表現 — 控えめな pulse でラグジュアリーを保つ */}
       <style>{`
         @keyframes pulseGold {

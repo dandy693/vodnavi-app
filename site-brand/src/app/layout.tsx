@@ -3,6 +3,7 @@ import { Noto_Sans_JP, Cormorant_Garamond } from "next/font/google";
 
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { GoogleTagManager } from "@/components/google-tag-manager";
+import { SiteFooter } from "@/components/site-footer";
 
 import "./globals.css";
 
@@ -127,6 +128,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(brandJsonLd) }}
         />
         {children}
+        <SiteFooter />
         <GoogleAnalytics
           measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
         />
