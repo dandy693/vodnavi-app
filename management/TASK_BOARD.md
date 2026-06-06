@@ -1,6 +1,9 @@
 # TASK BOARD — 開発・運用タスク管理
 
 ## 📋 経営戦略・データ駆動改善（CSO管轄）
+- [x] 🟢 T-20260607-01 (CSO, 2026-06-07): **ハイブリッド二重装甲戦略 (Option 3：両建て) を HUMAN 採択** → `STRATEGY_BRIEF_037_HYBRID_ADOPTION.md`。vodnavi.jp clean面 = E-E-A-T 盾 + 教養コラム clean 集客 (BRIEF_035 retained, supersede せず) を維持しつつ、X/SNS→app.vodnavi.jp 成約核心へ火力集中。
+- [ ] 🔵 T-20260607-02 (CTO): `app.vodnavi.jp` の UI/UX 改善 + X(旧Twitter)連携の URL パラメータ `?source=sns_x&intent=*` 配線設計。年齢確認ゲート(`proxy.ts`)経由でコンシェルジュ成約へ誘導
+- [ ] 🔵 T-20260607-03 (CCO): 非Google・SNS特化型アフィリエイトポストの量産・サニタイズ指示書策定 (X 1日4投稿運用、年齢確認LP経由、`?source=sns_x&intent=*` 付与)
 - [x] 🟢 Option α (Safe Append) ランブックによる過去記事5資産の本番WordPress直接注入完了（Landed: f6b6b6e）
 - [x] 🟢 BRIEF_029: GA4 クロスドメインLinker物理監査完了（verdict: セッション属性疎通・client_id断跡受託）
 - [x] 🟢 BRIEF_030: 新回転 OpenAI Key 疎通テスト成功および DMM 環境変数補完完了（Landed: 21d4810、1,617 tokens 再生成確認済）
