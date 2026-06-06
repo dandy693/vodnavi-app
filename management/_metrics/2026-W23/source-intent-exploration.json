@@ -1,0 +1,13 @@
+{
+  "recorded_at_local": "2026-06-06 JST",
+  "strategy_gate": "CLEAN_BOUNDARY_APPROVED (fd70895)",
+  "exploration_status": "DEFERRED",
+  "deferral_reason": "現状の inflow は app.vodnavi.jp 直アクセスが 98.6% を占め、source/intent カスタムディメンションはタグ付き inbound link (?source=&intent=) にしか付与されない。moterist 流入は ~ゼロ (adult デランク確定) のため、現時点で source×intent Exploration を組んでも有意なタグ付きサンプルがほぼ得られない。",
+  "not_blocked_on": "moterist SSH 一斉注入 (T-02 で検索流入への寄与は futile と確定済) ではない",
+  "revisit_trigger": "site-brand/ の clean-only scaffold を deploy し `?source=brand&intent=...` のタグ付き流入が GA4 に蓄積し始めた後に Exploration を構築・解析する",
+  "planned_exploration_spec": {
+    "property_id": "G-GG7JV9MJRW (p489519780)",
+    "dimensions": ["customEvent:source", "customEvent:intent", "hostName"],
+    "metrics": ["sessions", "ai_session_start", "product_click", "ai_affiliate_click"]
+  }
+}
