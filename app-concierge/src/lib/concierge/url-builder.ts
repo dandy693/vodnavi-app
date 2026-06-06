@@ -143,3 +143,25 @@ export function buildAffiliateURL(
     affiliateResolved: false,
   };
 }
+
+/**
+ * STRATEGY_BRIEF_040 — 早期クッキー着火 (early cookie burn) 用 URL。
+ *
+ * コンシェルジュの最終提案より前に FANZA アフィリエイト Cookie を着火させるため、
+ * 既存の検証済み FANZA 検索動線 (FANZA_SEARCH_BASE) を intent 別キーワードで再利用する。
+ * `resolveAffiliateId` / `wrapWithDmmAffiliate` を通し、ID 未解決時は追跡なしの生 URL を返す
+ * （盾: アフィリエイト ID をハードコードしない）。新規 URL は捏造せず既存資産のみ使用。
+ */
+const EARLY_BURN_KEYWORDS: Record<string, string> = {
+  beginner: "初心者",
+  actress: "専属",
+  discount: "セール",
+};
+
+export function buildEarlyCookieURL(intent: string | null | undefined): string {
+  const keyword = (intent && EARLY_BURN_KEYWORDS[intent]) || "ランキング";
+  const searchTarget = `${FANZA_SEARCH_BASE}${encodeURIComponent(keyword)}/`;
+  const affId = resolveAffiliateId("fanza");
+  if (!affId) return searchTarget; // 盾: ID 未解決なら生 URL（追跡なし）
+  return wrapWithDmmAffiliate(searchTarget, affId);
+}
