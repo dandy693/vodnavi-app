@@ -1,0 +1,41 @@
+{
+  "captured_at_local": "2026-06-06 JST",
+  "captured_via": "curl read-only GET (sandbox), moterist.com production endpoints",
+  "purpose": "T-20260606-02 — moterist.com 検索流入ゼロの技術的 indexability 切り分け",
+  "robots_txt": {
+    "status": "HEALTHY",
+    "content": "User-agent: *\nDisallow: /wp-admin/\nAllow: /wp-admin/admin-ajax.php\n\nSitemap: https://moterist.com/wp-sitemap.xml",
+    "blocks_content": false,
+    "note": "コンテンツのクロール阻害なし。/wp-admin/ のみ disallow（WordPress 標準）。sitemap 宣言あり"
+  },
+  "http": {
+    "status_code": "200 OK",
+    "server": "LiteSpeed",
+    "x_robots_tag": "なし（noindex ヘッダー無し）",
+    "content_type": "text/html; charset=UTF-8"
+  },
+  "homepage_html": {
+    "bytes": 132479,
+    "meta_robots": "<meta name='robots' content='max-image-preview:large' />",
+    "has_noindex": false,
+    "has_nofollow": false,
+    "noindex_occurrences": 0,
+    "title": "紳士・淑女のための、夜の書斎。FANZA を中心とした成人向け VOD の世界を…│モテリスト",
+    "canonical": "grep 不一致（要再確認、ただし noindex 無しのため indexability 判定に影響なし）"
+  },
+  "verdict": {
+    "technical_indexability": "HEALTHY — robots.txt / meta robots / X-Robots-Tag いずれも非ブロック、200 OK。「インデックス拒否」仮説は棄却",
+    "remaining_hypotheses": [
+      "(B) [最有力] Google の成人コンテンツ・フィルタリング/デランク。title が明示的に成人向け FANZA VOD 案内所 → SafeSearch/adult 抑制で default 検索結果から構造的に除外される可能性が高い。これが主因なら『Google organic = moterist 集客』前提そのものが構造的に成立しない",
+      "(A) サルベージ5記事が re-index/ranking 前（新規公開で未ランク）",
+      "(C) 手動による対策/ペナルティ（GSC > セキュリティと手動による対策 で要確認）",
+      "(D) GSC データ反映ラグ／計測プロパティ不整合（sc-domain は accessible / URL-prefix は access-denied）"
+    ],
+    "next_human_steps": [
+      "GSC > URL 検査で5記事URL (1095/1106/994/954/1018) のインデックス状況を物理確認",
+      "GSC > セキュリティと手動による対策 で手動ペナルティ有無を確認",
+      "ブラウザで `site:moterist.com` を実行し indexed page 数と adult フィルタ挙動を目視",
+      "仮説B (成人デランク) が主因なら、moterist Google SEO 集客前提を再評価し vodnavi.jp 集客 / X 還流など非 Google 経路へ重心移動を検討"
+    ]
+  }
+}

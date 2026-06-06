@@ -29,7 +29,8 @@
   - [ ] gpt-5.5 reasoning model における temperature 設定の削除
 
 ## [Backlog] 🛡️ ガバナンス・アフィリエイトID抽象化タスク (2026-06-02 確定)
-- [/] 📅 T-20260606-01 (CSO/CTO, In Progress 2026-06-06): 2026-W23 サタデー・レビュー 物理データ同期 — **一次取得完了** (GA4 events G-GG7JV9MJRW + GSC moterist/vodnavi、`saturday_pull_2026_06_06` ブロック + review ファクトテーブル反映済)。**残**: ① source×intent 分割 (GA4 Exploration 要構築) ② moterist GA4 PV (p393864941 redirect でブロック) ③ 確定CVR (DMM 管理画面, HUMAN)。🔴 一次発見: moterist.com 検索流入 ~ゼロ vs vodnavi.jp impr 81.8k
+- [/] 🔬 T-20260606-02 (CTO, In Progress 2026-06-06): moterist.com 検索流入ゼロの根因究明 — **curl 監査完了: 技術的 indexability は HEALTHY**（robots.txt 非ブロック / meta robots に noindex 無し / 200 OK / X-Robots-Tag 無し）→「インデックス拒否」仮説棄却。残仮説 **(B) 成人コンテンツ・デランクが最有力** / (A) re-index 待ち / (C) 手動ペナルティ→GSC 要確認 / (D) 計測ラグ。次: GSC URL検査 + 手動対策確認 + `site:moterist.com` 目視。監査ログ: `management/_metrics/2026-W23/moterist-infra-audit.json`
+- [x] ✅ T-20260606-01 (CSO/CTO, 2026-06-06, first-pass done): 2026-W23 サタデー・レビュー 物理データ同期 — **一次取得完了** (GA4 events G-GG7JV9MJRW + GSC moterist/vodnavi、`saturday_pull_2026_06_06` ブロック + review ファクトテーブル反映済)。**残**: ① source×intent 分割 (GA4 Exploration 要構築) ② moterist GA4 PV (p393864941 redirect でブロック) ③ 確定CVR (DMM 管理画面, HUMAN)。🔴 一次発見: moterist.com 検索流入 ~ゼロ vs vodnavi.jp impr 81.8k
 - [x] 🟢 T-20260602-03-STEP1: **[Superseded by Option-A, 2026-06-02]** — 当初案は `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-001` での env 配線設計だったが、3-ID 並列識別仕様確定により app-concierge 側 env は **`moterist-004`** が正。site-moterist 側は副サイトID 直書き許容のため env 化不要。代替は T-20260602-04-ENV に集約
 - [x] 🟢 T-20260602-04: **[Superseded by Option-A, 2026-06-02]** — 記事 Markdown 内 16 箇所の env プレースホルダー一括置換は不要化（副サイトID 仕様により直書き許容）
 - [ ] ⚙️ T-20260602-04-ENV (CTO): `app-concierge/.env` および `.env.example` に `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004` を定義し、`src/lib/concierge/url-builder.ts:68` の env 解決経路が確実に `moterist-004` を返すことを `tsc --noEmit` + ローカルブラウザ実機で物理確認。Vercel 本番 env への反映は HUMAN 手動アクション
