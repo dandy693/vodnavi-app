@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 // トップページ page.tsx の運営組織情報セクションに一致させる。新たな法人情報は捏造しない。
 const ROWS: { term: string; desc: string }[] = [
   { term: "サイト名", desc: "VODNAVI（vodnavi.jp）" },
-  { term: "法人格", desc: "合同会社トレンドネット" },
+  { term: "運営主体（屋号）", desc: "VODNavi運営事務局" },
+  { term: "運営会社（法人）", desc: "合同会社トレンドネット" },
   {
     term: "運営組織",
     desc: "VODNAVI プロジェクト運営委員会（戦略・制作・コンプライアンスの 3 部門で構成）",
