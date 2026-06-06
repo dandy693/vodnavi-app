@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "利用規約",
   description:
-    "VODNAVI（vodnavi.jp）の利用規約。適用範囲・広告表記・免責事項について。",
+    "VODNAVI（vodnavi.jp）の利用規約・免責事項。サービスの目的・免責・アフィリエイトの開示について。",
   alternates: { canonical: "/terms" },
 };
 
@@ -14,40 +14,52 @@ export default function TermsPage() {
         TERMS OF SERVICE
       </p>
       <h1 className="mt-4 font-luxury-heading text-3xl text-brand-text-primary sm:text-4xl">
-        利用規約
+        利用規約・免責事項
       </h1>
 
       <div className="mt-12 space-y-10 text-sm leading-relaxed text-brand-text-secondary sm:text-base">
         <section className="space-y-3">
           <h2 className="font-luxury-heading text-xl text-brand-text-primary">
-            第1条（適用）
+            1. サービスの目的
           </h2>
           <p>
-            本規約は、合同会社トレンドネットが運営するサイト「VODNAVI」（vodnavi.jp、
-            以下「当サイト」）の利用条件を定めるものです。利用者は、当サイトを利用することにより、
-            本規約に同意したものとみなされます。
+            本サービス「VODNAVI」（vodnavi.jp）は、合同会社トレンドネットが運営する、
+            AI 技術を活用した動画配信作品の情報検索・紹介を行う情報プラットフォームです。
+            利用者は、当サイトを利用することにより本規約に同意したものとみなされます。
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="font-luxury-heading text-xl text-brand-text-primary">
-            第2条（広告・アフィリエイト）
+            2. 免責事項
           </h2>
           <p>
-            当サイトは、アフィリエイト広告（FANZA 等）を含みます。最終的な視聴・購入・契約は、
-            リンク先の公式サイトにて行われ、料金・配信状況・キャンペーン内容は変動するため、
-            最新情報は必ず公式サイトでご確認ください。
+            当サイトに掲載される配信状況・料金・各種情報および紹介文面は、AI による自動解析および
+            執筆時点のデータに基づいており、その正確性・最新性・完全性について当事務局は一切の保証を
+            行いません。最終的な視聴・購入・契約は、リンク先の公式サイトにて行われます。
+            各サービスの詳細な利用条件・料金は、必ずリンク先の公式サイトにてご確認ください。
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="font-luxury-heading text-xl text-brand-text-primary">
-            第3条以降（確定待ち）
+            3. アフィリエイト・プログラムについて
           </h2>
-          <div className="rounded-lg border border-dashed border-brand-gold/40 bg-brand-surface/40 p-5 text-center text-brand-text-secondary/80">
-            [要 HUMAN/リーガル確定: 免責事項、禁止事項、知的財産権、サービスの変更・中断、
-            準拠法および管轄裁判所、規約の変更手続きなどの正式な条文をここに展開してください。]
-          </div>
+          <p>
+            当サイトは、各種配信サービスの公式アフィリエイト・紹介プログラムに参加しています。
+            紹介経由で成約が発生した場合、当サイトに紹介報酬が支払われることがあります。
+            これにより提供される情報の客観性が損なわれることはありません。
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="font-luxury-heading text-xl text-brand-text-primary">
+            4. お問い合わせ・改定
+          </h2>
+          <p>
+            本規約に関するお問い合わせは contact@vodnavi.jp までご連絡ください。
+            本規約は、必要に応じて改定されることがあります。
+          </p>
         </section>
       </div>
 

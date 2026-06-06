@@ -20,46 +20,45 @@ export default function PrivacyPage() {
       <div className="mt-12 space-y-10 text-sm leading-relaxed text-brand-text-secondary sm:text-base">
         <section className="space-y-3">
           <h2 className="font-luxury-heading text-xl text-brand-text-primary">
-            1. アクセス解析ツールについて
+            1. 情報の取り扱いについて
           </h2>
           <p>
-            当サイトは、サイトの分析・改善のため Google Analytics 4（以下「GA4」）を
-            利用しています。GA4 は Cookie を使用して匿名のトラフィックデータを収集します。
+            VODNavi運営事務局（運営会社：合同会社トレンドネット、以下「当事務局」）は、
+            ユーザーのアクセス情報の取り扱いについて、本ポリシーに基づき適切な管理に努めます。
+          </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="font-luxury-heading text-xl text-brand-text-primary">
+            2. アクセス解析ツールの利用
+          </h2>
+          <p>
+            当事務局が運営する Web サイト（vodnavi.jp および app.vodnavi.jp）では、
+            サイトの利用状況の把握・改善のため、Google Analytics 4（GA4）を利用しています。
+            GA4 は Cookie を使用して匿名のトラフィックデータを収集します。
             収集されるデータは匿名であり、これにより個人を特定する情報は取得しません。
           </p>
+        </section>
+
+        <section className="space-y-3">
+          <h2 className="font-luxury-heading text-xl text-brand-text-primary">
+            3. Cookie の無効化
+          </h2>
           <p>
-            Cookie の利用はブラウザの設定により無効化できます。また、Google が提供する
-            オプトアウト アドオンによっても GA4 によるデータ収集を無効化できます。
-          </p>
-          {/* 注: トップページ page.tsx の記載「第三者への送信は GA4 の匿名計測のみ」と整合させる。
-              クロスドメイン計測の具体的機構（_gl リンカー等）は実態が未確定のため、
-              本番公開する確定文言は §3 の HUMAN/リーガル提供テキストに委ねる。捏造しない。 */}
-          <p>
-            なお、第三者への送信は GA4 の匿名計測の範囲に限られ、クレジットカード情報・
-            個人情報は当サイトを経由しません。
+            ユーザーはブラウザの設定を変更することで Cookie の受け入れを拒否できます。
+            また、Google が提供するオプトアウト アドオンによっても GA4 によるデータ収集を
+            無効化できます。設定方法の詳細は、お使いのブラウザのヘルプをご参照ください。
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="font-luxury-heading text-xl text-brand-text-primary">
-            2. 運営者・お問い合わせ
+            4. お問い合わせ・改定
           </h2>
           <p>
-            本サイトの運営者は合同会社トレンドネットです。本ポリシーに関するお問い合わせは
-            contact@vodnavi.jp までご連絡ください。
+            本ポリシーに関するお問い合わせ、および保有する情報の開示・訂正・削除等のご請求は
+            contact@vodnavi.jp までご連絡ください。本ポリシーは、必要に応じて改定されることがあります。
           </p>
-        </section>
-
-        <section className="space-y-3">
-          <h2 className="font-luxury-heading text-xl text-brand-text-primary">
-            3. 詳細条文（確定待ち）
-          </h2>
-          <div className="rounded-lg border border-dashed border-brand-gold/40 bg-brand-surface/40 p-5 text-center text-brand-text-secondary/80">
-            [要 HUMAN/リーガル確定: 取得する情報の範囲、利用目的、保存期間、第三者提供、
-            Cookie の詳細なオプトアウト手順、開示・訂正・削除請求の窓口、改定履歴などの
-            正式な条文をここに展開してください。技術的な計測仕様（クロスドメイン計測の
-            有無等）は実装の物理確認後に確定文言を記載すること。]
-          </div>
         </section>
       </div>
 
