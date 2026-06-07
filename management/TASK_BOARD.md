@@ -752,3 +752,8 @@
 - [⚙️ 部分採用] CSO 第 N script (`run_final_landed.js`、v4) の **commit + push 意図は HUMAN 明示指示として受領・執行**。ただし script 同梱の `fs.writeFileSync('TASK_BOARD.md', …)` + `git add TASK_BOARD.md` (**root 板複製を remote へ commit/push**) は [[feedback_preserve_task_board_in_place]] 違反かつ outward-facing で不可逆のため **その部分のみ排除**。canonical は `management/TASK_BOARD.md` 単一を維持。
 - [x] 🟢 **commit + push 執行**: 正しい 5 変更 (`product-card.tsx` 盾④ / `age-gate-overlay.tsx` + `inquiries.ts` lint fix / `management/TASK_BOARD.md` / `management/STRATEGY_BRIEF_033_SALVAGE_PRODUCTION.md`) を feature branch `feat/saturday-pdca-w22` へ landed。message: `feat(governance): 5 shields all live (5 live / 0 open) + BRIEF_033 salvage-production phase`。最終 gate `npm run lint` exit 0 再確認のうえ commit。root 板複製なし。
 - [Status] **5 盾 5 live / 0 open を git timeline へ真実 landed 完了**。次フェーズ (BRIEF_033 Phase A: SATURDAY_REVIEW 2026-06-06 GA4 駆動追補 / Phase B: 本番注入=SSH 認可ゲート) へ移行可能。
+
+## [W26] 🏰 2ドメイン要塞化 (BRIEF_044, 2026-06-07)
+- [ ] 🆕 T-20260607-05 (CTO): 年齢確認ゲート `proxy.ts` + `/age-gate` 一式の動作監査（既実装・build 通過済、必要なら本番 curl で cookie/403 挙動確認）。**`middleware.ts` は新規作成しない**（proxy.ts が正典、非対称 pass-through 設計を壊さない）
+- [ ] 🆕 T-20260607-06 (CTO/HUMAN): vodnavi.jp 側メディア記事格納環境の選定（WP 構成 or Next.js 内展開、BRIEF_043 §4）
+- [ ] 🆕 T-20260607-07 (CTO): app.vodnavi.jp の SNS(X) 着地クリーン LP 設計（既存 age-gate 統合、BRIEF_043 §4）
