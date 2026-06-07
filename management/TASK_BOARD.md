@@ -768,4 +768,4 @@
 - [ ] 🆕 T-20260608-01 (CCO/CTO): clean 教養コラムの本数追加（`site-brand/03_content/`、**非成人厳守**、T-06 レンダラ）。※PoC 初回投入は T-08 完了済
 - [ ] 🆕 T-20260608-02 (CTO): 大量 SSG ビルドのメモリ/レンダ速度プロファイリング（`next build`）
 - [ ] 🆕 T-20260608-03 (CTO/CSO): GA4 `?source=moterist`/`?source=sns_x` カスタムディメンション計測の生存確認
-- [ ] 🆕 T-20260608-04 (CTO): `03_content/*.md` の 18禁ワード/FANZA リンク混入を build 前検査する簡易サニタイズ lint（clean 境界の自動強制、BRIEF_050 §3）
+- [x] ✅ T-20260608-04 (CTO, 完了 2026-06-08): clean 境界の **build 前サニタイズ lint 実装** — `site-brand/scripts/check-clean-content.mjs`（`03_content/**/*.md` を走査、`al.dmm.co.jp`/`af_id=`/`fanza`/`成人向け` を検出で **exit 1**）を `package.json` の `prebuild` に統合。**検証**: 現 clean 3記事=PASS / 故意の al.dmm+af_id 混入=**exit 1 で build 遮断** / cleanup 後 PASS / `next build` は prebuild lint→build で exit 0。clean 境界が人手レビューなしで機械強制される
