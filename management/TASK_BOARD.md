@@ -755,5 +755,5 @@
 
 ## [W26] 🏰 2ドメイン要塞化 (BRIEF_044, 2026-06-07)
 - [x] ✅ T-20260607-05 (CTO, 完了 2026-06-07): 年齢確認ゲート `proxy.ts` 物理コード監査 — **既存設計どおり正しく実装、修正不要**。①cookie `vodnavi_age_verified=1` 厳密判定 ②ページ pass-through（source/intent/_gl 無傷、_gl は10文字prefixログ）③API `/api/concierge/*` 403(JSON,no-store)、matcher は `/api/age-gate` を正しく除外。詳細: `management/AUDIT_REPORT_T05.md`。`middleware.ts` 新設不要
-- [ ] 🆕 T-20260607-06 (CTO/HUMAN): vodnavi.jp 側メディア記事格納環境の選定（WP 構成 or Next.js 内展開、BRIEF_043 §4）
+- [/] 🆕 T-20260607-06 (CTO→CSO 確定待ち): vodnavi.jp メディア環境 — **分析完了 (BRIEF_046)**: vodnavi.jp は既に **Approach A (Next.js SSG + Markdown, site-brand `03_content`+`[slug]`)** で稼働中。推奨=**A 継続拡張**、B(WP/mixhost reverse-proxy) は戦略矛盾で非推奨。**技術負債2件発見**: ①`[slug]` の Markdown レンダラが regex 簡易版（list/太字/画像 未対応）②hardcoded hex(`#E0E0E0`≠canonical `#FAFAFA`)で brand トークン非整合。実装は CSO 確定後
 - [ ] 🆕 T-20260607-07 (CTO): app.vodnavi.jp の SNS(X) 着地クリーン LP 設計（既存 age-gate 統合、BRIEF_043 §4）
