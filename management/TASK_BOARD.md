@@ -754,6 +754,6 @@
 - [Status] **5 盾 5 live / 0 open を git timeline へ真実 landed 完了**。次フェーズ (BRIEF_033 Phase A: SATURDAY_REVIEW 2026-06-06 GA4 駆動追補 / Phase B: 本番注入=SSH 認可ゲート) へ移行可能。
 
 ## [W26] 🏰 2ドメイン要塞化 (BRIEF_044, 2026-06-07)
-- [ ] 🆕 T-20260607-05 (CTO): 年齢確認ゲート `proxy.ts` + `/age-gate` 一式の動作監査（既実装・build 通過済、必要なら本番 curl で cookie/403 挙動確認）。**`middleware.ts` は新規作成しない**（proxy.ts が正典、非対称 pass-through 設計を壊さない）
+- [x] ✅ T-20260607-05 (CTO, 完了 2026-06-07): 年齢確認ゲート `proxy.ts` 物理コード監査 — **既存設計どおり正しく実装、修正不要**。①cookie `vodnavi_age_verified=1` 厳密判定 ②ページ pass-through（source/intent/_gl 無傷、_gl は10文字prefixログ）③API `/api/concierge/*` 403(JSON,no-store)、matcher は `/api/age-gate` を正しく除外。詳細: `management/AUDIT_REPORT_T05.md`。`middleware.ts` 新設不要
 - [ ] 🆕 T-20260607-06 (CTO/HUMAN): vodnavi.jp 側メディア記事格納環境の選定（WP 構成 or Next.js 内展開、BRIEF_043 §4）
 - [ ] 🆕 T-20260607-07 (CTO): app.vodnavi.jp の SNS(X) 着地クリーン LP 設計（既存 age-gate 統合、BRIEF_043 §4）
