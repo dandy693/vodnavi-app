@@ -757,3 +757,8 @@
 - [x] ✅ T-20260607-05 (CTO, 完了 2026-06-07): 年齢確認ゲート `proxy.ts` 物理コード監査 — **既存設計どおり正しく実装、修正不要**。①cookie `vodnavi_age_verified=1` 厳密判定 ②ページ pass-through（source/intent/_gl 無傷、_gl は10文字prefixログ）③API `/api/concierge/*` 403(JSON,no-store)、matcher は `/api/age-gate` を正しく除外。詳細: `management/AUDIT_REPORT_T05.md`。`middleware.ts` 新設不要
 - [x] ✅ T-20260607-06 (CTO, 完了 2026-06-07): vodnavi.jp メディア環境 — **Approach A (Next.js SSG + Markdown) 確定**（B は戦略矛盾で却下）。発見した負債2件を**解消・build verified**: ①`[slug]/page.tsx` の Markdown レンダラを刷新（H1-3/太字/斜体/リンク/画像/引用/箇条書き/段落 + HTML escape で XSS 面除去）②hardcoded hex 排除→`brand-*`/`design-tokens.css` CSS変数へ整合。`tsc` exit 0 + `next build` exit 0（既存2記事 SSG 成功）。詳細: BRIEF_046/047
 - [x] ✅ T-20260607-07 (CTO, 完了 2026-06-07): app.vodnavi.jp の SNS(X) 着地 LP **実装完了** — `app-concierge/src/app/lp/page.tsx`（`/lp`, dynamic）。`?source=sns_x&intent=*` を validate して `/concierge` へ無損失透過、CTA=`btn-luxury-gold`、年齢確認は /concierge 側 `ConciergeGate`+`proxy.ts` が担保（/lp は matcher 非対象）、`robots:noindex`、brand トークン整合。`tsc`+`next build` exit 0。BRIEF_048。**→ W26 (T-05/06/07) 全完了**
+
+## [Phase3] 📚 vodnavi.jp clean コンテンツ配備 (BRIEF_049, Option 1, 2026-06-07)
+- [x] 📌 境界確定: vodnavi.jp = **clean 教養コラムのみ**（成人作品名/女優名/FANZA リンクは置かない）。成人/FANZA 動線は app.vodnavi.jp の age gate 内に隔離 → adult デランク回避（BRIEF_034 §4 / 049）
+- [ ] 🆕 T-20260607-08 (CCO/CTO): clean 教養コラムの執筆・配置（`site-brand/03_content/`、**非成人・FANZA リンクなし**、T-06 レンダラ活用、permalink 不変）
+- [ ] 🆕 T-20260607-09 (CTO): `/lp` → `/concierge` → FANZA の e2e 結合テスト（app 側、`npm run dev` or build verify、cookie/age-gate 挙動含む）
