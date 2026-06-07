@@ -2,10 +2,12 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* 共通デザイントークン（『ビブリア・エロティカ』）。
-   monorepo ルート直下の design-tokens.css を単一情報源とする。
-   site-brand 等の追加アプリも同じ相対パスで import すること。 */
-@import "../../../design-tokens.css";
+/* 共通デザイントークン（『ビブリア・エロティカ』）。canonical source は monorepo
+   ルート直下の design-tokens.css。Turbopack dev が project root を超える import を
+   拒否する（"leaves the filesystem root"）ため、app-concierge 内に synced copy を置き
+   local import する（site-brand と同方式。root 更新時は
+   `cp design-tokens.css app-concierge/design-tokens.css` で同期）。 */
+@import "../../design-tokens.css";
 
 @custom-variant dark (&:is(.dark *));
 
