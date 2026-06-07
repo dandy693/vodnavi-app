@@ -755,5 +755,5 @@
 
 ## [W26] 🏰 2ドメイン要塞化 (BRIEF_044, 2026-06-07)
 - [x] ✅ T-20260607-05 (CTO, 完了 2026-06-07): 年齢確認ゲート `proxy.ts` 物理コード監査 — **既存設計どおり正しく実装、修正不要**。①cookie `vodnavi_age_verified=1` 厳密判定 ②ページ pass-through（source/intent/_gl 無傷、_gl は10文字prefixログ）③API `/api/concierge/*` 403(JSON,no-store)、matcher は `/api/age-gate` を正しく除外。詳細: `management/AUDIT_REPORT_T05.md`。`middleware.ts` 新設不要
-- [/] 🆕 T-20260607-06 (CTO→CSO 確定待ち): vodnavi.jp メディア環境 — **分析完了 (BRIEF_046)**: vodnavi.jp は既に **Approach A (Next.js SSG + Markdown, site-brand `03_content`+`[slug]`)** で稼働中。推奨=**A 継続拡張**、B(WP/mixhost reverse-proxy) は戦略矛盾で非推奨。**技術負債2件発見**: ①`[slug]` の Markdown レンダラが regex 簡易版（list/太字/画像 未対応）②hardcoded hex(`#E0E0E0`≠canonical `#FAFAFA`)で brand トークン非整合。実装は CSO 確定後
+- [x] ✅ T-20260607-06 (CTO, 完了 2026-06-07): vodnavi.jp メディア環境 — **Approach A (Next.js SSG + Markdown) 確定**（B は戦略矛盾で却下）。発見した負債2件を**解消・build verified**: ①`[slug]/page.tsx` の Markdown レンダラを刷新（H1-3/太字/斜体/リンク/画像/引用/箇条書き/段落 + HTML escape で XSS 面除去）②hardcoded hex 排除→`brand-*`/`design-tokens.css` CSS変数へ整合。`tsc` exit 0 + `next build` exit 0（既存2記事 SSG 成功）。詳細: BRIEF_046/047
 - [ ] 🆕 T-20260607-07 (CTO): app.vodnavi.jp の SNS(X) 着地クリーン LP 設計（既存 age-gate 統合、BRIEF_043 §4）
