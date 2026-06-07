@@ -760,5 +760,5 @@
 
 ## [Phase3] 📚 vodnavi.jp clean コンテンツ配備 (BRIEF_049, Option 1, 2026-06-07)
 - [x] 📌 境界確定: vodnavi.jp = **clean 教養コラムのみ**（成人作品名/女優名/FANZA リンクは置かない）。成人/FANZA 動線は app.vodnavi.jp の age gate 内に隔離 → adult デランク回避（BRIEF_034 §4 / 049）
-- [ ] 🆕 T-20260607-08 (CCO/CTO): clean 教養コラムの執筆・配置（`site-brand/03_content/`、**非成人・FANZA リンクなし**、T-06 レンダラ活用、permalink 不変）
+- [/] 🆕 T-20260607-08 (CCO/CTO, PoC 完了 2026-06-08): clean 教養コラムの執筆・配置 — **PoC 記事 landed**: `site-brand/03_content/philosophy-of-cinema/article.md`（映画哲学/自己対峙、**非成人・FANZA リンクなし**、CTA=`app.vodnavi.jp/concierge?source=brand`）。`next build` exit 0 で `/philosophy-of-cinema` SSG 確認、T-06 レンダラ + brand スタイリング適用。**残**: 本番品質の本文量産（現状は draft skeleton）
 - [ ] 🆕 T-20260607-09 (CTO): `/lp` → `/concierge` → FANZA の e2e 結合テスト（app 側、`npm run dev` or build verify、cookie/age-gate 挙動含む）
