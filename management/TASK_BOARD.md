@@ -763,3 +763,9 @@
 - [/] 🆕 T-20260607-08 (CCO/CTO, PoC 完了 2026-06-08): clean 教養コラムの執筆・配置 — **PoC 記事 landed**: `site-brand/03_content/philosophy-of-cinema/article.md`（映画哲学/自己対峙、**非成人・FANZA リンクなし**、CTA=`app.vodnavi.jp/concierge?source=brand`）。`next build` exit 0 で `/philosophy-of-cinema` SSG 確認、T-06 レンダラ + brand スタイリング適用。**残**: 本番品質の本文量産（現状は draft skeleton）
 - [x] ✅ T-20260607-09 (CTO, 完了 2026-06-08): `/lp`→`/concierge` e2e 検証（実 dev サーバ + curl）— **ゲート/パラメータ動線を runtime 実証**: ①`/api/concierge` cookie なし→**403** / `vodnavi_age_verified=1` あり→pass-through ②**T-10 修正後 `/lp` dev=200**、live CTA href=`/concierge?source=sns_x&amp;intent=actress`（param 無損失透過を runtime 確認）。下流 FANZA API 自体は prod env 要（dev は 503）。詳細: `AUDIT_REPORT_T09.md`
 - [x] ✅ T-20260607-10 (CTO, 完了 2026-06-08): app-concierge の dev CSS import 修正 — root `@import "../../../design-tokens.css"`（Turbopack dev "leaves filesystem root"）を **synced ローカルコピー**（`app-concierge/design-tokens.css`, md5=root 一致）+ `@import "../../design-tokens.css"` に変更（site-brand 同方式）。**検証**: `next build` exit 0（production 不変）+ **dev `/lp`=200 復活**（修正前 500）。globals.css に同期手順コメント追記
+
+## [W27: 2026-06-08] クリーンコンテンツ量産・計測フェーズ (BRIEF_050)
+- [ ] 🆕 T-20260608-01 (CCO/CTO): clean 教養コラムの本数追加（`site-brand/03_content/`、**非成人厳守**、T-06 レンダラ）。※PoC 初回投入は T-08 完了済
+- [ ] 🆕 T-20260608-02 (CTO): 大量 SSG ビルドのメモリ/レンダ速度プロファイリング（`next build`）
+- [ ] 🆕 T-20260608-03 (CTO/CSO): GA4 `?source=moterist`/`?source=sns_x` カスタムディメンション計測の生存確認
+- [ ] 🆕 T-20260608-04 (CTO): `03_content/*.md` の 18禁ワード/FANZA リンク混入を build 前検査する簡易サニタイズ lint（clean 境界の自動強制、BRIEF_050 §3）
