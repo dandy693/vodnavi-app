@@ -795,5 +795,5 @@
 
 ## 📋 新章：14日間 Exploration コンテンツ創設（BRIEF_052, 2026-06-09 追記）
 - [x] ✅ T-20260609-e1 (HUMAN/CSO, 2026-06-09): `STRATEGY_BRIEF_052.md` を **非成人教養スコープで確定**（HUMAN 判断: 初版の官能/エロティシズム lean は 81.8k SafeSearch デランクリスクのため不採用、`philosophy-of-cinema` 水準へ再スコープ）。
-- [ ] 🔵 T-20260609-e2 (CSO): 記事1（光と影のシネマグラフ／映画史・映像美）の CCO 執筆ブリーフ＋プロンプト創設（非成人教養スコープ確定済）。
+- [x] ✅ T-20260609-e2 (CSO, 2026-06-09): 記事1（光と影のシネマグラフ／映画史・映像美）の CCO 執筆指示書を `management/CCO_BRIEF_ARTICLE_1.md` に生成。**CTO 修正**: §3 の壊れた CTA 仕様（markdown-in-href / raw HTML は `mdToHtml` でエスケープ / 「秘匿された作品」成人 lean / page CTA と重複）を、renderer 制約（純粋 markdown subset・末尾 CTA は page 自動描画）に整合させて訂正済。
 - [ ] 🔵 T-20260609-e3 (CSO): 記事2（孤独の夜のカタルシス／深層心理）の CCO トーン＆マナー骨格策定（非成人教養スコープ確定済）。
