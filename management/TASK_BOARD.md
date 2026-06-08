@@ -779,4 +779,4 @@
 - [注] site-brand env = `NEXT_PUBLIC_GA_MEASUREMENT_ID`(G-GG7JV9MJRW)/`NEXT_PUBLIC_GTM_ID` のみ。`DMM_API_ID` は app-concierge 専用で clean media site には不要。**実 Vercel link/デプロイは HUMAN action**
 
 ### [HUMAN action / infra 保留] 次フェーズ・デプロイ (2026-06-08)
-- [ ] site-brand の本番 Vercel デプロイ（project `site-brand-vodnavi`）+ vodnavi.jp の DNS/ドメイン binding 切替。**HUMAN/インフラ action**（CTO/AI は Vercel dashboard を操作しない）。コード側事前監査は完了済（`3e3f900`: 301 WP残骸網羅/favicon/clean-env 確認、`?s=` redirect は任意の残課題）
+- [ ] site-brand の本番 Vercel デプロイ（project `site-brand-vodnavi`）+ vodnavi.jp の DNS/ドメイン binding 切替。**HUMAN/インフラ action**（CTO/AI は Vercel dashboard を操作しない）。**絶対条件**: root `vodnavi.jp` の binding/DNS 変更が **app.vodnavi.jp サブドメイン（GSC indexed 2,760件, `gsc-live-audit.json`）の serving/index に干渉しない**こと（root と app は別 Vercel project/別サブドメイン、切替後に app 側を curl/GSC で無影響確認）。コード側事前監査は完了済（`3e3f900`: 301 WP残骸網羅/favicon/clean-env 確認、`?s=` redirect は任意の残課題）
