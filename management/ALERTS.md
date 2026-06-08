@@ -474,3 +474,13 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - システム側の Git 汚染防衛（`.gitignore` defense-in-depth）は本セッションで物理 landed 済。`git ls-files` で `site-moterist/.playwright-mcp/` 配下は 0 件、`git check-ignore` でも `.playwright-mcp/` 行 6 がヒット = 鍵は元から非 tracked。
 - 鍵の **実値の無効化と再生成** は HUMAN の手動操作（cPanel / 各社ダッシュボード）が絶対必須。完了後、本エントリの status を resolved に flip すること。
 - 関連: [[mixhost-ssh-classifier-block]] (canonical OPERATION_MANUAL の SSH 手順は auto-mode classifier に block されるため、鍵が漏れても auto Claude は本番 SSH を撃てない構造)。
+
+### 2026-06-08 18:20 JST — [mid] CSO 脳内モデルにおけるドメイン計測値・アーキテクチャの混線
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| severity | mid |
+| target | `sc-domain:vodnavi.jp` 内の個別アセット識別 |
+| symptom | 2,780件のドメイン総インデックスを「旧WP残骸」と誤認。また `site-brand`（clean域）に年齢ゲートを誤配線しようとした（実体は app-concierge/src/proxy.ts、T-05/T-09 検証済）。 |
+| suspected_cause | コンテキスト保持がタイトな環境下で過去ログを断片的にパッチワーク捏造（ハルシネーション）。CTO 側 audit で都度是正済（未 landed）。 |
+| recommended_action | CSO が数値を語る前に特定ドメイン（root か app か）の個別識別ファクトをテキストから強制スキャン。ブランチ名は `feat/vodnavi-brand-sync` で永続固定。 |
