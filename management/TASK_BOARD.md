@@ -772,3 +772,8 @@
 
 ### GSC インデックス監査 landed (2026-06-08) — BRIEF_050 計測フェーズ / T-20260608-03 関連
 - [x] ✅ GSC 物理監査（claude-in-chrome MCP, authuser=2 / moterist.com@gmail.com 確認済、Playwright 不使用）: **app.vodnavi.jp** indexed=2760 / **404=237（5/28 の 289 から ▼52, PR#25 奏功）** / クロール済み-未登録=163。**vodnavi.jp(domain, 全サブドメイン包含)** indexed=2780 / 旧WP残骸=ソフト404:2・noindex:6・redirect:1 と僅少。詳細: `management/_metrics/2026-W23/gsc-live-audit.json`。**異常検知せず**（404 減少・新バケットなし）→ ALERTS 追記不要
+
+### site-brand clean-deploy 静的監査 (2026-06-08, read-only) — 次フェーズ Vercel デプロイ準備
+- [x] ✅ `next.config.ts` 301 監査: WP残骸 path 系（`/archives` `/wp-admin|content|includes` `/category` `/tag` 旧 `*sitemap.html` `/d-anime-store-only-title`）を **301→/ で網羅**。security headers(HSTS/XFO:DENY/nosniff/Permissions-Policy)も配備。**gap**: `?s=`(WP検索 query) は明示 redirect なし（`/` をレンダー、404 ではない）。GSC 残骸僅少(soft404:2/noindex:6)で優先度低、必要なら `has:[{type:'query',key:'s'}]` redirect 追加可
+- [x] ✅ `layout.tsx` favicon 監査: `icons`(favicon.ico/icon-192/icon-512/apple-touch-180)+`manifest:/site.webmanifest` 宣言済、`public/` に実アセット存在。OK
+- [注] site-brand env = `NEXT_PUBLIC_GA_MEASUREMENT_ID`(G-GG7JV9MJRW)/`NEXT_PUBLIC_GTM_ID` のみ。`DMM_API_ID` は app-concierge 専用で clean media site には不要。**実 Vercel link/デプロイは HUMAN action**
