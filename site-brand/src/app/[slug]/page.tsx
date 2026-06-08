@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
 import { notFound } from "next/navigation";
+import { buildConciergeHandoffUrl } from "@/lib/concierge-handoff";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,6 +42,23 @@ export default async function Page({ params }: Props) {
         .vodnavi-article blockquote { border-left: 4px solid var(--brand-gold); padding: 1rem; margin: 1.5rem 0; background: var(--brand-surface); color: var(--brand-text-primary); font-style: italic; }
         .vodnavi-article img { max-width: 100%; height: auto; border-radius: var(--brand-radius-card); margin: 1.5rem 0; }
       `}</style>
+
+      {/* 送客動線 (T-20260608-x3): clean 教養コラム末尾から app.vodnavi.jp の AI コンシェルジュへ。
+          境界SAFE: `buildConciergeHandoffUrl` は source/intent のみ付与（作品固有の成人 param なし）。
+          成人文脈・18禁確認は app 側の年齢ゲート (proxy.ts) に委ねるため、clean 面では adult シグナルを
+          出さない。トーンを崩さない控えめな `btn-luxury-outline`（既存 design-token クラス）を使用。 */}
+      <div className="mx-auto max-w-3xl text-center">
+        <hr className="luxury-hr-gold" />
+        <p className="mb-6 text-sm leading-relaxed text-brand-text-secondary">
+          作品選びに迷ったら、VODNAVI の AI コンシェルジュが今の気分から最適な一本をご案内します。
+        </p>
+        <a
+          href={buildConciergeHandoffUrl({ source: "brand" })}
+          className="btn-luxury-outline"
+        >
+          AI コンシェルジュに相談する
+        </a>
+      </div>
     </main>
   );
 }

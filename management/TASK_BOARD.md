@@ -789,6 +789,6 @@
 - [ ] site-brand の本番 Vercel デプロイ（project `site-brand-vodnavi`）+ vodnavi.jp の DNS/ドメイン binding 切替。**HUMAN/インフラ action**（CTO/AI は Vercel dashboard を操作しない）。**絶対条件**: root `vodnavi.jp` の binding/DNS 変更が **app.vodnavi.jp サブドメイン（GSC indexed 2,760件, `gsc-live-audit.json`）の serving/index に干渉しない**こと（root と app は別 Vercel project/別サブドメイン、切替後に app 側を curl/GSC で無影響確認）。コード側事前監査は完了済（`3e3f900`: 301 WP残骸網羅/favicon/clean-env 確認、`?s=` redirect は任意の残課題）
 
 ## 📋 新章：vodnavi.jp メディア要塞化（BRIEF_051 現実整合版, 2026-06-08 追記）
-- [ ] 🔵 T-20260608-x1 (CTO): Next.js 16 (site-brand) へのクリーンカラムコンポーネント実装（既存 App Router への拡張、scratch ではない）
-- [ ] 🔵 T-20260608-x2 (CTO): `design-tokens.css`（#D4AF37 ゴールドトークン）の同期検証（既存 frozen tokens の確認、新規定義は作らない）
-- [ ] 🔵 T-20260608-x3 (CTO): クリーン面 vodnavi.jp → app.vodnavi.jp/`proxy.ts` のセキュアな送客動線検証（**clean 面はゲートなし維持**）
+- [x] ✅ T-20260608-x1 (CTO, 2026-06-08, 独立 scaffold として残置): `site-brand/src/components/layout/CleanColumn.tsx`（brand-token クラス使用、hex なし、`next build` exit 0）。**[slug] には wrap しない判断**: 既存 `[slug]/page.tsx` が既に `bg-brand-dark`+`max-w-3xl` クリーンカラム+brand token のため、CleanColumn で包むと `<main>` 二重ネスト+幅衝突の regression。将来の独立カラムページ用 scaffold として温存。
+- [x] ✅ T-20260608-x2 (CTO, 2026-06-08, 既達・検証のみ): `design-tokens.css` は **canonical frozen**（`--brand-gold:#D4AF37` / `--brand-text-primary:#FAFAFA` / `--brand-dark:#121212`、"DO NOT EDIT/凍結"）+ `globals.css` の `@theme inline` で `brand-*` クラス露出済。CSS 追記は frozen 規約違反 + 誤 white(#FFFFFF) 混入になるため**不要**。同期は成立済。
+- [x] ✅ T-20260608-x3 (CTO, 2026-06-08, 配線完了): `buildConciergeHandoffUrl`（`source`+`intent` のみ、成人 param なし境界SAFE）を `[slug]/page.tsx` 末尾に **CTA 配線**（既存クリーンカラム内側、`btn-luxury-outline`、`source=brand`、18禁確認は app 側 proxy.ts ゲートに委譲し clean 面に adult シグナルを出さない）。`next build` exit 0（3 slug = philosophy-of-cinema / u-next-second-free-trial / wordpress-sango-review が SSG 生成）。
