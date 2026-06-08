@@ -798,3 +798,8 @@
 - [x] ✅ T-20260609-e2 (CSO, 2026-06-09): 記事1（光と影のシネマグラフ／映画史・映像美）の CCO 執筆指示書を `management/CCO_BRIEF_ARTICLE_1.md` に生成。**CTO 修正**: §3 の壊れた CTA 仕様（markdown-in-href / raw HTML は `mdToHtml` でエスケープ / 「秘匿された作品」成人 lean / page CTA と重複）を、renderer 制約（純粋 markdown subset・末尾 CTA は page 自動描画）に整合させて訂正済。
 - [x] ✅ T-20260609-e3 (CSO, 2026-06-09): 記事2（孤独の夜のカタルシス／深層心理）の CCO 執筆指示書を `management/CCO_BRIEF_ARTICLE_2.md` に生成（slug `solitude-catharsis`、非成人教養スコープ、§3 CTA 仕様は renderer 整合済＝page 自動描画・raw HTML 禁止、§4 検収ガード=lint リテラル+HUMAN テーマ目視）。
 - [x] ✅ T-20260609-e4 (CSO, 2026-06-09): 記事3（劇薬としてのストーリーテリング／構造文学）の CCO 執筆指示書を `management/CCO_BRIEF_ARTICLE_3.md` に生成（slug `storytelling-structure`、非成人教養スコープ、§3 renderer 整合・§4 検収ガード）。→ BRIEF_052 の初期3記事 **発注ブリーフは 3/3 完了**（執筆・配置・tone 目視は未了）。
+
+### 🏁 2026-06-09 セッション・クローズ・マーカー
+- `vodnavi.jp` クリーン面への境界安全送客CTA配線（`d2ef911`）および Next.js 16 ビルドパスを完了。
+- `BRIEF_052` に基づく初期教養3記事（シネマグラフ / 精神カタルシス / 文学構造）の非成人トーン CCO 発注指示書をすべて正常配置（e2, e3, e4 ✅ Done）。
+- **次期セッション残件**: ① PR #32 → main マージ（HUMAN）② 3記事の実執筆＋tone 目視（CCO/HUMAN）③ GA4 14日 hostName トレンド抽出（未実施）。
