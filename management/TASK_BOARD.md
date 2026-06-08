@@ -806,3 +806,4 @@
 
 ### 📝 2026-06-09 第2幕コンテンツ着手（PR #32 merge 後）
 - [/] 記事1 `cinematic-chiaroscuro`（陰影の美学／映画美学）初稿を `site-brand/03_content/cinematic-chiaroscuro/article.md` に配置。**新 slug**（既存 `philosophy-of-cinema`=別記事「鏡と自己対峙」のため**非上書き**）、renderer-clean（`---`/番号リスト除去）、`check-clean-content.mjs` PASS、HUMAN tone レビュー通過。→ branch `feat/content-cinematic-chiaroscuro` で PR 化、merge は HUMAN 判断。
+- [/] 記事2 `solitude-catharsis`（孤独のコンシェルジュ／深夜カタルシス）初稿を配置。renderer-clean（壊れた `[..]` を `[陰影の美学](/cinematic-chiaroscuro)` に修正＝記事1へクロスリンク）、`check-clean-content.mjs` PASS（5 files）、`next build` exit 0（`/solitude-catharsis` SSG 生成）。**同一 branch（PR #33）に同梱**（記事2→記事1 クロスリンク整合のため）。merge は HUMAN。
