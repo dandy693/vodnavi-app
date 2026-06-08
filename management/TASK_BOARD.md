@@ -55,6 +55,7 @@
 - [ ] 📅 T-20260603-02 (HUMAN/CTO): SATURDAY_REVIEW 2026-06-06 10:00 JST トリガー準備、BRIEF_007 §3 + BRIEF_008 §3 の自動データ抽出 chain (GA4 G-GG7JV9MJRW + GSC + ホスト名 dimension 経由 ai_session_start/product_click/ai_affiliate_click) の最終動作テスト
 
 ## [Backlog] 🚀 30倍スケールフェーズ (STRATEGY_BRIEF_032_30X_SCALE, 2026-06-04 確定)
+- [ ] 🔵 T-20260608-10 (CSO/CCO, BRIEF_IG_2026-06-08 §2①): GSC 上位10品番への Information Gain レビュー実データ生成 + live 投入（既存 `work-reviews` 機構へ、**app-side / 境界SAFE**）。**注**: BRIEF §2 の ②④（clean 面 vodnavi.jp への成人文脈配置）は境界ブロック・本タスク対象外（要 HUMAN 判断、[[STRATEGY_BRIEF_IG_2026-06-08]] 注記参照）。
 - [x] 🟢 T-20260604-30X-1 (CCO): サルベージ5記事 (1095/1106/994/954/1018) 『ビブリア・エロティカ』リライト — **既完了** (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`、5/5 BRIEF_003 §2/§3 + Option-A 準拠)。BRIEF_032 純新規バックログからは除外、完了済資産として記録のみ
 - [ ] 🔵 T-20260604-30X-2 (CCO): 3本柱 (感情・教養・状況) クラスター記事15本の構成案・KW選定 (BRIEF_032 §2.1)。**ステージング Markdown ドラフト先行**、本番一斉注入は SATURDAY_REVIEW 後・空中戦停止方針遵守。CTA URL は `?source=moterist&intent=<beginner|actress|discount>` 動的付与
 - [ ] 🔵 T-20260604-30X-3 (CTO/CCO): X還流エンジン設計 (BRIEF_032 §2.2)。1日4投稿運用 + 年齢確認ゲート経由 moterist.com 高成約ピラーページ動線
