@@ -792,3 +792,8 @@
 - [x] ✅ T-20260608-x1 (CTO, 2026-06-08, 独立 scaffold として残置): `site-brand/src/components/layout/CleanColumn.tsx`（brand-token クラス使用、hex なし、`next build` exit 0）。**[slug] には wrap しない判断**: 既存 `[slug]/page.tsx` が既に `bg-brand-dark`+`max-w-3xl` クリーンカラム+brand token のため、CleanColumn で包むと `<main>` 二重ネスト+幅衝突の regression。将来の独立カラムページ用 scaffold として温存。
 - [x] ✅ T-20260608-x2 (CTO, 2026-06-08, 既達・検証のみ): `design-tokens.css` は **canonical frozen**（`--brand-gold:#D4AF37` / `--brand-text-primary:#FAFAFA` / `--brand-dark:#121212`、"DO NOT EDIT/凍結"）+ `globals.css` の `@theme inline` で `brand-*` クラス露出済。CSS 追記は frozen 規約違反 + 誤 white(#FFFFFF) 混入になるため**不要**。同期は成立済。
 - [x] ✅ T-20260608-x3 (CTO, 2026-06-08, 配線完了): `buildConciergeHandoffUrl`（`source`+`intent` のみ、成人 param なし境界SAFE）を `[slug]/page.tsx` 末尾に **CTA 配線**（既存クリーンカラム内側、`btn-luxury-outline`、`source=brand`、18禁確認は app 側 proxy.ts ゲートに委譲し clean 面に adult シグナルを出さない）。`next build` exit 0（3 slug = philosophy-of-cinema / u-next-second-free-trial / wordpress-sango-review が SSG 生成）。
+
+## 📋 新章：14日間 Exploration コンテンツ創設（BRIEF_052, 2026-06-09 追記）
+- [x] ✅ T-20260609-e1 (HUMAN/CSO, 2026-06-09): `STRATEGY_BRIEF_052.md` を **非成人教養スコープで確定**（HUMAN 判断: 初版の官能/エロティシズム lean は 81.8k SafeSearch デランクリスクのため不採用、`philosophy-of-cinema` 水準へ再スコープ）。
+- [ ] 🔵 T-20260609-e2 (CSO): 記事1（光と影のシネマグラフ／映画史・映像美）の CCO 執筆ブリーフ＋プロンプト創設（非成人教養スコープ確定済）。
+- [ ] 🔵 T-20260609-e3 (CSO): 記事2（孤独の夜のカタルシス／深層心理）の CCO トーン＆マナー骨格策定（非成人教養スコープ確定済）。
