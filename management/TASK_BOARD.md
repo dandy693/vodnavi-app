@@ -777,3 +777,6 @@
 - [x] ✅ `next.config.ts` 301 監査: WP残骸 path 系（`/archives` `/wp-admin|content|includes` `/category` `/tag` 旧 `*sitemap.html` `/d-anime-store-only-title`）を **301→/ で網羅**。security headers(HSTS/XFO:DENY/nosniff/Permissions-Policy)も配備。**gap**: `?s=`(WP検索 query) は明示 redirect なし（`/` をレンダー、404 ではない）。GSC 残骸僅少(soft404:2/noindex:6)で優先度低、必要なら `has:[{type:'query',key:'s'}]` redirect 追加可
 - [x] ✅ `layout.tsx` favicon 監査: `icons`(favicon.ico/icon-192/icon-512/apple-touch-180)+`manifest:/site.webmanifest` 宣言済、`public/` に実アセット存在。OK
 - [注] site-brand env = `NEXT_PUBLIC_GA_MEASUREMENT_ID`(G-GG7JV9MJRW)/`NEXT_PUBLIC_GTM_ID` のみ。`DMM_API_ID` は app-concierge 専用で clean media site には不要。**実 Vercel link/デプロイは HUMAN action**
+
+### [HUMAN action / infra 保留] 次フェーズ・デプロイ (2026-06-08)
+- [ ] site-brand の本番 Vercel デプロイ（project `site-brand-vodnavi`）+ vodnavi.jp の DNS/ドメイン binding 切替。**HUMAN/インフラ action**（CTO/AI は Vercel dashboard を操作しない）。コード側事前監査は完了済（`3e3f900`: 301 WP残骸網羅/favicon/clean-env 確認、`?s=` redirect は任意の残課題）
