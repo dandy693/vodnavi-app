@@ -1,0 +1,74 @@
+{
+  "schema_version": "0.1.0-concierge-core",
+  "run_label": "BRIEF_019 §2.2 /concierge 核心部 hydration audit",
+  "captured_at_local": "2026-06-03 ~11:25 JST",
+  "captured_via": "mcp__claude-in-chrome__* (tabId 290597372 reused from home audit, no resize change)",
+  "target_url": "https://app.vodnavi.jp/concierge?source=moterist&intent=beginner",
+  "caveat_jstool_block": "body innerText 取得は cookie/query string detector に block されたため、構造 DOM query + timing API のみで finding 取得。bodyText sample 不採用",
+
+  "navigation_timing_ms": {
+    "fetchStart": 3.2,
+    "responseEnd": 1232.8,
+    "domInteractive": 1362.6,
+    "domContentLoaded": 1362.9,
+    "loadEvent": 2326.3,
+    "transferSizeBytes": 7284
+  },
+
+  "core_web_vitals": {
+    "paint_entries": "EMPTY (snapshot query 経路、PerformanceObserver 経路必要 — home audit と同じ limitation)",
+    "layoutShiftCount": 0,
+    "totalCLS": 0
+  },
+
+  "structural_findings": {
+    "title": "AI 相談窓口（コンシェルジュ） | VODNAVI",
+    "greeting_modal_found": false,
+    "greeting_modal_query": "[class*=\"greeting\"], [class*=\"Greeting\"], [role=\"dialog\"], [class*=\"chat\"], [class*=\"Chat\"], [class*=\"modal\"]",
+    "greeting_modal_conclusion": "CSO BRIEF_017 §1 / BRIEF_019 §2.2「初期チャット Greeting 画面が完全描画されるまで」hypothesis は **/concierge スコープでも反証**。greeting modal 不在、直接 chat UI 構成 (textarea + buttons)",
+    "chat_input_present": true,
+    "chat_input_type": "TEXTAREA",
+    "interactive_button_count": 5
+  },
+
+  "hypothesis_evaluation": [
+    {
+      "hypothesis_id": "H2_concierge_scope",
+      "claim": "BRIEF_017 §1: チャット Greeting モーダルが 3秒以内に完全描画されず UX 断絶",
+      "verdict": "REFUTED_FULLY",
+      "evidence_home": "H2 home スコープで refute (8e89d22)",
+      "evidence_concierge": "/concierge スコープで再 refute — greeting modal 不在、chat UI は textarea + 5 buttons の直接構成、modal pattern なし",
+      "implication": "「greeting modal 描画遅延」hypothesis は両ドメインで反証完了、CSO は次手で正式 retraction 推奨"
+    },
+    {
+      "hypothesis_id": "H_speed_3s",
+      "claim": "3秒の壁 (UX 断絶の閾値)",
+      "verdict": "REFUTED_NUMERICAL",
+      "evidence": "/concierge DOMContentLoaded=1,362ms / loadEvent=2,326ms / transferSize=7.3KB — 全て < 3s",
+      "implication": "速度ではなく構造的 motivation (H3/H4) が drop-off の主因"
+    }
+  ],
+
+  "chain_validation": {
+    "chrome_attach_reused_tab": "OK (tabId 290597372)",
+    "navigation_to_concierge_with_query": "OK (source=moterist&intent=beginner)",
+    "performance_navigation_extraction": "OK",
+    "dom_modal_chat_query": "OK",
+    "json_write_path_compliance": "OK (_metrics/2026-W23/concierge-core-audit.json)",
+    "bodyText_extraction": "BLOCKED (jstool cookie/query detector — 構造 finding には影響なし)"
+  },
+
+  "key_findings": [
+    "F-C-01: /concierge も DOMContentLoaded=1.36s で十分高速、loadEvent=2.3s < 3s 壁",
+    "F-C-02: /concierge に greeting modal 不在 — BRIEF_017 §1 「greeting modal 描画遅延」hypothesis を /concierge スコープでも完全反証",
+    "F-C-03: chat input (textarea) は最初から DOM 上に present、5 buttons (likely send / clear / 例文 / etc.) も存在",
+    "F-C-04: CLS=0, layoutShiftCount=0 — /concierge も layout shift なし"
+  ],
+
+  "next_step_recommendation": [
+    "1. **BRIEF_017 §1 正式 retraction**: greeting modal hypothesis は home + /concierge 両スコープで反証、次の CSO brief で正式撤回",
+    "2. **/concierge UX 深堀り audit**: 5 buttons + textarea の placement / 視覚 prominence / 最初の hint copy 分析。「ユーザが何を打ち込めば良いかわからない」hypothesis 検証",
+    "3. **真モバイル emulation 経路の確立**: chrome MCP の DevTools Protocol 対応確認 / Lighthouse CLI 実行可能性確認",
+    "4. **本番 SATURDAY_REVIEW での比較計測**: BRIEF_018 hero CTA + skeleton copy deploy 後の page_view → ai_session_start ratio が改善するか観測"
+  ]
+}

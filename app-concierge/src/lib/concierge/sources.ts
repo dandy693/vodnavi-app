@@ -1,4 +1,9 @@
-export type ConciergeSource = "default" | "moterist" | "brand" | "app_detail";
+export type ConciergeSource =
+  | "default"
+  | "moterist"
+  | "brand"
+  | "app_detail"
+  | "sns_x";
 
 export interface ConciergeSourceProfile {
   id: ConciergeSource;
@@ -17,6 +22,9 @@ const BRAND_GREETING =
 
 const APP_DETAIL_GREETING =
   "別の作品をお探しですね。お読みいただいた一本、ご覧くださりありがとうございます。\n\nあの作品の余韻を踏まえて、似た気配のもの、あるいは少し違う扉── どちらでもご案内いたします。今夜のお気持ちを一言、お聞かせください。";
+
+const SNS_X_GREETING =
+  "X からの一篇、お読みくださりありがとうございます。ようこそ、官能の図書館へ。\n\nあの投稿の知的な余韻のまま、今夜のお気持ちを一言お聞かせください。あなたの感性に静かにシンクロする一本を、プライベートにお選びいたします。";
 
 const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
   default: {
@@ -41,6 +49,12 @@ const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
     greeting: APP_DETAIL_GREETING,
     systemAddendum:
       "【流入コンテキスト】このユーザーは app.vodnavi.jp の作品詳細ページ (/works/[floor]/[id]) を読了した上でコンシェルジュへ流入しています。直前に閲覧した作品の輪郭は把握済みである前提で、「同じ路線で別の一本」「あえて気分を切り替えた一本」のどちらが良いかを最初の一往復で柔らかく確かめてください。再推薦の文脈なので、初手は『別の作品をお探しですね』に近い、再来訪を歓迎する姿勢で受け止めてください。",
+  },
+  sns_x: {
+    id: "sns_x",
+    greeting: SNS_X_GREETING,
+    systemAddendum:
+      "【流入コンテキスト】このユーザーは X（旧Twitter）の教養レンズ系ポストから流入しています。チープな直接的アダルト表現は避け、映画批評・心理学的アプローチの格調を保ってください。成人向け作品（FANZA）の提示は、サーバー側の年齢確認ゲート（proxy.ts）通過が前提であり、その上で上品に商品カードを案内してください。",
   },
 };
 

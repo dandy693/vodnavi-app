@@ -1,0 +1,182 @@
+{
+  "schema_version": "0.2.0-hostname-fork",
+  "dry_run": false,
+  "production_template": true,
+  "run_label": "BRIEF_015 §2 UI fork / hostName 分割実装 完了",
+  "captured_at_local": "2026-06-03 ~10:25 JST",
+  "captured_via": "mcp__claude-in-chrome__* (Chrome 拡張機能 attach, authuser=2, owner='モテリスト' 表示確認)",
+  "auth_proxy_verify": "Owner column displayed 'モテリスト' on Explorations index → moterist.com@gmail.com session physically confirmed (per reference_google_accounts)",
+  "predecessor_dry_run_commit": "f331d4c (schema 0.1.0-dry-run, device-breakdown only)",
+
+  "ga4_property": {
+    "id": "p489519780",
+    "account_property_segment": "a355462253p489519780",
+    "name": "VODまとめ研究所",
+    "stream_label": "vodnavi.jp",
+    "measurement_id_referenced": "G-GG7JV9MJRW"
+  },
+
+  "exploration_fork": {
+    "original_id": "k1-d8zAwRemPD55mJxHIpw",
+    "original_name": "VODNAVI ファネル: 記事 → コンシェルジュ → product_click",
+    "fork_id": "h4bNtK9ST0KSgZx-yf_9ZQ",
+    "fork_name": "「VODNAVI ファネル: 記事 → コンシェルジュ → product_click」のコピー",
+    "fork_url": "https://analytics.google.com/analytics/web/?authuser=2#/analysis/a355462253p489519780/edit/h4bNtK9ST0KSgZx-yf_9ZQ",
+    "modification": "内訳 dim: デバイス カテゴリ → ホスト名 (hostName)",
+    "fork_method": "Explorations index → 'その他の操作' menu → '複製' → open copy → ディメンションを追加(ホスト名) → ドロップ先 '内訳' chip 削除 → 'add' 開く → 'ホスト名' 選択",
+    "period_label": "過去 28 日間",
+    "period_start_local": "2026-05-06",
+    "period_end_local": "2026-06-02"
+  },
+
+  "funnel_hostname_breakdown": {
+    "step1_page_view": {
+      "total": {"active_users": 3114, "completion_pct": 0.39, "abandons": 3102, "abandon_rate_pct": 99.61},
+      "by_hostname": [
+        {"hostname": "app.vodnavi.jp", "active_users": 3070, "step1_share_pct": 98.59, "completion_pct": 0.39, "abandons": 3058, "abandon_rate_pct": 99.61},
+        {"hostname": "vodnavi.jp", "active_users": 37, "step1_share_pct": 1.19, "completion_pct": 0, "abandons": 37, "abandon_rate_pct": 100},
+        {"hostname": "moterist.com", "active_users": 6, "step1_share_pct": 0.19, "completion_pct": 0, "abandons": 6, "abandon_rate_pct": 100},
+        {"hostname": "localhost", "active_users": 1, "step1_share_pct": 0.03, "completion_pct": 0, "abandons": 1, "abandon_rate_pct": 100}
+      ]
+    },
+    "step2_concierge_start": {
+      "total": {"active_users": 12, "step1_share_pct": 0.4, "completion_pct": 8.33, "abandons": 11, "abandon_rate_pct": 91.67},
+      "by_hostname": [
+        {"hostname": "app.vodnavi.jp", "active_users": 12, "step1_share_pct": 0.4, "completion_pct": 8.33, "abandons": 11, "abandon_rate_pct": 91.67},
+        {"hostname": "vodnavi.jp", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+        {"hostname": "moterist.com", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+        {"hostname": "localhost", "active_users": 0, "step1_share_pct": 0.0, "completion_pct": null, "abandons": null, "abandon_rate_pct": null}
+      ]
+    },
+    "step3_screen_pageview": {
+      "total": {"active_users": 1, "step1_share_pct": 0.03, "completion_pct": 100, "abandons": 0, "abandon_rate_pct": 0},
+      "by_hostname": [
+        {"hostname": "app.vodnavi.jp", "active_users": 1, "step1_share_pct": 0.03, "completion_pct": 100, "abandons": 0, "abandon_rate_pct": 0}
+      ]
+    },
+    "step4_purchase": {
+      "total": {"active_users": 1, "step1_share_pct": 0.03, "completion_pct": null, "abandons": null, "abandon_rate_pct": null},
+      "by_hostname": [
+        {"hostname": "app.vodnavi.jp", "active_users": 1, "step1_share_pct": 0.03, "completion_pct": null, "abandons": null, "abandon_rate_pct": null}
+      ]
+    }
+  },
+
+  "critical_findings": [
+    {
+      "finding_id": "F-2026-W23-01",
+      "severity": "STRATEGIC_RECLASSIFICATION",
+      "title": "99.61% drop-off は SEO→コンシェルジュ ではなく app.vodnavi.jp 内 UX 課題",
+      "evidence": "Step 1 page_view 3,114 のうち app.vodnavi.jp が 3,070 (98.6%)、vodnavi.jp は 37 (1.2%)、moterist.com はわずか 6 (0.2%)。クロスドメイン traffic は funnel の bulk ではない",
+      "refutes": "BRIEF_015 §1 「モバイルクリックハンドラ動作不良 OR クロスドメイン `_gl` 引き継ぎ不全 が極めて濃厚であると断定」",
+      "actual_hypothesis_to_test": "app.vodnavi.jp の page_view (/concierge entry / /content 等) から ai_session_start への CTA 認知度 / インタラクション率の課題。intra-app UX 問題として再フレーム必要"
+    },
+    {
+      "finding_id": "F-2026-W23-02",
+      "severity": "HIGH",
+      "title": "vodnavi.jp / moterist.com からの cross-domain traffic 極小",
+      "evidence": "28d で vodnavi.jp 37 page_view + moterist.com 6 page_view = 43 件のみが funnel スコープに入っている。SEO inflow が funnel に反映されていない可能性",
+      "implications": [
+        "(a) クロスドメイン linker は 43 件分は機能している (絶対値小)",
+        "(b) より大きな問題: SEO 流入そのものが funnel に到達していない (link source 不一致 / event triggering 不全 / measurement schema 不整合)",
+        "(c) memory project_funnel_drop_off_seo_to_concierge (2026-05-25 organic 1,011 → /concierge 到達 10) と整合: organic 流入は funnel 外で起きており、funnel 自体は app 内行動のみを捕捉している"
+      ],
+      "next_diagnostic": "(i) vodnavi.jp / moterist.com 上で page_view イベントが正しく fire しているか GTM-TKDHM348 で確認、(ii) funnel Step 1 の event_name / parameter 条件を見直し、SEO ページ閲覧が定義に含まれるか確認"
+    },
+    {
+      "finding_id": "F-2026-W23-03",
+      "severity": "LOW",
+      "title": "localhost 1 件混入 (dev environment leak)",
+      "evidence": "Step 1 hostname に localhost: 1",
+      "implications": "dev 環境からの本番 GA4 送信、もしくは production debug session 残存。BRIEF_007 §3 NODE_ENV データ汚染防止盾の verification candidate",
+      "next_diagnostic": "G-GG7JV9MJRW を送信している localhost source を IP / referrer 経由で特定 + dev 環境 NODE_ENV !== production guard 配備状況確認"
+    }
+  ],
+
+  "predecessor_findings_status": {
+    "from_v0.1.0_dry_run": {
+      "mobile_99.76_vs_desktop_99.25_drop_off": "DEPRECATED → デバイス分割でなく hostName 分割で見るべき。デバイス側 99.76% (mobile) も依然事実だが、それは app.vodnavi.jp 内の mobile UX 課題として再解釈",
+      "purchase_n_1": "PERSISTING → desktop app.vodnavi.jp で 1 件のみ、sample 不足",
+      "SEO_concierge_funnel_99.61_pct": "RECLASSIFIED → app.vodnavi.jp page_view → concierge_start funnel、SEO は funnel に到達していない別問題"
+    }
+  },
+
+  "chain_validation": {
+    "chrome_attach": "OK",
+    "ga4_reach": "OK",
+    "property_match": "OK (p489519780 / vodnavi.jp)",
+    "auth_concrete_verify": "OK (Owner='モテリスト' on Explorations index)",
+    "exploration_duplicate_create": "OK (k1-d8zAwRemPD55mJxHIpw → h4bNtK9ST0KSgZx-yf_9ZQ)",
+    "dimension_add_via_dialog": "OK (ホスト名 selected from 'ディメンションを追加')",
+    "breakdown_swap_via_chip_remove_plus_select": "OK (デバイス カテゴリ removed → 内訳 empty → 'add' click → ホスト名 selected)",
+    "data_recompute_and_extract": "OK (Step 1-4 × 4 hostname rows 構造化抽出)",
+    "json_write_path_compliance": "OK (BRIEF_015 §2.2 path lock)"
+  },
+
+  "next_step_recommendation": [
+    "1. **vodnavi.jp / moterist.com page_view fire 物理確認** (F-2026-W23-02): 該当ドメインで実際にブラウザで開き GTM/GA4 debug mode で page_view が fire しているか + Step 1 条件にマッチしているか検証",
+    "2. **app.vodnavi.jp 内 CTA 認知 / インタラクション分析**: page_view → ai_session_start ratio 0.39% を上げるための (a) コンシェルジュ起動 CTA の visibility / placement, (b) value proposition 表記, (c) friction reduction",
+    "3. **BRIEF_015 §1 断定の正式 retraction**: 次の CSO brief で「mobile handler / `_gl` 不全 断定」を撤回し、intra-app UX 課題への hypothesis re-anchor を要請",
+    "4. **localhost 1 件混入 audit** (F-2026-W23-03): dev 環境 guard 検証、BRIEF_007 §3 NODE_ENV 盾の動作確認",
+    "5. **本番 SATURDAY_REVIEW (2026-06-06)**: 同 fork ID h4bNtK9ST0KSgZx-yf_9ZQ + 同 chain で再抽出、新たな仮説 (intra-app UX) ベースで分析"
+  ],
+
+  "saturday_pull_2026_06_06": {
+    "captured_at_local": "2026-06-06 JST",
+    "captured_via": "claude-in-chrome MCP, authuser=2, account 'moterist.com@gmail.com' physically confirmed (DOM email + property no-redirect)",
+    "window_note": "GA4 events と GSC は既定 ~過去28日 (GA4: 2026-05-09〜06-05 / GSC: ~05/10 起点)。GA4 SPA レポートは URL の _u.date00/date01 を無視したため週次(W23 Jun1-6)の物理分離は未実施。既存 funnel_hostname_breakdown と同じ ~28d スケールで比較可能",
+    "ga4_vodnavi": {
+      "property_id": "p489519780",
+      "measurement_id": "G-GG7JV9MJRW",
+      "report": "Reports > Engagement > Events (r=top-events)",
+      "window": "過去28日 (2026-05-09〜2026-06-05)",
+      "event_counts": {
+        "ai_session_start": 27,
+        "product_click": 240,
+        "ai_affiliate_click": 239,
+        "concierge_entry_click": 15,
+        "fanza_cta_click": 0,
+        "session_start": 4013,
+        "page_view": 9258,
+        "first_visit": 3832
+      },
+      "source_intent_breakdown": "PENDING — source/intent カスタムディメンション分割は Exploration 構築が必要。本パスでは未取得 (要次パス)"
+    },
+    "ga4_moterist": {
+      "property_id": "p393864941",
+      "measurement_id": "G-5HYV772ER9",
+      "status": "BLOCKED — p393864941 直アクセスが bare Analytics home (#/) に bounce、既知 access-redirect (project_ga4_property_access_redirect) を再現",
+      "weekly_pv": null,
+      "top_articles": []
+    },
+    "search_console": {
+      "moterist_com_domain": {
+        "resource": "sc-domain:moterist.com",
+        "window": "~過去28日 (axis ~2026-05-19 起点)",
+        "clicks": 0,
+        "impressions": 1,
+        "avg_ctr_pct": 0,
+        "avg_position": 26,
+        "note": "near-zero。GA4 funnel hostname (moterist.com=6 users) と corroborate → property mismatch ではなく実態として moterist.com 検索流入が ~ゼロ"
+      },
+      "moterist_com_urlprefix": {
+        "resource": "https://moterist.com/",
+        "status": "ACCESS_DENIED (このプロパティへのアクセス権がありません) under authuser=2"
+      },
+      "vodnavi_jp_domain": {
+        "resource": "sc-domain:vodnavi.jp",
+        "window": "~過去28日 (axis ~2026-05-10 起点)",
+        "clicks": 2640,
+        "impressions": 81800,
+        "avg_ctr_pct": 3.2,
+        "avg_position": 8.7
+      }
+    },
+    "headline_findings": [
+      "F-W23-PULL-01 (CRITICAL/集客): moterist.com 検索流入が実態として ~ゼロ (GSC domain clicks 0 / impr 1 + GA4 hostname 6 users で二重確証)。M1 集客目標 15,000 PV/月 に対し top-of-funnel 未機能。サルベージ5記事の re-index/ranking 未発現の可能性 (salvage-production phase と整合)",
+      "F-W23-PULL-02 (POSITIVE/視認性): vodnavi.jp は GSC impr 81.8k / clicks 2,640 / CTR 3.2% / pos 8.7 と健全。集客の実体は vodnavi.jp 側。戦略前提 '集客=moterist' と実データ '集客=vodnavi.jp' が乖離",
+      "F-W23-PULL-03 (送客/成約): 28d で product_click 240 ≈ ai_affiliate_click 239 のほぼ1:1 (product クリック→アフィリエイトクリックの追随は良好)。一方 ai_session_start 27 << product_click 240 → product_click はコンシェルジュ AI セッション外 (カタログ/一覧) で支配的に発火している可能性、event scope/定義の再確認要",
+      "F-W23-PULL-04: fanza_cta_click 0 を再確認 (project_fanza_cta_blank_state と整合、対象 anchor 不在で発火ゼロ継続)"
+    ]
+  }
+}

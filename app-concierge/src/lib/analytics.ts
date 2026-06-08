@@ -44,8 +44,13 @@ export function track(eventName: string, params?: AnalyticsEventParams): void {
   // 開発・プレビュー環境のリロードや HMR が本番プロパティに「ノイズイベント」
   // として記録されると、サタデー PDCA の数値が汚染される。NODE_ENV をクライアント
   // バンドル時に静的評価することで、非本番ビルドは window.gtag を一切呼ばない。
-  if (process.env.NODE_ENV !== "production") {
-    // 開発時の動作確認用：イベント名と params を console に出すだけ。
+  // BRIEF_016 §2.2: 本番ビルドを localhost で起動した場合 (npm run build && npm start)
+  // も runtime hostname check で捕捉して送信を抑止する (W23 funnel に observed 混入の防御)。
+  if (
+    process.env.NODE_ENV !== "production" ||
+    window.location.hostname === "localhost"
+  ) {
+    // 開発時 / ローカル本番ビルド時の動作確認用：イベント名と params を console に出すだけ。
     console.log("[track-dev]", eventName, clean);
     return;
   }

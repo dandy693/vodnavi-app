@@ -1,0 +1,42 @@
+{
+  "captured_at_local": "2026-06-06 JST",
+  "captured_via": "claude-in-chrome MCP, GSC sc-domain:moterist.com, authuser=2 (moterist.com@gmail.com physically confirmed)",
+  "purpose": "T-20260606-02 — 5大ピラーURLのインデックス状況 + 手動ペナルティの物理確認",
+  "method_notes": [
+    "URL-prefix プロパティ https://moterist.com/ は当アカウント access-denied のため sc-domain:moterist.com で実施",
+    "URL検査の deep-link (inspect?resource_id=...&id=) は Google 404 を返すため不可。トップ検索ボックスへ URL タイプ + Enter で実行",
+    "対象URLは投稿ID 1095/1106/994/954/1018 を ?p= リダイレクトで実 permalink に解決して確定（CSO script の3 URL は実在確認・残2 URL を補完）"
+  ],
+  "manual_actions": {
+    "panel": "セキュリティと手動による対策 > 手動による対策",
+    "result": "問題は検出されませんでした (No issues detected)",
+    "verdict": "手動ペナルティ無し → 仮説C棄却"
+  },
+  "url_inspection": {
+    "window": "live GSC index status (2026-06-06)",
+    "summary": "5/5 INDEXED",
+    "results": [
+      {"post_id": 1095, "url": "https://moterist.com/fanza20250329/", "status": "INDEXED", "verbatim": "URL は Google に登録されています / ページはインデックスに登録済みです"},
+      {"post_id": 1106, "url": "https://moterist.com/fanza20250331/", "status": "INDEXED", "verbatim": "URL は Google に登録されています / ページはインデックスに登録済みです"},
+      {"post_id": 994, "url": "https://moterist.com/fanza_otoku250114/", "status": "INDEXED", "verbatim": "URL は Google に登録されています / ページはインデックスに登録済みです"},
+      {"post_id": 954, "url": "https://moterist.com/fanzaotoku/", "status": "INDEXED", "verbatim": "URL は Google に登録されています / ページはインデックスに登録済みです"},
+      {"post_id": 1018, "url": "https://moterist.com/saika-kawakita-6/", "status": "INDEXED", "verbatim": "URL は Google に登録されています / ページはインデックスに登録済みです"}
+    ]
+  },
+  "verdict": {
+    "proven_facts": [
+      "5大ピラー 5/5 が Google にインデックス登録済み",
+      "手動ペナルティ無し",
+      "robots/noindex/X-Robots-Tag クリーン (前監査 moterist-infra-audit.json)",
+      "それにも関わらず GSC は clicks 0 / impr 1 (28d)"
+    ],
+    "ruled_out": [
+      "A: 未インデックス/re-index待ち → 棄却 (5/5 indexed)",
+      "C: 手動ペナルティ → 棄却",
+      "crawl/noindex ブロック → 棄却"
+    ],
+    "leading_explanation": "B: インデックス済みだが検索結果にほぼ表示されない (impr ~0)。成人コンテンツの SafeSearch/adult フィルタリングによる構造的非表示、または競合 adult KW で順位が極端に低く impression が立たない。いずれも『Google organic = moterist 集客』前提の構造的限界を示す",
+    "strategic_implication": "技術・ペナルティ要因は全て否定。SEO 技術改善や記事リライトでは解決しない可能性が高い。集客は vodnavi.jp (impr 81.8k) / X 還流など非 Google・非成人フィルタ経路へ重心移動を要検討",
+    "residual_check": "確定には GSC 検索パフォーマンスで個別URLの impression を query 単位で確認、または `site:moterist.com` の adult フィルタ挙動目視が補強材料（任意）"
+  }
+}

@@ -48,7 +48,7 @@ export default function BrandPage() {
               VODNAVI · OFFICIAL
             </p>
             <h1 className="mt-8 font-luxury-heading text-4xl leading-tight text-brand-text-primary sm:text-6xl">
-              次世代映像検索 <span className="text-brand-gold">AI コンシェルジュ</span>
+              次世代映像検索 <span className="whitespace-nowrap text-brand-gold">AI コンシェルジュ</span>
             </h1>
             <p className="mx-auto mt-10 max-w-2xl text-base leading-relaxed text-brand-text-secondary sm:text-lg">
               膨大な作品の海から、あなただけの一夜の一本を。
@@ -150,13 +150,6 @@ export default function BrandPage() {
           </div>
         </section>
       </main>
-
-      <footer className="border-t border-brand-gold/10">
-        <div className="mx-auto max-w-6xl px-6 py-10 text-center text-xs text-brand-text-secondary/70">
-          © {new Date().getFullYear()} 合同会社トレンドネット / VODNAVI プロジェクト運営委員会 ·
-          <span className="ml-2">広告を含む · 18 歳以上対象</span>
-        </div>
-      </footer>
 
       {/* 「明滅するゴールド」表現 — 控えめな pulse でラグジュアリーを保つ */}
       <style>{`

@@ -1,0 +1,148 @@
+/* ============================================================
+ * VODNAVI-GROUP — 共通デザイントークン
+ *
+ * 世界観: 『ビブリア・エロティカ（官能の図書館）』
+ * 対象: app-concierge / site-brand / (将来 WordPress 子テーマからも参照可)
+ *
+ * 本ファイルは "プレーン CSS" のみで構成する（Tailwind ディレクティブ禁止）。
+ * 理由: 異なるバンドラ・WordPress THE THOR 子テーマ等からも単純 import で
+ *       共有できる「単一情報源」を維持するため。
+ *
+ * Tailwind v4 から utility として参照したい場合は、各アプリの
+ * globals.css 内 `@theme inline` ブロックで `--color-brand-*` を
+ * 上記カスタムプロパティに紐付ける（app-concierge/src/app/globals.css 参照）。
+ * ============================================================ */
+
+:root {
+  /* ───── ブランドカラー（凍結。BRAND_DESIGN_GUIDE.md §2.1） ───── */
+  --brand-dark: #121212;              /* メイン背景：深い闇 */
+  --brand-gold: #D4AF37;              /* メインアクセント：高貴な金 */
+  --brand-gold-hover: #AA820A;        /* ゴールドのホバー：少し沈めて荘厳さを保つ */
+  --brand-surface: #1E1E1E;           /* カード・ボックス背景：闇の上の和紙のような層 */
+  --brand-text-primary: #FAFAFA;      /* 主要文字：プラチナホワイト */
+  --brand-text-secondary: #A0A0A0;    /* サブ文字・キャプション */
+
+  /* ───── 派生（必要に応じて使う・追加時は CSO 承認必須） ───── */
+  --brand-gold-soft: rgba(212, 175, 55, 0.18);   /* ハイライト・ホバーグロー */
+  --brand-dark-elev-1: #1B1B1B;                  /* 闇の上の 1 段だけ持ち上げる層 */
+
+  /* ───── タイポグラフィ（既存フォント変数があれば優先） ───── */
+  --font-luxury-heading: var(--font-heading, "Cormorant Garamond", "Noto Serif JP", serif);
+  --font-luxury-body: var(--font-sans, "Noto Sans JP", system-ui, sans-serif);
+
+  /* ───── 余白・角丸 ───── */
+  --brand-radius-pill: 9999px;
+  --brand-radius-card: 12px;
+  --brand-shadow-glow:
+    0 0 40px -10px rgba(212, 175, 55, 0.35);
+
+  /* ───── モーション ───── */
+  --brand-ease: cubic-bezier(0.16, 1, 0.3, 1);   /* ease-out 系の落ち着いた挙動 */
+  --brand-duration: 200ms;
+}
+
+/* ============================================================
+ * 共通ユーティリティクラス
+ * 命名規則: .btn-luxury-* — THE_THOR_DICTIONARY.md と互換
+ * ============================================================ */
+
+/* プライマリ：背景ゴールド・文字ダーク・Pill */
+.btn-luxury-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: var(--brand-gold);
+  color: var(--brand-dark);
+  font-family: var(--font-luxury-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1px solid var(--brand-gold);
+  border-radius: var(--brand-radius-pill);
+  transition:
+    background-color var(--brand-duration) var(--brand-ease),
+    border-color var(--brand-duration) var(--brand-ease),
+    transform 100ms var(--brand-ease),
+    box-shadow var(--brand-duration) var(--brand-ease);
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-luxury-gold:hover {
+  background-color: var(--brand-gold-hover);
+  border-color: var(--brand-gold-hover);
+  box-shadow: var(--brand-shadow-glow);
+}
+
+.btn-luxury-gold:active {
+  transform: translateY(1px);
+}
+
+.btn-luxury-gold:focus-visible {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: 2px;
+}
+
+.btn-luxury-gold[aria-disabled="true"],
+.btn-luxury-gold:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* セカンダリ：枠線ゴールド・背景透明・ホバーで反転 */
+.btn-luxury-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: transparent;
+  color: var(--brand-gold);
+  font-family: var(--font-luxury-heading);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.05em;
+  text-decoration: none;
+  border: 1px solid var(--brand-gold);
+  border-radius: var(--brand-radius-pill);
+  transition:
+    background-color var(--brand-duration) var(--brand-ease),
+    color var(--brand-duration) var(--brand-ease),
+    border-color var(--brand-duration) var(--brand-ease),
+    transform 100ms var(--brand-ease);
+  cursor: pointer;
+  user-select: none;
+}
+
+.btn-luxury-outline:hover {
+  background-color: var(--brand-gold);
+  color: var(--brand-dark);
+  border-color: var(--brand-gold);
+}
+
+.btn-luxury-outline:active {
+  transform: translateY(1px);
+}
+
+.btn-luxury-outline:focus-visible {
+  outline: 2px solid var(--brand-gold);
+  outline-offset: 2px;
+}
+
+.btn-luxury-outline[aria-disabled="true"],
+.btn-luxury-outline:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* セクション罫線（金 1px）— THE_THOR_DICTIONARY §7.1 と互換 */
+.luxury-hr-gold {
+  border: 0;
+  border-top: 1px solid var(--brand-gold);
+  margin: 4rem auto;
+  width: min(80%, 720px);
+  opacity: 0.6;
+}

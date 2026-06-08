@@ -4,6 +4,8 @@
 node_modules/
 __pycache__/
 .playwright-mcp/
+# Emergency Shield: Prevent mixhost canonical key leak (defense-in-depth, redundant with .playwright-mcp/)
+.playwright-mcp/mixhost-codex-pc
 07_wp/backups/
 .DS_Store
 Thumbs.db

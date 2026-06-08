@@ -143,3 +143,27 @@ export function buildAffiliateURL(
     affiliateResolved: false,
   };
 }
+
+/**
+ * STRATEGY_BRIEF_040 (Option 3) — 早期クッキー着火 (early cookie burn) 用 URL。
+ *
+ * コンシェルジュの最終提案より前に FANZA アフィリエイト Cookie を着火させるための導線。
+ * 検索キーワード版は 0 件ヒットの懸念があるため、検証済みの FANZA リスト動線へ変更:
+ *   discount → セール特集 (article=sale) / それ以外 → ランキング (sort=ranking)。
+ *   いずれも 2026-06-07 に 302→age_check（rurl にパス保持）でパス到達を物理確認。
+ * `resolveAffiliateId` / `wrapWithDmmAffiliate` を通し、ID 未解決時は追跡なしの生 URL を返す
+ * （盾: アフィリエイト ID をハードコードしない）。新規 URL は捏造せず検証済みパスのみ使用。
+ */
+const EARLY_BURN_LIST_PATHS: Record<string, string> = {
+  discount: "digital/videoa/-/list/=/article=sale/",
+};
+const EARLY_BURN_DEFAULT_PATH = "digital/videoa/-/list/=/sort=ranking/";
+
+export function buildEarlyCookieURL(intent: string | null | undefined): string {
+  const path =
+    (intent && EARLY_BURN_LIST_PATHS[intent]) || EARLY_BURN_DEFAULT_PATH;
+  const target = `https://www.dmm.co.jp/${path}`;
+  const affId = resolveAffiliateId("fanza");
+  if (!affId) return target; // 盾: ID 未解決なら追跡なし生 URL
+  return wrapWithDmmAffiliate(target, affId);
+}

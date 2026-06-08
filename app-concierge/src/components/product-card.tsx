@@ -11,6 +11,7 @@ import {
   joinNames,
   pickImage,
 } from "@/lib/fanza/client";
+import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import type { DmmItem } from "@/lib/fanza/types";
 import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { cn } from "@/lib/utils";
@@ -34,7 +35,24 @@ export function ProductCard({
   const review = item.review;
   const isNew = isNewItem(item.date);
   const detailHref = `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`;
+  // メイン CTA は FANZA API が返す正規のアフィリエイト URL を使う（フロア横断で
+  // 最も正確。content_id から自前で URL を組むと videoa 以外で破綻するため）。
   const affiliateHref = item.affiliateURL ?? item.URL;
+
+  // 404 ダブルリンク（盾④）: メイン作品 URL が配信終了で 404 化しても報酬導線を
+  // 失わないよう、女優名 / 型番（無ければ content_id）で FANZA 検索結果一覧へ飛ぶ
+  // フォールバックのアフィリエイト URL を併設する。af_id は buildAffiliateURL が
+  // 環境変数（NEXT_PUBLIC_FANZA_AFFILIATE_ID, 盾③）から動的に解決する。
+  const primaryActress = item.iteminfo?.actress?.[0]?.name ?? null;
+  const skuCode = item.maker_product ?? null;
+  const { fallbackUrl } = buildAffiliateURL({
+    asp: "fanza",
+    contentId: item.content_id,
+    actressOrSku: primaryActress ?? skuCode,
+  });
+  const fallbackLabel = primaryActress
+    ? `${primaryActress}の作品を探す`
+    : "関連作品を探す";
 
   return (
     <article
@@ -114,6 +132,22 @@ export function ProductCard({
         aria-label={`${item.title} を FANZA で視聴`}
       >
         <span className="relative z-10">今すぐ視聴 →</span>
+      </a>
+
+      {/* 盾④ 404 フォールバック動線: 作品が配信終了でも検索一覧へ逃がす。 */}
+      <a
+        href={fallbackUrl}
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+        className={cn(
+          "block border-t border-white/5 bg-black/40 py-1.5 text-center",
+          "text-[11px] text-amber-200/70 transition-colors duration-300",
+          "hover:bg-black/60 hover:text-amber-200",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/60",
+        )}
+        aria-label={`「${item.title}」が配信終了の場合に ${fallbackLabel}（FANZA 検索一覧）`}
+      >
+        配信終了？ {fallbackLabel} →
       </a>
     </article>
   );

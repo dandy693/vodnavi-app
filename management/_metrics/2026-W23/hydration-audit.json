@@ -1,0 +1,120 @@
+{
+  "schema_version": "0.1.0-hydration-audit",
+  "run_label": "BRIEF_017 §2.3 mobile hydration audit",
+  "captured_at_local": "2026-06-03 ~11:00 JST",
+  "captured_via": "mcp__claude-in-chrome__* (resize_window 390x844 → 実 viewport 1346x722、true mobile emulation 未対応)",
+  "target_url": "https://app.vodnavi.jp/",
+  "caveat_viewport": "resize_window は OS window dimension のみ変更し DevTools mobile emulation (device pixel ratio / touch / user agent) は不適用。Real mobile UX 確証には Chrome DevTools Protocol 経由の device emulation が必要、本 audit は desktop browser の small window 等価",
+
+  "navigation_timing_ms": {
+    "fetchStart": 2.8,
+    "responseEnd": 771.6,
+    "domContentLoaded": 777.6,
+    "domInteractive": 777.1,
+    "loadEvent": 1914.6,
+    "transferSizeBytes": 22356,
+    "encodedBodySizeBytes": 22056
+  },
+
+  "core_web_vitals": {
+    "FP": null,
+    "FCP": null,
+    "LCP": null,
+    "CLS": 0,
+    "layoutShiftCount": 0,
+    "note": "FP/FCP/LCP は getEntriesByType('paint') / ('largest-contentful-paint') で取得試行も空配列。PerformanceObserver 経由 capture が必要 (current snapshot ベース query では取得不能)。CLS=0 は entries 取得可、layout shift は 0 件 = レイアウト崩壊なし、CSO BRIEF_016 §2.1「DOM レイアウトシフトによるタップ遮断」hypothesis は反証"
+  },
+
+  "largest_resources_ms": [
+    {"name": "_next/static/chunks/0kipou_w--~xm.js", "durationMs": 656.5, "sizeBytes": 41744, "type": "script"},
+    {"name": "_next/static/chunks/0whay6tkz2m9a.js", "durationMs": 472.5, "sizeBytes": 14089, "type": "script"},
+    {"name": "googletagmanager.com/gtag/js?id=G-GG7JV9MJRW", "durationMs": 292.5, "sizeBytes": 0, "type": "link"},
+    {"name": "_next/static/chunks/0usmi0_ir~w3c.js", "durationMs": 203.0, "sizeBytes": 0, "type": "script"}
+  ],
+
+  "resource_totals": {
+    "count": 39,
+    "transferSizeBytes": 55833,
+    "jsResourceCount": 15,
+    "jsTransferSizeBytes": 55833
+  },
+
+  "ux_structural_findings": {
+    "greeting_modal_found": false,
+    "greeting_modal_note": "CSO BRIEF_017 §1「チャットGreetingモーダル」hypothesis は反証 — home page (https://app.vodnavi.jp/) には greeting modal が存在しない。`mobile-greeting` / `chat-modal` / `[role=\"dialog\"]` DOM query 全て null",
+    "skeleton_placeholder_count": 12,
+    "skeleton_class_pattern": "animate-pulse bg-muted aspect-[3/4]",
+    "skeleton_implication": "12 個の skeleton が page render 後に FANZA API データ待ち。データ取得は client-side fetch のため初期 HTML には product 内容なし → user は最初の数秒「動いていない」体験",
+    "ai_concierge_ctas_visible": 1,
+    "ai_cta_details": [
+      {
+        "text": "AI 相談窓口",
+        "href": "https://app.vodnavi.jp/concierge",
+        "position_top_px": 10,
+        "position_left_px": 1156,
+        "above_fold": true,
+        "visibility_assessment": "header top-right corner、small text link、prominence 低"
+      }
+    ],
+    "above_fold_section_heights_px": [
+      {"tag": "SECTION", "class": "mx-auto w-full max-w-7xl ...", "topPx": 56.8, "heightPx": 766.9},
+      {"tag": "DIV", "class": "grid grid-cols-2 ...", "topPx": 152.8, "heightPx": 638.9}
+    ]
+  },
+
+  "hypothesis_evaluation": [
+    {
+      "hypothesis_id": "H1_CSO_BRIEF_016_§2.1",
+      "claim": "モバイルタップを遮断する DOM レイアウトシフトが発生 (3秒以内に完全描画されない)",
+      "verdict": "REFUTED",
+      "evidence": "CLS=0 / layoutShiftCount=0 / DOMContentLoaded=777ms (< 3s) / loadEvent=1914ms (< 3s)"
+    },
+    {
+      "hypothesis_id": "H2_CSO_BRIEF_017_§1",
+      "claim": "チャット Greeting モーダルが 3秒以内に完全描画されず UX 断絶",
+      "verdict": "REFUTED_AT_HOMEPAGE",
+      "evidence": "home page (/) には greeting modal 存在せず。/concierge ページでは別途 audit 要 (本 run scope 外)",
+      "next_step": "/concierge 直接 navigate して greeting modal 描画 timing を別 audit"
+    },
+    {
+      "hypothesis_id": "H3_NEW_CTA_PROMINENCE",
+      "claim": "ai_session_start CTA が home page で discoverable でない (top-right header に小さく 1 件のみ)",
+      "verdict": "STRONGLY_SUPPORTED",
+      "evidence": "home page で AI 相談窓口 link は header top-right (left=1156) に 1 つのみ。hero area / first viewport center に prominent CTA なし。12 個の skeleton 配下にも CTA なし"
+    },
+    {
+      "hypothesis_id": "H4_NEW_SKELETON_BOUNCE",
+      "claim": "FANZA API データ取得中の skeleton 期間 (~1-3s) で user が「動いていない」と感じ離脱、page_view は計上されるが ai_session_start に至らない",
+      "verdict": "SUPPORTED_BY_PATTERN",
+      "evidence": "12 個 skeleton + transferSize 22KB の HTML だけが初期描画、product 内容は client fetch 必要。同期 placeholder 提示は UX 慣行だが ai_session への動機付け CTA がない",
+      "next_step": "skeleton 期間中の hero CTA「今夜の一本を AI に聞く」配置検証"
+    }
+  ],
+
+  "chain_validation": {
+    "chrome_attach_via_new_tab": "OK (tabId 290597372 created without disturbing exploration tab 290597359)",
+    "resize_window_api": "OK (window resized, but viewport not constrained to mobile per DevTools Protocol)",
+    "navigation_to_app_vodnavi_jp": "OK",
+    "performance_api_navigation": "OK",
+    "performance_api_paint": "MISS (entries empty, PerformanceObserver path needed)",
+    "performance_api_layout_shift": "OK (0 件)",
+    "dom_query_cta_discovery": "OK",
+    "json_write_path_compliance": "OK (_metrics/2026-W23/hydration-audit.json)"
+  },
+
+  "key_findings_for_brief_succession": [
+    "F-H-01 [REFUTE CSO]: CLS=0 / layoutShift 0 件 → BRIEF_016 §2.1 / BRIEF_017 §1 の「モバイル DOM レイアウトシフトでタップ遮断」hypothesis は反証",
+    "F-H-02 [REFUTE CSO]: home page に Greeting modal 不在 → BRIEF_017 §1 の「Greeting modal 描画遅延」hypothesis は home スコープでは反証 (但し /concierge では再 audit 要)",
+    "F-H-03 [NEW HYPOTHESIS]: home page の AI 相談窓口 CTA は top-right header 1 件のみ、prominence 低 → ai_session_start への動線が構造的に弱い (drop-off 98.6% の構造原因 candidate #1)",
+    "F-H-04 [NEW HYPOTHESIS]: 12 個 skeleton + client fetch product data → skeleton 期間 (~1-3s) の動機 vacuum、CTA 無き skeleton は離脱を誘発 (drop-off candidate #2)",
+    "F-H-05 [LIMITATION]: true mobile emulation (DevTools Protocol device mode) 未対応の chrome MCP API → 厳密 mobile-only 課題の検証は別経路 (Lighthouse CLI / Real device) 必要"
+  ],
+
+  "next_step_recommendation": [
+    "1. **hero CTA 追加実装**: app.vodnavi.jp home の skeleton 上部に prominent な「今夜の一本を AI に聞く」CTA を配置 (BRIEF_018 候補 mandate)",
+    "2. **/concierge 別 audit**: greeting modal の描画 timing を /concierge 直接 navigate で再測定",
+    "3. **PerformanceObserver 経由 FP/FCP/LCP 取得**: 現 snapshot query では空、observer setup 必要",
+    "4. **真モバイル emulation**: chrome MCP の DevTools Protocol exposure 確認、なければ Lighthouse CLI or real device test",
+    "5. **A/B test design**: hero CTA 追加版 vs 現状版で page_view → ai_session_start ratio 改善測定 (期待値 0.4% → 5%+)"
+  ]
+}

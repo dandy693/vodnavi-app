@@ -53,16 +53,31 @@ node --experimental-strip-types scripts/generate-work-reviews.ts \
   --dry-run --target=gkok00002 --force
 ```
 
-## 実コール (live モード) 解放手順
+## 実コール (live モード) 状態
 
-モックアップ段階では OpenAI 呼出はスタブ化されている (`callCcoForReview` が
-`--mode=live` で throw する)。本番運用に切替えるとき:
+**2026-06-01 時点で本セクションは履歴記録**。下記 1-3 はすべて配備済で、batch script
+は `--mode=live` 起動時に本物の OpenAI コールを実行する。current state:
 
-1. `pnpm add @ai-sdk/openai`（または `npm i`）で provider 追加
-2. `scripts/generate-work-reviews.ts` の `callCcoForReview` 内 TODO ブロックを
-   有効化（`openai("gpt-5")` + `generateText`）
-3. `app-concierge/.env.local` に `OPENAI_API_KEY` を投入
-4. `--mode=live --force` で再実行
+1. ✅ `@ai-sdk/openai` (^3.0.65) は `app-concierge/package.json` に投入済
+2. ✅ `scripts/generate-work-reviews.ts` の `callCcoForReview` 内 OpenAI 呼出は
+   uncomment 済（lines 384-390 で `openai(modelName)` + `generateText` を実行）
+3. ✅ `OPENAI_API_KEY` は `app-concierge/.env.local` に投入済（2026-06-01 rotation 後）
+
+### 実 batch 起動方法（注意：本物の OpenAI コール = 課金発生）
+
+```bash
+cd app-concierge
+node --experimental-strip-types scripts/generate-work-reviews.ts --mode=live --force
+# 単一 cid のみ live 検証する場合:
+node --experimental-strip-types scripts/generate-work-reviews.ts --mode=live --target=gkok00002 --force
+```
+
+### 安全弁
+
+- `parseCli` の default は `mode=dry`（line 153）。誤って money-burning な live モード
+  が走らないようガード。`--mode=live` または `--no-dry-run` 系の明示フラグが必要。
+- すべての既存 27 cid review は **2026-05-27 時点で `source: live` 生成済**
+  （prompt_version `cco-review-v1.1.1`）。再生成は新 key 鮮度確認 / プロンプト改版時のみ。
 
 ## 命名規約
 

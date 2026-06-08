@@ -3,5 +3,21 @@
   "regions": ["hnd1"],
   "github": {
     "silent": true
-  }
+  },
+  "rewrites": [
+    {
+      "source": "/wordpress-sango-review/:path*",
+      "destination": "https://site-brand-vodnavi.vercel.app/wordpress-sango-review/:path*",
+      "has": [
+        { "type": "host", "value": "vodnavi.jp" }
+      ]
+    },
+    {
+      "source": "/u-next-second-free-trial/:path*",
+      "destination": "https://site-brand-vodnavi.vercel.app/u-next-second-free-trial/:path*",
+      "has": [
+        { "type": "host", "value": "vodnavi.jp" }
+      ]
+    }
+  ]
 }

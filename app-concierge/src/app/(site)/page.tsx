@@ -284,6 +284,15 @@ async function ResultsSection({
 function HeroSkeleton() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6">
+      {/* BRIEF_018 §2.2: skeleton 期間中の動機補強。H4 hypothesis (CTA 無き
+         skeleton 期間は離脱を誘発) 対抗。serif + brand gold (#D4AF37) で
+         「案内人が今夜の書斎を調律中」の期待感を視覚的に維持する。 */}
+      <p
+        className="mb-6 text-center text-sm italic sm:text-base"
+        style={{ fontFamily: "serif", color: "#D4AF37" }}
+      >
+        Biblia Erotica — 案内人が今夜の書斎を調律中...
+      </p>
       <Skeleton className="mb-6 h-10 w-2/3" />
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4 xl:grid-cols-5">
         {Array.from({ length: 10 }).map((_, i) => (
