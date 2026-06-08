@@ -803,3 +803,6 @@
 - `vodnavi.jp` クリーン面への境界安全送客CTA配線（`d2ef911`）および Next.js 16 ビルドパスを完了。
 - `BRIEF_052` に基づく初期教養3記事（シネマグラフ / 精神カタルシス / 文学構造）の非成人トーン CCO 発注指示書をすべて正常配置（e2, e3, e4 ✅ Done）。
 - **次期セッション残件**: ① PR #32 → main マージ（HUMAN）② 3記事の実執筆＋tone 目視（CCO/HUMAN）③ GA4 14日 hostName トレンド抽出（未実施）。
+
+### 📝 2026-06-09 第2幕コンテンツ着手（PR #32 merge 後）
+- [/] 記事1 `cinematic-chiaroscuro`（陰影の美学／映画美学）初稿を `site-brand/03_content/cinematic-chiaroscuro/article.md` に配置。**新 slug**（既存 `philosophy-of-cinema`=別記事「鏡と自己対峙」のため**非上書き**）、renderer-clean（`---`/番号リスト除去）、`check-clean-content.mjs` PASS、HUMAN tone レビュー通過。→ branch `feat/content-cinematic-chiaroscuro` で PR 化、merge は HUMAN 判断。
