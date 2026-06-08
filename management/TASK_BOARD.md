@@ -769,3 +769,6 @@
 - [ ] 🆕 T-20260608-02 (CTO): 大量 SSG ビルドのメモリ/レンダ速度プロファイリング（`next build`）
 - [ ] 🆕 T-20260608-03 (CTO/CSO): GA4 `?source=moterist`/`?source=sns_x` カスタムディメンション計測の生存確認
 - [x] ✅ T-20260608-04 (CTO, 完了 2026-06-08): clean 境界の **build 前サニタイズ lint 実装** — `site-brand/scripts/check-clean-content.mjs`（`03_content/**/*.md` を走査、`al.dmm.co.jp`/`af_id=`/`fanza`/`成人向け` を検出で **exit 1**）を `package.json` の `prebuild` に統合。**検証**: 現 clean 3記事=PASS / 故意の al.dmm+af_id 混入=**exit 1 で build 遮断** / cleanup 後 PASS / `next build` は prebuild lint→build で exit 0。clean 境界が人手レビューなしで機械強制される
+
+### GSC インデックス監査 landed (2026-06-08) — BRIEF_050 計測フェーズ / T-20260608-03 関連
+- [x] ✅ GSC 物理監査（claude-in-chrome MCP, authuser=2 / moterist.com@gmail.com 確認済、Playwright 不使用）: **app.vodnavi.jp** indexed=2760 / **404=237（5/28 の 289 から ▼52, PR#25 奏功）** / クロール済み-未登録=163。**vodnavi.jp(domain, 全サブドメイン包含)** indexed=2780 / 旧WP残骸=ソフト404:2・noindex:6・redirect:1 と僅少。詳細: `management/_metrics/2026-W23/gsc-live-audit.json`。**異常検知せず**（404 減少・新バケットなし）→ ALERTS 追記不要

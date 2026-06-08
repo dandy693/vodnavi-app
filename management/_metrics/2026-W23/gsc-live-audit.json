@@ -1,0 +1,42 @@
+{
+  "captured_at_local": "2026-06-08 JST",
+  "captured_via": "claude-in-chrome MCP（GSC, authuser=2 / moterist.com@gmail.com を DOM email + /u/2/ + property 非リダイレクトで物理確認）。Playwright script は不使用（未インストール・mechanism は MCP 拡張）。",
+  "report": "ページのインデックス登録（Index coverage / Pages report）",
+  "property_overlap_note": "sc-domain:vodnavi.jp は domain property で app.vodnavi.jp 等の全サブドメインを包含。sc-domain:app.vodnavi.jp は app サブドメイン専用。両者の数値は重複し app が大半。indexed 差 2780-2760=20 ≈ root vodnavi.jp(clean site-brand) の実質ページ数（記事3+homepage+policy 等）。",
+  "properties": {
+    "app.vodnavi.jp": {
+      "resource": "sc-domain:app.vodnavi.jp",
+      "indexed": 2760,
+      "not_indexed": 892,
+      "reasons": {
+        "代替ページ(canonical)": 487,
+        "見つかりませんでした(404)": 237,
+        "クロール済み-インデックス未登録": 163,
+        "robots.txt ブロック": 4,
+        "noindex 除外": 1,
+        "検出-インデックス未登録": 0
+      }
+    },
+    "vodnavi.jp": {
+      "resource": "sc-domain:vodnavi.jp（domain, 全サブドメイン包含）",
+      "indexed": 2780,
+      "not_indexed": 917,
+      "reasons": {
+        "代替ページ(canonical)": 487,
+        "見つかりませんでした(404)": 237,
+        "クロール済み-インデックス未登録": 180,
+        "noindex 除外": 6,
+        "robots.txt ブロック": 4,
+        "ソフト404": 2,
+        "リダイレクト": 1,
+        "重複(正規未選択)": 0
+      }
+    }
+  },
+  "findings": {
+    "app_404_trend": "app.vodnavi.jp の 404 は 289 (2026-05-28) → **237** (2026-06-08)、約52件減少。PR #25 の構造修復が奏功、404 は増加していない。",
+    "vodnavi_root_legacy": "旧 WordPress 残骸由来の ソフト404=2 / noindex=6 / リダイレクト=1 と僅少。/archives・?s= 残骸は現状ほぼ収束。indexed 総数(domain)=2780。",
+    "crawled_not_indexed": "クロール済み-未登録 app=163 / domain=180（status: 失敗しました）。薄い/重複/adult フィルタ起因と推定。新規スパイクではないが継続観察対象。"
+  },
+  "alert_decision": "ALERTS.md への新規エントリは**不要**。404 は急増せず（289→237 と減少）、新たな除外バケットの発生もなし（標準バケットのみ）。冷徹なデータ判定: 異常検知せず。"
+}
