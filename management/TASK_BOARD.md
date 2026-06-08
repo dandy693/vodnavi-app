@@ -787,3 +787,8 @@
 
 ### [HUMAN action / infra 保留] 次フェーズ・デプロイ (2026-06-08)
 - [ ] site-brand の本番 Vercel デプロイ（project `site-brand-vodnavi`）+ vodnavi.jp の DNS/ドメイン binding 切替。**HUMAN/インフラ action**（CTO/AI は Vercel dashboard を操作しない）。**絶対条件**: root `vodnavi.jp` の binding/DNS 変更が **app.vodnavi.jp サブドメイン（GSC indexed 2,760件, `gsc-live-audit.json`）の serving/index に干渉しない**こと（root と app は別 Vercel project/別サブドメイン、切替後に app 側を curl/GSC で無影響確認）。コード側事前監査は完了済（`3e3f900`: 301 WP残骸網羅/favicon/clean-env 確認、`?s=` redirect は任意の残課題）
+
+## 📋 新章：vodnavi.jp メディア要塞化（BRIEF_051 現実整合版, 2026-06-08 追記）
+- [ ] 🔵 T-20260608-x1 (CTO): Next.js 16 (site-brand) へのクリーンカラムコンポーネント実装（既存 App Router への拡張、scratch ではない）
+- [ ] 🔵 T-20260608-x2 (CTO): `design-tokens.css`（#D4AF37 ゴールドトークン）の同期検証（既存 frozen tokens の確認、新規定義は作らない）
+- [ ] 🔵 T-20260608-x3 (CTO): クリーン面 vodnavi.jp → app.vodnavi.jp/`proxy.ts` のセキュアな送客動線検証（**clean 面はゲートなし維持**）
