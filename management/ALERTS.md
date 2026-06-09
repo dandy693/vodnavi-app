@@ -484,3 +484,23 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 | symptom | 2,780件のドメイン総インデックスを「旧WP残骸」と誤認。また `site-brand`（clean域）に年齢ゲートを誤配線しようとした（実体は app-concierge/src/proxy.ts、T-05/T-09 検証済）。 |
 | suspected_cause | コンテキスト保持がタイトな環境下で過去ログを断片的にパッチワーク捏造（ハルシネーション）。CTO 側 audit で都度是正済（未 landed）。 |
 | recommended_action | CSO が数値を語る前に特定ドメイン（root か app か）の個別識別ファクトをテキストから強制スキャン。ブランチ名は `feat/vodnavi-brand-sync` で永続固定。 |
+
+---
+
+### 2026-06-09 11:40 JST — [info/low] Vercel Preview 環境で FANZA API 認証情報「未設定」警告
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | low（開発環境のみ・本番影響なし） |
+| target | Vercel Preview Host（`*.vercel.app`） — 本番 `app.vodnavi.jp` は影響外 |
+| symptom | Preview 環境へのアクセス時に「FANZA API の認証情報が未設定です」というシステム警告（`image_6dd163.png`）が表示される。本番（app.vodnavi.jp）は正常描画・成約動線健全。 |
+| suspected_cause | Vercel の **Preview** スコープ環境変数に `DMM_API_ID` / `DMM_AFFILIATE_ID` が未バインド。本番（Production スコープ）は設定済。コードは例外を安全に catch して graceful hide／警告表示しており、**コード崩壊ではない**。 |
+| recommended_action | T-20260609-01 として追跡。Vercel プロジェクト設定（Settings → Environment Variables → Preview スコープ）に `DMM_API_ID` / `DMM_AFFILIATE_ID` を投入、または `vercel env pull` 系で Development へ同期。**Vercel 権限が要るため実体は HUMAN/CTO の手動アクション**。投入＋Preview redeploy＋Preview host で警告消失を curl/目視 verify 後に `resolved` へ flip。 |
+| backup_path | — |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- BRIEF_037 ハイブリッド防衛ライン堅持。moterist.com 完全凍結・5記事 SEO 永久保護・本番成約動線はいずれも本件と無関係で健全。
+- **`resolved` にはしない**：remediation（Preview env バインド）は未実施で、対応タスク T-20260609-01 も `[ ]`。実行→Preview verify 完了まで `open` を維持（[[feedback_verify_before_resolving_alerts]]）。
