@@ -1,0 +1,28 @@
+name: API Health Check (FANZA + LLM)
+
+# T-20260609-03 / BRIEF_055: 本番のサーバーサイド API 健全性を外形監視。
+# 2026-06-10 の FANZA 400 / ANTHROPIC_API_KEY 失効のような「ユーザーに到達する窒息」を
+# 早期検知する。Preview は SSO 保護で外形 probe 不可のため本番のみ（runbook 参照）。
+
+on:
+  schedule:
+    - cron: "0 */6 * * *" # 6 時間ごと
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "Health check base URL"
+        required: false
+        default: "https://app.vodnavi.jp"
+
+jobs:
+  healthcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run API health check
+        env:
+          HEALTHCHECK_BASE: ${{ github.event.inputs.base || 'https://app.vodnavi.jp' }}
+        run: node app-concierge/scripts/healthcheck-api.mjs

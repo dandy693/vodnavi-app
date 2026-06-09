@@ -1,5 +1,6 @@
 import type {
   DmmArticle,
+  DmmErrorResponse,
   DmmItem,
   DmmItemListResponse,
   DmmSite,
@@ -54,14 +55,61 @@ interface FetchOptions {
   imageValidationTimeoutMs?: number;
 }
 
+/**
+ * BRIEF_057: サイレントデス（無音窒息）監視。
+ * FANZA の設定不備 / API エラーを **本番のみ** 構造化 JSON で Vercel Logs に
+ * 射出し、報酬ゼロのまま放置される事故を検知可能にする。throw 自体は維持する
+ * ため上流の graceful-hide 挙動は不変（BRIEF_057 §2 / 例外を素通ししない）。
+ */
+function logFanzaSilentDeath(
+  context: string,
+  error: { message: string; status?: number },
+): void {
+  if (process.env.NODE_ENV !== "production") return;
+  console.error(
+    JSON.stringify({
+      level: "high",
+      tag: "VODNAVI_SILENT_DEATH_GUARD",
+      context,
+      status: error.status ?? null,
+      message: error.message,
+      ts: new Date().toISOString(),
+    }),
+  );
+}
+
+/**
+ * DMM エラーレスポンスから **安全な説明文のみ** を抽出する。
+ * `request.parameters`（api_id / affiliate_id を含む）は決して読まない＝秘密値を
+ * ログ/エラーに露出させない。DMM の result.message / errors[].message のみを採り、
+ * 300 文字で打ち切る。これで 400 の真因（不正な api_id / 不正パラメータ等）を
+ * Vercel Logs から診断可能にする（T-20260609-07）。
+ */
+function extractDmmErrorDetail(body: unknown): string {
+  try {
+    const r = (body as DmmErrorResponse | undefined)?.result;
+    if (!r) return "";
+    const parts: string[] = [];
+    if (r.message) parts.push(r.message);
+    if (Array.isArray(r.errors)) {
+      for (const e of r.errors) if (e?.message) parts.push(e.message);
+    }
+    return parts.join(" / ").slice(0, 300);
+  } catch {
+    return "";
+  }
+}
+
 function getCredentials(): { apiId: string; affiliateId: string } {
   const apiId = process.env.DMM_API_ID;
   const affiliateId = process.env.DMM_AFFILIATE_ID;
 
   if (!apiId || !affiliateId) {
-    throw new FanzaConfigError(
+    const err = new FanzaConfigError(
       "DMM_API_ID と DMM_AFFILIATE_ID を .env.local に設定してください。",
     );
+    logFanzaSilentDeath("getCredentials: DMM_API_ID/DMM_AFFILIATE_ID 未設定", err);
+    throw err;
   }
   return { apiId, affiliateId };
 }
@@ -89,19 +137,31 @@ export async function fetchItemList(
   });
 
   if (!res.ok) {
-    throw new FanzaApiError(
-      `FANZA API request failed: ${res.status} ${res.statusText}`,
+    // DMM のエラー本文から安全な説明のみ抽出（秘密値は読まない）。body 読取失敗時も status は保持。
+    let detail = "";
+    try {
+      detail = extractDmmErrorDetail(await res.json());
+    } catch {
+      /* 生 body は echo しない（request.parameters の api_id 漏洩防止） */
+    }
+    const err = new FanzaApiError(
+      `FANZA API request failed: ${res.status} ${res.statusText}${detail ? ` — ${detail}` : ""}`,
       res.status,
     );
+    logFanzaSilentDeath("fetchItemList: HTTP エラー", err);
+    throw err;
   }
 
   const data = (await res.json()) as DmmItemListResponse;
 
   if (data.result?.status && data.result.status >= 400) {
-    throw new FanzaApiError(
-      `FANZA API returned error status ${data.result.status}`,
+    const detail = extractDmmErrorDetail(data);
+    const err = new FanzaApiError(
+      `FANZA API returned error status ${data.result.status}${detail ? ` — ${detail}` : ""}`,
       data.result.status,
     );
+    logFanzaSilentDeath("fetchItemList: result.status >= 400", err);
+    throw err;
   }
 
   // 画像の生存確認フィルタ。

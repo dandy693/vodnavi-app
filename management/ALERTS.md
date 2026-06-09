@@ -484,3 +484,75 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 | symptom | 2,780件のドメイン総インデックスを「旧WP残骸」と誤認。また `site-brand`（clean域）に年齢ゲートを誤配線しようとした（実体は app-concierge/src/proxy.ts、T-05/T-09 検証済）。 |
 | suspected_cause | コンテキスト保持がタイトな環境下で過去ログを断片的にパッチワーク捏造（ハルシネーション）。CTO 側 audit で都度是正済（未 landed）。 |
 | recommended_action | CSO が数値を語る前に特定ドメイン（root か app か）の個別識別ファクトをテキストから強制スキャン。ブランチ名は `feat/vodnavi-brand-sync` で永続固定。 |
+
+---
+
+### 2026-06-09 11:40 JST — [info/low] Vercel Preview 環境で FANZA API 認証情報「未設定」警告
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| resolved_at | 2026-06-10 |
+| severity | low（開発環境のみ・本番影響なし） |
+| target | Vercel Preview Host（`*.vercel.app`） — 本番 `app.vodnavi.jp` は影響外 |
+| symptom | Preview 環境へのアクセス時に「FANZA API の認証情報が未設定です」というシステム警告（`image_6dd163.png`）が表示される。本番（app.vodnavi.jp）は正常描画・成約動線健全。 |
+| suspected_cause | Vercel の **Preview** スコープ環境変数に `DMM_API_ID` / `DMM_AFFILIATE_ID` が未バインド。本番（Production スコープ）は設定済。コードは例外を安全に catch して graceful hide／警告表示しており、**コード崩壊ではない**。 |
+| recommended_action | T-20260609-01 として追跡。Vercel プロジェクト設定（Settings → Environment Variables → Preview スコープ）に `DMM_API_ID` / `DMM_AFFILIATE_ID` を投入、または `vercel env pull` 系で Development へ同期。**Vercel 権限が要るため実体は HUMAN/CTO の手動アクション**。投入＋Preview redeploy＋Preview host で警告消失を curl/目視 verify 後に `resolved` へ flip。 |
+| backup_path | — |
+| anomaly_log | — |
+| github_issue | — |
+
+**メモ**：
+- BRIEF_037 ハイブリッド防衛ライン堅持。moterist.com 完全凍結・5記事 SEO 永久保護・本番成約動線はいずれも本件と無関係で健全。
+- **`resolved` にはしない**：remediation（Preview env バインド）は未実施で、対応タスク T-20260609-01 も `[ ]`。実行→Preview verify 完了まで `open` を維持（[[feedback_verify_before_resolving_alerts]]）。
+
+**[resolved 2026-06-10]** — `vercel env ls` で `DMM_API_ID`/`DMM_AFFILIATE_ID` の **両方が Preview スコープにバインド済**を物理確定（前ターンは AFFILIATE_ID のみ未バインドだったが HUMAN が追加）。cred 値妥当性は local 直叩き 200/30件で実証、Preview redeploy も複数存在。根因（Preview 未バインド）解消につきクローズ。**注**: Preview deploy は Vercel SSO（401）で CTO の curl 目視は不可 — env ls + 値実証 + redeploy 存在の全 CLI 証跡が解決を示す（最終目視は HUMAN のログイン済ブラウザで一瞥可能）。
+
+---
+
+### 2026-06-10 JST — [high] 本番 app.vodnavi.jp 全 FANZA ItemList が 400、トップ作品グリッド窒息
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| resolved_at | 2026-06-10 |
+| severity | high |
+| target | 本番 `app.vodnavi.jp` の FANZA `ItemList` 依存 surface（`/` トップグリッド、`/sitemap.xml`、`/works/*`、`/genres/*`） |
+| symptom | トップページ作品グリッドが `EmptyState` で「作品を取得できませんでした / FANZA API でエラーが発生しました (status: 400)」をユーザー画面に描画（`image_357ba5.jpg`）。**API-wide**: curl 物理確認で `/` が status 400、`/sitemap.xml` の `/works/` URL が **0 件**（正常時 ~1,809）。`/concierge`（非 FANZA）は 200 で健全。 |
+| suspected_cause | デフォルトクエリのパラメータ（`site=FANZA, service=digital, floor=videoa, sort=date, hits=30, offset=1`）は **DMM v3 仕様上すべて妥当**＝パラメータ構築バグではない。API-wide 400 ＋ 値は存在（未設定なら `FanzaConfigError`）から、**最有力は本番 `DMM_API_ID`/`DMM_AFFILIATE_ID` の値が無効（失効/タイポ/アカウント無効化）**、または DMM 側の拒否。`client.ts` が DMM エラー本文を破棄し status のみ保持していたため真因が不可視だった。 |
+| recommended_action | (1) **[CTO 実施済]** `client.ts` の両 throw 経路で DMM エラー本文（`result.message`/`errors`、`request.parameters` は読まず秘密非露出）を抽出し `FanzaApiError` + `VODNAVI_SILENT_DEATH_GUARD` ログへ載せる診断パッチを landed（tsc 0 / next build 0）。→ 次デプロイ後 Vercel Logs で 400 の DMM 公式メッセージを確認。(2) **[HUMAN]** DMM アフィリエイト管理画面で当該 `api_id` の有効性/利用制限を確認、失効ならローテーション。Vercel 本番 env を正値に更新し redeploy。(3) 復旧後 curl で `/` グリッド + `/sitemap.xml` の works URL 復活を verify。 |
+| backup_path | 診断パッチは additive（`git revert` で除去可） |
+| anomaly_log | Vercel Logs: `{"tag":"VODNAVI_SILENT_DEATH_GUARD","status":400,...}`（診断パッチ deploy 後に出力） |
+| github_issue | — |
+
+**メモ**：
+- T-20260609-07 として独立追跡。**T-20260609-01（Preview env）とは別問題**（あちらは Preview の env 未設定、こちらは本番の 400=値無効/API拒否）。-01 のエントリは破壊せず維持。
+- 診断パッチはあくまで**真因可視化**であり 400 そのものの fix ではない。api_id 値が無効なら fix は HUMAN の DMM/Vercel 操作（[[reference_vercel_env_secret_write_blocked]] により auto-CTO の secret 書込みは classifier deny）。
+- 本番 curl scope 監査は read-only。
+- **[根因ほぼ確定 2026-06-10]** local `.env.local` の DMM creds で同一デフォルトクエリ（FANZA/digital/videoa/date/30/offset1）を DMM API へ直叩き → **HTTP 200 / result_count 30 で成功**（秘密値は非表示、length のみ確認 apiId=20/aff=12）。∴ **param 構築も local cred 値も健全**。本番のみ 400 のため、**本番 Vercel の `DMM_API_ID`/`DMM_AFFILIATE_ID` の値が無効/不一致**が高確度の真因。**fix = 本番 env を local の既知正値へ更新 + redeploy**（HUMAN、secret 書込みは classifier deny）。診断パッチがあれば次デプロイ後 Vercel Logs に DMM 公式メッセージも出る。
+
+**[resolved 2026-06-10]** — HUMAN が本番 Vercel の DMM cred 値を修正 + redeploy。curl 物理確認: `https://app.vodnavi.jp/` の「status: 400 / 作品を取得できませんでした」消失、`/sitemap.xml` の `/works/` URL が **0 → 1,600 件**に復活。本番 FANZA ItemList 全面復旧を確認しクローズ。**注**: 本クローズは**本番 400 のみ**。Preview env（2026-06-09 11:40 エントリ / T-20260609-01）は `DMM_AFFILIATE_ID` の Preview 未追加で**未解決のまま維持**（global flip は不採用、当該エントリは `open`）。
+
+---
+
+### 2026-06-10 JST — [high] 本番＋Preview の AI コンシェルジュが "invalid x-api-key" で窒息（ANTHROPIC_API_KEY 失効）
+
+| 項目 | 値 |
+|---|---|
+| status | resolved |
+| resolved_at | 2026-06-10 |
+| severity | high |
+| target | `app.vodnavi.jp` **本番** ＋ Preview の AI チャット（`/api/concierge` POST、`anthropic(MODEL)` 経由の LLM 呼出） |
+| symptom | コンシェルジュの初期挨拶は正常描画されるが、ユーザーがメッセージ送信した瞬間に赤字「invalid x-api-key」で窒息（`image_348b26.png`、Preview で観測）。**本番も同症**: `curl -X POST https://app.vodnavi.jp/api/concierge`（age cookie 付）が `data: {"type":"error","errorText":"invalid x-api-key"}` を返却（HTTP 200 ストリーム内エラー）。FANZA/DMM 側は 200 で健全＝本障害は LLM 認証層に限局。 |
+| suspected_cause | `route.ts:101` の `if(!process.env.ANTHROPIC_API_KEY)` ガードは通過＝キーは**存在するが値が無効**。`vercel env ls`: `ANTHROPIC_API_KEY` は Development(29d) + **Production,Preview(29d 共有)**。Prod+Preview 共有値（created ~29日前）が無効。**2026-06-01 のキー漏洩インシデント（ANTHROPIC/OPENAI を revoke 推奨）で旧キーが revoke された後、Vercel 値が更新されず失効キーのまま**が最有力。local `.env.local` には ANTHROPIC_API_KEY 不在で CTO 側に正値ソースなし。 |
+| recommended_action | **[HUMAN]** (1) Anthropic console で有効な API キーを取得（2026-06-01 ローテ後の現行キー、無ければ新規発行）。(2) Vercel `vodnavi-app` の `ANTHROPIC_API_KEY` 値を Production（＋共有の Preview）/ Development とも正値に更新。(3) 本番＋Preview を redeploy。(4) 復旧 verify: `curl -X POST .../api/concierge` が `invalid x-api-key` を返さず AI 応答ストリームになることを確認（CTO が read-only で可能）。**注**: auto-CTO は secret 書込み不可（[[reference_vercel_env_secret_write_blocked]]）＝キー更新は HUMAN。 |
+| backup_path | — |
+| anomaly_log | 本番 `/api/concierge` ストリーム: `data: {"type":"error","errorText":"invalid x-api-key"}` |
+| github_issue | — |
+
+**メモ**：
+- T-20260610-01 として追跡。**Preview 限定ではなく本番も停止**（共有キー値）= コンバージョン中核の AI チャットが全ユーザーで死亡、収益直撃の high。
+- 副次（UX）: 失効時に route の onError friendly fallback（「通信中にエラー…」）ではなく **raw "invalid x-api-key" がユーザー赤字に漏出**している。キー復旧後、provider 認証エラーを friendly 文面へ握り潰す error-handling 改善が任意で可能（BRIEF_057 の素通し禁止思想）。本障害の主 fix はキー値更新。
+- 2026-06-01 漏洩 ALERTS（OPENAI/ANTHROPIC/Make revoke 推奨）との関連を要確認。OPENAI_API_KEY は Production のみ（Preview/Dev 無し）でレビュー生成用、本障害の直接要因ではない。
+
+**[resolved 2026-06-10]** — HUMAN が `ANTHROPIC_API_KEY` 値を更新 + redeploy。本番 `curl -X POST /api/concierge`（age cookie）が **real Claude ストリーム（`text-delta` 応答）を返却、"invalid x-api-key" 消滅**を物理確認しクローズ。Preview は同一 Prod,Preview 共有値を使用＝同値で復旧見込みだが、Preview deploy は Vercel SSO(401) で CTO 直 curl 不可（最終目視は HUMAN）。**注**: 副次の raw エラー漏出（onError friendly fallback 未適用）は **error-handling 改善で landed**（共有ヘルパ `conciergeErrorText` を `createUIMessageStream` と内側 `result.toUIMessageStream` の両方の `onError` に配線、ai v6 の `UIMessageStreamOptions.onError` を使用、tsc 0 / next build 0）。今後 provider 認証エラー等は raw を出さず友好的文面に握り潰す。挙動の live verify はキー正常化済で意図的にエラーを誘発できないため static（型/build）止まり。

@@ -33,8 +33,9 @@ const SYSTEM_PROMPT = `あなたは VODNAVI の AI コンシェルジュです�
 - 営業っぽさを排除する。「絶対観るべき！」のような押しつけ語は使わない。
 
 # 進め方（必須フロー）
-1. ユーザーの最初の発話から「気分」「状況」「求めるもの」を読み取る。情報が薄い場合のみ 1 つだけ質問を返す（連続質問は避ける）。
-2. 手がかりが揃ったら search_fanza_works を **基本 1 回だけ**呼ぶ。デフォルトの hits=10 で十分な候補が得られる。
+0. **【最重要・フェーズ分離則 / 例外なし】好みが「具体的なジャンル・方向性」（例: お姉さん系 / 清楚系 / 癒し系 / 熟女 / VR / 痴女 等）まで絞り込めていない間は、絶対に作品の検索・提案・列挙をしてはならない（search_fanza_works も finalize_recommendations も呼ばない）。** その場合は「気分・好みの方向性を 2〜4 択で絞り込む“質問”だけ」を出力し、文末に \`[[choices: 選択肢1 | 選択肢2]]\` を例外なく付与する。**同じメッセージ内で「質問」と「作品提案」を混在させない**——質問するターンは質問とマーカーだけで必ず止める。最初の 1〜2 往復は原則この絞り込み質問に充てる。
+1. ユーザーの発話から「気分」「状況」「求めるもの」を読み取る。方向性がまだ曖昧なら 0 に従い選択肢質問で 1 段だけ絞り込む（1 ターン 1 問、連続質問は避ける）。**例外**: ユーザーが最初から具体ジャンル（例: 「VR の巨乳熟女」）を明言している場合は質問を挟まず 2 へ進んでよい。
+2. 方向性が具体ジャンルまで絞れたら（ユーザーが選択肢を選ぶ等）search_fanza_works を **基本 1 回だけ**呼ぶ。デフォルトの hits=10 で十分な候補が得られる。
 3. 取得結果から 2〜3 作品を厳選し、**応答テキストを返す前に必ず finalize_recommendations を呼んで content_ids を渡す**。
 4. その上で各作品を 1 文ずつ「なぜこの夜のあなたにフィットするのか」を添えて紹介する。
 5. 最後に、もし違うテイストが良ければ気軽に方向転換できる旨を一言添える。
@@ -89,6 +90,12 @@ const SYSTEM_PROMPT = `あなたは VODNAVI の AI コンシェルジュです�
 - content_id はテキストに含めない（finalize_recommendations 経由でシステムが拾うため）。
 - 推薦理由は短く（1 作品あたり最大 80 字程度）。
 - 箇条書きは多用せず、自然な文章として流す。
+- 改行は通常の改行のみ。HTML タグ（<br> や <br/> 等）は絶対に出力しない（UI に生タグが露出する）。
+- **【最重要・例外なし】選択肢を提示する質問には必ず choices マーカーを付ける**: ユーザーに 2〜4 個の選択肢から選んでもらう質問（箇条書きでの列挙、「A・B・C のどれが近いですか」式を含む）をするときは、本文の**最後の行**に機械可読マーカーを 1 行だけ必ず付与する:
+    [[choices: ラベル1 | ラベル2 | ラベル3]]
+  - 各ラベルは 16 文字以内の短い見出し語のみ（詳しい説明は本文側に書き、マーカーには見出しだけを入れる）。区切りは半角縦棒「|」、角括弧とコロンも半角で書く。
+  - 例: 本文「今夜はどんな雰囲気がお好みでしょうか。」→ 最終行「[[choices: お姉さん系 | 清楚系 | 素人系]]」
+  - 具体的な選択肢を列挙しない自由回答の質問にはマーカーを付けない。マーカーは UI がタップボタンに変換し本文表示から自動除去されるため、選択肢を二重に書く必要はない。
 
 # 制約・倫理
 - 18 歳未満を想起させる表現は絶対に避ける（「学園」ジャンルは大人の俳優のコスプレ作品である前提で扱う）。
@@ -96,6 +103,26 @@ const SYSTEM_PROMPT = `あなたは VODNAVI の AI コンシェルジュです�
 - ユーザーの趣向に対して評価・否定を一切行わない。どんな好みも肯定的に受け止める。
 - 法的・医学的助言は行わない。聞かれた場合は柔らかく専門家に委ねる旨を伝える。
 - 検索結果が乏しいときは、無理に作品を勧めず、別の切り口を一つだけ提案する。`;
+
+/**
+ * provider / stream 由来のエラーを **必ずユーザー向けの安全な文面** にマッピングする。
+ * raw な provider メッセージ（例: "invalid x-api-key" / rate limit 等）を UI に漏らさない。
+ * `createUIMessageStream` と `result.toUIMessageStream` の **両方** に渡すことで、
+ * 内側 streamText 由来の認証エラーも握り潰す（2026-06-10 "invalid x-api-key" 漏出の再発防止）。
+ */
+function conciergeErrorText(error: unknown): string {
+  console.error("[concierge] stream error:", error);
+  // 安全フィルター起因の拒否（safety rating / content_filter / blocked 等）は、
+  // プロンプトを置換しても通らないことがある。クラッシュではなくテキストのみの
+  // 柔らかいフォールバック文面を返す。
+  if (isSafetyBlock(error)) {
+    console.warn(
+      "[concierge] safety block detected; degrading to text-only fallback",
+    );
+    return "今夜のお気持ちが上手く伝わらなかったようです。違う言い回しで、もう一度お聞かせいただけますか。";
+  }
+  return "コンシェルジュとの通信中にエラーが発生しました。時間を置いてもう一度お試しください。";
+}
 
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
@@ -170,17 +197,8 @@ export async function POST(req: Request) {
   const modelMessages = await convertToModelMessages(sanitizedMessages);
 
   const stream = createUIMessageStream({
-    onError: (error) => {
-      console.error("[concierge] stream error:", error);
-      // 安全フィルター起因の拒否（safety rating / content_filter / blocked 等）は、
-      // プロンプトを置換しても通らないことがある。クラッシュではなくテキストのみ
-      // の柔らかいフォールバック文面を返す。
-      if (isSafetyBlock(error)) {
-        console.warn("[concierge] safety block detected; degrading to text-only fallback");
-        return "今夜のお気持ちが上手く伝わらなかったようです。違う言い回しで、もう一度お聞かせいただけますか。";
-      }
-      return "コンシェルジュとの通信中にエラーが発生しました。時間を置いてもう一度お試しください。";
-    },
+    // provider/stream エラーは必ず友好的文面へ握り潰す（raw メッセージを UI に漏らさない）
+    onError: conciergeErrorText,
     execute: ({ writer }) => {
       // 流入元 addendum は cache_control の外側（末尾）に置き、メインプロンプトの
       // キャッシュヒットを温存する。default プロファイルは addendum が空文字なので追加しない。
@@ -246,6 +264,9 @@ export async function POST(req: Request) {
         result.toUIMessageStream({
           sendStart: false,
           sendFinish: false,
+          // 内側 streamText 由来のエラー（provider 認証エラー等）も友好的文面へ。
+          // これが無いと "invalid x-api-key" 等の raw メッセージが UI に漏出する（2026-06-10 再発防止）。
+          onError: conciergeErrorText,
         }),
       );
     },

@@ -53,7 +53,7 @@ export default async function Page({ params }: Props) {
           作品選びに迷ったら、VODNAVI の AI コンシェルジュが今の気分から最適な一本をご案内します。
         </p>
         <a
-          href={buildConciergeHandoffUrl({ source: "brand" })}
+          href={buildConciergeHandoffUrl({ source: "brand", intent: "wisdom" })}
           className="btn-luxury-outline"
         >
           AI コンシェルジュに相談する
