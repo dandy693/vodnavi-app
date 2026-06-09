@@ -54,14 +54,39 @@ interface FetchOptions {
   imageValidationTimeoutMs?: number;
 }
 
+/**
+ * BRIEF_057: サイレントデス（無音窒息）監視。
+ * FANZA の設定不備 / API エラーを **本番のみ** 構造化 JSON で Vercel Logs に
+ * 射出し、報酬ゼロのまま放置される事故を検知可能にする。throw 自体は維持する
+ * ため上流の graceful-hide 挙動は不変（BRIEF_057 §2 / 例外を素通ししない）。
+ */
+function logFanzaSilentDeath(
+  context: string,
+  error: { message: string; status?: number },
+): void {
+  if (process.env.NODE_ENV !== "production") return;
+  console.error(
+    JSON.stringify({
+      level: "high",
+      tag: "VODNAVI_SILENT_DEATH_GUARD",
+      context,
+      status: error.status ?? null,
+      message: error.message,
+      ts: new Date().toISOString(),
+    }),
+  );
+}
+
 function getCredentials(): { apiId: string; affiliateId: string } {
   const apiId = process.env.DMM_API_ID;
   const affiliateId = process.env.DMM_AFFILIATE_ID;
 
   if (!apiId || !affiliateId) {
-    throw new FanzaConfigError(
+    const err = new FanzaConfigError(
       "DMM_API_ID と DMM_AFFILIATE_ID を .env.local に設定してください。",
     );
+    logFanzaSilentDeath("getCredentials: DMM_API_ID/DMM_AFFILIATE_ID 未設定", err);
+    throw err;
   }
   return { apiId, affiliateId };
 }
@@ -89,19 +114,23 @@ export async function fetchItemList(
   });
 
   if (!res.ok) {
-    throw new FanzaApiError(
+    const err = new FanzaApiError(
       `FANZA API request failed: ${res.status} ${res.statusText}`,
       res.status,
     );
+    logFanzaSilentDeath("fetchItemList: HTTP エラー", err);
+    throw err;
   }
 
   const data = (await res.json()) as DmmItemListResponse;
 
   if (data.result?.status && data.result.status >= 400) {
-    throw new FanzaApiError(
+    const err = new FanzaApiError(
       `FANZA API returned error status ${data.result.status}`,
       data.result.status,
     );
+    logFanzaSilentDeath("fetchItemList: result.status >= 400", err);
+    throw err;
   }
 
   // 画像の生存確認フィルタ。
