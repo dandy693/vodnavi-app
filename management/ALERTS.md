@@ -511,7 +511,8 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 
 | 項目 | 値 |
 |---|---|
-| status | open |
+| status | resolved |
+| resolved_at | 2026-06-10 |
 | severity | high |
 | target | 本番 `app.vodnavi.jp` の FANZA `ItemList` 依存 surface（`/` トップグリッド、`/sitemap.xml`、`/works/*`、`/genres/*`） |
 | symptom | トップページ作品グリッドが `EmptyState` で「作品を取得できませんでした / FANZA API でエラーが発生しました (status: 400)」をユーザー画面に描画（`image_357ba5.jpg`）。**API-wide**: curl 物理確認で `/` が status 400、`/sitemap.xml` の `/works/` URL が **0 件**（正常時 ~1,809）。`/concierge`（非 FANZA）は 200 で健全。 |
@@ -526,3 +527,5 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - 診断パッチはあくまで**真因可視化**であり 400 そのものの fix ではない。api_id 値が無効なら fix は HUMAN の DMM/Vercel 操作（[[reference_vercel_env_secret_write_blocked]] により auto-CTO の secret 書込みは classifier deny）。
 - 本番 curl scope 監査は read-only。
 - **[根因ほぼ確定 2026-06-10]** local `.env.local` の DMM creds で同一デフォルトクエリ（FANZA/digital/videoa/date/30/offset1）を DMM API へ直叩き → **HTTP 200 / result_count 30 で成功**（秘密値は非表示、length のみ確認 apiId=20/aff=12）。∴ **param 構築も local cred 値も健全**。本番のみ 400 のため、**本番 Vercel の `DMM_API_ID`/`DMM_AFFILIATE_ID` の値が無効/不一致**が高確度の真因。**fix = 本番 env を local の既知正値へ更新 + redeploy**（HUMAN、secret 書込みは classifier deny）。診断パッチがあれば次デプロイ後 Vercel Logs に DMM 公式メッセージも出る。
+
+**[resolved 2026-06-10]** — HUMAN が本番 Vercel の DMM cred 値を修正 + redeploy。curl 物理確認: `https://app.vodnavi.jp/` の「status: 400 / 作品を取得できませんでした」消失、`/sitemap.xml` の `/works/` URL が **0 → 1,600 件**に復活。本番 FANZA ItemList 全面復旧を確認しクローズ。**注**: 本クローズは**本番 400 のみ**。Preview env（2026-06-09 11:40 エントリ / T-20260609-01）は `DMM_AFFILIATE_ID` の Preview 未追加で**未解決のまま維持**（global flip は不採用、当該エントリは `open`）。
