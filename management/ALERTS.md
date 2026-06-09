@@ -539,7 +539,8 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 
 | 項目 | 値 |
 |---|---|
-| status | open |
+| status | resolved |
+| resolved_at | 2026-06-10 |
 | severity | high |
 | target | `app.vodnavi.jp` **本番** ＋ Preview の AI チャット（`/api/concierge` POST、`anthropic(MODEL)` 経由の LLM 呼出） |
 | symptom | コンシェルジュの初期挨拶は正常描画されるが、ユーザーがメッセージ送信した瞬間に赤字「invalid x-api-key」で窒息（`image_348b26.png`、Preview で観測）。**本番も同症**: `curl -X POST https://app.vodnavi.jp/api/concierge`（age cookie 付）が `data: {"type":"error","errorText":"invalid x-api-key"}` を返却（HTTP 200 ストリーム内エラー）。FANZA/DMM 側は 200 で健全＝本障害は LLM 認証層に限局。 |
@@ -553,3 +554,5 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - T-20260610-01 として追跡。**Preview 限定ではなく本番も停止**（共有キー値）= コンバージョン中核の AI チャットが全ユーザーで死亡、収益直撃の high。
 - 副次（UX）: 失効時に route の onError friendly fallback（「通信中にエラー…」）ではなく **raw "invalid x-api-key" がユーザー赤字に漏出**している。キー復旧後、provider 認証エラーを friendly 文面へ握り潰す error-handling 改善が任意で可能（BRIEF_057 の素通し禁止思想）。本障害の主 fix はキー値更新。
 - 2026-06-01 漏洩 ALERTS（OPENAI/ANTHROPIC/Make revoke 推奨）との関連を要確認。OPENAI_API_KEY は Production のみ（Preview/Dev 無し）でレビュー生成用、本障害の直接要因ではない。
+
+**[resolved 2026-06-10]** — HUMAN が `ANTHROPIC_API_KEY` 値を更新 + redeploy。本番 `curl -X POST /api/concierge`（age cookie）が **real Claude ストリーム（`text-delta` 応答）を返却、"invalid x-api-key" 消滅**を物理確認しクローズ。Preview は同一 Prod,Preview 共有値を使用＝同値で復旧見込みだが、Preview deploy は Vercel SSO(401) で CTO 直 curl 不可（最終目視は HUMAN）。**注**: 副次の raw エラー漏出（onError friendly fallback 未適用）は別途 任意改善として残置。
