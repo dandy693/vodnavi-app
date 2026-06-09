@@ -396,14 +396,19 @@ function normalizeBreaks(text: string): string {
 }
 
 // クイックリプライ用マーカー [[choices: A | B]] の検出/抽出/除去。
-const CHOICES_RE = /\[\[\s*choices:\s*([^\]]+?)\s*\]\]/i;
+// LLM の全角ゆらぎを多段防御で吸収する: 括弧 [[ / ［［（混在可）、コロン : / ：、
+// パイプ | / ｜、半角/全角スペース（JS の \s は 　 全角空白も含む）、
+// "choices" 前後の空白をすべて許容。中身は [\s\S]+? で改行込み貪欲最小マッチ。
+const CHOICES_RE = /[\[［]{2}\s*choices\s*[:：]\s*([\s\S]+?)\s*[\]］]{2}/i;
+const CHOICES_RE_GLOBAL = /[\[［]{2}\s*choices\s*[:：]\s*[\s\S]+?\s*[\]］]{2}/gi;
 
 function extractChoices(text: string): string[] {
   const m = text.match(CHOICES_RE);
   if (!m) return [];
   const seen = new Set<string>();
   const out: string[] = [];
-  for (const raw of m[1].split("|")) {
+  // 半角/全角パイプ + 前後の任意スペースで分割（trim が全角空白も除去）。
+  for (const raw of m[1].split(/\s*[|｜]\s*/)) {
     const label = raw.trim();
     if (label && !seen.has(label)) {
       seen.add(label);
@@ -414,7 +419,8 @@ function extractChoices(text: string): string[] {
 }
 
 function stripChoices(text: string): string {
-  return text.replace(CHOICES_RE, "").trimEnd();
+  // 生マーカーが画面に絶対残らないよう、全角ゆらぎ込みで全マッチを除去する。
+  return text.replace(CHOICES_RE_GLOBAL, "").trimEnd();
 }
 
 function FormattedText({ text }: { text: string }) {
