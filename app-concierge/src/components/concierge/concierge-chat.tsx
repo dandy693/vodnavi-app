@@ -175,14 +175,6 @@ export function ConciergeChat({
 
   const showSuggestions = messages.length === 1 && !isBusy;
 
-  // クイックリプライ: 最新メッセージがアシスタントで [[choices: ...]] を含み、
-  // 応答完了（!isBusy）の時だけ、入力欄の上にタップ選択肢を出す。
-  const lastMessage = messages[messages.length - 1];
-  const quickReplies =
-    !isBusy && lastMessage?.role === "assistant"
-      ? extractChoices(extractText(lastMessage))
-      : [];
-
   return (
     <div className="relative flex h-full flex-col bg-brand-dark font-luxury-body">
       <div
@@ -196,7 +188,7 @@ export function ConciergeChat({
       >
         <div className="mx-auto flex max-w-3xl flex-col gap-6">
           {messages.map((msg) => (
-            <MessageBubble key={msg.id} msg={msg} />
+            <MessageBubble key={msg.id} msg={msg} onChoice={submit} />
           ))}
 
           {showSuggestions && (
@@ -235,22 +227,6 @@ export function ConciergeChat({
         }}
         className="relative border-t border-brand-gold/10 bg-brand-dark/85 px-4 py-3 backdrop-blur-xl sm:px-6"
       >
-        {quickReplies.length > 0 && (
-          <div className="mx-auto mb-2.5 flex max-w-3xl flex-wrap gap-2">
-            {quickReplies.map((q) => (
-              <button
-                key={q}
-                type="button"
-                onClick={() => submit(q)}
-                disabled={isBusy}
-                title={q}
-                className="max-w-[15rem] truncate rounded-full border border-brand-gold/30 bg-brand-gold/10 px-3.5 py-1.5 text-xs text-brand-text-primary transition-colors hover:border-brand-gold/60 hover:bg-brand-gold/20 active:translate-y-px disabled:opacity-50"
-              >
-                {q}
-              </button>
-            ))}
-          </div>
-        )}
         <div className="mx-auto flex max-w-3xl items-end gap-2">
           <textarea
             ref={textareaRef}
@@ -357,7 +333,13 @@ function EarlyEntryCard({
   );
 }
 
-function MessageBubble({ msg }: { msg: UIMessage }) {
+function MessageBubble({
+  msg,
+  onChoice,
+}: {
+  msg: UIMessage;
+  onChoice?: (text: string) => void;
+}) {
   const text = extractText(msg);
   const recommendations = extractRecommendations(msg);
 
@@ -379,7 +361,7 @@ function MessageBubble({ msg }: { msg: UIMessage }) {
       <div className="flex flex-1 flex-col gap-3">
         {text && (
           <div className="rounded-2xl rounded-tl-sm bg-brand-surface/80 px-4 py-3 text-sm leading-relaxed text-brand-text-primary ring-1 ring-brand-gold/15">
-            <FormattedText text={text} />
+            <FormattedText text={text} onChoice={onChoice} />
           </div>
         )}
         {recommendations.length > 0 && (
@@ -396,84 +378,130 @@ function normalizeBreaks(text: string): string {
   return text.replace(/<br\s*\/?>/gi, "\n");
 }
 
-// クイックリプライ用マーカー [[choices: A | B]] の検出/抽出/除去。
-// LLM の全角ゆらぎを多段防御で吸収する: 括弧 [[ / ［［（混在可）、コロン : / ：、
-// パイプ | / ｜、半角/全角スペース（JS の \s は 　 全角空白も含む）、
-// "choices" 前後の空白をすべて許容。中身は [\s\S]+? で改行込み貪欲最小マッチ。
-const CHOICES_RE = /[\[［]{2}\s*choices\s*[:：]\s*([\s\S]+?)\s*[\]］]{2}/i;
-const CHOICES_RE_GLOBAL = /[\[［]{2}\s*choices\s*[:：]\s*[\s\S]+?\s*[\]］]{2}/gi;
-
-// 説明付きラベル（"お姉さん系 ―― 落ち着いた包容力…"）から、ボタン用に
-// 押しやすい「見出し部」だけをコンパクト抽出する。
-//  - 行頭の箇条書き/装飾記号を除去
-//  - ダッシュ系（――/—/–）・全角/半角コロン・「スペース-スペース」の手前を採用
-//    （複合語 U-NEXT を壊さぬよう、単独の半角ハイフンは区切りに含めない）
-//  - 中黒「・」は語の一部として温存（区切りにしない）
-//  - 極端な長文のみ末尾を … で省略（**破棄はしない**＝サイレント消滅させない）
-function compactChoiceLabel(segment: string): string {
-  let s = segment.trim();
-  if (!s) return "";
-  s = s.replace(/^[\s・･\-—–―*►▶•]+/, "").trim();
-  const head = s.split(/\s*(?:[―—–]{2,}|[―—–]|：|:|\s-\s)\s*/)[0].trim();
+// 本文中の「選択肢キーワード」として妥当な短い見出し語を取り出す。
+//  - 太字内/箇条書き先頭などの素片を受け取り、説明付き（"お姉さん系 ―― …"）なら
+//    ダッシュ系（――/—/–）・全角半角コロン・「スペース-スペース」の手前（見出し）だけを採用。
+//  - markdown の `**` は除去、中黒「・」は語の一部として温存。
+//  - 1〜24 字のキーワード相当のみ返す（長文＝説明文はタップ対象にしない＝誤検知防止）。
+function asChoiceKeyword(raw: string): string | null {
+  const s = raw.replace(/\*\*/g, "").trim();
+  if (!s) return null;
+  const head = s.split(/\s*(?:[―—–]{1,}|：|:|\s-\s)\s*/)[0].trim();
   const label = head || s;
-  return label.length > 24 ? `${label.slice(0, 24)}…` : label;
+  if (label.length < 1 || label.length > 24) return null;
+  return label;
 }
 
-function extractChoices(text: string): string[] {
-  const m = text.match(CHOICES_RE);
-  if (!m) return [];
-  const seen = new Set<string>();
-  const out: string[] = [];
-  // 半角/全角パイプ + 前後スペース、または改行（行区切りの箇条書き）で分割。
-  for (const seg of m[1].split(/\s*[|｜]\s*|\n+/)) {
-    const label = compactChoiceLabel(seg);
-    if (label && !seen.has(label)) {
-      seen.add(label);
-      out.push(label);
-    }
+// 説明付き行を「見出し」と「残り（区切り以降）」に分割する。
+function splitHead(item: string): { head: string; rest: string } {
+  const m = item.match(/^([\s\S]*?)(\s*(?:[―—–]{1,}|：|:|\s-\s)[\s\S]*)$/);
+  if (m) return { head: m[1].trim(), rest: m[2] };
+  return { head: item.trim(), rest: "" };
+}
+
+// 着色された「タップ可能なインライン選択肢」。クリックでユーザー発言として即送信。
+// React のテキストノード/要素のみで描画するため XSS 面は構造的に存在しない。
+// onChoice 無し（= ユーザー発言など）の場合はただのゴールド強調にフォールバック。
+function ChoiceChip({
+  label,
+  onChoice,
+}: {
+  label: string;
+  onChoice?: (text: string) => void;
+}) {
+  if (!onChoice) {
+    return <strong className="font-semibold text-brand-gold">{label}</strong>;
   }
-  // 文字数フィルタは設けない（長くても破棄しない）。暴発防止に上限のみ。
-  return out.slice(0, 6);
-}
-
-function stripChoices(text: string): string {
-  // 生マーカーが画面に絶対残らないよう、全角ゆらぎ込みで全マッチを除去する。
-  return text.replace(CHOICES_RE_GLOBAL, "").trimEnd();
-}
-
-function FormattedText({ text }: { text: string }) {
-  // 簡易 **bold** 対応 + 改行正規化（\n と生 <br> 双方）+ choices マーカー除去
-  const lines = normalizeBreaks(stripChoices(text)).split("\n");
   return (
-    <>
-      {lines.map((line, i) => (
-        <p key={i} className={i === 0 ? "" : "mt-2"}>
-          {renderInline(line)}
-        </p>
-      ))}
-    </>
+    <button
+      type="button"
+      onClick={() => onChoice(label)}
+      className="inline cursor-pointer font-semibold text-brand-gold underline-offset-2 transition-colors hover:underline focus:underline focus:outline-none"
+    >
+      {label}
+    </button>
   );
 }
 
-function renderInline(line: string): React.ReactNode[] {
+// 1 行のインライン描画。**bold** はキーワードなら ChoiceChip（着色タップ可能）、
+// 長文ならただのゴールド強調。プレーン部分はそのまま。
+function renderInline(
+  line: string,
+  onChoice: ((text: string) => void) | undefined,
+  keyBase: string,
+): React.ReactNode[] {
   const out: React.ReactNode[] = [];
   const re = /\*\*([^*]+)\*\*/g;
   let lastIndex = 0;
   let match: RegExpExecArray | null;
   let key = 0;
   while ((match = re.exec(line)) !== null) {
-    if (match.index > lastIndex) {
-      out.push(line.slice(lastIndex, match.index));
-    }
+    if (match.index > lastIndex) out.push(line.slice(lastIndex, match.index));
+    const kw = asChoiceKeyword(match[1]);
     out.push(
-      <strong key={key++} className="font-semibold text-brand-gold">
-        {match[1]}
-      </strong>,
+      kw ? (
+        <ChoiceChip key={`${keyBase}-${key++}`} label={kw} onChoice={onChoice} />
+      ) : (
+        <strong
+          key={`${keyBase}-${key++}`}
+          className="font-semibold text-brand-gold"
+        >
+          {match[1]}
+        </strong>
+      ),
     );
     lastIndex = match.index + match[0].length;
   }
   if (lastIndex < line.length) out.push(line.slice(lastIndex));
   return out;
+}
+
+// AI 本文をタップ可能な選択肢付きでレンダリング（[[choices]] マーカー方式は廃止）。
+//  - 箇条書き行（- / * / ・ / • 始まり）: 見出しキーワードを着色タップ可能に、残りは通常テキスト。
+//  - 非箇条書き行: 本文中の **bold** キーワードを着色タップ可能に。
+// onChoice をクリックでユーザー発言として即送信する（アシスタント本文のみ着火）。
+function FormattedText({
+  text,
+  onChoice,
+}: {
+  text: string;
+  onChoice?: (text: string) => void;
+}) {
+  const lines = normalizeBreaks(text).split("\n");
+  return (
+    <>
+      {lines.map((line, i) => {
+        const bullet = line.match(/^\s*[-*・･•►▶]\s+(.+)$/);
+        if (bullet) {
+          const item = bullet[1];
+          const { head, rest } = splitHead(item);
+          const kw = asChoiceKeyword(head);
+          return (
+            <p key={i} className={`flex gap-1.5 ${i === 0 ? "" : "mt-1.5"}`}>
+              <span aria-hidden className="select-none text-brand-gold/60">
+                •
+              </span>
+              <span>
+                {kw ? (
+                  <>
+                    <ChoiceChip label={kw} onChoice={onChoice} />
+                    {rest ? renderInline(rest, onChoice, `b${i}`) : null}
+                  </>
+                ) : (
+                  renderInline(item, onChoice, `b${i}`)
+                )}
+              </span>
+            </p>
+          );
+        }
+        return (
+          <p key={i} className={i === 0 ? "" : "mt-2"}>
+            {renderInline(line, onChoice, `l${i}`)}
+          </p>
+        );
+      })}
+    </>
+  );
 }
 
 function RecommendationGrid({ works }: { works: Work[] }) {
