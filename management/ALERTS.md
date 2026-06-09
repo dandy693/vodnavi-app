@@ -532,3 +532,24 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - **[根因ほぼ確定 2026-06-10]** local `.env.local` の DMM creds で同一デフォルトクエリ（FANZA/digital/videoa/date/30/offset1）を DMM API へ直叩き → **HTTP 200 / result_count 30 で成功**（秘密値は非表示、length のみ確認 apiId=20/aff=12）。∴ **param 構築も local cred 値も健全**。本番のみ 400 のため、**本番 Vercel の `DMM_API_ID`/`DMM_AFFILIATE_ID` の値が無効/不一致**が高確度の真因。**fix = 本番 env を local の既知正値へ更新 + redeploy**（HUMAN、secret 書込みは classifier deny）。診断パッチがあれば次デプロイ後 Vercel Logs に DMM 公式メッセージも出る。
 
 **[resolved 2026-06-10]** — HUMAN が本番 Vercel の DMM cred 値を修正 + redeploy。curl 物理確認: `https://app.vodnavi.jp/` の「status: 400 / 作品を取得できませんでした」消失、`/sitemap.xml` の `/works/` URL が **0 → 1,600 件**に復活。本番 FANZA ItemList 全面復旧を確認しクローズ。**注**: 本クローズは**本番 400 のみ**。Preview env（2026-06-09 11:40 エントリ / T-20260609-01）は `DMM_AFFILIATE_ID` の Preview 未追加で**未解決のまま維持**（global flip は不採用、当該エントリは `open`）。
+
+---
+
+### 2026-06-10 JST — [high] 本番＋Preview の AI コンシェルジュが "invalid x-api-key" で窒息（ANTHROPIC_API_KEY 失効）
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | high |
+| target | `app.vodnavi.jp` **本番** ＋ Preview の AI チャット（`/api/concierge` POST、`anthropic(MODEL)` 経由の LLM 呼出） |
+| symptom | コンシェルジュの初期挨拶は正常描画されるが、ユーザーがメッセージ送信した瞬間に赤字「invalid x-api-key」で窒息（`image_348b26.png`、Preview で観測）。**本番も同症**: `curl -X POST https://app.vodnavi.jp/api/concierge`（age cookie 付）が `data: {"type":"error","errorText":"invalid x-api-key"}` を返却（HTTP 200 ストリーム内エラー）。FANZA/DMM 側は 200 で健全＝本障害は LLM 認証層に限局。 |
+| suspected_cause | `route.ts:101` の `if(!process.env.ANTHROPIC_API_KEY)` ガードは通過＝キーは**存在するが値が無効**。`vercel env ls`: `ANTHROPIC_API_KEY` は Development(29d) + **Production,Preview(29d 共有)**。Prod+Preview 共有値（created ~29日前）が無効。**2026-06-01 のキー漏洩インシデント（ANTHROPIC/OPENAI を revoke 推奨）で旧キーが revoke された後、Vercel 値が更新されず失効キーのまま**が最有力。local `.env.local` には ANTHROPIC_API_KEY 不在で CTO 側に正値ソースなし。 |
+| recommended_action | **[HUMAN]** (1) Anthropic console で有効な API キーを取得（2026-06-01 ローテ後の現行キー、無ければ新規発行）。(2) Vercel `vodnavi-app` の `ANTHROPIC_API_KEY` 値を Production（＋共有の Preview）/ Development とも正値に更新。(3) 本番＋Preview を redeploy。(4) 復旧 verify: `curl -X POST .../api/concierge` が `invalid x-api-key` を返さず AI 応答ストリームになることを確認（CTO が read-only で可能）。**注**: auto-CTO は secret 書込み不可（[[reference_vercel_env_secret_write_blocked]]）＝キー更新は HUMAN。 |
+| backup_path | — |
+| anomaly_log | 本番 `/api/concierge` ストリーム: `data: {"type":"error","errorText":"invalid x-api-key"}` |
+| github_issue | — |
+
+**メモ**：
+- T-20260610-01 として追跡。**Preview 限定ではなく本番も停止**（共有キー値）= コンバージョン中核の AI チャットが全ユーザーで死亡、収益直撃の high。
+- 副次（UX）: 失効時に route の onError friendly fallback（「通信中にエラー…」）ではなく **raw "invalid x-api-key" がユーザー赤字に漏出**している。キー復旧後、provider 認証エラーを friendly 文面へ握り潰す error-handling 改善が任意で可能（BRIEF_057 の素通し禁止思想）。本障害の主 fix はキー値更新。
+- 2026-06-01 漏洩 ALERTS（OPENAI/ANTHROPIC/Make revoke 推奨）との関連を要確認。OPENAI_API_KEY は Production のみ（Preview/Dev 無し）でレビュー生成用、本障害の直接要因ではない。
