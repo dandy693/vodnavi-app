@@ -1,5 +1,6 @@
 import type {
   DmmArticle,
+  DmmErrorResponse,
   DmmItem,
   DmmItemListResponse,
   DmmSite,
@@ -77,6 +78,28 @@ function logFanzaSilentDeath(
   );
 }
 
+/**
+ * DMM エラーレスポンスから **安全な説明文のみ** を抽出する。
+ * `request.parameters`（api_id / affiliate_id を含む）は決して読まない＝秘密値を
+ * ログ/エラーに露出させない。DMM の result.message / errors[].message のみを採り、
+ * 300 文字で打ち切る。これで 400 の真因（不正な api_id / 不正パラメータ等）を
+ * Vercel Logs から診断可能にする（T-20260609-07）。
+ */
+function extractDmmErrorDetail(body: unknown): string {
+  try {
+    const r = (body as DmmErrorResponse | undefined)?.result;
+    if (!r) return "";
+    const parts: string[] = [];
+    if (r.message) parts.push(r.message);
+    if (Array.isArray(r.errors)) {
+      for (const e of r.errors) if (e?.message) parts.push(e.message);
+    }
+    return parts.join(" / ").slice(0, 300);
+  } catch {
+    return "";
+  }
+}
+
 function getCredentials(): { apiId: string; affiliateId: string } {
   const apiId = process.env.DMM_API_ID;
   const affiliateId = process.env.DMM_AFFILIATE_ID;
@@ -114,8 +137,15 @@ export async function fetchItemList(
   });
 
   if (!res.ok) {
+    // DMM のエラー本文から安全な説明のみ抽出（秘密値は読まない）。body 読取失敗時も status は保持。
+    let detail = "";
+    try {
+      detail = extractDmmErrorDetail(await res.json());
+    } catch {
+      /* 生 body は echo しない（request.parameters の api_id 漏洩防止） */
+    }
     const err = new FanzaApiError(
-      `FANZA API request failed: ${res.status} ${res.statusText}`,
+      `FANZA API request failed: ${res.status} ${res.statusText}${detail ? ` — ${detail}` : ""}`,
       res.status,
     );
     logFanzaSilentDeath("fetchItemList: HTTP エラー", err);
@@ -125,8 +155,9 @@ export async function fetchItemList(
   const data = (await res.json()) as DmmItemListResponse;
 
   if (data.result?.status && data.result.status >= 400) {
+    const detail = extractDmmErrorDetail(data);
     const err = new FanzaApiError(
-      `FANZA API returned error status ${data.result.status}`,
+      `FANZA API returned error status ${data.result.status}${detail ? ` — ${detail}` : ""}`,
       data.result.status,
     );
     logFanzaSilentDeath("fetchItemList: result.status >= 400", err);

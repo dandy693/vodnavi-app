@@ -504,3 +504,24 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 **メモ**：
 - BRIEF_037 ハイブリッド防衛ライン堅持。moterist.com 完全凍結・5記事 SEO 永久保護・本番成約動線はいずれも本件と無関係で健全。
 - **`resolved` にはしない**：remediation（Preview env バインド）は未実施で、対応タスク T-20260609-01 も `[ ]`。実行→Preview verify 完了まで `open` を維持（[[feedback_verify_before_resolving_alerts]]）。
+
+---
+
+### 2026-06-10 JST — [high] 本番 app.vodnavi.jp 全 FANZA ItemList が 400、トップ作品グリッド窒息
+
+| 項目 | 値 |
+|---|---|
+| status | open |
+| severity | high |
+| target | 本番 `app.vodnavi.jp` の FANZA `ItemList` 依存 surface（`/` トップグリッド、`/sitemap.xml`、`/works/*`、`/genres/*`） |
+| symptom | トップページ作品グリッドが `EmptyState` で「作品を取得できませんでした / FANZA API でエラーが発生しました (status: 400)」をユーザー画面に描画（`image_357ba5.jpg`）。**API-wide**: curl 物理確認で `/` が status 400、`/sitemap.xml` の `/works/` URL が **0 件**（正常時 ~1,809）。`/concierge`（非 FANZA）は 200 で健全。 |
+| suspected_cause | デフォルトクエリのパラメータ（`site=FANZA, service=digital, floor=videoa, sort=date, hits=30, offset=1`）は **DMM v3 仕様上すべて妥当**＝パラメータ構築バグではない。API-wide 400 ＋ 値は存在（未設定なら `FanzaConfigError`）から、**最有力は本番 `DMM_API_ID`/`DMM_AFFILIATE_ID` の値が無効（失効/タイポ/アカウント無効化）**、または DMM 側の拒否。`client.ts` が DMM エラー本文を破棄し status のみ保持していたため真因が不可視だった。 |
+| recommended_action | (1) **[CTO 実施済]** `client.ts` の両 throw 経路で DMM エラー本文（`result.message`/`errors`、`request.parameters` は読まず秘密非露出）を抽出し `FanzaApiError` + `VODNAVI_SILENT_DEATH_GUARD` ログへ載せる診断パッチを landed（tsc 0 / next build 0）。→ 次デプロイ後 Vercel Logs で 400 の DMM 公式メッセージを確認。(2) **[HUMAN]** DMM アフィリエイト管理画面で当該 `api_id` の有効性/利用制限を確認、失効ならローテーション。Vercel 本番 env を正値に更新し redeploy。(3) 復旧後 curl で `/` グリッド + `/sitemap.xml` の works URL 復活を verify。 |
+| backup_path | 診断パッチは additive（`git revert` で除去可） |
+| anomaly_log | Vercel Logs: `{"tag":"VODNAVI_SILENT_DEATH_GUARD","status":400,...}`（診断パッチ deploy 後に出力） |
+| github_issue | — |
+
+**メモ**：
+- T-20260609-07 として独立追跡。**T-20260609-01（Preview env）とは別問題**（あちらは Preview の env 未設定、こちらは本番の 400=値無効/API拒否）。-01 のエントリは破壊せず維持。
+- 診断パッチはあくまで**真因可視化**であり 400 そのものの fix ではない。api_id 値が無効なら fix は HUMAN の DMM/Vercel 操作（[[reference_vercel_env_secret_write_blocked]] により auto-CTO の secret 書込みは classifier deny）。
+- 本番 curl scope 監査は read-only。
