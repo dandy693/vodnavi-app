@@ -243,7 +243,8 @@ export function ConciergeChat({
                 type="button"
                 onClick={() => submit(q)}
                 disabled={isBusy}
-                className="rounded-full border border-brand-gold/30 bg-brand-gold/10 px-3.5 py-1.5 text-xs text-brand-text-primary transition-colors hover:border-brand-gold/60 hover:bg-brand-gold/20 active:translate-y-px disabled:opacity-50"
+                title={q}
+                className="max-w-[15rem] truncate rounded-full border border-brand-gold/30 bg-brand-gold/10 px-3.5 py-1.5 text-xs text-brand-text-primary transition-colors hover:border-brand-gold/60 hover:bg-brand-gold/20 active:translate-y-px disabled:opacity-50"
               >
                 {q}
               </button>
@@ -402,20 +403,37 @@ function normalizeBreaks(text: string): string {
 const CHOICES_RE = /[\[［]{2}\s*choices\s*[:：]\s*([\s\S]+?)\s*[\]］]{2}/i;
 const CHOICES_RE_GLOBAL = /[\[［]{2}\s*choices\s*[:：]\s*[\s\S]+?\s*[\]］]{2}/gi;
 
+// 説明付きラベル（"お姉さん系 ―― 落ち着いた包容力…"）から、ボタン用に
+// 押しやすい「見出し部」だけをコンパクト抽出する。
+//  - 行頭の箇条書き/装飾記号を除去
+//  - ダッシュ系（――/—/–）・全角/半角コロン・「スペース-スペース」の手前を採用
+//    （複合語 U-NEXT を壊さぬよう、単独の半角ハイフンは区切りに含めない）
+//  - 中黒「・」は語の一部として温存（区切りにしない）
+//  - 極端な長文のみ末尾を … で省略（**破棄はしない**＝サイレント消滅させない）
+function compactChoiceLabel(segment: string): string {
+  let s = segment.trim();
+  if (!s) return "";
+  s = s.replace(/^[\s・･\-—–―*►▶•]+/, "").trim();
+  const head = s.split(/\s*(?:[―—–]{2,}|[―—–]|：|:|\s-\s)\s*/)[0].trim();
+  const label = head || s;
+  return label.length > 24 ? `${label.slice(0, 24)}…` : label;
+}
+
 function extractChoices(text: string): string[] {
   const m = text.match(CHOICES_RE);
   if (!m) return [];
   const seen = new Set<string>();
   const out: string[] = [];
-  // 半角/全角パイプ + 前後の任意スペースで分割（trim が全角空白も除去）。
-  for (const raw of m[1].split(/\s*[|｜]\s*/)) {
-    const label = raw.trim();
+  // 半角/全角パイプ + 前後スペース、または改行（行区切りの箇条書き）で分割。
+  for (const seg of m[1].split(/\s*[|｜]\s*|\n+/)) {
+    const label = compactChoiceLabel(seg);
     if (label && !seen.has(label)) {
       seen.add(label);
       out.push(label);
     }
   }
-  return out.slice(0, 4);
+  // 文字数フィルタは設けない（長くても破棄しない）。暴発防止に上限のみ。
+  return out.slice(0, 6);
 }
 
 function stripChoices(text: string): string {
