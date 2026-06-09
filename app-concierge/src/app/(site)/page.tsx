@@ -4,6 +4,7 @@ import { Suspense } from "react";
 
 import { ConfigErrorPanel } from "@/components/config-error";
 import { EmptyState } from "@/components/empty-state";
+import { ErrorTelemetry } from "@/components/error-telemetry";
 import { FilterBar } from "@/components/filter-bar";
 import { HeroSection, type HeroCopy } from "@/components/hero-section";
 import { ProductGrid } from "@/components/product-grid";
@@ -250,12 +251,18 @@ async function ResultsSection({
         </div>
 
         {configError ? (
-          <ConfigErrorPanel message={configError} />
+          <>
+            <ErrorTelemetry kind="config" detail={configError} />
+            <ConfigErrorPanel message={configError} />
+          </>
         ) : apiError ? (
-          <EmptyState
-            title="作品を取得できませんでした"
-            description={apiError}
-          />
+          <>
+            <ErrorTelemetry kind="api" detail={apiError} />
+            <EmptyState
+              title="作品を取得できませんでした"
+              description={apiError}
+            />
+          </>
         ) : items.length === 0 ? (
           <EmptyState />
         ) : (
