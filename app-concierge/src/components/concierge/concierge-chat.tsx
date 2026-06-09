@@ -175,6 +175,14 @@ export function ConciergeChat({
 
   const showSuggestions = messages.length === 1 && !isBusy;
 
+  // クイックリプライ: 最新メッセージがアシスタントで [[choices: ...]] を含み、
+  // 応答完了（!isBusy）の時だけ、入力欄の上にタップ選択肢を出す。
+  const lastMessage = messages[messages.length - 1];
+  const quickReplies =
+    !isBusy && lastMessage?.role === "assistant"
+      ? extractChoices(extractText(lastMessage))
+      : [];
+
   return (
     <div className="relative flex h-full flex-col bg-brand-dark font-luxury-body">
       <div
@@ -227,6 +235,21 @@ export function ConciergeChat({
         }}
         className="relative border-t border-brand-gold/10 bg-brand-dark/85 px-4 py-3 backdrop-blur-xl sm:px-6"
       >
+        {quickReplies.length > 0 && (
+          <div className="mx-auto mb-2.5 flex max-w-3xl flex-wrap gap-2">
+            {quickReplies.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => submit(q)}
+                disabled={isBusy}
+                className="rounded-full border border-brand-gold/30 bg-brand-gold/10 px-3.5 py-1.5 text-xs text-brand-text-primary transition-colors hover:border-brand-gold/60 hover:bg-brand-gold/20 active:translate-y-px disabled:opacity-50"
+              >
+                {q}
+              </button>
+            ))}
+          </div>
+        )}
         <div className="mx-auto flex max-w-3xl items-end gap-2">
           <textarea
             ref={textareaRef}
@@ -366,9 +389,37 @@ function MessageBubble({ msg }: { msg: UIMessage }) {
   );
 }
 
+// LLM 出力に稀に混入する生 HTML 改行タグ（<br> / <br/> / <br />）を実改行へ正規化。
+// dangerouslySetInnerHTML は使わず \n に寄せて <p> 分割でレンダリングする（XSS 面なし）。
+function normalizeBreaks(text: string): string {
+  return text.replace(/<br\s*\/?>/gi, "\n");
+}
+
+// クイックリプライ用マーカー [[choices: A | B]] の検出/抽出/除去。
+const CHOICES_RE = /\[\[\s*choices:\s*([^\]]+?)\s*\]\]/i;
+
+function extractChoices(text: string): string[] {
+  const m = text.match(CHOICES_RE);
+  if (!m) return [];
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const raw of m[1].split("|")) {
+    const label = raw.trim();
+    if (label && !seen.has(label)) {
+      seen.add(label);
+      out.push(label);
+    }
+  }
+  return out.slice(0, 4);
+}
+
+function stripChoices(text: string): string {
+  return text.replace(CHOICES_RE, "").trimEnd();
+}
+
 function FormattedText({ text }: { text: string }) {
-  // 簡易 **bold** 対応 + 改行を <br/> 化
-  const lines = text.split("\n");
+  // 簡易 **bold** 対応 + 改行正規化（\n と生 <br> 双方）+ choices マーカー除去
+  const lines = normalizeBreaks(stripChoices(text)).split("\n");
   return (
     <>
       {lines.map((line, i) => (
