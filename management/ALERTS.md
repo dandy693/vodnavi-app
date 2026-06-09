@@ -491,7 +491,8 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 
 | 項目 | 値 |
 |---|---|
-| status | open |
+| status | resolved |
+| resolved_at | 2026-06-10 |
 | severity | low（開発環境のみ・本番影響なし） |
 | target | Vercel Preview Host（`*.vercel.app`） — 本番 `app.vodnavi.jp` は影響外 |
 | symptom | Preview 環境へのアクセス時に「FANZA API の認証情報が未設定です」というシステム警告（`image_6dd163.png`）が表示される。本番（app.vodnavi.jp）は正常描画・成約動線健全。 |
@@ -504,6 +505,8 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 **メモ**：
 - BRIEF_037 ハイブリッド防衛ライン堅持。moterist.com 完全凍結・5記事 SEO 永久保護・本番成約動線はいずれも本件と無関係で健全。
 - **`resolved` にはしない**：remediation（Preview env バインド）は未実施で、対応タスク T-20260609-01 も `[ ]`。実行→Preview verify 完了まで `open` を維持（[[feedback_verify_before_resolving_alerts]]）。
+
+**[resolved 2026-06-10]** — `vercel env ls` で `DMM_API_ID`/`DMM_AFFILIATE_ID` の **両方が Preview スコープにバインド済**を物理確定（前ターンは AFFILIATE_ID のみ未バインドだったが HUMAN が追加）。cred 値妥当性は local 直叩き 200/30件で実証、Preview redeploy も複数存在。根因（Preview 未バインド）解消につきクローズ。**注**: Preview deploy は Vercel SSO（401）で CTO の curl 目視は不可 — env ls + 値実証 + redeploy 存在の全 CLI 証跡が解決を示す（最終目視は HUMAN のログイン済ブラウザで一瞥可能）。
 
 ---
 
