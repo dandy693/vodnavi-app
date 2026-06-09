@@ -97,6 +97,26 @@ const SYSTEM_PROMPT = `あなたは VODNAVI の AI コンシェルジュです�
 - 法的・医学的助言は行わない。聞かれた場合は柔らかく専門家に委ねる旨を伝える。
 - 検索結果が乏しいときは、無理に作品を勧めず、別の切り口を一つだけ提案する。`;
 
+/**
+ * provider / stream 由来のエラーを **必ずユーザー向けの安全な文面** にマッピングする。
+ * raw な provider メッセージ（例: "invalid x-api-key" / rate limit 等）を UI に漏らさない。
+ * `createUIMessageStream` と `result.toUIMessageStream` の **両方** に渡すことで、
+ * 内側 streamText 由来の認証エラーも握り潰す（2026-06-10 "invalid x-api-key" 漏出の再発防止）。
+ */
+function conciergeErrorText(error: unknown): string {
+  console.error("[concierge] stream error:", error);
+  // 安全フィルター起因の拒否（safety rating / content_filter / blocked 等）は、
+  // プロンプトを置換しても通らないことがある。クラッシュではなくテキストのみの
+  // 柔らかいフォールバック文面を返す。
+  if (isSafetyBlock(error)) {
+    console.warn(
+      "[concierge] safety block detected; degrading to text-only fallback",
+    );
+    return "今夜のお気持ちが上手く伝わらなかったようです。違う言い回しで、もう一度お聞かせいただけますか。";
+  }
+  return "コンシェルジュとの通信中にエラーが発生しました。時間を置いてもう一度お試しください。";
+}
+
 export async function POST(req: Request) {
   if (!process.env.ANTHROPIC_API_KEY) {
     return NextResponse.json(
@@ -170,17 +190,8 @@ export async function POST(req: Request) {
   const modelMessages = await convertToModelMessages(sanitizedMessages);
 
   const stream = createUIMessageStream({
-    onError: (error) => {
-      console.error("[concierge] stream error:", error);
-      // 安全フィルター起因の拒否（safety rating / content_filter / blocked 等）は、
-      // プロンプトを置換しても通らないことがある。クラッシュではなくテキストのみ
-      // の柔らかいフォールバック文面を返す。
-      if (isSafetyBlock(error)) {
-        console.warn("[concierge] safety block detected; degrading to text-only fallback");
-        return "今夜のお気持ちが上手く伝わらなかったようです。違う言い回しで、もう一度お聞かせいただけますか。";
-      }
-      return "コンシェルジュとの通信中にエラーが発生しました。時間を置いてもう一度お試しください。";
-    },
+    // provider/stream エラーは必ず友好的文面へ握り潰す（raw メッセージを UI に漏らさない）
+    onError: conciergeErrorText,
     execute: ({ writer }) => {
       // 流入元 addendum は cache_control の外側（末尾）に置き、メインプロンプトの
       // キャッシュヒットを温存する。default プロファイルは addendum が空文字なので追加しない。
@@ -246,6 +257,9 @@ export async function POST(req: Request) {
         result.toUIMessageStream({
           sendStart: false,
           sendFinish: false,
+          // 内側 streamText 由来のエラー（provider 認証エラー等）も友好的文面へ。
+          // これが無いと "invalid x-api-key" 等の raw メッセージが UI に漏出する（2026-06-10 再発防止）。
+          onError: conciergeErrorText,
         }),
       );
     },
