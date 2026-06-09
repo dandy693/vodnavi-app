@@ -525,3 +525,4 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - T-20260609-07 として独立追跡。**T-20260609-01（Preview env）とは別問題**（あちらは Preview の env 未設定、こちらは本番の 400=値無効/API拒否）。-01 のエントリは破壊せず維持。
 - 診断パッチはあくまで**真因可視化**であり 400 そのものの fix ではない。api_id 値が無効なら fix は HUMAN の DMM/Vercel 操作（[[reference_vercel_env_secret_write_blocked]] により auto-CTO の secret 書込みは classifier deny）。
 - 本番 curl scope 監査は read-only。
+- **[根因ほぼ確定 2026-06-10]** local `.env.local` の DMM creds で同一デフォルトクエリ（FANZA/digital/videoa/date/30/offset1）を DMM API へ直叩き → **HTTP 200 / result_count 30 で成功**（秘密値は非表示、length のみ確認 apiId=20/aff=12）。∴ **param 構築も local cred 値も健全**。本番のみ 400 のため、**本番 Vercel の `DMM_API_ID`/`DMM_AFFILIATE_ID` の値が無効/不一致**が高確度の真因。**fix = 本番 env を local の既知正値へ更新 + redeploy**（HUMAN、secret 書込みは classifier deny）。診断パッチがあれば次デプロイ後 Vercel Logs に DMM 公式メッセージも出る。
