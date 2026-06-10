@@ -115,24 +115,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
-  // pagination の SEO 母集団は重要 floor のみ × 浅い深度に絞る。
-  // 旧実装は 全 floor × page=2..10 (~80 件) を吐き、Google のクロール対象を
-  // 不必要に膨張させて Vercel CPU を浪費していた (1 ページ取得ごとに 30 件分の
-  // FANZA HEAD 検証が走る)。実際にトラフィックがある floor のみに絞り、深度も 3 まで。
-  // sitemap URL は XML エンコード不要 (Next.js が serialize する) — 旧 `&amp;` は二重
-  // エンコードで Google から fetch エラー判定を招いていた。
-  const PAGINATION_FLOORS = new Set(["videoa", "vr"]);
-  const PAGINATION_DEPTH = 3;
-  const pagination: MetadataRoute.Sitemap = FANZA_FLOORS.filter((f) =>
-    PAGINATION_FLOORS.has(f.code),
-  ).flatMap((floor) =>
-    Array.from({ length: PAGINATION_DEPTH - 1 }, (_, i) => ({
-      url: absoluteUrl(`/?floor=${floor.code}&page=${i + 2}`),
-      lastModified: now,
-      changeFrequency: "daily" as const,
-      priority: 0.5,
-    })),
-  );
+  // pagination URL (`/?floor=videoa&page=2` 等) は <loc> に **生の `&`** を出力して XML の
+  // 整形式を壊す。この Next.js の sitemap serializer は `&` を `&amp;` へ自動エスケープしない
+  // ため (旧コメントの「serialize されるのでエンコード不要」は事実誤認)、GSC で 52 行目
+  // 「解析エラー / 認識できないエントリ」を誘発し、後続の works/genres 約1,800 URL を巻き込んで
+  // 「検出 0 ページ」化していた (2026-06-10 診断 / project_app_sitemap_parse_error)。
+  // SEO 価値の低い優先度0.5 の周辺 URL のため、整形式回復を最優先に pagination 出力を廃止する。
+  // (floor ランディング `/?floor=videoa` は単一パラメータで `&` を含まないため維持)
 
-  return [...root, ...floors, ...pagination, ...works, ...genres];
+  return [...root, ...floors, ...works, ...genres];
 }
