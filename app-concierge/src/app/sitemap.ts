@@ -9,6 +9,7 @@ export const revalidate = 3600;
 const HITS_PER_REQUEST = 100;
 const PAGES_PER_FLOOR = 4;
 const MAX_GENRES = 200;
+const MAX_ACTRESSES = 200;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -50,6 +51,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const seenWorks = new Set<string>();
   const works: MetadataRoute.Sitemap = [];
   const genreMap = new Map<number, Date>();
+  const actressMap = new Map<number, Date>();
 
   for (const floor of FANZA_FLOORS) {
     // FANZA Webservice 側に投げる floor は `apiFloor` 優先（`amateur` のように
@@ -97,6 +99,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             const prev = genreMap.get(genre.id);
             if (!prev || itemDate > prev) genreMap.set(genre.id, itemDate);
           }
+
+          // 女優ハブ (柱①)。works を走査した同じフロア群から actress を集約するため、
+          // /actresses/{id} は actresses/[id] ページの floor-walk で必ず items>0 で着地し、
+          // genre で起きた sitemap↔route のフロア不整合 (BRIEF_060) は発生しない。
+          for (const actress of item.iteminfo?.actress ?? []) {
+            const prev = actressMap.get(actress.id);
+            if (!prev || itemDate > prev) actressMap.set(actress.id, itemDate);
+          }
         }
 
         if (items.length < HITS_PER_REQUEST) break;
@@ -115,6 +125,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
+  const actresses: MetadataRoute.Sitemap = Array.from(actressMap.entries())
+    .slice(0, MAX_ACTRESSES)
+    .map(([id, lastModified]) => ({
+      url: absoluteUrl(`/actresses/${id}`),
+      lastModified,
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }));
+
   // pagination URL (`/?floor=videoa&page=2` 等) は <loc> に **生の `&`** を出力して XML の
   // 整形式を壊す。この Next.js の sitemap serializer は `&` を `&amp;` へ自動エスケープしない
   // ため (旧コメントの「serialize されるのでエンコード不要」は事実誤認)、GSC で 52 行目
@@ -123,5 +142,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // SEO 価値の低い優先度0.5 の周辺 URL のため、整形式回復を最優先に pagination 出力を廃止する。
   // (floor ランディング `/?floor=videoa` は単一パラメータで `&` を含まないため維持)
 
-  return [...root, ...floors, ...works, ...genres];
+  return [...root, ...floors, ...works, ...genres, ...actresses];
 }
