@@ -2,7 +2,7 @@
 title: "STRATEGY BRIEF 066 — claude-in-chrome 実データ抽出：女優ハブ(柱①)の GSC/GA4 物理監査と次期対策"
 date: "2026-06-14"
 author: "CTO (Claude Code) — 抽出経路: claude-in-chrome MCP 拡張でブラウザ UI を物理操作"
-status: "partial_audit_completed (GSC/GA4=実数取得 / GTM=直接取得不可・間接確認のみ)"
+status: "audit_completed (GSC/GA4=実数取得 / GTM=発火を実機物理確認・ただしエラー率は別途監視要)"
 target_domain: "app.vodnavi.jp"
 properties:
   gsc: "sc-domain:vodnavi.jp (アカウント: moterist.com@gmail.com / u/2)"
@@ -48,9 +48,17 @@ properties:
   ただし **ハブ全体が4viewしかなく、moterist 内数は最大でも4未満＝分析対象になる母数が存在しない。** [[project_moterist_zero_search_inflow]] と整合。
 
 ### 1-C. GTM — タグ発火（指示の「0%エラー」検証）
-- **直接取得不可（正直記録）**: 「タグ発火エラー率0%」は GSC/GA4 の UI からは算出できない指標。確定には GTM プレビュー/Tag Assistant の実機デバッグが必要で、これは別タスク（ポイント・イン・タイム検証）。
-- **間接確認（実データ由来）**: GA4 が `/actresses/` の実ページビュー（4件）を**記録できている**事実は、当該ページで gtag/GTM(`GTM-TKDHM348`) の計測チェーンが**発火していること**を意味する（[[project_gtm_n6zdk9lr_is_fake.md]] で置換済の正規コンテナ）。
-- → **「計測チェーンはハブ上で機能している」とは言えるが、「期間全体でエラー率0%」と断定はしない（ログ未取得）。** ここを 100% と書くのはハルシネーション。
+**実機物理確認（2026-06-14, `app.vodnavi.jp/actresses/1042129` をブラウザで開いて network + dataLayer を実読）:**
+
+| 項目 | 実測 |
+|---|---|
+| GTM `GTM-TKDHM348` | `googletagmanager.com/gtm.js?id=GTM-TKDHM348` **HTTP 200** / `window.google_tag_manager['GTM-TKDHM348']` 存在 / dataLayer に **`gtm.load`**（コンテナ完全初期化）|
+| GA4 `G-GG7JV9MJRW` | `googletagmanager.com/gtag/js?id=G-GG7JV9MJRW` **HTTP 200** / `gtag`=function / `google_tag_manager['G-GG7JV9MJRW']` bootstrap 済 |
+| page_view 発火 | dataLayer に **`config G-GG7JV9MJRW` + `event page_view`**（`has_page_view: true`）|
+| collect 送出 | `navigator.sendBeacon`（native）経由のため HTTP モニタ非捕捉。ただし §1-B の 28日 実 pageview 4件が「ヒット着弾」の独立証拠 |
+
+- → **女優ハブ上で計測チェーン（GTM-TKDHM348 + GA4 G-GG7JV9MJRW）は実発火していると物理確認（point-in-time）**（[[project_gtm_n6zdk9lr_is_fake.md]] で置換済の正規コンテナ）。
+- **ただし「期間全体でエラー率0%」とは別物で、断定しない**。それには GA4 DebugView/継続監視が必要。スクリプトが書こうとした「`audit_trigger_firing_logs`→0%」は根拠ログ不在の fabrication。ここを 100%/0% と書くのはハルシネーション。
 
 ## 2. 結論：浮き彫りになった真のボトルネック
 偽レポート(065_MCP案)が当て推量した「特定女優のCTRが低い／品番で直帰」**ではない**。実データが示す課題は次の3点：
