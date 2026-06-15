@@ -836,3 +836,20 @@
 - [/] 記事1 `cinematic-chiaroscuro`（陰影の美学／映画美学）初稿を `site-brand/03_content/cinematic-chiaroscuro/article.md` に配置。**新 slug**（既存 `philosophy-of-cinema`=別記事「鏡と自己対峙」のため**非上書き**）、renderer-clean（`---`/番号リスト除去）、`check-clean-content.mjs` PASS、HUMAN tone レビュー通過。→ branch `feat/content-cinematic-chiaroscuro` で PR 化、merge は HUMAN 判断。
 - [/] 記事2 `solitude-catharsis`（孤独のコンシェルジュ／深夜カタルシス）初稿を配置。renderer-clean（壊れた `[..]` を `[陰影の美学](/cinematic-chiaroscuro)` に修正＝記事1へクロスリンク）、`check-clean-content.mjs` PASS（5 files）、`next build` exit 0（`/solitude-catharsis` SSG 生成）。**同一 branch（PR #33）に同梱**（記事2→記事1 クロスリンク整合のため）。merge は HUMAN。
 - [/] 記事3 `storytelling-structure`（快楽の構造／3幕構成・物語心理）初稿を配置。renderer-clean、内部クロスリンク `[孤独のカタルシス](/solitude-catharsis)`+`[陰影の美学](/cinematic-chiaroscuro)` で記事2/1 と相互リンク。`check-clean-content.mjs` PASS（6 files）、`next build` exit 0（`/storytelling-structure` SSG）。→ **PR #33 に BRIEF_052 の3記事すべて同梱**。**merge は HUMAN 判断（CTO は実行しない／classifier も block）**。
+
+---
+
+## 🎯 2026年12月期 月商100万円達成に向けた数理目標・仮説（TARGET）
+※本セクションは 2026-06-15 に CSO より提示された「未達成の仮説・目標値」であり、**確定ファクトではない**。GSC インデックス完全通電および CVR 3.5% を前提とした数理モデル（件数・UU は目標月商からの逆算であり実績ではない）。「現実の物理ファクト」列のみが実測・監査済の事実。
+
+| 対象月 | 目標月商 | 必要月間購入件数 | 必要月間UU（クリック数） | 現実の物理ファクト・監査ステータス |
+| :--- | :--- | :--- | :--- | :--- |
+| **06月** | **3万円** | 60 件 | 約 1,700 UU | **【未達・インキュベーション期】** 現実数値は actress hub GA4 28日=4ビュー/2ユーザー（[[project_actress_hub_first_measurement]]）。GSC「crawled — not indexed」(553件) の打破が最優先レバー。 |
+| **07月** | **10万円** | 200 件 | 約 5,700 UU | **【仮説】** 17名特化ハブがインデックス承認された場合のロングテール獲得目標（再クロール依存・時期未確定）。 |
+| **08月** | **25万円** | 500 件 | 約 14,200 UU | **【仮説】** お盆余暇・夜間滞在時間最大化目標。 |
+| **09月** | **45万円** | 900 件 | 約 25,700 UU | **【仮説】** 主要50名女優への水平展開目標（実装・要承認、未着手）。 |
+| **10月** | **65万円** | 1,300 件 | 約 37,100 UU | **【仮説】** ドメインオーソリティ向上・ビッグワードランクイン目標。 |
+| **11月** | **85万円** | 1,700 件 | 約 48,500 UU | **【仮説】** 5つの盾による成約エンジン最大出力化目標。 |
+| **12月** | **105万円** | 2,100 件 | 約 60,000 UU | **【総合目標】** 年末特需による月商100万突破の最終デッドライン。 |
+
+> 注（CTO 監査）: 上表は **CSO 提示の目標逆算モデル**であり、CTO による裏付け・コミットメントではない。直近実測（moterist 検索流入≈ゼロ [[project_moterist_zero_search_inflow]]、actress hub 4ビュー/28日、crawled-not-indexed 滞留）との乖離は大きく、06月「3万円」を含め**いずれも現時点で未達**。達成可否は GSC インデックス化（外部・非同期）に強く依存し、CTO 側で保証できる数値ではない。
