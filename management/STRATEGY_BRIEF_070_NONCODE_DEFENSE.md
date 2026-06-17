@@ -19,10 +19,10 @@ task_id: "T-20260617-NONCODE"
 - **実測**: 主CTAリンク先 =
   `https://al.dmm.co.jp/?lurl=...cid%3Dvrkm01871...&af_id=moterist-990&ch=link_tool&ch_id=link`
 - **判定**:
-  - スペル**正常**（`moterist-990` はIDレジストリ実在値、タイポなし）。
-  - ただし作品詳細ページのCTAは **`moterist-990`**（DMM API 返却 `affiliateURL` 由来＝商品情報API用ID）であり、env `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004`（app.vodnavi.jp 成約ID）とは**一致しない**。
-  - これは設計どおり：作品詳細ページは API 返却 `affiliateURL`（990 埋込）をそのまま描画し、`url-builder.ts`（env→004 を解決）はコンシェルジュ/早期クッキー着火の別サーフェスで使われる。990 の API 返却URL埋込は過去監査で「正常」と記録済（IDレジストリ参照）。
-  - **CTO所見（HUMAN/CSO 判断要）**: 「env通り 004 が適用されているか」という設問への回答は **No（作品ページは 990）**。これは仕様だが、成約計測を 004 バケットに寄せたい場合は API 返却URLのラップ方針を別途検討する論点。本タスクでは事実記録に留め、コード変更はフリーズ遵守で行わない。
+  - スペル**正常**（`moterist-990` はIDレジストリ実在値、タイポなし）。作品詳細ページのCTAは DMM API 返却 `affiliateURL`（990 埋込）をそのまま描画＝DMM モデルどおりで誤りではない。
+  - env `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004`（app.vodnavi.jp 成約ID）とは**一致しない**が、これは**想定どおり**：memory `reference_dmm_affiliate_id_registry`（2026-06-10）に「env 004 は Vercel **Dev スコープのみ**＝本番では未適用で 990 にフォールバック」と既記録。つまり本番では `url-builder.ts` 自前生成リンク（コンシェルジュ/早期クッキー着火）**も** env 未解決→990 フォールバックの公算が高く、**本番は全サーフェスが実質 990 帰属**と推測される。
+  - **未確認（捏造回避）**: 本タスクで物理確認したのは**作品詳細ページ surface のみ**（990）。本番コンシェルジュ/早期クッキー surface の実 `af_id` は今回別途 curl していない＝「本番 builder も 990」は memory 由来の推測であり再実測はしていない。
+  - **CTO所見（HUMAN/CSO 判断要）**: 「env通り 004 が適用されているか」への答 = **No（作品ページは 990、env 004 は Dev スコープ止まりの可能性）**。成約を 004 バケットで別計測したい場合は 004 を Vercel Production に投入する HUMAN アクションが要（[[reference_vercel_env_secret_write_blocked]] の制約下）。本タスクは事実記録に留め、コード/env 変更はフリーズ遵守で行わない。
 
 ### タスク② — エースハブ `/actresses/1042129`（七沢みあ）GSCインデックス申請
 - **アカウント物理確認**: GSC 実画面で active = **moterist.com@gmail.com（モテリスト 様）/ authuser=2**。`reference_google_accounts` 整合。
