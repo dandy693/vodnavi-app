@@ -91,6 +91,11 @@
 - [ ] 🔵 T-20260604-30X-3 (CTO/CCO): X還流エンジン設計 (BRIEF_032 §2.2)。1日4投稿運用 + 年齢確認ゲート経由 moterist.com 高成約ピラーページ動線
 - [📅 重複追跡注意] BRIEF_032 §3 の「土曜トリガー」は line 7 / T-20260603-02 と同一。新規 HUMAN タスクは起票せず既存項目に集約
 
+## [Backlog] 🤖 LLMO/GEO 要塞化 (STRATEGY_BRIEF_LLMO, 2026-06-21 確定)
+- [ ] **F-12 (LLMO)**: app.vodnavi.jp（Next.js 16）における女優ハブ/ジャンルURLへのJSON-LD拡張、およびrobots.txtへのAIクローラー最適化ルールの実装（担当: CTO）
+- [ ] **M-05 (LLMO)**: 生成AI検索のインテントを逆引きしたコンテンツ骨子の設計および『ビブリア・エロティカ』世界観への着地（担当: CCO）
+- [ ] **A-04 (Metrics)**: GA4カスタム探索の再構築による `source × intent` および `ai_session_start` の直近7日間データサルベージ（担当: CSO）
+
 ## [Landed] 🚀 戦略ルート1点火セクション: 集客分母最大化 (2026-06-02 確定)
 - [x] 🟢 T-20260602-06: GA4 クリックハンドラ条件 (`outline_1__9`) 緩和 — **物理 verify: 既に 2026-05-20 (Day 10) に解消済**。実コードは Next.js ではなく **WordPress THE THOR child theme の `functions.php`**。994/954/1018/1106 を post_id ベース config に統合、`closest('.content')` && `closest('li')` && al.dmm affiliate URL 形のみで発火に緩和、`outline_1__9` 位置関係 + 厳密 text 一致は廃止。backup: `functions.php.bak_day10_20260520_221713`。証跡: `packages/seo-motelab/analytics-issues-3sites.md:43-47`。1095 は entry CTA 構造が異なるため別ハンドラ据置中。**本タスクの「Next.js コード層改修設計」は前提誤認、新規改修不要**
 - [x] 🟢 T-20260602-07:         CCO量産指示書の物理落成 (✅ 4箇所のMarkdown構造汚染およびアフィURL不整合をEditで完全調律・落成完了)
