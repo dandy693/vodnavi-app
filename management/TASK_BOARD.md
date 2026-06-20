@@ -860,3 +860,9 @@
 | **12月** | **105万円** | 2,100 件 | 約 60,000 UU | **【総合目標】** 年末特需による月商100万突破の最終デッドライン。 |
 
 > 注（CTO 監査）: 上表は **CSO 提示の目標逆算モデル**であり、CTO による裏付け・コミットメントではない。直近実測（moterist 検索流入≈ゼロ [[project_moterist_zero_search_inflow]]、actress hub 4ビュー/28日、crawled-not-indexed 滞留）との乖離は大きく、06月「3万円」を含め**いずれも現時点で未達**。達成可否は GSC インデックス化（外部・非同期）に強く依存し、CTO 側で保証できる数値ではない。
+
+## [Landed Log: 2026-06-21 Session Closed]
+- **執行事実**: PR #44 の本番 squash マージ（1ae5d65）を完全完了。
+- **監査範囲**: 当初想定の LLMO docs 3 本に加え、feature に蓄積されていた Next.js 16 本番コード（actresses/[id], genres/[id], concierge-chat.tsx 等を含む計41ファイル）が一括 landed された事実を追認。
+- **検証結果**: Vercel Production および新設エンドポイントに対する curl 疎通検証を行い、すべて `200 OK` / `X-Matched-Path` 生存を確認済み。
+- **残存バケット**: LLMO 3タスク（F-12: 実装拡張 / M-05: CCOインテント逆引き / A-04: GA4探索再構築によるデータサルベージ）は、実体主義に基づき **「未着手（OPEN）」のまま次フェーズへ据え置き** とする。
