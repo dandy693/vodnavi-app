@@ -887,3 +887,12 @@
 
 ## [CTO Implementation Triggered: 2026-06-21]
 - [ ] **F-12 (LLMO) [WIP]**: CTOによる女優ハブ/ジャンルURLへのJSON-LD動的拡張、robots.txt個別ルール適用、および0.88%起動率突破UI設計のコード実装を開始（担当: CTO）
+
+## [Landed Log: 2026-06-21 F-12 LLMO Baseline Merged]
+- **執行事実**: PR #45（feat/f-12-jsonld-hubs-ai-robots）を main へ squash マージ完了（merge commit 23669e9、3d205cf からの fast-forward、3 files / +98）。リモートブランチは自動削除。
+- **本番物理検証 (Vercel 伝播 ~2026-06-21 19:23 JST 完了)**:
+  - robots.txt: AI クローラー5種を個別許可で live 確認 — GPTBot / OAI-SearchBot / PerplexityBot / ClaudeBot / Google-Extended（各 Allow:/ + Disallow:/api/,/_next/）。
+  - actresses/[id] (1064143): JSON-LD live — @type=CollectionPage > ItemList + Person を curl 実測。
+  - genres/[id] (1011): JSON-LD live — @type=CollectionPage > ItemList + Thing を curl 実測。
+  - 補正: CTO ブリーフ文面の "Product/Offer" はトップレベル未出力。ハブは CollectionPage/ItemList 構造で実装・検証済み（捏造排除のため実測 @type で記録）。
+- **残存課題**: F-12 [WIP] のうち「UI改修（チャット起動率 0.88% 突破）」は本 PR スコープ外。次フェーズの独立スコープとして OPEN 継続。
