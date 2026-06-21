@@ -880,3 +880,7 @@
 - **次回のOPENコンテキスト**:
   - `A-04 (Metrics)` は source × intent と page_path 別帰属が OPEN として引き継ぎ。
   - `F-12 (CTO: JSON-LD拡張)` / `M-05 (CCO: インテント逆引きコピー量産)` を次回始動（LLMO=将来の引用流入を作る賭け、現成約ドライバではない前提）。
+
+## [Verified Revenue Sync: 2026-06-21 Records]
+- [x] **Financial Reconciliation**: DMM管理画面の物理事実（3件/1,102円）に基づき、財務データを無欠の状態で同期完了。[Done 2026-06-21]
+- [ ] **A-04 (Metrics) 帰属分離**: 次回セッションにて、イベントフィルタ（event_name=product_click）およびファネル経路探索を用いた page_path の再取得を試みる。
