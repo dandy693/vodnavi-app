@@ -866,3 +866,6 @@
 - **監査範囲**: 当初想定の LLMO docs 3 本に加え、feature に蓄積されていた Next.js 16 本番コード（actresses/[id], genres/[id], concierge-chat.tsx 等を含む計41ファイル）が一括 landed された事実を追認。
 - **検証結果**: Vercel Production および新設エンドポイントに対する curl 疎通検証を行い、すべて `200 OK` / `X-Matched-Path` 生存を確認済み。
 - **残存バケット**: LLMO 3タスク（F-12: 実装拡張 / M-05: CCOインテント逆引き / A-04: GA4探索再構築によるデータサルベージ）は、実体主義に基づき **「未着手（OPEN）」のまま次フェーズへ据え置き** とする。
+
+## [Analysis Log: 2026-06-21 GA4 Deep Dive]
+- [ ] **A-04 (Metrics)**: GA4データサルベージ — **WIP / 部分取得（OPEN 維持）**。7日窓(2026-06-14〜06-20) の hostName 分割ファネルを物理取得（page_view 合計 794: app.vodnavi.jp 791 / moterist.com 2 / www 1、コンシェルジュ起動 7、購入 0）。`ai_session_start` 名前付きイベント実数 / `product_click` / `source×intent` は依然 **データアクセス要**。詳細: `management/_metrics/2026-06-21-ga4-deep-analysis.md`
