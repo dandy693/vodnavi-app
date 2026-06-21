@@ -152,6 +152,38 @@ export async function generateMetadata({
   };
 }
 
+function buildActressLd({
+  id,
+  name,
+  items,
+  totalCount,
+}: {
+  id: string;
+  name: string;
+  items: DmmItem[];
+  totalCount: number;
+}): Record<string, unknown> {
+  const url = absoluteUrl(`/actresses/${id}`);
+  const itemListElement = items.slice(0, 20).map((item, idx) => ({
+    "@type": "ListItem",
+    position: idx + 1,
+    url: item.affiliateURL ?? item.URL ?? url,
+    name: item.title,
+  }));
+  return {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    url,
+    name: `${name} 出演作品一覧`,
+    about: { "@type": "Person", name },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: totalCount,
+      itemListElement,
+    },
+  };
+}
+
 export default async function ActressPage({
   params,
   searchParams,
@@ -174,9 +206,20 @@ export default async function ActressPage({
 
   const editorial = getActressEditorial(id);
   const relatedActresses = await getRelatedActresses(id, page.floor);
+  const collectionLd = buildActressLd({
+    id,
+    name: displayName,
+    items: page.items,
+    totalCount: page.totalCount,
+  });
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10">
+      <script
+        type="application/ld+json"
+        // schema.org payload — string is the canonical wire format
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(collectionLd) }}
+      />
       <nav className="mb-3 text-xs text-muted-foreground">
         <Link href="/" className="hover:text-amber-300">
           ホーム

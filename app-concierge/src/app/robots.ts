@@ -13,13 +13,20 @@ export default function robots(): MetadataRoute.Robots {
       rules: [{ userAgent: "*", disallow: "/" }],
     };
   }
+  const baseRule = { allow: "/", disallow: ["/api/", "/_next/"] };
+  // 主要 AI 検索クローラーを明示的に許可し、LLMO の引用対象として意図を宣言する。
+  // 既存の "*" でも実質許可されるが、個別 UA ルールで方針を明文化・将来調整可能にする。
+  const aiCrawlers = [
+    "GPTBot",
+    "OAI-SearchBot",
+    "PerplexityBot",
+    "ClaudeBot",
+    "Google-Extended",
+  ];
   return {
     rules: [
-      {
-        userAgent: "*",
-        allow: "/",
-        disallow: ["/api/", "/_next/"],
-      },
+      { userAgent: "*", ...baseRule },
+      ...aiCrawlers.map((userAgent) => ({ userAgent, ...baseRule })),
     ],
     sitemap: absoluteUrl("/sitemap.xml"),
     host: getSiteUrl(),
