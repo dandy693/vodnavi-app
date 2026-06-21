@@ -896,3 +896,10 @@
   - genres/[id] (1011): JSON-LD live — @type=CollectionPage > ItemList + Thing を curl 実測。
   - 補正: CTO ブリーフ文面の "Product/Offer" はトップレベル未出力。ハブは CollectionPage/ItemList 構造で実装・検証済み（捏造排除のため実測 @type で記録）。
 - **残存課題**: F-12 [WIP] のうち「UI改修（チャット起動率 0.88% 突破）」は本 PR スコープ外。次フェーズの独立スコープとして OPEN 継続。
+
+## [Landed Log: 2026-06-21 F-12 UI Realignment Merged]
+- **執行事実**: PR #46（feat/f-12-ui-concierge-trigger）を main へ squash マージ完了（merge commit b37faae、9f235f0 からの fast-forward、2 files / +44 -14）。リモートブランチ自動削除。
+- **監査範囲**: hero-section.tsx および (site)/page.tsx へのシャンパンゴールド光彩（motion-safe 限定で prefers-reduced-motion 尊重）、Sparkles アイコン微発光、3チャネル動的切替マイクロコピー（optional ctaWhisper、default/moterist/brand）の導入。世界観 #121212/#D4AF37 不変・既存破壊なし。
+- **本番物理検証 (Vercel 伝播 ~2026-06-21 19:43 JST)**: トップ HTTP 200 OK、かつ default チャネルの ctaWhisper「言葉にしづらい今夜の気分も」が本番 HTML に live 反映を curl で実測確認。ローカル next build は 15/15 static pages 成功。
+- **効果検証**: ai_session_start 起動率の改善幅は本コミット単体では未測定。次回 A-04 Exploration（page_path 別帰属）で実数検証する（断定しない）。
+- **タスク状況**: F-12 の UI 改修パートが landed。残 OPEN は A-04（source×intent / page_path 帰属）および M-05（CCO コピー量産）。
