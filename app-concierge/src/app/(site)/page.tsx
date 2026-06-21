@@ -53,6 +53,7 @@ function selectHeroCopy(source: ConciergeSource): HeroCopy {
         subcopy:
           "どのVODが一番得か？今すぐ観れるのはどこか？コスパとスピードを重視した最速の結論を、限定AIが即答します。",
         ctaLabel: "特攻隊長 AI を起動",
+        ctaWhisper: "── 迷っている時間こそ、最大の損失。最短で結論だけ、お渡しします。",
       };
     case "brand":
       return {
@@ -63,6 +64,7 @@ function selectHeroCopy(source: ConciergeSource): HeroCopy {
         subcopy:
           "数あるサービスの中から、あなたのライフスタイルと好みに調和する一本を。信頼と実績に基づいた、唯一無二のコンシェルジュ。",
         ctaLabel: "プレミアム・コンシェルジュへ",
+        ctaWhisper: "── あなたの夜にふさわしい一本を、静かに見立ててご案内します。",
       };
     case "default":
     default:
@@ -74,6 +76,7 @@ function selectHeroCopy(source: ConciergeSource): HeroCopy {
         subcopy:
           "作品数、料金、画質。あらゆる角度から比較して、あなたにぴったりのVODサービスを無料で見つけ出します。",
         ctaLabel: "AI コンシェルジュに相談する",
+        ctaWhisper: "── 言葉にしづらい今夜の気分も、ほんの一行で。あとは書架の奥から、私が。",
       };
   }
 }
