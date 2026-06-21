@@ -869,3 +869,7 @@
 
 ## [Analysis Log: 2026-06-21 GA4 Deep Dive]
 - [ ] **A-04 (Metrics)**: GA4データサルベージ — **WIP / 部分取得（OPEN 維持）**。7日窓(2026-06-14〜06-20) の hostName 分割ファネルを物理取得（page_view 合計 794: app.vodnavi.jp 791 / moterist.com 2 / www 1、コンシェルジュ起動 7、購入 0）。`ai_session_start` 名前付きイベント実数 / `product_click` / `source×intent` は依然 **データアクセス要**。詳細: `management/_metrics/2026-06-21-ga4-deep-analysis.md`
+
+## [Metrics Update: 2026-06-21 Named-Event Salvage COMPLETE]
+- [x] **A-04 (named-events 部分)**: 新規自由形式 Exploration (kJIj6zkLT8SK7TSKYsMvCA) を物理構築し、7日窓(2026-06-14〜06-20) の named-event 実数をサルベージ完了 → `ai_session_start` 7ユーザー/8イベント、`product_click` 67ユーザー/79イベント（全ホスト合算、app 99.6%）。ファネル「コンシェルジュ起動」=ai_session_start を物理一致で検証。アカウント moterist.com@gmail.com を UI tooltip で確認。詳細: `management/_metrics/2026-06-21-ga4-freeform-setup.md`
+- [ ] **A-04 (残)**: `source × intent` クロス表のみ未取得（データアクセス要、別 Exploration 要、優先度中）。
