@@ -903,3 +903,7 @@
 - **本番物理検証 (Vercel 伝播 ~2026-06-21 19:43 JST)**: トップ HTTP 200 OK、かつ default チャネルの ctaWhisper「言葉にしづらい今夜の気分も」が本番 HTML に live 反映を curl で実測確認。ローカル next build は 15/15 static pages 成功。
 - **効果検証**: ai_session_start 起動率の改善幅は本コミット単体では未測定。次回 A-04 Exploration（page_path 別帰属）で実数検証する（断定しない）。
 - **タスク状況**: F-12 の UI 改修パートが landed。残 OPEN は A-04（source×intent / page_path 帰属）および M-05（CCO コピー量産）。
+
+## [Metrics Grounded: 2026-06-21 Deep Attribution Check]
+- **A-04 (Metrics) [WIP→部分確定]**: ページパス別帰属を GA4 探索 kJIj6zkLT8SK7TSKYsMvCA で物理取得。**ai_affiliate_click 79件は 100% `/works/*` 作品詳細由来（女優/ジャンルハブ由来 0）**、concierge_entry_click 7件も 100% `/works/*`、ai_session_start 8件は 100% `/concierge`。実数で「成約・送客の主戦場は作品詳細、ハブは現成約ドライバ非該当」を裏付け（STRATEGY_BRIEF_LLMO 仮説と整合）。詳細: `management/_metrics/2026-06-21-path-attribution-verified.md`
+- [ ] **A-04 残**: product_click 単独の page_path 厳密内訳（250行キャップ + フィルタ drop-zone の automation 操作限界で直接未取得＝データアクセス要、affiliate 部分は ai_affiliate_click と同分布と合理推定）／PR #46 UI改修の起動率効果（6/21 を含む次週窓で before/after 実測、現窓 6/14-6/20 はデプロイ前で測定不可）／source×intent（app 99.6% 占有で優先度低・OPEN 据え置き）（担当: CSO）
