@@ -873,3 +873,10 @@
 ## [Metrics Update: 2026-06-21 Named-Event Salvage COMPLETE]
 - [x] **A-04 (named-events 部分)**: 新規自由形式 Exploration (kJIj6zkLT8SK7TSKYsMvCA) を物理構築し、7日窓(2026-06-14〜06-20) の named-event 実数をサルベージ完了 → `ai_session_start` 7ユーザー/8イベント、`product_click` 67ユーザー/79イベント（全ホスト合算、app 99.6%）。ファネル「コンシェルジュ起動」=ai_session_start を物理一致で検証。アカウント moterist.com@gmail.com を UI tooltip で確認。詳細: `management/_metrics/2026-06-21-ga4-freeform-setup.md`
 - [ ] **A-04 (残)**: `source × intent` クロス表のみ未取得（データアクセス要、別 Exploration 要、優先度中）。
+
+## [Landed Log: 2026-06-21 GA4 Salvage Session Closed]
+- **執行事実**: 自由形式探索（kJIj6zkLT8SK7TSKYsMvCA）構築により named-event 実数を確定 → ai_session_start 7ユーザー/8イベント、product_click 67ユーザー/79イベント（7日窓・全ホスト合算・ページ別帰属未測定・購入(成約)は0）。
+- **ファクト注記（誇張禁止）**: product_click 79回は「クリック意向」であり成約ではない。女優ハブ詳細への帰属は未測定で、既知では actress hub は28日約4ビューと極小のため、79回の大半は作品詳細 /works 発火と推定（要 page_path 別測定）。
+- **次回のOPENコンテキスト**:
+  - `A-04 (Metrics)` は source × intent と page_path 別帰属が OPEN として引き継ぎ。
+  - `F-12 (CTO: JSON-LD拡張)` / `M-05 (CCO: インテント逆引きコピー量産)` を次回始動（LLMO=将来の引用流入を作る賭け、現成約ドライバではない前提）。
