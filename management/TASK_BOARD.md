@@ -884,3 +884,6 @@
 ## [Verified Revenue Sync: 2026-06-21 Records]
 - [x] **Financial Reconciliation**: DMM管理画面の物理事実（3件/1,102円）に基づき、財務データを無欠の状態で同期完了。[Done 2026-06-21]
 - [ ] **A-04 (Metrics) 帰属分離**: 次回セッションにて、イベントフィルタ（event_name=product_click）およびファネル経路探索を用いた page_path の再取得を試みる。
+
+## [CTO Implementation Triggered: 2026-06-21]
+- [ ] **F-12 (LLMO) [WIP]**: CTOによる女優ハブ/ジャンルURLへのJSON-LD動的拡張、robots.txt個別ルール適用、および0.88%起動率突破UI設計のコード実装を開始（担当: CTO）
