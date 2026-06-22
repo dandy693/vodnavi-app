@@ -964,3 +964,9 @@
   - 構成: works 1,600 / **actresses 1,132** / genres 200 / 静的8。HTTP 200・application/xml・498,880B・生`&`ゼロ（整形式維持）。
   - 検証: 前回 737 バケットで sitemap 未収録だった `/actresses/1002043`・`/actresses/1057344` が**新 sitemap に収録されたことを本番 curl で確認**。
 - **効果見込み**: 検出未登録737（全件 /actresses/）のクロール優先度を sitemap 明示露出で引き上げ。indexing は Google 側クロール予算依存のため反映は経時観測（次回 GSC 監査でカバレッジ推移を確認）。
+
+## [Midnight Dual-Strike: 2026-06-22 A/B Assets Landed (PR #50)]
+- [ ] **M-05 (Content) [WIP / レビュー待ち]**: ジャンル資産 32→50 拡張（+18, 実名 curl 検証済）+ 次期優先女優 30 名インテリジェンス確定の両翼を `feat/m-05-dual-midnight-assets` で landed、**PR #50** 起票（担当: CSO/CTO レビュー）。
+  - **タスクA**: `app-concierge/src/data/genres-editorial.json` 32→**50 keys**（malformed 0, tsc exit 0）。追加 18 ジャンルは全件 `/genres/{id}` の `<title>` で実名検証（48 制服/55 処女/524 義母/553 学園もの/555 恋愛/569 ラブコメ/2002 長身/2003 小柄/2005 貧乳・微乳/2006 スレンダー/2007 ぽっちゃり/2024 巨尻/3001 体操着・ブルマ/3006 パンスト・タイツ/3008 水着/3009 競泳・スクール水着/3013 ボディコン/3035 レオタード）。既存 32 完全保全、schema `{editorialLead, emotionalArchetype}` 厳守。
+  - **タスクB**: `management/_content/2026-06-22-priority-actresses.md` 新規。GSC 737 バケット由来 20 名（全件 uncap 後 sitemap 収録確認）+ sitemap 補完 10 名 = **30 名**、全件 `/actresses/{id}` の `<title>` から実名物理抽出（友田彩也香/高比良いおり/奏音かのん/愛染恭子 他）。
+  - **逸脱記録（pushback）**: ① protocol 例示の ID→名称マップ（1003=女子大生 等）は本番実データと不一致のため不採用、全 ID を本番 curl で再グラウンディング。② protocol step 7 の git フロー不整合（feature branch 上で TASK_BOARD commit → `git push origin main` で commit 喪失）を是正、main へ checkout 後に本ログを landed。③ コードロジック無改変＝破壊リスクゼロ、本番反映は PR マージ後。
