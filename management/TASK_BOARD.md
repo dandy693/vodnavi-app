@@ -988,3 +988,7 @@
 - **監査範囲**: actresses-editorial.json を 27→56 エントリへ拡張（優先30名中、既存の1038712 佐藤ののかを非上書き保全し29名を新規追記）。各 editorialLead は本番 `/actresses/{id}` の実出演作タイトル由来テーマに 100% grounding、架空ファクトゼロ（設計図§4遵守）。
 - **本番浸透検証（物理 curl, 弱いワード回避）**: Vercel 反映後 ~60秒で、1069635(高比良いおり)「専属の看板を背負う成熟した人妻の説得力」/ 236(愛染恭子)/ 460(加山なつこ)/ 1044974(白石ももか) の **固有 editorialLead 断片が本番 HTML に露出**を確認（名前や作品タイトルに含まれ false-positive を生む「専属/人妻/不倫」単一ワード grep は不採用、各コピー固有の審美句で penetration を実測）。HTTP 200。
 - **残存課題（実数補正）**: M-05 [WIP] として、女優エディトリアル **56/1,132（残 1,076 未配備）**・ジャンル **50/200（残 150 未配備）** の段階的拡張、および A-04（UI時系列検証）の追跡。※原スクリプト記載の「女優144名」は sitemap 実数（1,132）と不一致のため補正。
+
+## [Next Task: 2026-06-23 M-06 SEO/Linkage 注入]
+- [ ] **M-06 (SEO/Linkage)**: vodnavi.jp 内のジャンル・女優ハブ間における Next.js 自動セマンティック内部リンク網のロジック監査と最適化（moterist は完全凍結維持）。
+- _（CTO 注: 実行スクリプト execute_update.js は `taskBoardPath='TASK_BOARD.md'` の相対パス不備で repo root に空 stub を新規生成し本ボードを取りこぼす bug を内包、かつアンカー `## 📋 直近のタスクボード` は実ボードに不在。意図のみ採用し `management/TASK_BOARD.md` へ in-place 追記。moterist 凍結方針は [[project_moterist_mass_overwrite_plan]] と整合。）_
