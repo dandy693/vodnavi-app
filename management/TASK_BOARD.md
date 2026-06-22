@@ -947,3 +947,11 @@
 - **index リクエスト未発行**: 代表ハブ `/actresses/1064143` を URL 検査 → **既にインデックス登録済み**（HTTP 200 / HTTPS OK）。再リクエストはクォータ浪費のため不実行（verify-before-act）。
 - **構造化データ**: GSC 生成レポートは商品スニペット(Product)のみ＝無効0/有効83、警告は任意項目（aggregateRating 60・review 60）のみ。JSON-LD クリティカルエラー検出なし。Person/CollectionPage/ItemList は GSC 専用レポート非生成型。
 - [ ] **次アクション候補 [OPEN]**: 「検出-インデックス未登録(737)」の URL 列挙 → 健全未登録ハブの個別 index リクエスト、および app ルートレベル 404(280) の発生源特定（担当: CTO）
+
+## [GSC Deep Intel: 2026-06-22 URL Extraction]
+- **執行事実**: claude-in-chrome MCP で GSC ドリルダウン（index/drilldown）から 737・280 両バケットの実 URL を各上位20件抽出、本番 curl で HTTP/サイトマップ収録を二重検証。レポート: `management/_metrics/2026-06-22-gsc-unindexed-details.md`。
+- **検出未登録737の正体**: **全件 `/actresses/` ハブ**（ID帯 1002043〜1102910 分散）。サンプル3件 **live 200＝健全**。sitemap の actresses は **200件キャップ**で、737の多くはキャップ外を内部リンク経由で discovered。**ボトルネック=クロール予算+sitemap actress カバレッジ不足+立上げ初期時間**、品質ではない。
+- **404=280の正体**: **`/works/videoc/` フロア集中**（+ videoa 単発1件）。サンプル5件 **本番 curl で実404確認**、**全件 sitemap 未収録**。現行 sitemap の works フロアは videoa/nikkatsu/anime/amateur（各400）のみで **videoc 不在**。→ **退役 videoc フロアの残骸 discovery**（現行 sitemap 起因の active bug でも broken link でもない）。
+- **sitemap 2,008内訳（物理実測）**: works 1,600（videoa/nikkatsu/anime/amateur 各400）+ genres 200 + actresses 200 + 静的8。
+- **修正は本回も未実行（データ基盤構築フェーズ）**。robots.ts/proxy.ts 編集は不要（前回監査で誤設定なし確証）。
+- [ ] **次アクション [OPEN]**: ①sitemap の actresses 200キャップ拡張＋健全ハブ個別 index リクエスト、②videoc 404 残骸の 410 Gone 方針の妥当性検証（担当: CTO）
