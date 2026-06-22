@@ -970,3 +970,8 @@
   - **タスクA**: `app-concierge/src/data/genres-editorial.json` 32→**50 keys**（malformed 0, tsc exit 0）。追加 18 ジャンルは全件 `/genres/{id}` の `<title>` で実名検証（48 制服/55 処女/524 義母/553 学園もの/555 恋愛/569 ラブコメ/2002 長身/2003 小柄/2005 貧乳・微乳/2006 スレンダー/2007 ぽっちゃり/2024 巨尻/3001 体操着・ブルマ/3006 パンスト・タイツ/3008 水着/3009 競泳・スクール水着/3013 ボディコン/3035 レオタード）。既存 32 完全保全、schema `{editorialLead, emotionalArchetype}` 厳守。
   - **タスクB**: `management/_content/2026-06-22-priority-actresses.md` 新規。GSC 737 バケット由来 20 名（全件 uncap 後 sitemap 収録確認）+ sitemap 補完 10 名 = **30 名**、全件 `/actresses/{id}` の `<title>` から実名物理抽出（友田彩也香/高比良いおり/奏音かのん/愛染恭子 他）。
   - **逸脱記録（pushback）**: ① protocol 例示の ID→名称マップ（1003=女子大生 等）は本番実データと不一致のため不採用、全 ID を本番 curl で再グラウンディング。② protocol step 7 の git フロー不整合（feature branch 上で TASK_BOARD commit → `git push origin main` で commit 喪失）を是正、main へ checkout 後に本ログを landed。③ コードロジック無改変＝破壊リスクゼロ、本番反映は PR マージ後。
+
+## 🛡️ リーガル・ガバナンス監査ログ（2026-06-23）
+- **ステマ規制・ASP規約完全遵守の再確認**: 免責事項（Disclaimer）ページへの集約案は破滅的リスク（アカウントBAN）を伴うため却下。全ページ一律での「広告（PR）表記」の維持を絶対法律として固定。
+- **今後のタスク**: `vodnavi.jp`（Next.js側）の構築時、「ビブリア・エロティカ」の世界観（ダーク×ゴールド）を損なわない、極めて審美性の高い共通PRバッジ/テキストコンポーネント（例: `[AD] 適切な広告運用（PR）に基づき運営されています`）を共通ヘッダーにシステム埋め込みする。
+- _（CTO 注: 実行スクリプトは `TARGET_FILE="TASK_BOARD.md"` の相対パス不備で、リポジトリ root に空の YAML stub を新規生成し本ボードを取りこぼす bug を内包。意図のみ採用し `management/TASK_BOARD.md` へ in-place 定着。`git push` は原スクリプト同様に未実行。）_
