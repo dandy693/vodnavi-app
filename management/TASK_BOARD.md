@@ -938,3 +938,12 @@
 - **捏造防止**: 新規10名の ID→名称は全件 本番 `/actresses/{id}` の `<title>` で物理検証。ペルソナは各女優の実出演作タイトル（JSON-LD 実データ）の支配的テーマに基づく抽象フレーミングで、作品名/受賞/売上/本数/スリーサイズ/年齢/事務所等の証明不可能なファクトはゼロ。既存17件は上書き禁止ガードで intact。
 - **本番浸透性検証 (Vercel 伝播後 ~30s)**: 新規 JULIA(1004672)「女王然とした引力」を curl 実測で HTTP 200 + editorialLead 露出を確認。
 - **残存課題**: M-05 [WIP] 継続 — 女優 残173（27/200）、ジャンル 残168（32/200）の段階拡張。
+
+## [GSC Chrome Audit: 2026-06-22]
+- **執行事実**: claude-in-chrome MCP 拡張（既ログイン、account=moterist.com@gmail.com / authuser=2）で `sc-domain:vodnavi.jp`（ドメインプロパティ・app含む全サブドメイン集約）を物理監査。レポート: `management/_metrics/2026-06-22-gsc-audit-report.md`。
+- **サイトマップ**: app.vodnavi.jp/sitemap.xml = 成功 / 検出 **2,008**（プロトコル前提値一致）/ 最終読込 2026-06-18。本番 curl で生`&`ゼロ・`<loc>`2,008 を二重確証。**過去の解析エラー（生`&`で検出0）は解消済み**。
+- **インデックス**: 登録済み **3,290** / 未登録 **2,300**（9理由・クリティカルエラー0）。内訳: 検出未登録737・代替canonical670・クロール済未登録553・**404=280**・Google正規重複43・noindex6・**robots.txtブロック5**・soft404=2・redirect1。
+- **自律修正は不実行（意図的）**: robots.ts は production で `allow:/` + `disallow:[/api/,/_next/]` のみ＝収益ハブ無ブロック（live robots.txt 一致）。proxy.ts の age-gate は `/concierge`・`/api/concierge/*` 限定スコープでハブ非阻害。robots5件は `/api//_next/` の意図遮断。**誤設定が存在しないため盲目的編集を回避（年齢確認の盾の破壊リスク防御）**。404=280 は app ルートレベル 404（別系統）として OPEN。
+- **index リクエスト未発行**: 代表ハブ `/actresses/1064143` を URL 検査 → **既にインデックス登録済み**（HTTP 200 / HTTPS OK）。再リクエストはクォータ浪費のため不実行（verify-before-act）。
+- **構造化データ**: GSC 生成レポートは商品スニペット(Product)のみ＝無効0/有効83、警告は任意項目（aggregateRating 60・review 60）のみ。JSON-LD クリティカルエラー検出なし。Person/CollectionPage/ItemList は GSC 専用レポート非生成型。
+- [ ] **次アクション候補 [OPEN]**: 「検出-インデックス未登録(737)」の URL 列挙 → 健全未登録ハブの個別 index リクエスト、および app ルートレベル 404(280) の発生源特定（担当: CTO）
