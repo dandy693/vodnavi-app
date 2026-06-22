@@ -9,7 +9,6 @@ export const revalidate = 3600;
 const HITS_PER_REQUEST = 100;
 const PAGES_PER_FLOOR = 4;
 const MAX_GENRES = 200;
-const MAX_ACTRESSES = 200;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
@@ -125,8 +124,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }));
 
+  // 女優ハブ (柱①) は固定キャップを廃止し、floor-walk で集約できた全 actress を露出する。
+  // actressMap は上の works フェッチ (PAGES_PER_FLOOR × HITS_PER_REQUEST) で収集済みの
+  // item.iteminfo.actress のみで構成されるため、ここでの uncap は **追加の FANZA API
+  // コールを発生させない** (スロットリング無リスク)。各 id は実フェッチ作品由来＝
+  // actresses/[id] の floor-walk で必ず items>0 に着地し 404 化しない。
+  // 目的: GSC「検出 - インデックス未登録」737件 (全件 /actresses/) を sitemap で明示露出し
+  // クロール優先度を引き上げる (2026-06-22 診断 / 2026-06-22-gsc-unindexed-details.md)。
   const actresses: MetadataRoute.Sitemap = Array.from(actressMap.entries())
-    .slice(0, MAX_ACTRESSES)
     .map(([id, lastModified]) => ({
       url: absoluteUrl(`/actresses/${id}`),
       lastModified,
