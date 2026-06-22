@@ -913,3 +913,10 @@
 
 ## [Metrics Audit: 2026-06-22 Time-Series Verification]
 - [ ] **A-04 (Metrics) [WIP]**: UI改修（6/21 19:43本番反映）後・約16時間時点の当日実測を GA4 探索 kJIj6zkLT8SK7TSKYsMvCA で物理取得。当日(6/22) page_view 68発火/27ユーザー、product_click 5/3、ai_affiliate_click 5/3。**ただし ai_session_start（コンシェルジュ起動）は当日テーブルに非出現＝実測 0 件**（8イベントのイベント数合計157が総計と一致し全数確認、`session_start`27 は GA4 自動イベントで別物）。当日起動率 = 0/27 = 0.00%。「光彩強化で改善したはず」のバイアスは当日データで否定、ただし n=27・部分日・未確定データのため悪化も断定不可＝**経過観察 OPEN**。完全週次窓(6/21-6/27確定後)で before/after を再実測。詳細: `management/_metrics/2026-06-22-ui-time-series-audit.md`（担当: CSO）
+
+## [Landed Log: 2026-06-22 M-05 Content Phase 1 Merged]
+- **執行事実**: PR #47（feat/m-05-llmo-content-injection）を main へ squash マージ完了（merge commit 28f9548、76308c7 からの fast-forward、1 file / +58 -1）。リモートブランチ自動削除。
+- **監査範囲**: `genres-editorial.json`（従来 `{}`）に検証済み14ジャンルの『ビブリア・エロティカ』調 editorialLead + emotionalArchetype を投入。ジャンル ID→名称は本番 `/genres/{id}` の `<title>`（API由来実名）で物理検証済み、架空ファクト（作品名/件数/女優名/優越主張）ゼロ。女優エントリは実名 characterization リスクのため本陣では非追加。
+- **本番浸透性検証 (Vercel 伝播後)**: 5ジャンルを物理疎通スキャン — genres/1014「円熟の艶」、1025「深いカタルシス」、1031「支配されることの心地よさ」、2001「量感そのもの」、1069「許されぬと知るほどに/罪悪感と渇望」全て HTTP 200 + 実 HTML 内に editorialLead 露出を curl 実測。editorialLead のみ描画され emotionalArchetype は非描画である点も確認（検証は body 文言で実施）。
+- **補正記録**: CSO スクリプトの 1014 検証キーワード「深いカタルシス」は実際には 1025（未亡人）のコピー由来で 1014 には不在。1014 は「円熟の艶/歳月だけが宿す説得力」で再検証し penetration を確証（false negative 回避）。
+- **残存課題**: M-05 [WIP] として、残186ジャンルの段階拡張、および実名グラウンディング成功時の女優ハブ次陣展開を OPEN 継続。
