@@ -955,3 +955,12 @@
 - **sitemap 2,008内訳（物理実測）**: works 1,600（videoa/nikkatsu/anime/amateur 各400）+ genres 200 + actresses 200 + 静的8。
 - **修正は本回も未実行（データ基盤構築フェーズ）**。robots.ts/proxy.ts 編集は不要（前回監査で誤設定なし確証）。
 - [ ] **次アクション [OPEN]**: ①sitemap の actresses 200キャップ拡張＋健全ハブ個別 index リクエスト、②videoc 404 残骸の 410 Gone 方針の妥当性検証（担当: CTO）
+
+## [Landed Log: 2026-06-22 Sitemap Uncap Merged]
+- **執行事実**: `app-concierge/src/app/sitemap.ts` の `MAX_ACTRESSES=200` キャップを廃止し、feat/m-05-seo-sitemap-uncap → main へ squash landed（branch commit 2e55860 → main a6eb30e、1 file +7 -2）。tsc --noEmit exit 0。リモート push 済・ブランチ削除済。
+- **安全性監査**: `actressMap` は既存 works フェッチ（PAGES_PER_FLOOR×HITS_PER_REQUEST, 4フロア）由来の `item.iteminfo.actress` のみで構成 → uncap は**追加 FANZA API コールを発生させず**スロットルリスクなし。各 id は実フェッチ作品由来で actresses/[id] floor-walk が items>0 着地＝新規404を生まない。genres は 200 維持（スコープ=女優のみ、CSO決裁準拠）。src/middleware.ts 新設なし（禁則遵守、age-gate は proxy.ts のまま）。
+- **本番伝播の物理実測（Vercel propagation 後 ~1分, cache-buster なしで再生成確認）**:
+  - 総 loc: **2,008 → 2,940（+932）**。actresses: **200 → 1,132（+932）**。
+  - 構成: works 1,600 / **actresses 1,132** / genres 200 / 静的8。HTTP 200・application/xml・498,880B・生`&`ゼロ（整形式維持）。
+  - 検証: 前回 737 バケットで sitemap 未収録だった `/actresses/1002043`・`/actresses/1057344` が**新 sitemap に収録されたことを本番 curl で確認**。
+- **効果見込み**: 検出未登録737（全件 /actresses/）のクロール優先度を sitemap 明示露出で引き上げ。indexing は Google 側クロール予算依存のため反映は経時観測（次回 GSC 監査でカバレッジ推移を確認）。
