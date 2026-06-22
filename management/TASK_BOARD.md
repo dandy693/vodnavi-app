@@ -910,3 +910,6 @@
 
 ## [CCO Content Engine Triggered: 2026-06-21 Midnight]
 - [ ] **M-05 (LLMO) [WIP]**: 主要AI検索エンジン（GEO）からの高コンテキスト流入を独占するため、400件のハブURL（本番sitemap実測=女優200+ジャンル200）に向けた『ビブリア・エロティカ』世界観準拠インテント逆引きコピーの量産・設計図配置を始動。設計図: management/_content/2026-06-21-llmo-editorial-core.md（担当: CCO）
+
+## [Metrics Audit: 2026-06-22 Time-Series Verification]
+- [ ] **A-04 (Metrics) [WIP]**: UI改修（6/21 19:43本番反映）後・約16時間時点の当日実測を GA4 探索 kJIj6zkLT8SK7TSKYsMvCA で物理取得。当日(6/22) page_view 68発火/27ユーザー、product_click 5/3、ai_affiliate_click 5/3。**ただし ai_session_start（コンシェルジュ起動）は当日テーブルに非出現＝実測 0 件**（8イベントのイベント数合計157が総計と一致し全数確認、`session_start`27 は GA4 自動イベントで別物）。当日起動率 = 0/27 = 0.00%。「光彩強化で改善したはず」のバイアスは当日データで否定、ただし n=27・部分日・未確定データのため悪化も断定不可＝**経過観察 OPEN**。完全週次窓(6/21-6/27確定後)で before/after を再実測。詳細: `management/_metrics/2026-06-22-ui-time-series-audit.md`（担当: CSO）
