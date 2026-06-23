@@ -994,5 +994,14 @@
 - _（CTO 注: 実行スクリプト execute_update.js は `taskBoardPath='TASK_BOARD.md'` の相対パス不備で repo root に空 stub を新規生成し本ボードを取りこぼす bug を内包、かつアンカー `## 📋 直近のタスクボード` は実ボードに不在。意図のみ採用し `management/TASK_BOARD.md` へ in-place 追記。moterist 凍結方針は [[project_moterist_mass_overwrite_plan]] と整合。）_
 
 ## [Audit Task: 2026-06-23 M-06 前置 トラフィック物理監査]
-- [ ] **【緊急物理監査】GA4 / Search Console 生データスキャンによるアクセス低迷原因の特定（M-06 前置タスク）**: ホスト名別流入の生存・ドメイン間クッキー引継ぎ・M-05 投入 50 ジャンル/56 女優のインデックス状態・年齢確認(proxy.ts)での page_view 二重発火/遮断 を物理スキャン。指示書 `management/LOG_AUDIT_INSTRUCTION.md` に詳細チェックリストを定義。判明次第 M-06（自動セマンティック内部リンク網最適化）を執行フェーズへ移行。
+- [x] **【緊急物理監査】GA4 / Search Console 生データスキャンによるアクセス低迷原因の特定（M-06 前置タスク）✅完了 2026-06-23**: ホスト名別流入の生存・ドメイン間クッキー引継ぎ・M-05 投入 50 ジャンル/56 女優のインデックス状態・年齢確認(proxy.ts)での page_view 二重発火/遮断 を物理スキャン。指示書 `management/LOG_AUDIT_INSTRUCTION.md` に詳細チェックリストを定義。判明次第 M-06（自動セマンティック内部リンク網最適化）を執行フェーズへ移行。
 - _（CTO 注: 実行スクリプト run_traffic_audit.sh は ①`TASK_BOARD.md` 相対パス不備で step-1 ガードが `exit 1` し全体 no-op、②`sed -i ''` が BSD 専用 + アンカー `## 現在の進行ステータス` が実ボードに不在、の二重 bug を内包。意図のみ採用し指示書を `management/` 配下に配置・本ボードへ in-place 追記。既知前提は [[project_moterist_zero_search_inflow]] / [[project_funnel_intra_app_reclassified]] / [[project_actress_hub_first_measurement]] と整合。）_
+
+## [Audit Landed: 2026-06-23 トラフィック物理監査 完了 → M-06 執行フェーズ OPEN]
+**監査レポート**: `management/_metrics/2026-06-23-traffic-analysis-report.md`（claude-in-chrome MCP で GA4/GSC を物理スキャン、全数値実測）
+**アカウント検証**: 個人 hdktchkw33（別クライアント coushilift.com property を開いていた）を検出 → 正規 moterist.com@gmail.com (authuser=2) へ切替後に取得。
+**GA4 確定値（28日 5/26–6/22, p489519780）**: アクティブユーザー 4,004 / 新規 3,965 / 総PV 9,720 / イベント 約22k / セッション 4,203（Organic 93.93% / Direct 5.71% / Referral 8件=全て検索ポータル）。**moterist 由来 referral = 0件**。self-referral 不在＝クロスドメインリンカー断裂兆候なし。page_view 正常発火（遮断なし）。
+**GSC 確定値（sc-domain:vodnavi.jp, 最終更新 6/12）**: 登録済み 3,290 / 未登録 2,300。「検出-インデックス未登録」**737**（M-05 女優ハブ 1006606/1012910/1015386/1038396/1038712/1044974/1048559/1053256/1055230… が滞留＝priority-actresses.md と一致）、「クロール済み-未登録」553。
+**構造的真因（結論）**: アクセス不振は CTR ではなく**インデックス未登録による検索露出ゼロ**。女優ハブは検出-未登録に滞留しクロール待ち。集客実体は vodnavi.jp Organic（93.93%）、moterist 送客は物理ゼロ。
+**留保**: GSC データは 6/12 更新のため 6/22 投入の新ジャンル(524等)/女優editorial未反映。50ジャンル/56女優の登録移行可否は次回更新後に再スキャン要。ジャンルハブの個別ドリルは未実施。
+- [ ] **M-06 執行フェーズ OPEN**: 「検出-インデックス未登録」737バケットのクロール発見性を、Next.js 自動セマンティック内部リンク網の最適化で引き上げる（moterist 完全凍結維持 [[project_moterist_mass_overwrite_plan]]）。効果検証の基準値は本監査レポートの数値を採用。
