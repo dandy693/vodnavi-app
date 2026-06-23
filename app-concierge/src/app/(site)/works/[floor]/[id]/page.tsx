@@ -10,7 +10,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowRight, Calendar, Film, Star, Tag, Users } from "lucide-react";
 
-import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getWorkEditorial } from "@/lib/editorial";
 import { getWorkReview } from "@/lib/work-review";
@@ -305,13 +304,13 @@ export default async function WorkDetailPage({
             <Field label="出演" icon={<Users className="size-3" aria-hidden />}>
               <div className="flex flex-wrap gap-1.5">
                 {actresses.slice(0, 8).map((p) => (
-                  <Badge
+                  <Link
                     key={p.id}
-                    variant="outline"
-                    className="border-amber-400/30 bg-amber-400/5 text-amber-200"
+                    href={`/actresses/${p.id}`}
+                    className="rounded-full border border-amber-400/30 bg-amber-400/5 px-2.5 py-0.5 text-[11px] text-amber-200 transition-colors hover:border-amber-400/60 hover:text-amber-100"
                   >
                     {p.name}
-                  </Badge>
+                  </Link>
                 ))}
               </div>
             </Field>
