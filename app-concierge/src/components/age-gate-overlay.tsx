@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 
+import { track } from "@/lib/analytics";
+
 /**
  * (site) ルート全域用 年齢確認オーバーレイ（works / genres / home / about 等）。
  *
@@ -80,6 +82,13 @@ export function AgeGateOverlay() {
     };
   }, [open]);
 
+  // 年齢ゲート表示の物理計測。open（mounted && !verified）成立時に一度発火。
+  // 遮断率 = age_gate_bounce / age_gate_view の分母。
+  useEffect(() => {
+    if (!open) return;
+    track("age_gate_view", { gate: "site_overlay" });
+  }, [open]);
+
   if (!open) return null;
 
   async function confirm() {
@@ -97,6 +106,7 @@ export function AgeGateOverlay() {
         setBusy(false);
         return;
       }
+      track("age_gate_agree", { gate: "site_overlay" });
       window.dispatchEvent(new Event("vodnavi:cookie-updated"));
     } catch {
       setError("通信に失敗しました。ネットワークを確認してください。");
@@ -145,6 +155,12 @@ export function AgeGateOverlay() {
           <a
             href="https://www.google.com/"
             rel="noopener noreferrer"
+            onClick={() =>
+              track("age_gate_bounce", {
+                gate: "site_overlay",
+                transport_type: "beacon",
+              })
+            }
             className="btn-luxury-outline"
           >
             いいえ（退出）

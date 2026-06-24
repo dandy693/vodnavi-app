@@ -102,6 +102,12 @@ export interface AiAffiliateClickPayload {
   transport_type?: "beacon" | "xhr" | "image";
   /** "primary" | "fallback_search"（フォールバック検索リンクをクリックした場合）。 */
   link_variant?: "primary" | "fallback_search";
+  /**
+   * "detail_main_cta" | "detail_sample" | "detail_sticky_cta" 等。
+   * `product_click` と同一の placement 軸を `ai_affiliate_click` にも乗せ、
+   * クリック位置（FV メイン CTA / サンプル / sticky）別の成約熱量を GA4 で分割集計する。
+   */
+  placement?: string;
 }
 
 export function trackAiAffiliateClick(payload: AiAffiliateClickPayload): void {

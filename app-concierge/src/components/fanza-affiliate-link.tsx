@@ -57,6 +57,7 @@ export function FanzaAffiliateLink({
           title,
           floor_code,
           link_variant: "primary",
+          placement,
           transport_type: "beacon",
         });
       }}
