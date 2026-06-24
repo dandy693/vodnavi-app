@@ -1040,3 +1040,10 @@
 - [ ] 金CTA要素への `data-placement` 属性の付与
 - [ ] 年齢確認ゲート（コンポーネント/`proxy.ts`）への `age_gate_*` データレイヤー発火処理の埋め込み
 - [ ] 各ドメイン（vodnavi.jp / app.vodnavi.jp / moterist.com流入）のホスト名識別タグの生存テスト
+
+## [Landed Log: 2026-06-25 GA4 Custom Dimensions Activated / GTM Audited]
+- **執行事実**: PR #55（feat/m-07-phase2-metrics-injection）を main へ squash マージ完了（6e3497a）。アプリ側実装（analytics.ts / age-gate-overlay / age-gate-modal / concierge-gate）main 反映済。本番デプロイ伝播後の DebugView 実数確認は次段。
+- **管理画面有効化（物理確認済）**: Chrome 連携で GA4（p489519780 / moterist.com@gmail.com / authuser=2）のカスタムディメンションに `placement`（param=placement, scope=event）と `gate`（param=gate, scope=event）を登録。一覧 1〜5/5 で生存確認。→ placement・年齢ゲート2系統の「データ欠損」恒久解消。
+- **⚠️ GTM 物理監査の重大判明**: コンテナ GTM-TKDHM348（app.vodnavi.jp）は **タグ0件・トリガー0件の空コンテナ**。GA4 計測は GTM 経由ではなくアプリ直 gtag（`track()`→gtag）で送信されている。よって「GTMスクロール距離トリガー(25/50/75)有効化」は現状アーキテクチャでは**無効果**（受け皿の GA4 タグが存在しない）。スクロール25/50/75 の真の実装は**アプリ側カスタムスクロールリスナー**（`track("scroll",{percent_scrolled})`）が必要。本監査では GTM へ変更・公開は一切行っていない（read-only）。
+- **計測4穴の現況**: ①placement=実装+登録済 ②age_gate_*=実装+登録済 ③scroll25/50/75=**未（要アプリ側実装、GTM空コンテナ判明）** ④収益突合=予備調査。
+- **次の対策**: 本番デプロイ後に DebugView で ①② の発火を実測 → 並行して最優先「作品詳細ファーストビュー（3秒の視界）UI改修」へ移行。scroll はアプリ側実装として別途起票。
