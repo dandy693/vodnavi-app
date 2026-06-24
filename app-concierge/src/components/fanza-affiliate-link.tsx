@@ -31,7 +31,11 @@ export function FanzaAffiliateLink({
   content_id: string;
   title: string;
   floor_code: string;
-  placement: "detail_main_cta" | "detail_sample" | "detail_sticky_cta";
+  placement:
+    | "detail_main_cta"
+    | "detail_sample"
+    | "detail_sticky_cta"
+    | "detail_fv_cta";
   className?: string;
   children: ReactNode;
 }) {

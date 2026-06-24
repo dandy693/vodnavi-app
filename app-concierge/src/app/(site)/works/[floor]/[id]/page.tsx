@@ -272,6 +272,60 @@ export default async function WorkDetailPage({
             {item.title}
           </h1>
 
+          {/* ── ファーストビュー昇格ブロック (Phase-2 / 3秒の視界ハック) ──
+             GA4 物理監査 (2026-06-24): 作品詳細の平均滞在 1〜6 秒・scroll 90%
+             到達はわずか 4.6%。CVR 資産 (金 CTA + 回遊ハブ) を H1 直下へ複製
+             昇格し、3:4 商品画像 (~500px) で押し下げられる前に視認させる。
+             `lg:hidden`: lg 以上は 2 カラムで右カラムが既にメイン CTA を FV 内に
+             surface しているため非表示。単一カラム (mobile / tablet, 画像が縦を
+             占有) でのみ昇格 CTA を出す。`placement="detail_fv_cta"` で GA4 上の
+             成約熱量を既存 in-flow CTA (detail_main_cta) と分離計測する。
+             既存の in-flow CTA / 女優・ジャンル Link は破壊せず併存 (複製昇格)。
+             BRAND_DESIGN_GUIDE §2-3 ダーク×シャンパンゴールド (#D4AF37) を踏襲。 */}
+          <div className="flex flex-col gap-2.5 rounded-xl border border-amber-400/20 bg-amber-400/[0.03] px-3 py-3 lg:hidden">
+            <FanzaAffiliateLink
+              href={fanzaAffiliate.primaryUrl}
+              content_id={item.content_id}
+              title={item.title}
+              floor_code={floor}
+              placement="detail_fv_cta"
+              className={cn(
+                "btn-luxury-gold w-full rounded-lg text-sm font-semibold",
+                "min-h-11 px-4 py-2.5",
+                "group",
+              )}
+            >
+              <span className="text-center leading-tight">
+                FANZA公式で今すぐ視聴・サンプルを見る（18禁）
+              </span>
+              <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
+            </FanzaAffiliateLink>
+
+            {(actresses.length > 0 || genres.length > 0) && (
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[11px]">
+                {actresses.slice(0, 3).map((p) => (
+                  <Link
+                    key={`fv-act-${p.id}`}
+                    href={`/actresses/${p.id}`}
+                    className="inline-flex items-center gap-0.5 rounded-full border border-amber-400/30 bg-amber-400/5 px-2 py-0.5 text-amber-200 transition-colors hover:border-amber-400/60 hover:text-amber-100"
+                  >
+                    <Users className="size-3" aria-hidden />
+                    {p.name}
+                  </Link>
+                ))}
+                {genres.slice(0, 4).map((g) => (
+                  <Link
+                    key={`fv-gen-${g.id}`}
+                    href={`/genres/${g.id}`}
+                    className="rounded-full border border-white/10 bg-white/5 px-2 py-0.5 text-foreground/90 transition-colors hover:border-amber-400/40 hover:text-amber-300"
+                  >
+                    {g.name}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
           {editorial?.editorialLead && (
             <p
               data-editorial="lead"
