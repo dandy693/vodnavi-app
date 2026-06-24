@@ -1066,3 +1066,8 @@
 - **実機視覚再監査（390px / y=0）**: Chrome MCP で本番 `/works/videoa/lulu00423` をスクロール0で目視。**H1＋金CTA(detail_fv_cta)＋女優/ジャンルピルが絶対ゼロ座標FV内に物理露出**を実測確認。画像は object-cover 中央クロップ(~220px帯)で崩れなし。基準①②とも合格。証跡: `management/_metrics/artifacts/2026-06-25-iphone-fv-fixed-audit.md`。
 - **到達点**: PR #56 で残った「画像の壁による埋没」を PR #57 で解消し、モバイル「3秒の視界」へ成約・回遊動線を浮上完了（UI実装＝完了）。
 - **⚠️ 残る検証（ビジネス効果）**: 「UIが見える」は実証済だが「クリック・成約が増えた」は別物。本番 GA4 DebugView で detail_fv_cta の実発火、および detail_fv_cta vs detail_main_cta のクリック率時系列比較が次フェーズ。scroll25/50/75アプリ側実装も未着手。
+
+## [Landed Log: 2026-06-25 SEV-1 Fanza 400 — 部分復旧（catalog ✅ / deep pages ❌・未クローズ）]
+- **執行事実**: 人手 env 更新（Step B）後、Claude Code が `vercel deploy --prod --force` 執行（新 deploy dpl_3og2H3v…、秘密値非関与）。
+- **実測**: ホーム/カタログ閲覧は **fresh 200・作品22件**で復旧（X-Vercel-Cache: MISS）。一方、作品詳細(cid)/ジャンル/女優ページは **fresh 404 継続**（stale cache でなく実失敗をキャッシュヘッダで確認）。
+- **SEV-1**: **格下げだが未クローズ**。deep pages（cid/article）復旧と非対称失敗の原因切り分け（現 DMM メッセージ取得）が次タスク。protocol の「完全復旧」表現は実態（部分復旧）に補正して記録。

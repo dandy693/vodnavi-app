@@ -79,3 +79,12 @@ method: "本番 curl 多面トライアンギュレーション（推測ゼロ�
 2. api_id が管理画面で**有効か**を確認（無効なら再発行 → Vercel env 再投入 → redeploy）。
 3. 上記で異常なしなら DMM サポートへ「v3 ItemList が全 api_id で 400 BAD REQUEST」を問い合わせ（IP/障害切り分け）。
 - ※当方コード・JSON・直近PR は無関係のため、コード修正では復旧しない（暫定の stale-cache 延命やリトライは**根本原因を隠すだけ**で非推奨）。
+
+## 5. 復旧執行と物理実測（2026-06-25・**部分復旧**）
+- **執行**: 人手による Vercel env 更新（Step B: DMM_API_ID / DMM_AFFILIATE_ID）後、Claude Code が `vercel deploy --prod --force`（秘密値非関与）を執行。新 deploy `dpl_3og2H3vvh59keZRAFASco1YvXXD2` READY、`app.vodnavi.jp` へ alias 済。
+- **✅ 復旧確認（catalog browse）**: ホーム `/` は `X-Vercel-Cache: MISS` / `Age: 0` の **fresh render で 200**、作品グリッド **22件**（`href="/works/..."`）を動的出力。プレーン `ItemList`（カタログ閲覧）は新資格情報で復旧し、「作品を取得できませんでした (status: 400)」は `/` から消失。
+- **⚠️ 未復旧（deep pages）**: 作品詳細（cid）/ ジャンル（article=genre）/ 女優（article=actress）ページは **fresh render（`X-Vercel-Cache: MISS` / `Age: 0`）で依然 404**。ホームが現在出力している cid（例: jqre00028, bibivr00173）の詳細ページすら 404。**stale cache ではなく fresh 失敗**であることをキャッシュヘッダで確定。
+- **未確定**: なぜ catalog browse は復旧し cid/article クエリは失敗するか。`vercel logs` 照会が `2026-06-24T17:16Z` で頭打ち（当日分が surface せず）のため、現時点の cid/article 失敗の DMM メッセージ（継続 400 か空応答か）は未取得。
+- **真因の注記（断定回避）**: env 更新でホームが 400→200 に転じた事実は「旧資格情報が DMM に拒否されていた」ことと整合する。ただし **DMM 管理画面の確認結果（api_id 失効/アカウント状態）は本AIに共有されていない**ため、§5冒頭の「api_id失効・アカウント健全」は断定しない（要・人手の事実共有）。
+- **SEV-1 ステータス**: **格下げ（catalog 復旧）だが未クローズ**。作品詳細/ジャンル/女優の SEO ページが 404 継続＝クローラへの 404 配信も継続。
+- **次の一手**: (1) deep pages の **fresh ログ取得**（cid/article の現 DMM メッセージ確認、`vercel logs --since` 再試行）。(2) 依然 "BAD REQUEST" なら、新資格情報でも cid/article クエリのみ拒否される理由を DMM 管理画面/サポートで切り分け。(3) catalog だけ復旧した非対称の原因究明。
