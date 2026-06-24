@@ -50,3 +50,32 @@ method: "本番 curl 多面トライアンギュレーション（推測ゼロ�
 ## 3. 確定事実と未確定の線引き（捏造回避）
 - **確定**: 全 fresh `ItemList` が 400 / 表示は stale cache のみ / ジャンルID・直近PR は無関係 / env は存在し DMM が拒否。
 - **未確定（要 Vercel ログ）**: 「認証失効」か「IPブロック」か「DMM側障害」か。本レポートはこれを**断定せず**、判別に必要な唯一の証跡（VODNAVI_SILENT_DEATH_GUARD の message）を指定するに留める。
+
+---
+
+## 4. 【UPDATE 2026-06-25】Vercel CLI ログ実測による確定
+`vercel logs app.vodnavi.jp --json --query VODNAVI_SILENT_DEATH_GUARD`（auth: hdktchkw33-7057 / project prj_42GkXv2njAJTxYbmDoLdP8JoZbkx）で生ログを取得。
+
+### 4-A. DMM の生エラーメッセージ（確定）
+```
+{"level":"high","tag":"VODNAVI_SILENT_DEATH_GUARD","context":"fetchItemList: HTTP エラー",
+ "status":400,"message":"FANZA API request failed: 400 Bad Request — BAD REQUEST"}
+```
+- DMM の `result.message` は**汎用の "BAD REQUEST"**（`invalid api_id` 等の具体メッセージではない）。全 `ItemList` リクエストに対し一律。
+- ログの request burst は `2026-06-24T16:42〜16:43Z`、`requestPath=/works/videoa/*` を高速連続（**クローラ/Googlebot**）、全て `responseStatusCode:404` `cache:MISS`。→ 障害は**遅くとも 2026-06-24 16:43Z には発生**、かつ**クローラに 404 を返し続け SEO/インデックスを能動的に毀損中**。
+
+### 4-B. 認証情報の更新履歴（確定・秘密値非開示）
+`vercel env ls production`：**`DMM_API_ID` / `DMM_AFFILIATE_ID` はともに 44日前作成、以降変更なし**。
+→ **本件は当方の env 変更起因ではない**。44日間正常稼働した同一資格情報が、昨日以降 DMM 側で拒否され始めた。
+
+### 4-C. 確定した原因の所在（DMM 側）
+証拠（① 全種別 400 "BAD REQUEST" ② 資格情報 44日不変 ③ 当方コード/JSON 無関係）の合流点は **DMM 側の状態変化**。最有力は次のいずれか（断定せず、確認手順を付す）:
+1. **DMM アフィリエイト・アカウント/API の停止・要再承認**（アダルト系は審査/凍結が起こりうる）。
+2. **DMM API v3 側の仕様変更/障害**（必須パラメータ追加・エンドポイント変更等）。
+3. **Vercel egress IP の DMM 側ブロック**。
+
+### 4-D. 次の一手（人手・DMM 管理画面）
+1. **affiliate.dmm.com にログイン → アカウント状態 / API 利用状況 / 通知（凍結・再承認要求）を確認**。これが 4-C の3択を一意に判別する。
+2. api_id が管理画面で**有効か**を確認（無効なら再発行 → Vercel env 再投入 → redeploy）。
+3. 上記で異常なしなら DMM サポートへ「v3 ItemList が全 api_id で 400 BAD REQUEST」を問い合わせ（IP/障害切り分け）。
+- ※当方コード・JSON・直近PR は無関係のため、コード修正では復旧しない（暫定の stale-cache 延命やリトライは**根本原因を隠すだけ**で非推奨）。
