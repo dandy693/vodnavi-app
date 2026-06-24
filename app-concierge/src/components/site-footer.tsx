@@ -1,11 +1,19 @@
 import Link from "next/link";
 
+import { getActressLinks } from "@/lib/actress-editorial";
+import { getGenreLinks } from "@/lib/genre-editorial";
+
 const NAV_LINKS = [
   { href: "/about", label: "About" },
   { href: "/privacy", label: "Privacy Policy" },
   { href: "/disclaimer", label: "Disclaimer" },
   { href: "/contact", label: "Contact" },
 ];
+
+// 実名 populate 済みの女優 / ジャンルを editorial JSON から動的取得。
+// 手動列挙ゼロ。JSON が増えればフッターのリンク網も自動で追従する。
+const ACTRESS_LINKS = getActressLinks();
+const GENRE_LINKS = getGenreLinks();
 
 export function SiteFooter() {
   return (
@@ -48,6 +56,52 @@ export function SiteFooter() {
           </ul>
         </nav>
       </div>
+
+      {(ACTRESS_LINKS.length > 0 || GENRE_LINKS.length > 0) && (
+        <div className="border-t border-white/5">
+          <div className="mx-auto max-w-7xl space-y-6 px-4 py-8 sm:px-6">
+            {ACTRESS_LINKS.length > 0 && (
+              <section aria-label="出演女優インデックス">
+                <p className="mb-3 text-[10px] font-medium tracking-[0.25em] text-amber-300/80">
+                  出演女優
+                </p>
+                <ul className="flex flex-wrap gap-x-3.5 gap-y-2">
+                  {ACTRESS_LINKS.map((a) => (
+                    <li key={a.id}>
+                      <Link
+                        href={`/actresses/${a.id}`}
+                        className="text-[11px] leading-none text-muted-foreground/75 transition-colors hover:text-amber-300"
+                      >
+                        {a.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {GENRE_LINKS.length > 0 && (
+              <section aria-label="ジャンルインデックス">
+                <p className="mb-3 text-[10px] font-medium tracking-[0.25em] text-amber-300/80">
+                  ジャンル
+                </p>
+                <ul className="flex flex-wrap gap-x-3.5 gap-y-2">
+                  {GENRE_LINKS.map((g) => (
+                    <li key={g.id}>
+                      <Link
+                        href={`/genres/${g.id}`}
+                        className="text-[11px] leading-none text-muted-foreground/75 transition-colors hover:text-amber-300"
+                      >
+                        {g.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+        </div>
+      )}
 
       <div className="border-t border-white/5">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-4 text-[11px] text-muted-foreground/70 sm:px-6">
