@@ -10,6 +10,8 @@ import actressesEditorialData from "@/data/actresses-editorial.json";
  * editorialLead が入った時点で公開＝描画される）。
  */
 export type ActressEditorial = {
+  /** アンカーテキスト用の実名（MD 由来 + 本番 <title> 物理抽出で populate）。 */
+  name?: string;
   /** H1 直下に表示される 300〜500 字の編集リード。 */
   editorialLead?: string;
   /** 感情アーキタイプ。genre / works editorial と同じ語彙を使う。 */
@@ -26,4 +28,17 @@ export function getActressEditorial(
   const entry = editorial[actressId];
   if (!entry?.editorialLead) return undefined;
   return entry;
+}
+
+/**
+ * フッター等のリンククラウド用。実名 (`name`) が populate 済みの女優だけを
+ * `{ id, name }` 配列で返す。JSON の拡張に 100% 追従する（手動列挙はしない）。
+ */
+export function getActressLinks(): { id: string; name: string }[] {
+  return Object.entries(editorial)
+    .filter(
+      (entry): entry is [string, ActressEditorial & { name: string }] =>
+        typeof entry[1].name === "string" && entry[1].name.length > 0,
+    )
+    .map(([id, v]) => ({ id, name: v.name }));
 }
