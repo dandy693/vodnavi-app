@@ -255,7 +255,11 @@ export default async function WorkDetailPage({
 
       <section className="grid gap-6 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
         {image && (
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl bg-black ring-1 ring-white/10">
+          // モバイル/タブレット (単一カラム) では 3:4 画像が縦を占有して H1+detail_fv_cta
+          // をゼロ座標から押し出すため、max-h-[220px] で高さを緊縮し object-cover で
+          // 中央クロップ表示する (Phase-2 追補 / 3秒の視界ハック完成)。lg 以上は
+          // 2 カラムで縦に余裕があるため max-h を解除して本来の 3:4 全体を見せる。
+          <div className="relative aspect-[3/4] max-h-[220px] w-full overflow-hidden rounded-2xl bg-black ring-1 ring-white/10 lg:max-h-none">
             <FanzaImage
               src={image}
               alt={item.title}
