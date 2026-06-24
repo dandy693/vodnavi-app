@@ -1071,3 +1071,8 @@
 - **執行事実**: 人手 env 更新（Step B）後、Claude Code が `vercel deploy --prod --force` 執行（新 deploy dpl_3og2H3v…、秘密値非関与）。
 - **実測**: ホーム/カタログ閲覧は **fresh 200・作品22件**で復旧（X-Vercel-Cache: MISS）。一方、作品詳細(cid)/ジャンル/女優ページは **fresh 404 継続**（stale cache でなく実失敗をキャッシュヘッダで確認）。
 - **SEV-1**: **格下げだが未クローズ**。deep pages（cid/article）復旧と非対称失敗の原因切り分け（現 DMM メッセージ取得）が次タスク。protocol の「完全復旧」表現は実態（部分復旧）に補正して記録。
+
+## [Landed Log: 2026-06-25 M-08 Deep-Pages Scan — SEV-1 FULL RECOVERY 確認]
+- **執行事実**: 全ディープルート死活一斉スキャン（女優56 + ジャンル70 + ホーム由来 work cid 15）を完遂。**126+ ルートで 404 ゼロ / 全 200（X-Vercel-Cache: MISS = fresh）**。過渡期に404だった /genres/524 等も全て200へ復旧、flapping なし。→ **SEV-1 完全復旧を物理確認**。
+- **⚠️ 未捕捉（捏造回避）**: 直近30分のディープページ DMM 生メッセージは取得できず（`vercel logs --since=30m` が0件、当日分が照会APIに非surface・2026-06-24T17:16Zで頭打ち）。protocol の「DMM側返却メッセージを完全特定」は**未達**のため記録を補正。ただし全ルート復旧により非対称404は再デプロイ過渡の一時事象と確定（恒久障害でない）。証跡: `management/_audit/2026-06-25-all-routes-404-scan.md`。
+- **残**: 24h 404配信に伴う GSC 再クロール観測 / 当時のDMM拒否理由の人手確認（再発防止）。
