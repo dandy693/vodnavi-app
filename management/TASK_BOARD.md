@@ -1034,3 +1034,9 @@
 - [ ] GTMに `placement` パラメータをインジェクトし、金CTAのクリック位置（header/body/footer）を識別可能にする
 - [ ] GTMに25%/50%/75%のスクロールトリガーを配線し、ユーザーの離脱ポイントを25%刻みで可視化する
 - [ ] 年齢確認ゲートの表示・同意・離脱（`age_gate_*`）イベントをコンポーネントに埋め込み、遮断率を物理特定する
+
+## [Sprint Task: 2026-06-24 Phase-2] GTM拡張に伴うコードインフラ実装フェーズ
+- [ ] `app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx`（およびその子コンポーネント）のコード目視確認
+- [ ] 金CTA要素への `data-placement` 属性の付与
+- [ ] 年齢確認ゲート（コンポーネント/`proxy.ts`）への `age_gate_*` データレイヤー発火処理の埋め込み
+- [ ] 各ドメイン（vodnavi.jp / app.vodnavi.jp / moterist.com流入）のホスト名識別タグの生存テスト
