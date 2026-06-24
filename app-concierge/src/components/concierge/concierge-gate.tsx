@@ -2,6 +2,8 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 
+import { track } from "@/lib/analytics";
+
 /**
  * /concierge ページ用の年齢確認オーバーレイモーダル。
  *
@@ -63,6 +65,12 @@ export function ConciergeGate() {
     };
   }, [open]);
 
+  // 年齢ゲート表示の物理計測。/concierge 着地時の未通過ユーザーで一度発火。
+  useEffect(() => {
+    if (!open) return;
+    track("age_gate_view", { gate: "concierge" });
+  }, [open]);
+
   if (!open) return null;
 
   async function confirm() {
@@ -82,6 +90,7 @@ export function ConciergeGate() {
       }
       // ハードリロードしない：subscribeCookie 経由で `verified` が再評価され、
       // モーダルは即座にアンマウントされてチャット UI が解放される。
+      track("age_gate_agree", { gate: "concierge" });
       window.dispatchEvent(new Event("vodnavi:cookie-updated"));
     } catch {
       setError("通信に失敗しました。ネットワークを確認してください。");
@@ -130,6 +139,12 @@ export function ConciergeGate() {
           <a
             href="https://www.google.com/"
             rel="noopener noreferrer"
+            onClick={() =>
+              track("age_gate_bounce", {
+                gate: "concierge",
+                transport_type: "beacon",
+              })
+            }
             className="btn-luxury-outline"
           >
             いいえ（退出）

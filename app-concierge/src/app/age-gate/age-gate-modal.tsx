@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import { track } from "@/lib/analytics";
 
 /**
  * 年齢確認モーダル（クライアント側 UI）
@@ -14,6 +16,11 @@ import { useState } from "react";
 export function AgeGateModal({ next }: { next: string }) {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  // /age-gate ページは未通過ユーザー専用の到達面。マウント時に一度発火。
+  useEffect(() => {
+    track("age_gate_view", { gate: "age_gate_page" });
+  }, []);
 
   async function confirm() {
     if (busy) return;
@@ -30,6 +37,7 @@ export function AgeGateModal({ next }: { next: string }) {
         setBusy(false);
         return;
       }
+      track("age_gate_agree", { gate: "age_gate_page" });
       // ハードナビゲーション（middleware を再評価させて、新クッキーで通過させる）
       window.location.href = next;
     } catch {
@@ -71,6 +79,12 @@ export function AgeGateModal({ next }: { next: string }) {
           <a
             href="https://www.google.com/"
             rel="noopener noreferrer"
+            onClick={() =>
+              track("age_gate_bounce", {
+                gate: "age_gate_page",
+                transport_type: "beacon",
+              })
+            }
             className="btn-luxury-outline"
           >
             いいえ（退出）
