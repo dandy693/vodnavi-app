@@ -1060,3 +1060,9 @@
 - **設計上の成果（本番再監査は次フェーズ）**: モバイル/タブレットで画像縦幅を ~220px に緊縮 → H1＋新設金CTA（detail_fv_cta）をスクロール不要のゼロ座標FVへ浮上させる意図。tsc --noEmit クリア。
 - **⚠️ 未検証**: 「ゼロ座標に収まった」かは本番マージ＋デプロイ後の 390px 実機幅エミュレーションで再監査して初めて確定（PR #56 監査と同手順）。現時点はコード実装のみ。
 - **次フェーズ**: 本番再監査 → GA4 DebugView で detail_fv_cta クリックサージ監視。
+
+## [Landed Log: 2026-06-25 3-Second Visibility Window ACCOMPLISHED (y=0 実測検証済)]
+- **執行事実**: 追補PR #57（feature/fix-fv-zero-coordinate）を main へ squash マージ（975a2ff）。本番デプロイは curl で `max-h-[220px]` を SSR HTML に検出して確認（attempt 3）。
+- **実機視覚再監査（390px / y=0）**: Chrome MCP で本番 `/works/videoa/lulu00423` をスクロール0で目視。**H1＋金CTA(detail_fv_cta)＋女優/ジャンルピルが絶対ゼロ座標FV内に物理露出**を実測確認。画像は object-cover 中央クロップ(~220px帯)で崩れなし。基準①②とも合格。証跡: `management/_metrics/artifacts/2026-06-25-iphone-fv-fixed-audit.md`。
+- **到達点**: PR #56 で残った「画像の壁による埋没」を PR #57 で解消し、モバイル「3秒の視界」へ成約・回遊動線を浮上完了（UI実装＝完了）。
+- **⚠️ 残る検証（ビジネス効果）**: 「UIが見える」は実証済だが「クリック・成約が増えた」は別物。本番 GA4 DebugView で detail_fv_cta の実発火、および detail_fv_cta vs detail_main_cta のクリック率時系列比較が次フェーズ。scroll25/50/75アプリ側実装も未着手。
