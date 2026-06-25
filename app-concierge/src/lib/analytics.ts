@@ -135,3 +135,19 @@ export interface EarlyCookieBurnPayload {
 export function trackEarlyCookieBurn(payload: EarlyCookieBurnPayload): void {
   track("early_cookie_burn", { asp_name: "fanza", ...payload });
 }
+
+/**
+ * Phase-3 スクロール深度計測ヘルパー。
+ *
+ * 空コンテナの GTM (GTM-TKDHM348) をバイパスし、アプリ側で読了率を直接 GA4 へ
+ * 送出する。GA4 既定の拡張計測 `scroll` は 90% 固定のため、より浅い 25/50/75%
+ * の離脱段階を捕捉して記事/詳細ページの読了ファネルを可視化する。
+ * 発火制御（passive + rAF スロットル、ページ内 1 回ガード）は
+ * `ScrollDepthTracker` コンポーネント側が担い、本ヘルパーは送出のみを担当する。
+ * 仕様: management/_metrics/2026-06-25-perfect-analytics-setup.md
+ */
+export type ScrollDepthThreshold = 25 | 50 | 75;
+
+export function trackScrollDepth(percent: ScrollDepthThreshold): void {
+  track("scroll_custom", { percent_scrolled: percent });
+}

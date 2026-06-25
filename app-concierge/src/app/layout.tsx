@@ -3,6 +3,7 @@ import { Geist_Mono, Noto_Sans_JP, Cormorant_Garamond } from "next/font/google";
 
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { GoogleTagManager } from "@/components/google-tag-manager";
+import { ScrollDepthTracker } from "@/components/scroll-depth-tracker";
 import { getSiteUrl } from "@/lib/site";
 
 import "./globals.css";
@@ -102,6 +103,9 @@ export default function RootLayout({
            コンテナ自体をマウントしないので noscript も emit されない。 */}
         <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
         {children}
+        {/* Phase-3: 空 GTM をバイパスし 25/50/75% スクロール深度を GA4 へ直送。
+           track() が非本番で no-op のため常時マウント可。usePathname で per-page リセット。 */}
+        <ScrollDepthTracker />
         <GoogleAnalytics
           measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
         />
