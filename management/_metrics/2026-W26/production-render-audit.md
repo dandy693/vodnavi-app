@@ -59,6 +59,16 @@ CTO 実測（read-only GET、Claude Code Bash）。CSO script `execute_total_aud
 - **根因候補（未確定・断定しない）**: (a) `h_` maker-prefix の CID は videoa floor の FANZA API で resolve できない floor/namespace 不一致、(b) 本日の **FANZA API 400 全滅 SEV-1**（[[project_fanza_api_400_global_outage]]）で fresh fetch が失敗し、当該 CID は安定 ISR cache に未到達（26 件は stale cache で生存）、(c) DMM 側で gone-from-history。**確定には Vercel runtime log（`getWork` の null 経路 / FANZA API レスポンス）または障害復旧後の再 probe が必要**。
 - **影響度**: 第1弾 SC 上位群（Sprint1 TOP10 内、17 click）の 1 枠が dead link。低〜中（収益主力 top3 は PASS だが、orphaned review 資産の救済 or 退役判断が要る）。
 
+## 4.1 追加診断（DMM front-end probe + floor 機構照合, 2026-06-25）
+affiliate API は本日 SEV-1 400 全滅でプローブ confound するため、**affiliate API を経由しない DMM 公開面**で probe（control 付き）。
+- **front-end probe**: `h_1724m794g00002` も control `snos00233` も新 FANZA SPA `video.dmm.co.jp/.../content/?id=` の**同一 200 shell（27,604B・JS 描画）**へ着地＝**SPA shell では存在可否を確定できない**。ただし legacy `digital/videoc/cid=h_1724…` は `/amateur/content/` へ、control は `/av/content/` へ remap＝**DMM 側はこの CID を amateur 系に分類**（`h_` maker-prefix と整合）。
+- **floor 不一致仮説は棄却（コードで反証）**: `lib/fanza/types.ts:159-162` で `amateur.apiFloor="videoa"`。`page.tsx:55` の `apiFloorParam = floorMeta.apiFloor ?? floorMeta.code` により **UI floor が videoa でも amateur でも getWork は同一 API floor=`videoa` を引く**。先の `/works/amateur/h_1724…`=404 も同じ API floor を叩いた結果＝**videoa↔amateur の routing バグではない**（当初の floor-mismatch 仮説は撤回）。
+- **存在の時系列証跡**: review .md は `source:live`・`generated_at 2026-05-27`＝**4 週間前は FANZA API がこの item を返していた**（架空 CID でも未生成でもない）。
+- **絞り込んだ根因（2 択・curl では未確定）**:
+  - **(A) 障害起因・回復見込み**: 本日 **SEV-1 FANZA API 400 全滅**（[[project_fanza_api_400_global_outage]]）で `fetchItemList` が catch→`null`、かつ当該 CID が安定 ISR cache 未到達（26 件は cache で生存）→ `notFound()`。**障害復旧で自己回復する。**
+  - **(B) 配信終了・恒久**: 5-27 以降に FANZA から item 除去 → `items` 空 → `null`。**恒久（退役要）。**
+- **決定的テスト**: **SEV-1 復旧後に `/works/videoa/h_1724m794g00002` を再 probe**。200 復帰＝(A)（無対応で可）、404 継続＝(B)（301 退役 + review .md パージ + `cco-target-cids.ts` 除外）。Vercel runtime log の `fetchItemList` レスポンス（400 か empty-items か）でも即断可。
+
 ## 5. アフィリエイト URL 実値（盾の物理確認・代表 snos00233）
 ```
 https://al.dmm.co.jp/?lurl=...cid%3Dsnos00233...&af_id=moterist-990&ch=link_tool&ch_id=link
