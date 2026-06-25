@@ -3,7 +3,8 @@ export type ConciergeSource =
   | "moterist"
   | "brand"
   | "app_detail"
-  | "sns_x";
+  | "sns_x"
+  | "app_3tap";
 
 export interface ConciergeSourceProfile {
   id: ConciergeSource;
@@ -25,6 +26,9 @@ const APP_DETAIL_GREETING =
 
 const SNS_X_GREETING =
   "X からの一篇、お読みくださりありがとうございます。ようこそ、官能の図書館へ。\n\nあの投稿の知的な余韻のまま、今夜のお気持ちを一言お聞かせください。あなたの感性に静かにシンクロする一本を、プライベートにお選びいたします。";
+
+const APP_3TAP_GREETING =
+  "3 つの問いに、お答えくださりありがとうございます。あなたの今宵の輪郭が、静かに見えてまいりました。\n\nまずは選び抜いた数編をご覧いただきながら、さらに細部までお気持ちに寄り添ってまいります。気になる一本があれば、遠慮なくお申し付けください。";
 
 const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
   default: {
@@ -55,6 +59,12 @@ const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
     greeting: SNS_X_GREETING,
     systemAddendum:
       "【流入コンテキスト】このユーザーは X（旧Twitter）の教養レンズ系ポストから流入しています。チープな直接的アダルト表現は避け、映画批評・心理学的アプローチの格調を保ってください。成人向け作品（FANZA）の提示は、サーバー側の年齢確認ゲート（proxy.ts）通過が前提であり、その上で上品に商品カードを案内してください。",
+  },
+  app_3tap: {
+    id: "app_3tap",
+    greeting: APP_3TAP_GREETING,
+    systemAddendum:
+      "【流入コンテキスト】このユーザーはアプリ内の 3 タップ診断（美意識 → 時間の濃度 → 深淵）を経てコンシェルジュへ流入しています。診断で選ばれた作品群（cids）が初期提示済みである前提で、その傾向を踏まえつつ、近い気配の別案も一つ静かに添えてください。チープな直接的アダルト表現は避け、官能の図書館の格調を保ってください。",
   },
 };
 
