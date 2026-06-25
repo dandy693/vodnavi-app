@@ -1076,3 +1076,9 @@
 - **執行事実**: 全ディープルート死活一斉スキャン（女優56 + ジャンル70 + ホーム由来 work cid 15）を完遂。**126+ ルートで 404 ゼロ / 全 200（X-Vercel-Cache: MISS = fresh）**。過渡期に404だった /genres/524 等も全て200へ復旧、flapping なし。→ **SEV-1 完全復旧を物理確認**。
 - **⚠️ 未捕捉（捏造回避）**: 直近30分のディープページ DMM 生メッセージは取得できず（`vercel logs --since=30m` が0件、当日分が照会APIに非surface・2026-06-24T17:16Zで頭打ち）。protocol の「DMM側返却メッセージを完全特定」は**未達**のため記録を補正。ただし全ルート復旧により非対称404は再デプロイ過渡の一時事象と確定（恒久障害でない）。証跡: `management/_audit/2026-06-25-all-routes-404-scan.md`。
 - **残**: 24h 404配信に伴う GSC 再クロール観測 / 当時のDMM拒否理由の人手確認（再発防止）。
+
+## [Sprint Task: 2026-06-25 Phase-3] 計測インフラ完全化（スクロール深度のコード実装）
+- 仕様書 landed: `management/_metrics/2026-06-25-perfect-analytics-setup.md`（GSC sitemap 3,010 URL 実測 / placement・gate 登録済 / GTM-TKDHM348 は空＝scroll 欠損、の3点を物理確認）。本コミットは**仕様のみ・コード未実装**。
+- [ ] GSC 管理画面で、一時的404が発生していたハブ/詳細 URL 群の「インデックス修正検証」をリクエスト（手動）
+- [ ] アプリ側 `analytics.ts` もしくは共通レイアウトに 25/50/75% スクロールカスタムイベント（`scroll_custom` + `percent_scrolled`）発火ロジックを非破壊実装（passive + rAF スロットル、track() の非本番 no-op を踏襲）
+- [ ] GA4 管理画面に `percent_scrolled` カスタムディメンション（範囲: イベント）を公式登録
