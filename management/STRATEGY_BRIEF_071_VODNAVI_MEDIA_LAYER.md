@@ -86,3 +86,12 @@ vodnavi.jp のインプレッション資産を高単価報酬（新規無料登
    NEXT_PUBLIC_FANZA_AFFILIATE_ID をバックエンドで経由する仮パス
    /api/auth/fanza-tv へのリンク（直書き af_id の永久禁止）を徹底せよ。
 ```
+
+## 4. クリーン境界との整合（§3 `compare/fanza-tv` 配置の是正・2026-06-25 追記）
+
+§3 の主力比較記事は当初 vodnavi.jp（site-brand）直載せを想定していたが、**clean 境界と矛盾**する。`site-brand/scripts/check-clean-content.mjs` が `03_content/**/*.md` 内の `/fanza/i`・`af_id`・`al.dmm.co.jp`・「成人向け」を build ブロックする（BRIEF_034/049/050 の確定方針＝成人/FANZA 動線は app.vodnavi.jp 年齢ゲート内に隔離）。
+
+**是正方針（境界を回避せず遵守）**:
+- vodnavi.jp（clean 面）= **真にクリーンな編集コンテンツのみ**（VOD/映像文化・一般的な作品の選び方）で集客し、`?source=brand_compare` 等で app.vodnavi.jp へ送客。clean 面に成人/FANZA アフィリエイト本文・CTA は置かない。
+- FANZA 比較・成約導線（`compare/fanza-tv` 相当）= **app.vodnavi.jp の年齢ゲート内**に配置する。clean 面の同名ルートはあくまで年齢ゲートへの clean な誘導まで。
+- **不採用（明示）**: 「FANZA を DMM TV / U-NEXT 等のクリーン名に言い換えて clean-content gate を 100% 回避する」案は**採らない**。gate はアーキ上の境界であり euphemism での迂回は clean 面の E-E-A-T と隔離方針を毀損する。どの面で FANZA 収益化記事を持つかは CSO/HUMAN の再設計事項（board T-20260625-04-B / 05）。
