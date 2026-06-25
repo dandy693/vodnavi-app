@@ -16,6 +16,7 @@ note: >
 - **対象ドメイン**: `app.vodnavi.jp`（年齢確認ゲート裏のクローズド空間）。clean 面 vodnavi.jp には配置しない。
 - **世界観**: 『ビブリア・エロティカ（官能の図書館）』。
 - **マネタイズ**: FANZA アフィリエイトコンバージョン（既存ガバナンスの盾に完全準拠）。
+- **確定ファーストテーマ（2026-06-25 HUMAN 決定 Option 1）**: Search Console 高トラフィックの**一般作（floor=videoa）**。**VR/4K 等の属性は付さない**（詳細 §4）。
 
 ## 2. コンテンツ設計要件（CCO 執行基準）
 - **文体制限**: 俗悪なアダルトアフィリエイト表現を 100% 排除。知性・高級感・ダーク＆ゴールドのトーンを徹底し、「文化としての官能」をロジカルに比較・解説する。根拠なき「絶対」「業界No.1」等の断定は封印。
@@ -27,6 +28,8 @@ note: >
 - `#PR` 表記をファーストビューに明示（ステマ規制遵守）。
 - 実装・本番反映は要 HUMAN 承認（`tsc`/`next build` 通過 + 本番 curl 検証を land の条件とする）。
 
-## 4. 未確定・要決定（捏造しないための明示）
-- 第1弾の具体テーマ（どの作品群/ジャンルの「官能比較」か）は未確定。CCO ドラフト前に CSO/HUMAN がテーマと対象 content_id 群を確定する。
-- app 側の配置ルート（`app-concierge` の既存ルーティングへどう載せるか）は CTO が実装前に設計確定。現時点でルートは未作成。
+## 4. 第1弾テーマ・対象 CID（2026-06-25 HUMAN 決定 = Option 1 で確定）
+- **確定テーマ**: Search Console 高トラフィックの**一般作（floor=videoa）**。**VR/4K 等の属性は付さない**。CSO script の「Premium VR/4K」テーマは `app-concierge/scripts/cco-target-cids.ts:11`（「フロアは本リスト時点で全件 videoa 一般」）と矛盾するハルシネーションのため**棄却**。`gkok00002` の実タイトルヒントも一般単体作で VR ではない [[feedback_verify_cso_script_sed]]。
+- **対象 CID（実在・SC 物理監査ベース、`cco-target-cids.ts` 準拠）**: 第1弾は SC クリック上位 `gkok00002`(81) / `snos00233`(70) / `savr00978`(43)。以降は同ファイル Sprint1 TOP10 → Sprint2 実在17件の順。**捏造属性（VR/4K・架空ジャンルID 6533/4025 等）は付与しない**（6533/4025 はリポジトリに不在＝未検証）。
+- **既存資産（要・自己訂正）**: app 側は greenfield ではない。実ルート `app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx`、単一アフィリエイト動線 `buildAffiliateURL`（`lib/concierge/url-builder.ts`）、レビュー注入パイプライン `generate-work-reviews.ts` + `src/data/work-reviews/*.md`（`snos00233.md`/`savr00978.md` 等は既存）。よって第1弾は**新ルート作成ではなく既存 work-reviews への高品質本文（ビブリア・エロティカ文体）注入**が筋。
+- **残（未了）**: 実本文の品質執筆・CTA 動線の CCO レビューは未着手。実装・本番反映は要 HUMAN 承認（`tsc`/`next build` + 本番 curl 検証を land 条件とする）。
