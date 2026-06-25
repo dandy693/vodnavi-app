@@ -1080,5 +1080,15 @@
 ## [Sprint Task: 2026-06-25 Phase-3] 計測インフラ完全化（スクロール深度のコード実装）
 - 仕様書 landed: `management/_metrics/2026-06-25-perfect-analytics-setup.md`（GSC sitemap 3,010 URL 実測 / placement・gate 登録済 / GTM-TKDHM348 は空＝scroll 欠損、の3点を物理確認）。本コミットは**仕様のみ・コード未実装**。
 - [ ] GSC 管理画面で、一時的404が発生していたハブ/詳細 URL 群の「インデックス修正検証」をリクエスト（手動）
-- [ ] アプリ側 `analytics.ts` もしくは共通レイアウトに 25/50/75% スクロールカスタムイベント（`scroll_custom` + `percent_scrolled`）発火ロジックを非破壊実装（passive + rAF スロットル、track() の非本番 no-op を踏襲）
-- [ ] GA4 管理画面に `percent_scrolled` カスタムディメンション（範囲: イベント）を公式登録
+- [x] アプリ側 `analytics.ts` もしくは共通レイアウトに 25/50/75% スクロールカスタムイベント（`scroll_custom` + `percent_scrolled`）発火ロジックを非破壊実装（passive + rAF スロットル、track() の非本番 no-op を踏襲）→ PR #58 で実装・main マージ済（7c995cb）
+- [x] GA4 管理画面に `percent_scrolled` カスタムディメンション（範囲: イベント）を公式登録 → 2026-06-25 Chrome で登録・**6/6 で物理確認**（moterist.com@gmail.com / p489519780）
+- [ ] GSC「インデックス修正検証」→ **本日は実行せず（下記 M-09 ログ参照）。GSC の 404 は outage 由来でなく videoc フロアの構造的404（実機で現在も404）のため、修正検証を押すと検証失敗になる。outage の videoa/genres/actresses 404 は復旧済だが GSC 未記録（データ 06/12）で検証対象が存在しない**
+
+## [Landed Log: 2026-06-25 M-09 Phase-3 Scroll Telemetry merged + GA4 percent_scrolled live / GSC 検証は事実に基づき保留]
+- **PR #58 squash マージ完了**（main `7c995cb`、リモートブランチ削除）。GTM 空コンテナを迂回するアプリ直書き rAF スクロール計測（`scroll_custom` + `percent_scrolled` / passive + rAF + ページ内1回ガード / `usePathname` per-page リセット）を main へ伝播。`tsc --noEmit` クリア。
+- **GA4 アクティベート（物理確認済）**: カスタムディメンション `percent_scrolled`（範囲: イベント / パラメータ: percent_scrolled）を Chrome で登録。一覧が **5→6 件**に増加、avatar tooltip で **moterist.com@gmail.com** を確認、property は **vodnavi.jp p489519780**。アカウント確認の罠（authuser=2 が hdktchkw33/coushilift に落ちる）を踏み、明示的にモテリストへ切替後に実行。
+- **⚠️ GSC「修正を検証」は押下せず（捏造回避・protocol 前提の事実誤認を是正）**:
+  - protocol は「過去24時間の一時的API失効に伴う404」を検証対象としたが、GSC の 404 issue は **初検出 2023/07/22 の長期構造課題**で、データ最終更新 **2026/06/12**＝**outage（06/24）より前**。outage 404 は GSC に未記録で検証対象が存在しない。
+  - GSC 404 の該当 280 URL は**全て `/works/videoc/*`**（videoc は app 非対応フロア）。サンプル5件（oremo551/instc708/nost233/peep182/zarj070）を**本番 curl したところ現在も全て 404**。→ 修正されていないため「修正を検証」を押すと数日後に検証失敗となり、Google へ誤った「修正済」シグナルを送る。よって**押下しないのが正しい**。
+  - outage の videoa/genres/actresses 系は M-08 で 200 復旧確認済。Google の自然再クロールに委ね、GSC 記録が更新されてから状態観測する。
+- **最終ステータス（正確）**: 計測インフラは「コード実装＋GA4 登録」まで**完了**。ただし **(a) 本番 DebugView での `scroll_custom` 実発火検証は未実施（要デプロイ後観測）**、**(b) `/works/videoc/*` の構造的404（280件）は別途コード修正（videoc 対応 or 410/リダイレクト）が必要**。「100%完全落成」ではない。
