@@ -4,7 +4,8 @@ export type ConciergeSource =
   | "brand"
   | "app_detail"
   | "sns_x"
-  | "app_3tap";
+  | "app_3tap"
+  | "brand_pilot_001";
 
 export interface ConciergeSourceProfile {
   id: ConciergeSource;
@@ -29,6 +30,9 @@ const SNS_X_GREETING =
 
 const APP_3TAP_GREETING =
   "3 つの問いに、お答えくださりありがとうございます。あなたの今宵の輪郭が、静かに見えてまいりました。\n\nまずは選び抜いた数編をご覧いただきながら、さらに細部までお気持ちに寄り添ってまいります。気になる一本があれば、遠慮なくお申し付けください。";
+
+const BRAND_PILOT_001_GREETING =
+  "『VOD の選び方』を、最後までお読みくださったのですね。ようこそ、表の書架には並ばない私蔵の書庫へ。\n\nあの記事で綴った「映像を蔵書として選ぶ」という審美眼を、今度はあなた自身の、今宵の渇きへ向けてみましょう。ここから先は、あなただけの司書がご案内いたします。\n\nまずは一言――今夜、どのような余韻を求めていらっしゃいますか。";
 
 const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
   default: {
@@ -65,6 +69,12 @@ const PROFILES: Record<ConciergeSource, ConciergeSourceProfile> = {
     greeting: APP_3TAP_GREETING,
     systemAddendum:
       "【流入コンテキスト】このユーザーはアプリ内の 3 タップ診断（美意識 → 時間の濃度 → 深淵）を経てコンシェルジュへ流入しています。診断で選ばれた作品群（cids）が初期提示済みである前提で、その傾向を踏まえつつ、近い気配の別案も一つ静かに添えてください。チープな直接的アダルト表現は避け、官能の図書館の格調を保ってください。",
+  },
+  brand_pilot_001: {
+    id: "brand_pilot_001",
+    greeting: BRAND_PILOT_001_GREETING,
+    systemAddendum:
+      "【流入コンテキスト】このユーザーは vodnavi.jp のクリーン教養記事『人生を豊かにする VOD の選び方（映像を蔵書として読む）』を読了し、AI コンシェルジュ（/lp の 3 タップ診断）を経て流入しています。記事内で確立した『映像を蔵書として選ぶ』『あなたの感性に最短距離で寄り添う司書』という知的で上質な世界観を、最初の数往復まで一貫して保ってください。ダーク×ゴールドの落ち着いた品格と、選書家としての確かな審美眼を示し、チープな直接的アダルト表現は避けてください。記事の余韻（教養・知性・静けさ）を壊さず、その延長線上で今宵の一本へ静かに導いてください。診断由来の cids が初期提示済みの場合は、その傾向を司書の見立てとして言語化しつつ、近い気配の別案も一つ添えてください。",
   },
 };
 
