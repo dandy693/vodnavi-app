@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Noto_Sans_JP, Cormorant_Garamond } from "next/font/google";
 
+import { AttributionTracker } from "@/components/attribution-tracker";
+import { OutboundSourceRewriter } from "@/components/outbound-source-rewriter";
 import { GoogleAnalytics } from "@/components/google-analytics";
 import { GoogleTagManager } from "@/components/google-tag-manager";
 import { SiteFooter } from "@/components/site-footer";
@@ -129,6 +131,12 @@ export default function RootLayout({
         />
         {children}
         <SiteFooter />
+        {/* STRATEGY_BRIEF_078 §2.A: 着地 URL の ?source= を first-party cookie へ早期着火。
+           useSearchParams を内包するため自前で <Suspense> 隔離済（SSG を dynamic 化しない）。 */}
+        <AttributionTracker />
+        {/* STRATEGY_BRIEF_078 §2.B: 全ページ（top/hub/記事）の app.vodnavi.jp 行きリンクを
+           cookie/URL 由来 source で動的書換。usePathname で SPA 遷移にも追従。null render。 */}
+        <OutboundSourceRewriter />
         <GoogleAnalytics
           measurementId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}
         />

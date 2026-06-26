@@ -38,6 +38,11 @@ export default function PrivacyPage() {
             GA4 は Cookie を使用して匿名のトラフィックデータを収集します。
             収集されるデータは匿名であり、これにより個人を特定する情報は取得しません。
           </p>
+          <p>
+            また、流入元（アトリビューション）の把握とコンバージョン計測の適正化のため、
+            ファーストパーティ Cookie「vodnavi_source」（有効期限 30 日間）を発行・利用する場合があります。
+            この Cookie は流入経路を示す識別子のみを保持し、個人の特定や機微情報の収集は行いません。
+          </p>
         </section>
 
         <section className="space-y-3">
