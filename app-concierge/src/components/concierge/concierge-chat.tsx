@@ -43,6 +43,11 @@ const FALLBACK_GREETING_TEXT =
 const SHARED_INTRO_TEXT =
   "誰かがシェアした、今夜のおすすめ3本はこちらです！\n\n気になる作品があれば「今すぐ視聴」から FANZA でチェックできます。\nもし別の気分を相談したい時は、下のメッセージ欄から私に話しかけてください。";
 
+// brand_pilot_001（クリーン記事 → /lp 3タップ）専用の司書キュレーション導入文。
+// 診断由来の cids を「司書が見立てた蔵書」として提示し、本文末で後続グリッドへ自然に繋ぐ。
+const LIBRARIAN_CURATION_TEXT =
+  "お選びいただいた3つの審美眼（診断結果）から、今宵のあなたに相応しい蔵書を私が見立てました。これらは表の書架から厳選された、外れなき名作たちです。\n\nさあ、まずはこの3冊の『頁（ディテール）』をめくってみてください。もし別の余韻をお望みなら、私にその渇きを直接お聞かせください。";
+
 const SUGGESTIONS = [
   "疲れたから優しい雰囲気のものを",
   "久しぶりに濃いめがいい",
@@ -60,16 +65,23 @@ function buildDefaultInitialMessages(greeting: string): UIMessage[] {
   ];
 }
 
-function buildSharedInitialMessages(works: Work[]): UIMessage[] {
+function buildSharedInitialMessages(
+  works: Work[],
+  source?: string,
+): UIMessage[] {
   // 共有 URL から復元した作品を「アシスタントの最初のメッセージ」として注入。
   // テキスト + data-recommendations の 2 パート構成にすることで、通常の
   // MessageBubble がそのままレンダリングしてくれる（カスタム分岐不要）。
+  // 流入元が brand_pilot_001 のときだけ、汎用シェア文を司書キュレーション文へ差し替える。
+  // パート構造（text → data-recommendations）は不変＝グリッド描画ロジックは無改変。
+  const introText =
+    source === "brand_pilot_001" ? LIBRARIAN_CURATION_TEXT : SHARED_INTRO_TEXT;
   return [
     {
       id: "shared-recommendations",
       role: "assistant",
       parts: [
-        { type: "text", text: SHARED_INTRO_TEXT, state: "done" },
+        { type: "text", text: introText, state: "done" },
         // 型: AI SDK の UIMessage は data-* 接頭辞のカスタムパートを許容するが
         // 厳密な discriminated union 型上は any キャストが必要。
         {
@@ -98,7 +110,7 @@ export function ConciergeChat({
   // それ以外は流入元プロファイル由来の挨拶（greeting）でチャットを開始する。
   const initialMessages =
     initialWorks && initialWorks.length > 0
-      ? buildSharedInitialMessages(initialWorks)
+      ? buildSharedInitialMessages(initialWorks, source)
       : buildDefaultInitialMessages(greeting ?? FALLBACK_GREETING_TEXT);
 
   // 流入元コンテキストを API に伝搬。route.ts 側で system プロンプト末尾に
