@@ -7,12 +7,12 @@ import { usePathname } from "next/navigation";
  * STRATEGY_BRIEF_078 §2.B — マークダウン非破壊の送客リンク動的フォワード。
  *
  * クライアント mount 時に、レンダー済み HTML 内の app.vodnavi.jp 行きリンク (a[href])
- * を走査し、`vodnavi_source` cookie（無ければ現在 URL の `?source=`）の値で `source`
+ * を走査し、URL の `?source=`（無ければ `vodnavi_source` cookie）の値で `source`
  * クエリを上書きする。静的 markdown (article.md) は 1 文字も書き換えない＝SSG/SEO 不変。
  *
- * race 回避: 着地ページでは layout 側 AttributionTracker の cookie 着火 (useEffect) が
- * 本 rewriter より後に走り得るため、cookie を第一候補・**現在 URL の source を fallback**
- * とする（同一レンダ内で cookie 未着火でも着地ページの ?source= を拾える）。
+ * 優先順位 (T-20260627-07): **URL の ?source= を最優先**、無ければ cookie を fallback。
+ * 着地時の最新キャンペーン値が過去訪問で残った古い cookie に常に勝つ（returning-visitor の
+ * 誤帰属を防止）。これにより cookie 着火 (AttributionTracker) との effect race にも依存しない。
  *
  * `useSearchParams` は使わない（dynamic 化を避ける）。window.location は useEffect 内
  * （client 専用）でのみ参照するため SSG/SSR に影響しない。
@@ -20,13 +20,17 @@ import { usePathname } from "next/navigation";
 const SOURCE_RE = /^[a-zA-Z0-9_]{1,32}$/;
 
 function readSource(): string | null {
+  // 優先順位 (T-20260627-07): URL の ?source= を最優先。着地時の最新キャンペーン値が、
+  // 過去訪問で残った古い cookie に常に勝つ（returning-visitor の誤帰属を防止）。
+  // URL に無ければ cookie を回遊保持の fallback とする。cookie 着火 race にも非依存。
+  const u = new URLSearchParams(window.location.search).get("source");
+  if (u && SOURCE_RE.test(u)) return u;
   const m = document.cookie.match(/(?:^|;\s*)vodnavi_source=([^;]+)/);
   if (m) {
     const v = decodeURIComponent(m[1]);
     if (SOURCE_RE.test(v)) return v;
   }
-  const u = new URLSearchParams(window.location.search).get("source");
-  return u && SOURCE_RE.test(u) ? u : null;
+  return null;
 }
 
 export function OutboundSourceRewriter() {
