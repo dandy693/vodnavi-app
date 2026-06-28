@@ -8,6 +8,8 @@
 
 本書と矛盾する個別運用手順は無効。改訂は CSO が承認する。
 
+> ⚠️ **【非運用通達 — 2026-06-28 追記】** moterist.com は **2026-06-07 の経営意思決定（`STRATEGY_BRIEF_043_ALIGNMENT`）で完全凍結が確定**済み。本書 **§3（mixhost SSH 経由の WordPress 直接 DB 注入）はレガシー資産として保全するが現在は非運用** — mixhost SSH 自体が auto-mode classifier でブロックされ、事前 HUMAN 認可なしでは §3 手順は実行できない。現行の主要サーフェスは `app.vodnavi.jp`（Next.js 16）であり、年齢確認ゲートは `middleware.ts` ではなく `app-concierge/src/proxy.ts`（エッジハンドラー）に実装済み。§2 の土曜 PDCA データ抽出フロー自体は有効だが、抽出主軸は app.vodnavi.jp 側の GA4（G-GG7JV9MJRW / p489519780）へ移行している。
+
 ---
 
 ## 0. 共通前提

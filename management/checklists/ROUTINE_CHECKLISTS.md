@@ -10,10 +10,10 @@
 
 ### 📌 SEO・インデックス生存確認
 - [ ] **GSCエラー検知**: Search Console にログインし、「インデックス作成」レポートでエラー（500、Soft 404、リダイレクトループ）が0件であることを確認。
-- [ ] **Subdomainインデックス汚染チェック**: `site:app.vodnavi.jp` で検索し、並び替えパラメータ（ `?sort=` ）やセッションID（ `?session=` ）を含む低品質URLが誤ってインデックスされていないかスキャン。
+- [ ] **Subdomainインデックス汚染チェック**: `site:app.vodnavi.jp` で検索し、並び替えパラメータ（ `?sort=` ）やセッションID（ `?session=` ）を含む低品質URLが誤ってインデックスされていないかスキャン（統制は各ページの canonical 自己参照正規化で実装済＝本項は「混入検出」のスキャンのみ。`?sort=` への個別 noindex 自動注入は canonical consolidation を阻害するため不要・実施しない）。
 
 ### 📌 QA・インフラ監査
-- [ ] **5つの盾・生存テスト**: 年齢確認ゲート（middleware）が `app.vodnavi.jp` で健全に動作し、18歳未満のアクセスを遮断するかブラウザのシークレットモードでテスト。
+- [ ] **5つの盾・生存テスト**: 年齢確認ゲート（proxy.ts エッジハンドラー。Next.js 16 で middleware→proxy.ts に rename 済・src/middleware.ts は新規作成しない）が `app.vodnavi.jp` で健全に動作し、18歳未満のアクセスを遮断するかブラウザのシークレットモードでテスト。
 - [ ] **GA4クロスドメイン linker 検証**: `vodnavi.jp` から `app.vodnavi.jp/concierge` へ遷移した際、URLに `_gl=` パラメータが正常に付与され、クッキーが引き継がれているかを検証。
 
 ### 📌 DB更新監視
