@@ -1,10 +1,10 @@
 ---
-title: "target list 拡張 — sivr00490 ライブ生成（候補ホールド・未publish）"
+title: "target list 拡張 — GSC未カバー videoa 第1陣（sivr00490/mizd00341/cmf00095）"
 brief_id: "084"
 last_updated: "2026-06-28"
-status: "awaiting-human-approval"
-billing: "OpenAI 1 call, gpt-5.5, tokens in:976 out:254 total:1230（極小）"
-published: "NO（sivr00490.md は untracked のままホールド。target list 追加のみ commit）"
+status: "ratified"
+billing: "OpenAI live 3 calls, gpt-5.5, 計 ~3,900 tok（極小）。gkok00002 試走 1,281 は publish 見送り"
+published: "YES（sivr00490 / mizd00341 / cmf00095 の3件とも本番 LIVE・curl 裏取り済）"
 ---
 
 # STRATEGY_BRIEF_084: target list 拡張と sivr00490 ライブ注入
@@ -40,3 +40,18 @@ published: "NO（sivr00490.md は untracked のままホールド。target list 
   `git add` → commit/push して本番反映。
 - 残りの未カバー上位（mizd00341 #5 / cmf00095 #8 〔videoa〕）は本件承認後に同フローで順次。
   anime の h_1261amcp00247 は floor 型拡張が別途必要なため分離。
+
+## 6. 第1陣 完了確定（2026-06-28 ratified）
+- **本番 LIVE 物理確認（Googlebot UA curl）**: 3件とも `app.vodnavi.jp/works/videoa/{cid}` で
+  HTTP 200 + 各レビュー固有フレーズが SSR HTML に出現＝**全件 LIVE 確定**。
+  - sivr00490（#4）: "8Kの澄んだ質感" 検出 ✅
+  - mizd00341（#5）: "十二時間の蔵書" 検出 ✅
+  - cmf00095（#8）: "礼節の鎧" 検出 ✅
+- `CCO_TARGET_CIDS`: 27 → **30**。新規公開 CCO レビュー **3件**（全 `source:live`）。
+- gkok00002 再ロールは既存 live と同等のため **publish 見送り**（[[STRATEGY_BRIEF_082]]）。
+- anime `h_1261amcp00247`（#6, 47cl）は **backlog**（`CcoTargetCid.floor:"videoa"` 固定の一般化が前提）。
+
+## 7. 次回スプリント申し送り
+- **2週間後（〜2026-07-12）**: 公開3ページの GSC（CTR / 掲載順位）と GA4（金CTA `fanza_cta_click`
+  / 滞在）の推移を監査し、CCO レビュー注入の効果を測定（[[project_ga4_user_behavior_baseline]] を基準線に）。
+- 効果が確認できれば第2陣（GSC 中位品番の水平展開）+ anime floor 拡張へ。
