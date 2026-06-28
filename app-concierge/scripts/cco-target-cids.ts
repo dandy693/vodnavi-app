@@ -61,4 +61,6 @@ export const CCO_TARGET_CIDS: ReadonlyArray<CcoTargetCid> = [
   // ── 2026-06-28 拡張: GSC 3か月上位着地でレビュー不在だった高トラフィック品番
   // （management/_metrics/2026-W26/gsc-raw-data.md 突合 / STRATEGY_BRIEF_083）。
   { contentId: "sivr00490", floor: "videoa", scClicks: 63, scImpressions: 635 },
+  { contentId: "mizd00341", floor: "videoa", scClicks: 59, scImpressions: 1835 },
+  { contentId: "cmf00095", floor: "videoa", scClicks: 42, scImpressions: 904 },
 ] as const;
