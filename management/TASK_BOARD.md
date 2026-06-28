@@ -121,6 +121,7 @@
 - [ ] 📅 T-20260603-02 (HUMAN/CTO): SATURDAY_REVIEW 2026-06-06 10:00 JST トリガー準備、BRIEF_007 §3 + BRIEF_008 §3 の自動データ抽出 chain (GA4 G-GG7JV9MJRW + GSC + ホスト名 dimension 経由 ai_session_start/product_click/ai_affiliate_click) の最終動作テスト
 
 ## [Backlog] 🚀 30倍スケールフェーズ (STRATEGY_BRIEF_032_30X_SCALE, 2026-06-04 確定)
+- [ ] 🔵 T-20260628-10 (CSO/HUMAN, 2026-06-28): コミット `2cd45a9`（DMM成約ベースライン解決・H-4）の解消が維持されているか、GA4 正規イベント `ai_affiliate_click` / `product_click` の発火UU数を `app.vodnavi.jp` ホスト別で事後監査せよ。**前提補正**: 元CSO script が指定した `fanza_cta_click` は実在しないイベント名（[[reference_app_ga4_event_taxonomy]]）→ 正規2イベントで照合。DMM「クリック数」と GA4 affiliate は別定義（~18倍乖離）＝成約0単独では障害判定しない。本タスクは新規異常ではなく `2cd45a9` 解決の事後確認スコープ（重複起票防止）。
 - [ ] 🔵 T-20260608-10 (CSO/CCO, BRIEF_IG_2026-06-08 §2①): GSC 上位10品番への Information Gain レビュー実データ生成 + live 投入（既存 `work-reviews` 機構へ、**app-side / 境界SAFE**）。**注**: BRIEF §2 の ②④（成人文脈軸）は **[HUMAN 承認 解決 2026-06-08 / `STRATEGY_BRIEF_7ad8dd2`]**: clean 面 vodnavi.jp ではなく **app.vodnavi.jp（年齢ゲート内側）にのみ配置**、clean 面は trust 聖域維持。①〜⑤ の app-side 5インテント rollout を本タスクのスコープに含める。
 - [x] 🟢 T-20260604-30X-1 (CCO): サルベージ5記事 (1095/1106/994/954/1018) 『ビブリア・エロティカ』リライト — **既完了** (`cf8c8b0`/`12b405a`/`dfbe1bf`/`74865c3`/`034c32f`、5/5 BRIEF_003 §2/§3 + Option-A 準拠)。BRIEF_032 純新規バックログからは除外、完了済資産として記録のみ
 - [ ] 🔵 T-20260604-30X-2 (CCO): 3本柱 (感情・教養・状況) クラスター記事15本の構成案・KW選定 (BRIEF_032 §2.1)。**ステージング Markdown ドラフト先行**、本番一斉注入は SATURDAY_REVIEW 後・空中戦停止方針遵守。CTA URL は `?source=moterist&intent=<beginner|actress|discount>` 動的付与
