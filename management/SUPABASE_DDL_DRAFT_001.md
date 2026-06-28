@@ -1,12 +1,12 @@
 ---
 title: "Supabase スキーマ設計・DDL ドラフト (BRIEF_085 §5 step2)"
 last_updated: "2026-06-28"
-status: "review_pending"
+status: "executed_in_production_2026-06-28"
 ---
 
 # Supabase スキーマ設計・DDL ドラフト
 
-> ⚠️ **未承認ドラフト** — `BRIEF_085` §5 step2（HUMAN レビュー＆承認）の対象。**承認前に本 DDL を本番 Supabase で実行しない**。
+> ✅ **実行済 2026-06-28** — HUMAN の "run" 明示承認 + attended browser automation により `vodnavi-production`（main PRODUCTION）で実行＝Success、`editorial_articles`(8列/RLS) + `article_products`(6列/RLS) を `pg_tables` で物理確認。当初は `BRIEF_085` §5 step2（HUMAN レビュー＆承認）の review-pending ドラフトとして起票。
 > CSO script 原案からの CTO 補正: (a) 文字列デフォルトの二重引用符 `"draft"` / `"fanza"`（Postgres では識別子扱い＝実行時エラー）を単一引用符に修正、(b) `BRIEF_085` §2 準拠で RLS を有効化、(c) `TIMESTAMP WITH TIME ZONE` → `TIMESTAMPTZ` / `CURRENT_TIMESTAMP` → `now()` 統一、(d) board 全文上書きは不採用・in-place 追記。
 
 ## 1. 設計思想
