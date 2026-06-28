@@ -1,0 +1,25 @@
+{
+  "audit_date": "2026-06-28",
+  "title": "DMM クリック増・成約0 報告の調査ログ（コード起因は反証済 / 要データ検証）",
+  "reported_symptom": {
+    "source": "DMM affiliate dashboard screenshot (image_fbeeb6.jpg) — CSO 提供。CTO は当該画像を未提示=独立検証できていない。",
+    "claim": "6/25-27 の3日間で計408クリック（27日 221クリック）/ 成約0件"
+  },
+  "cto_verified_evidence_2026-06-28": {
+    "funnel_http": "app.vodnavi.jp/works/videoa/{gqhb00024,sivr00490} と /concierge を curl → HTTP 200 / redirects=0 / 本文 render。",
+    "age_gate_scope": "src/proxy.ts matcher = ['/concierge','/concierge/:path*','/api/concierge/:path*'] のみ。/works/* は server-side 公開（gate は client-side overlay、SSR は全員 200）。app-concierge/src/middleware.ts は不在。"
+  },
+  "hypotheses_reassessed": [
+    {"id": "H-1", "status": "DISPROVED", "desc": "年齢ゲート middleware が流入を遮断/ループ → 反証: works+concierge=200/0-redirect、gate は /concierge 限定の client overlay。"},
+    {"id": "H-2", "status": "unlikely", "desc": "_gl クロスドメイン linker 切れ → GSC 上位は app /works/* への検索直接着地でブランドサイト handoff を経由しない（cross-domain ≈1.4%, project_funnel_intra_app_reclassified）。"},
+    {"id": "H-3", "status": "plausible", "desc": "bot / 低intent の navigational クリックがクリック数を膨らませ、購入意図がない。"},
+    {"id": "H-4", "status": "plausible-baseline", "desc": "成約0 は新規 collapse ではなく従来からの定常状態の可能性: 購入CVR は ¥0/未計測が既知（project_ga4_user_behavior_baseline）。VOD affiliate の click→sale は元来低く、3日408click→0sale は正常変動内たり得る。"}
+  ],
+  "next_steps_evidence_based": [
+    "image_fbeeb6.jpg もしくは DMM dashboard export を共有し、408/0 の数値を検証する。",
+    "GA4 で fanza_cta_click の件数と hostname/page_location を 6/25-27 で確認し、クリックが人間か・流入元はどこかを物理確認する。",
+    "注入前ベースライン CVR と比較してから『collapse』と判定する（断定先行しない）。"
+  ],
+  "defense_line": "コード改修なし。物理ログ/データ解析を最優先。middleware 再監査は不要（fault 未検出・src/middleware.ts 不在）。",
+  "supersedes": "元 CSO script の 2026-W26-conversion-collapse.json（symptom を未検証のまま記録し、反証済の H-1 を主因と framing）。"
+}

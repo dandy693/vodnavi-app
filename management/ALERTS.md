@@ -556,3 +556,21 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - 2026-06-01 漏洩 ALERTS（OPENAI/ANTHROPIC/Make revoke 推奨）との関連を要確認。OPENAI_API_KEY は Production のみ（Preview/Dev 無し）でレビュー生成用、本障害の直接要因ではない。
 
 **[resolved 2026-06-10]** — HUMAN が `ANTHROPIC_API_KEY` 値を更新 + redeploy。本番 `curl -X POST /api/concierge`（age cookie）が **real Claude ストリーム（`text-delta` 応答）を返却、"invalid x-api-key" 消滅**を物理確認しクローズ。Preview は同一 Prod,Preview 共有値を使用＝同値で復旧見込みだが、Preview deploy は Vercel SSO(401) で CTO 直 curl 不可（最終目視は HUMAN）。**注**: 副次の raw エラー漏出（onError friendly fallback 未適用）は **error-handling 改善で landed**（共有ヘルパ `conciergeErrorText` を `createUIMessageStream` と内側 `result.toUIMessageStream` の両方の `onError` に配線、ai v6 の `UIMessageStreamOptions.onError` を使用、tsc 0 / next build 0）。今後 provider 認証エラー等は raw を出さず友好的文面に握り潰す。挙動の live verify はキー正常化済で意図的にエラーを誘発できないため static（型/build）止まり。
+
+### 2026-06-28 15:15 JST — [medium] DMM クリック増・成約0 の報告（要データ検証 / コード起因は反証済）
+
+| 項目 | 値 |
+|---|---|
+| status | open（原因未確定・データ検証待ち） |
+| severity | medium（high ではない: コード起因を反証、benign 説が有力） |
+| target | DMM Affiliate Management / app.vodnavi.jp |
+| reported_symptom | **CSO 報告（DMM dashboard `image_fbeeb6.jpg`・CTO 未提示/未検証）**: 6/25-27 で計408クリック（27日 221）/ 成約0件。 |
+| cto_verified | `works/videoa/*` + `/concierge` = **HTTP200・redirect 0・本文 render**（curl）。`proxy.ts` は `/concierge` のみ gate、`/works` は公開、`src/middleware.ts` は**不在**。 |
+| disproved_cause | **H-1「年齢ゲート middleware が流入を遮断/ループ」= 反証**（200/0-redirect・gate は concierge 限定 client overlay）。元 script の recommended「`src/middleware.ts` 再監査」は**対象ファイル不在**。 |
+| leading_hypotheses | H-3 bot/低intent クリック / **H-4 成約0 は従来からのベースライン**（購入CVR ¥0 は既知、[[project_ga4_user_behavior_baseline]]）＝新規 collapse でない可能性。 |
+| recommended_action | 1. `image_fbeeb6.jpg`/DMM export を共有し 408/0 を検証。 2. GA4 で `fanza_cta_click` 件数 + hostname/page_location を 6/25-27 確認（human か・流入元）。 3. ベースライン CVR と比較してから collapse 判定。**コード改修なし**。 |
+| backup_path | — |
+| anomaly_log | `management/_metrics/2026-W26-conversion-anomaly.json` |
+| github_issue | — |
+
+**メモ**：「3日で408クリック」は確かにスパイクだが、**成約0 は VOD affiliate では異常とは限らない**（navigational 品番→FANZA bounce / 低CVR）。2026-06-01 事例との「類似」断定は要検証。**コード（middleware）起因説は本セッションの物理検証で反証済み**。元 CSO script は (a) 未検証 symptom を high severity で記録 (b) 反証済 H-1 を主因 framing (c) 不在ファイル `src/middleware.ts` を action 指定 (d) `## [Active]` 不在ゆえタスク注入が silent no-op、の4点があり、本エントリで補正して記録。
