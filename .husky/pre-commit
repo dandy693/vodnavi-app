@@ -1,0 +1,53 @@
+#!/bin/sh
+# ============================================================================
+# Governance guard for the canonical task board (management/TASK_BOARD.md).
+# Installed at .husky/pre-commit because this repo sets core.hooksPath=.husky/_
+# (husky owns the hook path) — a guard in .git/hooks/pre-commit is DORMANT and
+# never runs. husky invokes this via `sh -e`, so grep-no-match is made
+# non-fatal with `|| true`.
+#
+#  (1) ORPHAN GUARD: TASK_BOARD.md may ONLY live at management/TASK_BOARD.md.
+#      Block any commit staging a TASK_BOARD.md at the repo root or elsewhere
+#      (the orphan-fork pattern the CSO scripts keep attempting).
+#
+#  (2) WIPE GUARD: block any commit deleting more than THRESHOLD lines from the
+#      canonical board (the `cat >` / writeFileSync full-overwrite pattern).
+#
+# Escape hatch for a genuinely intended large change: git commit --no-verify
+# ============================================================================
+
+CANONICAL="management/TASK_BOARD.md"
+THRESHOLD=50
+
+# (1) Orphan-path guard. Any staged add/modify whose basename is TASK_BOARD.md
+#     must be exactly the canonical path.
+staged_boards=$(git diff --cached --name-only --diff-filter=AM | grep -E '(^|/)TASK_BOARD\.md$' || true)
+for f in $staged_boards; do
+  if [ "$f" != "$CANONICAL" ]; then
+    echo "============================================================" >&2
+    echo " COMMIT BLOCKED: orphan board file '$f'" >&2
+    echo "   TASK_BOARD.md may only live at $CANONICAL," >&2
+    echo "   never as a fork at the repo root or another directory." >&2
+    echo "   Edit the canonical board in-place instead." >&2
+    echo "============================================================" >&2
+    exit 1
+  fi
+done
+
+# (2) Wipe guard on the canonical board (numstat: "<added>\t<deleted>\t<path>").
+stat=$(git diff --cached --numstat -- "$CANONICAL" || true)
+if [ -n "$stat" ]; then
+  deleted=$(printf '%s\n' "$stat" | awk 'NR==1 {print $2}')
+  case "$deleted" in '' | *[!0-9]*) deleted=0 ;; esac
+  if [ "$deleted" -gt "$THRESHOLD" ]; then
+    echo "============================================================" >&2
+    echo " COMMIT BLOCKED: $CANONICAL" >&2
+    echo "   $deleted lines would be DELETED (threshold: $THRESHOLD)." >&2
+    echo "   The canonical board must be edited IN-PLACE, never overwritten." >&2
+    echo "   If truly intended: git commit --no-verify" >&2
+    echo "============================================================" >&2
+    exit 1
+  fi
+fi
+
+exit 0
