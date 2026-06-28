@@ -1,0 +1,11 @@
+{
+  "name": "vodnavi-group",
+  "private": true,
+  "description": "Monorepo root. Exists to wire husky git hooks (the TASK_BOARD.md overwrite guard at .husky/pre-commit). The Next.js app is in app-concierge/, the clean front in site-brand/.",
+  "scripts": {
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "husky": "^9.1.7"
+  }
+}
