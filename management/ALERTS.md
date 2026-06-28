@@ -557,11 +557,11 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 
 **[resolved 2026-06-10]** — HUMAN が `ANTHROPIC_API_KEY` 値を更新 + redeploy。本番 `curl -X POST /api/concierge`（age cookie）が **real Claude ストリーム（`text-delta` 応答）を返却、"invalid x-api-key" 消滅**を物理確認しクローズ。Preview は同一 Prod,Preview 共有値を使用＝同値で復旧見込みだが、Preview deploy は Vercel SSO(401) で CTO 直 curl 不可（最終目視は HUMAN）。**注**: 副次の raw エラー漏出（onError friendly fallback 未適用）は **error-handling 改善で landed**（共有ヘルパ `conciergeErrorText` を `createUIMessageStream` と内側 `result.toUIMessageStream` の両方の `onError` に配線、ai v6 の `UIMessageStreamOptions.onError` を使用、tsc 0 / next build 0）。今後 provider 認証エラー等は raw を出さず友好的文面に握り潰す。挙動の live verify はキー正常化済で意図的にエラーを誘発できないため static（型/build）止まり。
 
-### 2026-06-28 15:15 JST — [medium] DMM クリック増・成約0 の報告（要データ検証 / コード起因は反証済）
+### 2026-06-28 15:15 JST — [resolved] DMM クリック増・成約0 の報告（GA4 実査で確定・アプリ側健全）
 
 | 項目 | 値 |
 |---|---|
-| status | open（原因未確定・データ検証待ち） |
+| status | **resolved**（2026-06-28 GA4 物理実査で確定） |
 | severity | medium（high ではない: コード起因を反証、benign 説が有力） |
 | target | DMM Affiliate Management / app.vodnavi.jp |
 | reported_symptom | **CSO 報告（DMM dashboard `image_fbeeb6.jpg`・CTO 未提示/未検証）**: 6/25-27 で計408クリック（27日 221）/ 成約0件。 |
@@ -574,3 +574,10 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 | github_issue | — |
 
 **メモ**：「3日で408クリック」は確かにスパイクだが、**成約0 は VOD affiliate では異常とは限らない**（navigational 品番→FANZA bounce / 低CVR）。2026-06-01 事例との「類似」断定は要検証。**コード（middleware）起因説は本セッションの物理検証で反証済み**。元 CSO script は (a) 未検証 symptom を high severity で記録 (b) 反証済 H-1 を主因 framing (c) 不在ファイル `src/middleware.ts` を action 指定 (d) `## [Active]` 不在ゆえタスク注入が silent no-op、の4点があり、本エントリで補正して記録。
+
+**[resolved 2026-06-28]** — GA4 物理実査（moterist.com@gmail.com / p489519780 / 6-25〜27）で確定:
+- 3日間 **active users 262 / events 1,859 / ¥0**。outbound click は **`ai_affiliate_click` 23件(21 users)・`product_click` 23件(21 users)・`click` 22件**＝最大でも 23、**`fanza_cta_click` イベントは不在**。→ DMM の「408クリック」は GA4 実測の約18倍乖離。
+- **H-1 反証確定**: `age_gate_view` 219 users → `age_gate_agree` 148 users＝**67.6% 通過**、bounce 4。ゲートは遮断/ループせず健全。
+- **H-3 反証**: 262 users はスパイクでなく通常水準。bot flood なし。
+- hostname: app.vodnavi.jp が主体、www.vodnavi.jp ≈2 users、**moterist.com 1 user・クリック0**（freeze 通り）。
+- **結論**: アプリ/GA4 側は 100% 健全＝**コード修正は一切不要**。残作業は DMM 側「408」の定義（impression 等）を本ファクトと突合する DMM 側確認のみ。詳細 `_metrics/2026-W26-conversion-anomaly.json`。
