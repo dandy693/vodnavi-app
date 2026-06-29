@@ -35,7 +35,8 @@ export function FanzaAffiliateLink({
     | "detail_main_cta"
     | "detail_sample"
     | "detail_sticky_cta"
-    | "detail_fv_cta";
+    | "detail_fv_cta"
+    | "article_product_cta";
   className?: string;
   children: ReactNode;
 }) {
