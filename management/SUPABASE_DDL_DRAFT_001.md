@@ -71,11 +71,11 @@ ALTER TABLE public.article_products  ENABLE ROW LEVEL SECURITY;
 - [ ] 本 DDL ドラフトのレビュー＆承認（承認まで本番 Supabase で実行しない）
 - [ ] 承認後、Supabase SQL editor で実行 → `app-concierge/src/lib/supabase/poc-test.ts` の status が `connected_no_table` → `connected` に遷移することを確認
 
-## 4. 追補（2026-06-30）: `body` 列（PoC 用・純加算・**未実行**）
-> ⚠️ **本節は未実行**。上記 §2 の 8 列スキーマが本番の現状（2026-06-30 に `information_schema.columns` を claude-in-chrome 経由で物理再確認＝§2 と drift ゼロ）。下記 `body` 列は **まだ本番に存在しない**ため、実行されるまで「executed」扱いにしない。
+## 4. 追補（2026-06-30）: `body` 列（PoC 用・純加算・**status: executed_in_production_2026-06-30 (via HUMAN-attended browser automation)**）
+> ✅ **executed_in_production_2026-06-30**（HUMAN-attended browser automation・claude-in-chrome SQL Editor / role postgres）。`body` 列は本番 `public.editorial_articles` に物理適用済＝検証 SELECT で mock 全 10 行 `has_body=true` を実測（seed step0 の `ADD COLUMN IF NOT EXISTS body TEXT` 点火・mainline `3d3e2a7`）。これにより §2 の 8 列＋`body`＝9 列が本番の現状。
 
 - **追加列**: `public.editorial_articles.body TEXT`（NULL 可）。記事の prose 本文（`/articles/[slug]` の `page.tsx` が空行区切りで段落描画）。§2 の `description`(meta 相当) / `pillar`(カテゴリ) とは別に、本文を格納する列が無いため純加算する。
 - **適用経路**: `app-concierge/supabase/poc_seed_mock10.sql` の **step 0** に `ALTER TABLE public.editorial_articles ADD COLUMN IF NOT EXISTS body TEXT;` を冪等同梱。HUMAN-attended の seed 実行時に一括適用される。
 - **可逆性**: nullable・既存行に無影響。revert は `DROP COLUMN body`。
-- **昇格条件**: 本番 attended 実行で点火確認後、本節を「executed」として §2 へ正式統合する。
+- **昇格条件（達成済）**: 2026-06-30 本番 attended 実行で点火確認済（mock 10 行 `has_body=true`）。次回 §2 改訂時に `body TEXT` を正式列として統合する。
 - **是正履歴**: リーダーコード/旧 seed が参照していた `meta_description` / `intro_template` / `floor_code` / `sort_order` は本番に存在せず（42703）、`description` / `body` / `display_order` / `asp_name` へコード側を調律済（コードを本番スキーマに合わせる方針、HUMAN 決定 2026-06-30）。
