@@ -1202,3 +1202,7 @@
 ## 🟢 2026-07-01 4大業務SOP連動：Notion同期自動化フェーズ
 - [ ] 🔵 T-20260701-NOT-API (CTO, 2026-07-01): Notion API で Master Task DB（スキーマ=`notion/DB_PROPERTY_DESIGN.md`）のプロパティ値（ステータス/担当者）抽出スクリプト PoC（BRIEF_111）。**前提: `T-20260625-03`（Master Task DB 起票・現状 Todo）完了 + Notion token/DB ID 存在確認**＝未了なら PoC は blocked（捏造前提で進めない）。
 - [ ] 🔵 T-20260701-NOT-VAL (CTO, 2026-07-01): repo タスクID（`T-20260701-*` 等）⇄ Notion プロパティの1対1整合バリデーション。**同期は in-place 追記/Edit のみ（`cat >` 全面上書き禁止）・Notion の noindex 値を `?sort=` へ転写しない（self-canonical 維持・最高法律）**。
+
+## 🟢 2026-07-01 Chrome連携：GA4物理設定目視監査フェーズ
+- [ ] 🔵 T-20260701-GA4-CHROME (CTO, 2026-07-01): **claude-in-chrome MCP 拡張機能**（Playwright ではない＝[[feedback_cso_chrome_mechanism]]）で GA4 プロパティ（`p489519780`/stream `11225897844`, `authuser=2`=`moterist.com@gmail.com`）の設定画面・クロスドメイン配線をスクリーンショット物理確認。`authuser=0` 誤接続検知で Abort（[[reference_ga4_default_property_trap]]）。実走査は HUMAN 明示指示時＝アクティブ垢再確認後。
+- [ ] 🔵 T-20260701-GA4-REPDOC (CTO, 2026-07-01): 目視確認したクロスドメイン（vodnavi.jp ↔ app.vodnavi.jp）の設定事実のみを記載した「GA4物理設定検証報告書」を生成（推測・捏造文言の完全禁則・目視不可項目は「未確認」と明記）。
