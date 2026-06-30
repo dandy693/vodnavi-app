@@ -1194,3 +1194,7 @@
 ## 🟢 2026-07-01 4大業務SOP準拠：インデックス・サイトマップ物理監査
 - [ ] 🔵 T-20260701-SOP-SEO (CTO, 2026-07-01): `site-brand` の索引方針コード監査＝`?sort=` 等クエリは self-canonical consolidation で正規絶対URLへ集約（**noindex は不付与＝最高法律 BRIEF_101 準拠**）、canonical 整合性を検証。注: `/guide` `/reviews` 等ハブは既存の page-level noindex（?sort= とは別問題・混同しない）。
 - [ ] 🔵 T-20260701-SOP-XML (CTO, 2026-07-01): `site-brand` + `app-concierge` の `sitemap.ts` 挙動検証＝単一ファイル妥当性・生 `&` 非出力（整形式）・app 約2,008 URL で **50,000/ファイル上限を大きく下回り分割不要**を確認（CSO「20,000件上限分割」は誤り＝是正、分割ロジックは未実装で不要）。
+
+## 🟢 2026-07-01 次フェーズ：GA4生データ抽出および hostname 識別監査
+- [ ] 🔵 T-20260701-GA4-EXT (CTO, 2026-07-01): GA4 プロパティ **`p489519780`**（測定ID `G-GG7JV9MJRW`・`authuser=2` 切替必須＝別 client 既定プロパティ罠回避）の「エクスプローラ」または BigQuery 経由で、`hostname` 別の `page_location` パラメータ付与状況を物理サンプリング（[[reference_ga4_property_topology]] / [[reference_ga4_default_property_trap]]）。
+- [ ] 🔵 T-20260701-SOP-REP (CTO, 2026-07-01): 4大業務SOP 月次ルーティンに基づく、GA4 `product_click`/`ai_affiliate_click`（最大23）と DMM 側クリック数（408）の乖離比率（約18倍・定義差含む）の月次推移レポート設計（[[reference_app_ga4_event_taxonomy]]・BRIEF_107 残作業と整合）。
