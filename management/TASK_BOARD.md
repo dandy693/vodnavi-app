@@ -1190,3 +1190,7 @@
 ## 🟢 2026-07-01 次フェーズ：E-E-A-T物理補強および構造化データ監査
 - [ ] 🔵 T-20260701-EAT (CTO, 2026-07-01): `site-brand/src/app/layout.tsx` の `@graph` に**既存の** `Organization`/`WebSite` JSON-LD（`legalName: 合同会社トレンドネット`＝検証済値）のスキーマバリデーション（Rich Results / schema.org 準拠確認）。新規法人情報の捏造は禁止（"Safari株式会社" 等は不採用）。
 - [ ] 🔵 T-20260701-MET (CTO, 2026-07-01): `generateMetadata`（`[slug]/page.tsx` dual-read, BRIEF_100）の canonical 緊結ロジックのコードレビュー＝絶対URL `https://vodnavi.jp/{slug}` 出力健全性と `?sort=` 等の self-canonical consolidation（noindex 不使用）を確認。
+
+## 🟢 2026-07-01 4大業務SOP準拠：インデックス・サイトマップ物理監査
+- [ ] 🔵 T-20260701-SOP-SEO (CTO, 2026-07-01): `site-brand` の索引方針コード監査＝`?sort=` 等クエリは self-canonical consolidation で正規絶対URLへ集約（**noindex は不付与＝最高法律 BRIEF_101 準拠**）、canonical 整合性を検証。注: `/guide` `/reviews` 等ハブは既存の page-level noindex（?sort= とは別問題・混同しない）。
+- [ ] 🔵 T-20260701-SOP-XML (CTO, 2026-07-01): `site-brand` + `app-concierge` の `sitemap.ts` 挙動検証＝単一ファイル妥当性・生 `&` 非出力（整形式）・app 約2,008 URL で **50,000/ファイル上限を大きく下回り分割不要**を確認（CSO「20,000件上限分割」は誤り＝是正、分割ロジックは未実装で不要）。
