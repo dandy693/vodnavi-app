@@ -1214,3 +1214,6 @@
 ## 🟢 2026-07-01 次フェーズ：Notionデータベース物理プロビジョニング（T-20260625-03 実行細分化）
 - [ ] 🔵 T-20260701-NOT-CREATE (CTO, 2026-07-01): `notion/DB_PROPERTY_DESIGN.md` 準拠の Notion Master Task DB 実体作成 + integration token/DB-ID 確保。**= 既存 `T-20260625-03` の実行細分化**（並走重複でない）。前提: Notion token + 親ページ(HUMAN) or claude-in-chrome UI＝**不在なら blocked**（捏造的「作成済」化なし）。
 - [ ] 🔵 T-20260701-NOT-VIEW (CTO, 2026-07-01): 4大業務フロー特化の4ビュー（編集カンバン/SEO/QA/DB更新）配線検証。**= `T-20260625-03` の4ビュー疎通確認に対応**。`T-NOT-CREATE` 完了が前提。完了で BRIEF_111 の `T-NOT-API`/`T-NOT-VAL` 前提が解ける。
+
+## 🟢 2026-07-01 次フェーズ：GA4設定（タイムゾーン・通貨）UI走査監査
+- [x] 🟢 T-20260701-GA4-TZ (CTO, 2026-07-01): `claude-in-chrome` で GA4 プロパティ `p489519780`（authuser=2=moterist.com@gmail.com）のタイムゾーン/通貨を物理目視。**[完了 2026-07-01・同セッション]** タイムゾーン=**(GMT+09:00) 日本時間**、通貨=**日本円(¥)/JPY**、業種=アート・エンタメ、規模=小規模(1〜10名)。深リンク bounce 回避= account-prefixed `#/a355462253p489519780/admin/property/settings` で到達（report §5 / BRIEF_114）。read-only・変更ゼロ。

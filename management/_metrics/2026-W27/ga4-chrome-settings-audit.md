@@ -44,10 +44,11 @@
 - 国: Japan 537 が支配的（China 16 / Taiwan 8 / US 7 / Singapore 4 …）。
 - アクティブユーザー: 30日 3,542 / 7日 599 / 1日 66。今月(7月)は月初のため 0。
 
-## 5. 未確認（本走査で目視していない項目・捏造しない）
-- プロパティのタイムゾーン / 通貨 / 業種カテゴリ（admin property-settings 深リンクが home へ bounce したため未取得）。
-- 「データの収集」内の Google シグナル / 同意モード等の詳細トグル。
-- 必要なら次回走査で追補する。
+## 5. 追加確認（2026-07-01 後刻・BRIEF_114・property/settings を account-prefixed route で取得）
+- **レポートのタイムゾーン = (GMT+09:00) 日本時間（日本）** ／ **通貨の表示 = 日本円 (¥) / JPY**。
+- 業種 = アート、エンターテインメント ／ ビジネス規模 = 小規模（従業員 1〜10名）／ 目標 = 見込み顧客発掘・売上促進・トラフィック分析・エンゲージメント/維持。
+- **route 教訓**: admin 深リンク `#/admin/property-settings?id=489519780` は home へ bounce するが、**account-prefixed `#/a355462253p489519780/admin/property/settings` は直接到達**（再利用可能）。read-only（保存ゼロ）。
+- なお未取得（次走査任意）: 「データの収集」内の Google シグナル / 同意モード等の詳細トグル。
 
 ---
 **監査手法**: claude-in-chrome MCP 拡張機能（Playwright/headless ではない）。read-only（保存・承認・トグル変更ゼロ）。スクリーンショット根拠あり。
