@@ -1164,3 +1164,6 @@
 - 未push 2件をローカル保持: `b63eb22`（ナレッジ統合: 最高法律→AI_PROTOCOLS.md）/ `056feac`（成約0アノマリー triage・要 DMM データ検証）。
 - 理由: 056feac の symptom（6/25-27 408click/成約0, `image_fbeeb6.jpg`）は CTO 未検証＝物理ファクト確認後にまとめて push 予定。
 - 注: 本ログは `--amend` ではなく**新規コミット**で記録（amend は b63eb22 の hash を無効化し本ログ自身の参照を壊すため）。
+
+## 🟢 2026-06-30 監査済追加タスク
+- [ ] T-20260630-IDX: `app-concierge` 内の Next.js 16 コンポーネントにおける self-canonical 実装の最終整合性チェック（SOP compliance 101 に基づく）
