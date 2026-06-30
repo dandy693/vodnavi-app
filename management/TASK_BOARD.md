@@ -1204,8 +1204,9 @@
 - [ ] 🔵 T-20260701-NOT-VAL (CTO, 2026-07-01): repo タスクID（`T-20260701-*` 等）⇄ Notion プロパティの1対1整合バリデーション。**同期は in-place 追記/Edit のみ（`cat >` 全面上書き禁止）・Notion の noindex 値を `?sort=` へ転写しない（self-canonical 維持・最高法律）**。
 
 ## 🟢 2026-07-01 Chrome連携：GA4物理設定目視監査フェーズ
-- [ ] 🔵 T-20260701-GA4-CHROME (CTO, 2026-07-01): **claude-in-chrome MCP 拡張機能**（Playwright ではない＝[[feedback_cso_chrome_mechanism]]）で GA4 プロパティ（`p489519780`/stream `11225897844`, `authuser=2`=`moterist.com@gmail.com`）の設定画面・クロスドメイン配線をスクリーンショット物理確認。`authuser=0` 誤接続検知で Abort（[[reference_ga4_default_property_trap]]）。実走査は HUMAN 明示指示時＝アクティブ垢再確認後。
-- [ ] 🔵 T-20260701-GA4-REPDOC (CTO, 2026-07-01): 目視確認したクロスドメイン（vodnavi.jp ↔ app.vodnavi.jp）の設定事実のみを記載した「GA4物理設定検証報告書」を生成（推測・捏造文言の完全禁則・目視不可項目は「未確認」と明記）。
+- [x] 🟢 T-20260701-GA4-CHROME (CTO, 2026-07-01): **claude-in-chrome MCP 拡張機能**（Playwright ではない＝[[feedback_cso_chrome_mechanism]]）で GA4 プロパティ（`p489519780`/stream `11225897844`, `authuser=2`=`moterist.com@gmail.com`）の設定画面・クロスドメイン配線をスクリーンショット物理確認。`authuser=0` 誤接続検知で Abort（[[reference_ga4_default_property_trap]]）。 **[実走査完了 2026-07-01]** `authuser=2`=moterist.com@gmail.com で本番 vodnavi（`p489519780`/stream `11225897844`/測定ID `G-GG7JV9MJRW`+tag `GT-PZQ74Z7D`）に着地・既定垢(`authuser=0`=hdktchkw33)罠を回避。**クロスドメイン構成 = `vodnavi.jp`(完全一致)+`app.vodnavi.jp`(含む)+`moterist.com`(含む)** を目視確認＝app↔front linker 有効。タグ品質「要確認」1件=Vercel preview URL 発火検出(低重大度・本番破綻でない)。read-only（保存/承認/トグル変更ゼロ）。詳細 `_metrics/2026-W27/ga4-chrome-settings-audit.md`。
+- [x] 🟢 T-20260701-GA4-REPDOC (CTO, 2026-07-01): 目視確認したクロスドメイン（vodnavi.jp ↔ app.vodnavi.jp）の設定事実のみを記載した「GA4物理設定検証報告書」を生成（推測・捏造文言の完全禁則・目視不可項目は「未確認」と明記）。 **[報告書 landed 2026-07-01]** `management/_metrics/2026-W27/ga4-chrome-settings-audit.md` を生成＝目視事実のみ・タイムゾーン/通貨等の未取得項目は §5「未確認」に明記。
 
 ### 🟢 2026-07-01 — Chrome連携 runbook 配線ログ（実走査は未実行）
 - `management/GA4_CHROME_INSTRUCTION.md`（claude-in-chrome runbook）を配線。`T-20260701-GA4-CHROME` の手順書のみ landed＝**実走査・GA4 目視・報告書生成はいずれも未実行**。実行は HUMAN 明示指示時にアクティブ Google アカウント（`authuser=2`=moterist.com@gmail.com）再確認の上で執行（[[feedback_account_check]]）。捏造的「監査済」化はしない。
+- 訂正 (2026-07-01・後刻): 上記「未実行」は記載時点の事実。その後 HUMAN が明示実行（AskUserQuestion で「今すぐ実走査」）を選択し**実走査を完了**＝T-GA4-CHROME/-REPDOC を [x] 化、報告書 `_metrics/2026-W27/ga4-chrome-settings-audit.md` を landed（point-in-time ログは保持し本行で更新）。
