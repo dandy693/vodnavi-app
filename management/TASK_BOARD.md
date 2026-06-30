@@ -1186,3 +1186,7 @@
 ## 🟢 2026-07-01 次フェーズ：成約漏斗ベースライン（ALERTS resolved 残作業）
 - [ ] 🔵 T-20260701-CVR (CTO, 2026-07-01): DMM 管理画面の生ログ（「408」の定義＝impression 等の可能性）と GA4 `product_click`/`ai_affiliate_click`（最大23）の突合による H-3/H-4 仮説の最終立証。注: ALERTS 行560 で本件は [resolved]・アプリ/GA4 100% 健全確定済＝コード改修なし、残は DMM 側定義確認のみ（[[reference_app_ga4_event_taxonomy]]）。
 - [ ] 🔵 T-20260701-BOT (CTO, 2026-07-01): `proxy.ts` のサーバーログ（[GL_TRACKING]）にクローラ/ボット UA 識別タグを付与する PoC（H-3 bot/低intent の隔離用・_gl 着地 /concierge スコープ）。
+
+## 🟢 2026-07-01 次フェーズ：E-E-A-T物理補強および構造化データ監査
+- [ ] 🔵 T-20260701-EAT (CTO, 2026-07-01): `site-brand/src/app/layout.tsx` の `@graph` に**既存の** `Organization`/`WebSite` JSON-LD（`legalName: 合同会社トレンドネット`＝検証済値）のスキーマバリデーション（Rich Results / schema.org 準拠確認）。新規法人情報の捏造は禁止（"Safari株式会社" 等は不採用）。
+- [ ] 🔵 T-20260701-MET (CTO, 2026-07-01): `generateMetadata`（`[slug]/page.tsx` dual-read, BRIEF_100）の canonical 緊結ロジックのコードレビュー＝絶対URL `https://vodnavi.jp/{slug}` 出力健全性と `?sort=` 等の self-canonical consolidation（noindex 不使用）を確認。
