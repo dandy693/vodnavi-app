@@ -1169,6 +1169,7 @@
 - 未push 2件をローカル保持: `b63eb22`（ナレッジ統合: 最高法律→AI_PROTOCOLS.md）/ `056feac`（成約0アノマリー triage・要 DMM データ検証）。
 - 理由: 056feac の symptom（6/25-27 408click/成約0, `image_fbeeb6.jpg`）は CTO 未検証＝物理ファクト確認後にまとめて push 予定。
 - 注: 本ログは `--amend` ではなく**新規コミット**で記録（amend は b63eb22 の hash を無効化し本ログ自身の参照を壊すため）。
+- 訂正 (2026-07-01): 上記 `b63eb22` / `056feac` は現在 **origin/main に push 済**（`git merge-base --is-ancestor` で両方確認）。上の「未push」は記載時点の point-in-time ログとして保持し、本行で現状を更新（履歴行は書き換えず append 訂正・[[feedback_preserve_task_board_in_place]]）。
 
 ## 🟢 2026-07-01 次フェーズ：Next.jsルーティング整合・SEO継承タスク
 - [ ] 🔵 T-20260701-RTE (CTO, 2026-07-01): `vodnavi.jp` の既存 slug（`03_content/`）↔ Next.js 16 ルーティングの物理マッピングテーブル作成（read-only 棚卸し）。**moterist の旧WP URL は凍結中（BRIEF_043）につき本タスクでは inventory のみ・移送は実行しない**＝完全遷都（T-20260628-11）承認 + 凍結解除後に 301 保全マップとして別途着手。
