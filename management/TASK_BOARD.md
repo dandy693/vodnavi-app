@@ -1198,3 +1198,7 @@
 ## 🟢 2026-07-01 次フェーズ：GA4生データ抽出および hostname 識別監査
 - [ ] 🔵 T-20260701-GA4-EXT (CTO, 2026-07-01): GA4 プロパティ **`p489519780`**（測定ID `G-GG7JV9MJRW`・`authuser=2` 切替必須＝別 client 既定プロパティ罠回避）の「エクスプローラ」または BigQuery 経由で、`hostname` 別の `page_location` パラメータ付与状況を物理サンプリング（[[reference_ga4_property_topology]] / [[reference_ga4_default_property_trap]]）。
 - [ ] 🔵 T-20260701-SOP-REP (CTO, 2026-07-01): 4大業務SOP 月次ルーティンに基づく、GA4 `product_click`/`ai_affiliate_click`（最大23）と DMM 側クリック数（408）の乖離比率（約18倍・定義差含む）の月次推移レポート設計（[[reference_app_ga4_event_taxonomy]]・BRIEF_107 残作業と整合）。
+
+## 🟢 2026-07-01 4大業務SOP連動：Notion同期自動化フェーズ
+- [ ] 🔵 T-20260701-NOT-API (CTO, 2026-07-01): Notion API で Master Task DB（スキーマ=`notion/DB_PROPERTY_DESIGN.md`）のプロパティ値（ステータス/担当者）抽出スクリプト PoC（BRIEF_111）。**前提: `T-20260625-03`（Master Task DB 起票・現状 Todo）完了 + Notion token/DB ID 存在確認**＝未了なら PoC は blocked（捏造前提で進めない）。
+- [ ] 🔵 T-20260701-NOT-VAL (CTO, 2026-07-01): repo タスクID（`T-20260701-*` 等）⇄ Notion プロパティの1対1整合バリデーション。**同期は in-place 追記/Edit のみ（`cat >` 全面上書き禁止）・Notion の noindex 値を `?sort=` へ転写しない（self-canonical 維持・最高法律）**。
