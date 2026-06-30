@@ -1177,3 +1177,7 @@
 ## 🟢 2026-07-01 次フェーズ：コンシェルジュデータファクト定常監査
 - [ ] 🔵 T-20260701-CON (CTO, 2026-07-01): `app-concierge/src/proxy.ts` の matcher 設定と `_gl/source/intent` 着地時の発火をステージング検証。**サーバー側 `[GL_TRACKING]` console log（proxy.ts）と、クライアント側 GA4 カスタムイベント（`ai_session_start` 等）を別層として確認**（proxy.ts 自体は GA4 イベントを発火せず log のみ＝BRIEF_105 §3）。
 - [ ] 🔵 T-20260701-FLT (CTO, 2026-07-01): 4大業務SOP準拠の、パラメータ汚染（`?sort=`）が検索シグナルに与える影響のモニタリングログ設計（self-canonical consolidation 前提＝noindex は使用しない）。
+
+## 🟢 2026-07-01 次フェーズ：フロントエンドGA4連携・インプレース監査
+- [ ] 🔵 T-20260701-GA4 (CTO, 2026-07-01): `vodnavi.jp`→`app.vodnavi.jp` 着地時の `ai_session_start` 発火と `_gl` リンカー継続性のプロトタイプ挙動確認（BRIEF_106 準拠）。注: `_gl` は GA4 リンカー(gtag.js)が自動消費＝手動 dataLayer パースではなくセッション分断の有無を確認（[[project_funnel_intra_app_reclassified]]＝cross-domain は離脱の 1.4%）。
+- [ ] 🔵 T-20260701-VRC (CTO, 2026-07-01): HUMAN による Vercel 本番環境変数配線確認（既存 `T-20260630-ENV`）の依存関係チェック＝本タスクは ENV を参照する meta タスク（ID 重複なし・ENV の HUMAN ゲートが解けるまで close しない）。
