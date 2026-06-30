@@ -1217,3 +1217,7 @@
 
 ## 🟢 2026-07-01 次フェーズ：GA4設定（タイムゾーン・通貨）UI走査監査
 - [x] 🟢 T-20260701-GA4-TZ (CTO, 2026-07-01): `claude-in-chrome` で GA4 プロパティ `p489519780`（authuser=2=moterist.com@gmail.com）のタイムゾーン/通貨を物理目視。**[完了 2026-07-01・同セッション]** タイムゾーン=**(GMT+09:00) 日本時間**、通貨=**日本円(¥)/JPY**、業種=アート・エンタメ、規模=小規模(1〜10名)。深リンク bounce 回避= account-prefixed `#/a355462253p489519780/admin/property/settings` で到達（report §5 / BRIEF_114）。read-only・変更ゼロ。
+
+## 🟢 2026-07-01 次フェーズ：vodnavi.jp Next.js 強化・proxy.ts 統合（既存タスク継続・BRIEF_115）
+- [ ] 🔵 T-20260701-NEXTJS-INIT (CTO, 2026-07-01): vodnavi.jp（**既に Next.js＝site-brand**）の編集体験/レイアウト拡張。デザインシステム（ダーク×ゴールド）は `globals.css` 定義済（`--brand-dark`/`--brand-gold`）を**参照**（hex 直書き禁止）。**= `T-20260630-UI` の継続**（新規 init でない・並走重複でない）。
+- [ ] 🔵 T-20260701-MIDDLEWARE-AUTH (CTO, 2026-07-01): 年齢確認ガードは **`app-concierge/src/proxy.ts`**（Next.js 16・`src/middleware.ts` 新規禁止）で実装。年齢 cookie と FANZA cookie-burn(`buildEarlyCookieURL`) と GA4 `_gl` linker は**別機構**として分離。`?sort=` は self-canonical（noindex 不使用）。**= `T-20260630-EDGE`/`T-20260630-MW` の継続**（並走重複でない）。
