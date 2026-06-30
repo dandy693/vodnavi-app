@@ -1167,3 +1167,7 @@
 
 ## 🟢 2026-06-30 監査済追加タスク
 - [ ] T-20260630-IDX: `app-concierge` 内の Next.js 16 コンポーネントにおける self-canonical 実装の最終整合性チェック（SOP compliance 101 に基づく）
+
+## 🟢 2026-06-30 新章：開発フェーズ追加タスク
+- [ ] T-20260630-EDGE: `app.vodnavi.jp` の年齢確認ガード（`proxy.ts`・Next.js 16）によるクッキー判定および**クローラ非除外**（self-canonical 維持・クローキング防止）ロジックのプロトタイプ検証。`src/middleware.ts` 新規作成は禁止。（CSO 原案の task ID `T-20260630-MW` は line 6 既存タスクと衝突のため `EDGE` へ改番）
+- [ ] T-20260630-UI: `vodnavi.jp` 新デザインシステム（ダーク×ゴールド）に基づく共通レイアウトコンポーネントの実装
