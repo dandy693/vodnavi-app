@@ -1173,3 +1173,7 @@
 ## 🟢 2026-07-01 次フェーズ：Next.jsルーティング整合・SEO継承タスク
 - [ ] 🔵 T-20260701-RTE (CTO, 2026-07-01): `vodnavi.jp` の既存 slug（`03_content/`）↔ Next.js 16 ルーティングの物理マッピングテーブル作成（read-only 棚卸し）。**moterist の旧WP URL は凍結中（BRIEF_043）につき本タスクでは inventory のみ・移送は実行しない**＝完全遷都（T-20260628-11）承認 + 凍結解除後に 301 保全マップとして別途着手。
 - [ ] 🔵 T-20260701-QA (CTO, 2026-07-01): 4大業務SOP準拠の canonical タグ出力自動テストスクリプト配備（移行シミュレーション時に全ページの self-canonical 絶対URL出力を検証、BRIEF_101/104 準拠）。
+
+## 🟢 2026-07-01 次フェーズ：コンシェルジュデータファクト定常監査
+- [ ] 🔵 T-20260701-CON (CTO, 2026-07-01): `app-concierge/src/proxy.ts` の matcher 設定と `_gl/source/intent` 着地時の発火をステージング検証。**サーバー側 `[GL_TRACKING]` console log（proxy.ts）と、クライアント側 GA4 カスタムイベント（`ai_session_start` 等）を別層として確認**（proxy.ts 自体は GA4 イベントを発火せず log のみ＝BRIEF_105 §3）。
+- [ ] 🔵 T-20260701-FLT (CTO, 2026-07-01): 4大業務SOP準拠の、パラメータ汚染（`?sort=`）が検索シグナルに与える影響のモニタリングログ設計（self-canonical consolidation 前提＝noindex は使用しない）。
