@@ -7,6 +7,7 @@
 - **ブランドトークンは定義済**：`site-brand/src/app/globals.css` の `--brand-gold`(#D4AF37) / `--brand-dark`(#121212) 等 CSS 変数を**参照**。hex 直書き・再定義は禁止。
 - **年齢確認制御は `app-concierge/src/proxy.ts`**（Next.js 16 規約・旧 `middleware.ts` 後継）。`src/middleware.ts` の新規作成は厳禁。
 - **クッキーは3機構を絶対に混載しない**：①年齢確認 `vodnavi_age_verified`（`proxy.ts` 検査）②FANZA 早期着火 `buildEarlyCookieURL`（`af_id`）③GA4 クロスドメイン linker `_gl`（gtag 自動消費）。各々独立実装。
+- **実在正典法人格は `合同会社トレンドネット` のみ**（`site-brand` の `layout.tsx` JSON-LD legalName / terms / privacy / about / footer に浸透した検証済値）。`Safari株式会社` 等の架空法人名の捏造・コミットは永久禁止（特商法表記の不備防止・BRIEF_035 で不採用確定）。
 
 ## 2. SEO・ルーティング不変条件
 - **`?sort=` 等クエリURLへの `noindex` は厳禁**。必ず self-canonical consolidation（正規絶対URLへ評価集約）。noindex は consolidation を阻害する（e82a670 / BRIEF_101）。slug 付き canonical + not-found のみ noindex は実装済。

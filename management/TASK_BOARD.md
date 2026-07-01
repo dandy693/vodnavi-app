@@ -1224,3 +1224,6 @@
 
 ## 🟢 2026-07-01 正典ロック：FACT_GOVERNANCE.md 制定
 - `management/FACT_GOVERNANCE.md` を制定＝BRIEF_101〜115 の確定ファクト（no-noindex/self-canonical・`proxy.ts`(not middleware)・完全遷都gated・moterist凍結・cookie三機構分離・GA4確定値・in-place governance）を1箇所に固定し先祖返りを抑止。**CSO 原案の追加タスク `T-MW-EXT`/`T-UI-REF` は既存 `T-20260701-MIDDLEWARE-AUTH`(+`T-20260630-EDGE/MW`) / `T-20260701-NEXTJS-INIT`(+`T-20260630-UI`) と三重複のため新規起票せず＝並走トラッカーを増設しない。**
+
+## 🟢 2026-07-01 根本治療：CSO上流テンプレート同期
+- [ ] T-20260701-CSO-CURE (HUMAN, 2026-07-01): 外部 CSO システムプロンプト/テンプレート末尾へ `STRATEGY_BRIEF_116` の正典コンテクストブロック（7ファクト）を追記/結合し、同期完了を確認。**HUMAN タスク**（当エージェントは外部 CSO/Gemini を改変不可）。repo 側 `FACT_GOVERNANCE.md` 更新時は BRIEF_116 の注入ブロックも同時更新し乖離させない。
