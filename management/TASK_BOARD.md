@@ -1227,3 +1227,6 @@
 
 ## 🟢 2026-07-01 根本治療：CSO上流テンプレート同期
 - [ ] T-20260701-CSO-CURE (HUMAN, 2026-07-01): 外部 CSO システムプロンプト/テンプレート末尾へ `STRATEGY_BRIEF_116` の正典コンテクストブロック（7ファクト）を追記/結合し、同期完了を確認。**HUMAN タスク**（当エージェントは外部 CSO/Gemini を改変不可）。repo 側 `FACT_GOVERNANCE.md` 更新時は BRIEF_116 の注入ブロックも同時更新し乖離させない。
+
+## 🟢 2026-07-01 設計仕様：クッキー3型独立分離（BRIEF_117・実装は既存タスク）
+- `STRATEGY_BRIEF_117` = FACT_GOVERNANCE §1 cookie 3機構分離の詳細設計仕様（age-gate `vodnavi_age_verified` / cookie-burn `buildEarlyCookieURL` / linker `_gl`）。**実装は既存 `T-20260701-MIDDLEWARE-AUTH`（+`T-20260630-EDGE`/`T-20260630-MW`/`T-20260701-CON`）で追跡。CSO 原案 `T-CK3-PROXY`/`T-CK3-BURN` は重複のため新規起票せず（FACT_GOVERNANCE §4 dedup）。**
