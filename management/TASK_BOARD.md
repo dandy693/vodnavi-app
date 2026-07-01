@@ -1221,3 +1221,6 @@
 ## 🟢 2026-07-01 次フェーズ：vodnavi.jp Next.js 強化・proxy.ts 統合（既存タスク継続・BRIEF_115）
 - [ ] 🔵 T-20260701-NEXTJS-INIT (CTO, 2026-07-01): vodnavi.jp（**既に Next.js＝site-brand**）の編集体験/レイアウト拡張。デザインシステム（ダーク×ゴールド）は `globals.css` 定義済（`--brand-dark`/`--brand-gold`）を**参照**（hex 直書き禁止）。**= `T-20260630-UI` の継続**（新規 init でない・並走重複でない）。
 - [ ] 🔵 T-20260701-MIDDLEWARE-AUTH (CTO, 2026-07-01): 年齢確認ガードは **`app-concierge/src/proxy.ts`**（Next.js 16・`src/middleware.ts` 新規禁止）で実装。年齢 cookie と FANZA cookie-burn(`buildEarlyCookieURL`) と GA4 `_gl` linker は**別機構**として分離。`?sort=` は self-canonical（noindex 不使用）。**= `T-20260630-EDGE`/`T-20260630-MW` の継続**（並走重複でない）。
+
+## 🟢 2026-07-01 正典ロック：FACT_GOVERNANCE.md 制定
+- `management/FACT_GOVERNANCE.md` を制定＝BRIEF_101〜115 の確定ファクト（no-noindex/self-canonical・`proxy.ts`(not middleware)・完全遷都gated・moterist凍結・cookie三機構分離・GA4確定値・in-place governance）を1箇所に固定し先祖返りを抑止。**CSO 原案の追加タスク `T-MW-EXT`/`T-UI-REF` は既存 `T-20260701-MIDDLEWARE-AUTH`(+`T-20260630-EDGE/MW`) / `T-20260701-NEXTJS-INIT`(+`T-20260630-UI`) と三重複のため新規起票せず＝並走トラッカーを増設しない。**
