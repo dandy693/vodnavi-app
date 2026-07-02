@@ -1264,3 +1264,8 @@
 - [[STRATEGY_BRIEF_121_COLD_START_BREAKTHROUGH]] 制定＝既存トラッカー 3 件への**前倒し執行指示**のみ（CSO 原案 `T-20260702-GSC-FORCE`/`T-20260702-SNS-FIRE` は `T-20260627-02` 残作業 / `T-20260702-SNS-BOUNDS` と重複のため新 ID 不発行・§4）。
 - **物理ファクト追加（2026-07-02 curl 実証）**: live `vodnavi.jp/sitemap.xml` = **11 `<loc>`**＝biblia 新 2 記事を動的 sitemap が自動収録済（GSC submit の前提充足・残は HUMAN submit のみ）。
 - **是正 2 点**: (a) `utm_source=sns_x` → 077 確定規約 `utm_source=x` に訂正（taxonomy 混載の再発）、(b) canonical 修正の「www へ単一化する準備」→ **両案の影響調査まで**に限定（Option A/B の裁定は HUMAN・07-04 アジェンダ #1 を既成事実化しない）。
+
+## 🟢 2026-07-02 GSC 送信前 sitemap 物理 QA＝全項目パス（HUMAN submit へ引き渡し）
+- [/] T-20260627-02 残作業（GSC submit）の**前段 QA 完了**: 本番 `www.vodnavi.jp/sitemap.xml` = 200/1,908B。**XML well-formed（Python ET パース通過）・url/loc 11:11 一致・生 `&` 0 件**（app sitemap の旧 GSC 検出 0 事故 [[project_app_sitemap_parse_error]] と同型の破損なし）・biblia 2 slug 収録。
+- **host drift の GSC 影響判定**: `<loc>` は 11 件全て apex `https://vodnavi.jp/...`（配信は www・308）。vodnavi.jp は**ドメインプロパティ**（[[reference_gsc_property_topology]]）のため apex/www 双方をカバー＝**submit は不整合未解消のまま即時実行可**（クロールは 308 を追従）。canonical/host の恒久整合は `T-20260702-CANONICAL-HOST`（07-04 裁定）のまま。
+- **→ HUMAN アクション待ち**: GSC（authuser=2・vodnavi.jp ドメインプロパティ）へ sitemap submit + 新 2 URL の URL 検査リクエスト。エージェント側の前提作業はこれで全て完了。
