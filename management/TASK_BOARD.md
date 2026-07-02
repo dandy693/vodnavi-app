@@ -1254,3 +1254,8 @@
 
 ## 🟢 2026-07-02 セッションクローズ（CSO 最終スクリプトは dedup 適用・増分のみ採録）
 - [ ] 🔵 T-20260702-CANONICAL-HOST (HUMAN/CTO, 2026-07-02): **canonical と配信 host の不整合解消**＝emit canonical は apex `https://vodnavi.jp/...`（`site-brand/src/app/[slug]/page.tsx` の `SITE_ORIGIN` 定数ほか）だが、live 配信は apex 308 → `www.vodnavi.jp`。全記事共通の pre-existing 構造（本日 deploy の regression でない）。**選択肢**: (a) `SITE_ORIGIN` 等を `www` へ統一（sitemap/JSON-LD/OG も同時に）(b) Vercel alias を apex 直配信へ変更し www→apex に反転。**どちらを正とするかは HUMAN 判断**（GSC プロパティ登録・被リンクの現況に依存）→ 決定後に CTO 実装。2026-07-04 サタデー・レビュー議題候補。※CSO 最終スクリプトの他 2 項目（deploy 完了・308→200 監査）は直前セクションに記録済のため §4 dedup で再掲せず。
+
+## 📋 2026-07-04 サタデー・レビュー予定アジェンダ（新規タスク起票なし＝既存トラッカーへの cross-ref のみ・§4）
+1. **`T-20260702-CANONICAL-HOST` の決着** — HUMAN による GSC property 登録実績の開示ベースで Option A（`SITE_ORIGIN`→www 統一・sitemap/JSON-LD/OG 同期）/ Option B（apex 再エイリアス）を裁定 → CTO 実装へ（詳細は同タスク本文）。
+2. **site-brand 層の GA4/GSC 実数確認** — BRIEF_119 §1 で断定を保留した「organic 黎明期」の実数裏取り + BRIEF_118 §3 の `source=moterist` vs `source=brand` hostname 識別。**注意**: 配信 host は www のため GA4 hostName フィルタは `www.vodnavi.jp` を見る（apex 値だと空振りの可能性）。SNS 初動（077 C/D）は**実投稿が HUMAN/CCO 未執行なら対象外**＝投稿済みの場合のみ `utm_campaign=biblia_001` で監査。
+3. **DMM 側「408↗1,326」クリック定義の突合** — T-20260629-02 の残作業（per-ID 手動確認・報酬別レポートの D友/lag 精査）。コード側は健全確定済（ALERTS.md）＝DMM 定義確認のみ。
