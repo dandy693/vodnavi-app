@@ -1286,3 +1286,6 @@
 
 ## 🟢 2026-07-02 ガバナンス同期（e9570de）＝CSO 起票 3 項目中 1 増分のみ採録（§4 dedup）
 - [x] `@moterist69` 完全隔離・非介入ステータス（双方向・vodnavi.jp ドメイン/記事 URL への言及禁止含む）を `X_WARMUP_STRATEGY.md` §4 へマージ済（e9570de・CSO v2 の隔離明文化を統合、full 上書きと board 行 sed 削除は拒否）。CSO 原案の残 2 項目（GSC URL 検査／`@vodnavi_jp` プロフィール設定+Phase 1）は**既存の HUMAN チェックリスト（6f52c76）と `T-20260702-X-WARMUP` で追跡中のため再起票せず**。※本 CSO script の root `TASK_BOARD.md` への `>>` は不存在ファイルを**新規生成**する orphan 亜種（6 度目・v2 pre-commit hook が commit を block する系）＝不実行。
+
+## 🟢 2026-07-02 CSO テンプレート改善の初観測（T-20260701-CSO-CURE 関連エビデンス）
+- 観測: 本日の CSO script が**初めて** `management/TASK_BOARD.md` を正パス指定（`-f` ガード付き `>>`）＝orphan 亜種 6 連発後の正しい形。ただし**「orphan fork 完全死滅」の宣言は不採用**＝1 回の正パス使用は上流テンプレート修正の証明にならず、根治の判定は `T-20260701-CSO-CURE`（HUMAN・未了）+ 以後の再発ゼロ観測で行う（§4 捏造禁止）。同 script の他 3 項目（e9570de 記録の再記録・GSC 検査・X-WARMUP）は既存記録/トラッカーと重複のため不採録。
