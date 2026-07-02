@@ -1274,3 +1274,8 @@
 - **訂正ファクト（GSC 画面物理確認・authuser=2・sc-domain:vodnavi.jp）**: `https://vodnavi.jp/sitemap.xml` は **2026-06-27 に送信済・ステータス「成功しました」・検出 9 ページ**＝T-20260627-02 の「GSC submit は HUMAN 残」は 06-27 時点で完了していた（board 記録が stale）。`app.vodnavi.jp/sitemap.xml` も成功・検出 3,003（06-28 読込）。
 - **残る実ギャップ**: 最終読み込み 06-27 ＝本日 deploy 前＝Google 保持は 9 entry 版（biblia 2 記事は未取得）。**再送信は加速策にすぎず必須でない**（成功済 sitemap は Google が自律的に再取得する）。
 - **再送信の自動実行は auto-mode classifier が deny**（外部認証システムへの書込・CSO script 起点を理由に遮断）＝エージェントからの GSC 書込は本セッションでは不実行。残アクション（任意・HUMAN 1 クリック）: 同 URL 再送信 or 新 2 URL の URL 検査リクエスト（後者の方が加速効果大）。
+
+## 📋 2026-07-02 HUMAN チェックリスト：GSC URL 検査（直前セクションの残アクションを実行形に具体化・重複記録なし）
+- [ ] HUMAN: GSC（authuser=2・sc-domain:vodnavi.jp・タブ開放済）URL 検査 → **`https://www.vodnavi.jp/biblia-erotica-foundation`** → インデックス登録をリクエスト
+- [ ] HUMAN: 同 → **`https://www.vodnavi.jp/biblia-literature-eroticism`** → インデックス登録をリクエスト
+- 注: **www 形で検査すること**（apex は 308 のため検査結果が「リダイレクトを含むページ」となりリクエスト効果が薄い）。ドメインプロパティのため両ホストとも検査可能だが、実配信＝www が正。完了したら本チェックボックスを HUMAN が [x] 化（エージェントは代行フリップしない）。
