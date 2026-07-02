@@ -1269,3 +1269,8 @@
 - [/] T-20260627-02 残作業（GSC submit）の**前段 QA 完了**: 本番 `www.vodnavi.jp/sitemap.xml` = 200/1,908B。**XML well-formed（Python ET パース通過）・url/loc 11:11 一致・生 `&` 0 件**（app sitemap の旧 GSC 検出 0 事故 [[project_app_sitemap_parse_error]] と同型の破損なし）・biblia 2 slug 収録。
 - **host drift の GSC 影響判定**: `<loc>` は 11 件全て apex `https://vodnavi.jp/...`（配信は www・308）。vodnavi.jp は**ドメインプロパティ**（[[reference_gsc_property_topology]]）のため apex/www 双方をカバー＝**submit は不整合未解消のまま即時実行可**（クロールは 308 を追従）。canonical/host の恒久整合は `T-20260702-CANONICAL-HOST`（07-04 裁定）のまま。
 - **→ HUMAN アクション待ち**: GSC（authuser=2・vodnavi.jp ドメインプロパティ）へ sitemap submit + 新 2 URL の URL 検査リクエスト。エージェント側の前提作業はこれで全て完了。
+
+## 🟢 2026-07-02 GSC 物理目視（claude-in-chrome）＝「submit 未了」は stale と判明
+- **訂正ファクト（GSC 画面物理確認・authuser=2・sc-domain:vodnavi.jp）**: `https://vodnavi.jp/sitemap.xml` は **2026-06-27 に送信済・ステータス「成功しました」・検出 9 ページ**＝T-20260627-02 の「GSC submit は HUMAN 残」は 06-27 時点で完了していた（board 記録が stale）。`app.vodnavi.jp/sitemap.xml` も成功・検出 3,003（06-28 読込）。
+- **残る実ギャップ**: 最終読み込み 06-27 ＝本日 deploy 前＝Google 保持は 9 entry 版（biblia 2 記事は未取得）。**再送信は加速策にすぎず必須でない**（成功済 sitemap は Google が自律的に再取得する）。
+- **再送信の自動実行は auto-mode classifier が deny**（外部認証システムへの書込・CSO script 起点を理由に遮断）＝エージェントからの GSC 書込は本セッションでは不実行。残アクション（任意・HUMAN 1 クリック）: 同 URL 再送信 or 新 2 URL の URL 検査リクエスト（後者の方が加速効果大）。
