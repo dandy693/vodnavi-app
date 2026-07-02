@@ -1283,3 +1283,6 @@
 ## 🟢 2026-07-02 X ウォームアップ戦略 landed（実画面検証済・CSO 原案の事実誤認を是正）
 - [ ] 🔵 T-20260702-X-WARMUP (HUMAN/CCO, 2026-07-02): `X_WARMUP_STRATEGY.md` Phase 1 開始＝`@vodnavi_jp`（**実在確認済: 0 ポスト・2025-05 開設の 14 ヶ月休眠 aged account・プロフィール未設定**）のプロフィール設定（BRIEF_039 ドラフト準拠・URL は `https://www.vodnavi.jp/`）→ 教養テキストポスト運用（URL 投下は Phase 2 まで禁止）。**077 C/D の URL 付き投稿は Phase 3（Day 15+）へ繰り下げ**＝BRIEF_121 §2.2 の「即時投下」を本戦略が上書き。実投稿・設定変更は全て HUMAN/CCO（エージェントは X への書込を行わない）。
 - **是正ファクト**: CSO 原案「`@moterist69` 運用履歴なし・新規」は**誤り**＝実画面で **124 ポスト・2023-06 開設・成人向け投稿履歴**（moterist.com ブログ連携・直近可視 2025-03-31）を確認。同アカウントは moterist 凍結（§2）と同期の as-is hold とし、**`@vodnavi_jp` との公開結線を絶対禁止**（X_WARMUP_STRATEGY §4）。監視タスクは新規起票せず Saturday Review の受動目視に集約（§4 dedup）。
+
+## 🟢 2026-07-02 ガバナンス同期（e9570de）＝CSO 起票 3 項目中 1 増分のみ採録（§4 dedup）
+- [x] `@moterist69` 完全隔離・非介入ステータス（双方向・vodnavi.jp ドメイン/記事 URL への言及禁止含む）を `X_WARMUP_STRATEGY.md` §4 へマージ済（e9570de・CSO v2 の隔離明文化を統合、full 上書きと board 行 sed 削除は拒否）。CSO 原案の残 2 項目（GSC URL 検査／`@vodnavi_jp` プロフィール設定+Phase 1）は**既存の HUMAN チェックリスト（6f52c76）と `T-20260702-X-WARMUP` で追跡中のため再起票せず**。※本 CSO script の root `TASK_BOARD.md` への `>>` は不存在ファイルを**新規生成**する orphan 亜種（6 度目・v2 pre-commit hook が commit を block する系）＝不実行。
