@@ -1238,3 +1238,7 @@
 ## 🟢 2026-07-02 ブランドメディア拡充：ビブリア・エロティカ基盤記事（landed & pushed）
 - [x] T-20260702-BIBLIA (CTO, 2026-07-02): `site-brand/03_content/biblia-erotica-foundation/article.md` を教養 register で新規作成＝clean 面（非成人 trust 聖域・BRIEF_051）の既存記事群と同トーン。infra 内部（self-canonical/age-gate）は本文に書かず、concierge CTA は `source=brand&intent=wisdom`（成人 param なし）。既存 `[slug]` renderer 経由で `vodnavi.jp/biblia-erotica-foundation` に配信（FS dual-read・`generateStaticParams` がディレクトリ名から slug 検知）。**commit `30c79c5` → `git push origin main` でリモート同期済**（origin/main = 30c79c5）。設計は [[STRATEGY_BRIEF_118_BRAND_MEDIA_EXPANSION]]。
   - 注: FS `article.md` は `publish_status: draft` でも描画対象（draft ゲートは DB 経路のみ）。clean 層は auto-deploy されないため本番 live 化は手動 prod deploy 待ち。
+
+## 🟢 2026-07-02 SEO・SNS加速（BRIEF_119・既存SNS資産への増分のみ）
+- [ ] 🔵 T-20260702-BIBLIA-CLUSTER (CCO/CTO, 2026-07-02): [[STRATEGY_BRIEF_119_SEO_SNS_ACCELERATION]] §2 準拠の `site-brand/03_content/` 教養クラスター記事追加（`biblia-erotica-foundation` 後続・draft 管理・各追加時 `next build` exit 0 確認・公開制御は手動 prod deploy）。moterist 向け既存クラスター `T-20260604-30X-2`（BRIEF_032・CTA `?source=moterist`）とは**面が別**（site-brand clean 面）＝重複起票でない。内部リンク配管は `T-20260627-08` の観測優先 freeze 対象のまま（GSC 反映+GA4 流入トリガー未達なら実装しない）。
+- [ ] 🔵 T-20260702-SNS-BOUNDS (CCO, 2026-07-02): 『ビブリア・エロティカ』教養選書 clean 140字スニペット運用フォーマット策定＝**`PROMOTION_ASSETS_077.md` の拡張**（BRIEF_038/039 の重複再作成禁止・BRIEF_119 §3）。`?source=` は既存 taxonomy（`sns_x` 登録済 085e2e4）との整合を CCO/CTO で確定してから使用（無断新値 `sns` で GA4 dim を分断しない）。アカウント開設・実投稿は HUMAN/CCO アクション。
