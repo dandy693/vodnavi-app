@@ -26,7 +26,7 @@
 - 発信内容: `PROMOTION_ASSETS_077.md` 訴求 C/D による本格訴求 + GSC/GA4 データ駆動運用。
 - URL 制約: 計測パラメータ付き URL（`?utm_source=x&utm_campaign=biblia_001`・077 確定規約）の解禁。
 
-## 4. `@moterist69` の取扱い（clean 境界の防衛）
+## 4. `@moterist69` の取扱い＝**完全隔離・非介入ステータス**（clean 境界の防衛・2026-07-02 CSO v2 の隔離明文化を統合）
 - **凍結維持（as-is hold）**: moterist.com 本体の凍結（FACT_GOVERNANCE §2）と同期。投稿・フォロー・プロフィール変更・削除の一切を行わない。
-- **絶対禁止**: `@vodnavi_jp` との相互フォロー・RT・リプライ・プロフィール相互リンク等、**成人履歴アカウントと clean アカウントの公開結線**（BRIEF_051 の clean 聖域を X 上でも維持）。
+- **絶対禁止（双方向）**: `@vodnavi_jp` との相互フォロー・RT・リプライ・プロフィール相互リンクに加え、**`@vodnavi_jp` / `vodnavi.jp` ドメイン / 記事 URL へのあらゆる言及**を含む、成人履歴アカウントと clean 資産の公開結線一切（BRIEF_051 の clean 聖域を X 上でも維持）。
 - 監視は受動のみ（凍結逸脱の有無を Saturday Review で目視）。
