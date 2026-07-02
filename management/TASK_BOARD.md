@@ -1234,3 +1234,7 @@
 
 ## 🟢 2026-07-01 設計仕様：クッキー3型独立分離（BRIEF_117・実装は既存タスク）
 - `STRATEGY_BRIEF_117` = FACT_GOVERNANCE §1 cookie 3機構分離の詳細設計仕様（age-gate `vodnavi_age_verified` / cookie-burn `buildEarlyCookieURL` / linker `_gl`）。**実装は既存 `T-20260701-MIDDLEWARE-AUTH`（+`T-20260630-EDGE`/`T-20260630-MW`/`T-20260701-CON`）で追跡。CSO 原案 `T-CK3-PROXY`/`T-CK3-BURN` は重複のため新規起票せず（FACT_GOVERNANCE §4 dedup）。**
+
+## 🟢 2026-07-02 ブランドメディア拡充：ビブリア・エロティカ基盤記事（landed & pushed）
+- [x] T-20260702-BIBLIA (CTO, 2026-07-02): `site-brand/03_content/biblia-erotica-foundation/article.md` を教養 register で新規作成＝clean 面（非成人 trust 聖域・BRIEF_051）の既存記事群と同トーン。infra 内部（self-canonical/age-gate）は本文に書かず、concierge CTA は `source=brand&intent=wisdom`（成人 param なし）。既存 `[slug]` renderer 経由で `vodnavi.jp/biblia-erotica-foundation` に配信（FS dual-read・`generateStaticParams` がディレクトリ名から slug 検知）。**commit `30c79c5` → `git push origin main` でリモート同期済**（origin/main = 30c79c5）。設計は [[STRATEGY_BRIEF_118_BRAND_MEDIA_EXPANSION]]。
+  - 注: FS `article.md` は `publish_status: draft` でも描画対象（draft ゲートは DB 経路のみ）。clean 層は auto-deploy されないため本番 live 化は手動 prod deploy 待ち。
