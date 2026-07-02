@@ -3,7 +3,7 @@
 > 2026-07-02 制定。`biblia-erotica-foundation` 記事 landed（board `T-20260702-BIBLIA` / commit `30c79c5` / origin 同期済）を起点とする site-brand メディア拡充の設計。FACT_GOVERNANCE 準拠（clean 面 = 非成人 trust 聖域・BRIEF_051 / `proxy.ts` 3機構分離）。
 
 ## 1. 物理アセット接続（Next.js 16 SSG の検証）
-- 本日 landed した `biblia-erotica-foundation` を、`site-brand` の `generateStaticParams`（`03_content` のディレクトリ名を slug 化）が正しく検知しているかビルドテストで検証する。ディレクトリ検知はローカル `ls` で確認済だが、実 `next build`／SSG 出力は未検証。
+- ✅ **検証済（2026-07-02 CTO 物理ビルド実証）**: `site-brand` で local `next build`（Next.js 16.2.6）を実行＝**exit 0・静的 25/25 生成・エラー/警告/スロットル 0 件**。route table で `/[slug]` は `●`(SSG)、`.next/server/app/biblia-erotica-foundation.{html,meta,rsc}` の物理エミットを確認。エミット HTML 内に正タイトル・`<link rel="canonical" href="https://vodnavi.jp/biblia-erotica-foundation">`・教養本文を確認、not-found 描画でないこと（sentinel 0 件）も確認。`genres/[slug]` 等は `ƒ`(dynamic)＝ビルド時 DMM fan-out なし（ローカル IP スロットルの懸念は非該当）。
 - 期待される静的ルート: `vodnavi.jp/biblia-erotica-foundation`（clean 層は auto-deploy されないため live 化は手動 prod deploy 後）。
 
 ## 2. 年齢確認ガード（app-concierge/src/proxy.ts）のルーティング監査
