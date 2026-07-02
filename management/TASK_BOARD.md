@@ -1279,3 +1279,7 @@
 - [ ] HUMAN: GSC（authuser=2・sc-domain:vodnavi.jp・タブ開放済）URL 検査 → **`https://www.vodnavi.jp/biblia-erotica-foundation`** → インデックス登録をリクエスト
 - [ ] HUMAN: 同 → **`https://www.vodnavi.jp/biblia-literature-eroticism`** → インデックス登録をリクエスト
 - 注: **www 形で検査すること**（apex は 308 のため検査結果が「リダイレクトを含むページ」となりリクエスト効果が薄い）。ドメインプロパティのため両ホストとも検査可能だが、実配信＝www が正。完了したら本チェックボックスを HUMAN が [x] 化（エージェントは代行フリップしない）。
+
+## 🟢 2026-07-02 X ウォームアップ戦略 landed（実画面検証済・CSO 原案の事実誤認を是正）
+- [ ] 🔵 T-20260702-X-WARMUP (HUMAN/CCO, 2026-07-02): `X_WARMUP_STRATEGY.md` Phase 1 開始＝`@vodnavi_jp`（**実在確認済: 0 ポスト・2025-05 開設の 14 ヶ月休眠 aged account・プロフィール未設定**）のプロフィール設定（BRIEF_039 ドラフト準拠・URL は `https://www.vodnavi.jp/`）→ 教養テキストポスト運用（URL 投下は Phase 2 まで禁止）。**077 C/D の URL 付き投稿は Phase 3（Day 15+）へ繰り下げ**＝BRIEF_121 §2.2 の「即時投下」を本戦略が上書き。実投稿・設定変更は全て HUMAN/CCO（エージェントは X への書込を行わない）。
+- **是正ファクト**: CSO 原案「`@moterist69` 運用履歴なし・新規」は**誤り**＝実画面で **124 ポスト・2023-06 開設・成人向け投稿履歴**（moterist.com ブログ連携・直近可視 2025-03-31）を確認。同アカウントは moterist 凍結（§2）と同期の as-is hold とし、**`@vodnavi_jp` との公開結線を絶対禁止**（X_WARMUP_STRATEGY §4）。監視タスクは新規起票せず Saturday Review の受動目視に集約（§4 dedup）。
