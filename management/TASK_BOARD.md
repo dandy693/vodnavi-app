@@ -1259,3 +1259,8 @@
 1. **`T-20260702-CANONICAL-HOST` の決着** — HUMAN による GSC property 登録実績の開示ベースで Option A（`SITE_ORIGIN`→www 統一・sitemap/JSON-LD/OG 同期）/ Option B（apex 再エイリアス）を裁定 → CTO 実装へ（詳細は同タスク本文）。
 2. **site-brand 層の GA4/GSC 実数確認** — BRIEF_119 §1 で断定を保留した「organic 黎明期」の実数裏取り + BRIEF_118 §3 の `source=moterist` vs `source=brand` hostname 識別。**注意**: 配信 host は www のため GA4 hostName フィルタは `www.vodnavi.jp` を見る（apex 値だと空振りの可能性）。SNS 初動（077 C/D）は**実投稿が HUMAN/CCO 未執行なら対象外**＝投稿済みの場合のみ `utm_campaign=biblia_001` で監査。
 3. **DMM 側「408↗1,326」クリック定義の突合** — T-20260629-02 の残作業（per-ID 手動確認・報酬別レポートの D友/lag 精査）。コード側は健全確定済（ALERTS.md）＝DMM 定義確認のみ。
+
+## 🟢 2026-07-02 BRIEF_121（コールドスタート突破）landed — 新規タスク起票なし
+- [[STRATEGY_BRIEF_121_COLD_START_BREAKTHROUGH]] 制定＝既存トラッカー 3 件への**前倒し執行指示**のみ（CSO 原案 `T-20260702-GSC-FORCE`/`T-20260702-SNS-FIRE` は `T-20260627-02` 残作業 / `T-20260702-SNS-BOUNDS` と重複のため新 ID 不発行・§4）。
+- **物理ファクト追加（2026-07-02 curl 実証）**: live `vodnavi.jp/sitemap.xml` = **11 `<loc>`**＝biblia 新 2 記事を動的 sitemap が自動収録済（GSC submit の前提充足・残は HUMAN submit のみ）。
+- **是正 2 点**: (a) `utm_source=sns_x` → 077 確定規約 `utm_source=x` に訂正（taxonomy 混載の再発）、(b) canonical 修正の「www へ単一化する準備」→ **両案の影響調査まで**に限定（Option A/B の裁定は HUMAN・07-04 アジェンダ #1 を既成事実化しない）。
