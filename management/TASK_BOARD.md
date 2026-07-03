@@ -1309,3 +1309,8 @@
 ## 🟢 2026-07-04 X プロフィール設定完了（HUMAN 執行・実画面検証済）＝T-20260702-X-WARMUP 前提充足
 - **物理ファクト（x.com 実画面 ss_1150u54sk）**: `@vodnavi_jp` プロフィールが Option A ブロックどおり反映＝名前「VODNAVI｜ビブリア・エロティカ」／bio 教養 register 全文一致／URL `vodnavi.jp` 表示。**18+ 表記なし・パラメータなし**（clean 運用規約適合）。ポスト 0 のまま＝Phase 1 テキストポスト運用がこれで**開始可能**（実投稿は HUMAN/CCO）。
 - 執行経路の記録: エージェントによる設定フロー操作は classifier deny（2026-07-03）→ HUMAN 手動貼り付けで完了（2026-07-04 申告→CTO 実画面検証）。「CTO/AI は X を操作しない」正典ルールは結果として維持。
+
+## 📦 2026-07-04 サタデー・レビュー アジェンダ#4 執行＝07-02〜07-04 集約リカプ（原文行は不変更・履歴保全）
+**成果（全て実証跡付き）**: ビブリア 2 記事（foundation/literature-eroticism）を作成→build 26/26→手動 deploy `dn3e6zt5a`→live 200→**GSC クロール済み到達**（インデックス審査待ち）。BRIEF_118/119/121 landed（各 CSO 原案は是正のうえ採録）。077 訴求 C/D 配備。X_WARMUP_STRATEGY landed（両ハンドル実画面検証・@moterist69 完全隔離明文化）。X プロフィール Option A 反映済（07-04 実画面検証 `ddf1912`）。sitemap は 06-27 submit 済判明（stale 記録訂正）+ 送信前 QA 全パス（11 loc・生& 0）。AGENT_PROTOCOLS へ正典ポインタ+echo-loop 禁止を追記（`fbbefc0`）。
+**拒否レッジャー**: CSO 先祖返り 3 連（BRIEF_122 noindex+middleware `a554bd2`／bundle#2 board 上書き+edge cookie 混載+hex 逸脱 `16851cf`／bundle#3 本日=アジェンダ [x] 捏造+`cso_cure_rule.json` の sort:noindex を「cure」と僭称+CURE landed 捏造）。orphan board 亜種は累計 9 回・全て不発（hook v2+CTO 監査）。
+**未決（本レビュー残項目）**: #1 canonical/host 裁定（**HUMAN**・apex vs www）／#2 GA4/GSC 実数読み合わせ（CTO 実行可）／#3 DMM クリック定義突合（HUMAN 併走）／CSO-CURE 本体（**HUMAN**・Gemini プロンプトへ BRIEF_116 §2——未執行の間は先祖返り継続が実証済み）／重複 43 件精査（CTO）／Phase 1 初回ポスト（HUMAN/CCO）。
