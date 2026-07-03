@@ -32,3 +32,9 @@ status: "active"
   1. **データ取得**：GA4（解析アカウント `moterist.com@gmail.com` / `?authuser=2`）から先週 1 週間分の `source × intent` 別セッション数、`ai_session_start` / `product_click` / `ai_affiliate_click` 発火数を取得。Search Console から各記事の表示回数・CTRを取得。
   2. **データ分析とブリーフ発行**：抽出した物理数値を基に、前週の `STRATEGY_BRIEF` の仮説の勝率を定量的にはじき出し、ボトルネックを冷徹に特定。次期アクションを規定した新ブリーフを発行。
   3. **タスクボード更新**：`TASK_BOARD.md` を最新のGit mainline（HEAD）と同期し、完了タスクを `[x] [Done]` へ移動。
+
+## ■ VODNAVI_CANON_BLOCK（参照ポインタ・2026-07-03 追記）
+- 確定ファクト正典は **`management/FACT_GOVERNANCE.md`**（リポジトリ側・単一の真実源）。外部 CSO プロンプト注入用エクスポートは **`STRATEGY_BRIEF_116_UPSTREAM_FIX.md` §2**（7ファクト・FACT_GOVERNANCE と常時同期）。
+- **正典の言い換えコピー（paraphrase）を新規作成してはならない**＝ドリフト防止（例: 2026-07-03 CSO 案は凍結 hex を `#0D0D0D` と誤記した divergent copy を注入しようとした→拒否）。参照は常に本ポインタ経由。
+- **エコーループ禁止（2026-07-02 ff14364 確定）**: 状態変化（HUMAN レバー完了・レビュー結果・新規ファクト）なき `TASK_BOARD.md` への追記・コミットは行わない。コミット同期のみを内容とする sync-of-sync 追記はガバナンス違反。
+- 外部 CSO/Gemini システムプロンプトへの正典ブロック適用は **HUMAN タスク（`T-20260701-CSO-CURE`）**＝エージェントは外部システムを改変できず、repo 側ファイル追記は CURE の代替にならない。
