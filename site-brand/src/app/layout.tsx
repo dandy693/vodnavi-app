@@ -30,7 +30,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vodnavi.jp"),
+  metadataBase: new URL("https://www.vodnavi.jp"),
   title: {
     default: "VODNAVI — 次世代映像検索 AI コンシェルジュ",
     template: "%s | VODNAVI",
@@ -63,7 +63,7 @@ export const metadata: Metadata = {
   },
 };
 
-const SITE_URL = "https://vodnavi.jp";
+const SITE_URL = "https://www.vodnavi.jp";
 
 // BRAND_DESIGN_GUIDE §3② の「公式の顔（身元引受人）」を schema.org として
 // 機械可読化。@graph で Organization と WebSite を 1 ペイロードに集約。

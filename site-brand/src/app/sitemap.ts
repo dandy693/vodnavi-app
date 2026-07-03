@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import fs from "fs";
 import path from "path";
 
-const SITE_URL = "https://vodnavi.jp";
+const SITE_URL = "https://www.vodnavi.jp";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

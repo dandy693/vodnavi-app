@@ -10,7 +10,7 @@ interface Props {
 }
 
 // site-brand = vodnavi.jp。self-canonical の絶対 origin（e82a670 正典思想）。
-const SITE_ORIGIN = "https://vodnavi.jp";
+const SITE_ORIGIN = "https://www.vodnavi.jp";
 
 type LoadedArticle = {
   title: string;
