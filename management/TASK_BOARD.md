@@ -1318,3 +1318,6 @@
 ## 🟢 2026-07-04 アジェンダ#1 裁定＝Option A（www 統一）採択・コード実装完了／deploy は保留
 - **裁定**: canonical/host は **Option A＝`https://www.vodnavi.jp` へ統一**（HUMAN 採択・07-04 user 指示）。実装: `layout.tsx`（metadataBase/JSON-LD SITE_URL）・`robots.ts`・`sitemap.ts`・`[slug]/page.tsx` の 5 定数を www 化。`next build` exit 0・26/26・emit canonical `https://www.vodnavi.jp/...` を物理確認。**`vercel --prod` は classifier deny → 本番反映は未了**（HUMAN 実行 or 明示承認待ち。反映までは本番 canonical は apex のまま）。
 - **拒否（4 度目の noindex 再発）**: CSO script の `cso_cure_rule.json`（`sort: noindex` を「CURE」と僭称＋`landed` 捏造）と root board 全文上書き（10 度目・`[cite: N]` 幻覚マーカー付き）＋別パッケージ build＋`|| true` 失敗握り潰しは全て不採用。T-20260701-CSO-CURE（Gemini プロンプト側）は依然未執行。
+
+## 🟢 2026-07-04 アジェンダ#1 完全落成＝Option A 本番反映・ライブ検証済（T-20260702-CANONICAL-HOST close）
+- [x] T-20260702-CANONICAL-HOST → **close**: HUMAN が `vercel deploy --prod` を手動執行（`dpl_Bc1fH2u7zB24q5kQSBCgCRrLG5RG`・READY・clean-lint 9/9・SSG 26/26）。**ライブ物理検証（curl）**: canonical=`https://www.vodnavi.jp/...`／sitemap 11 `<loc>` 全て www／robots.txt Sitemap 行 www／JSON-LD url www＝**emit と配信 host の不整合が本番で解消**。裁定→実装（0421b19）→deploy→live 検証の全工程が実証跡付きで完結。GSC はドメインプロパティのため旧 apex 記録との連続性も保持。
