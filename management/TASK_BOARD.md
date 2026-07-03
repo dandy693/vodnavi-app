@@ -1314,3 +1314,7 @@
 **成果（全て実証跡付き）**: ビブリア 2 記事（foundation/literature-eroticism）を作成→build 26/26→手動 deploy `dn3e6zt5a`→live 200→**GSC クロール済み到達**（インデックス審査待ち）。BRIEF_118/119/121 landed（各 CSO 原案は是正のうえ採録）。077 訴求 C/D 配備。X_WARMUP_STRATEGY landed（両ハンドル実画面検証・@moterist69 完全隔離明文化）。X プロフィール Option A 反映済（07-04 実画面検証 `ddf1912`）。sitemap は 06-27 submit 済判明（stale 記録訂正）+ 送信前 QA 全パス（11 loc・生& 0）。AGENT_PROTOCOLS へ正典ポインタ+echo-loop 禁止を追記（`fbbefc0`）。
 **拒否レッジャー**: CSO 先祖返り 3 連（BRIEF_122 noindex+middleware `a554bd2`／bundle#2 board 上書き+edge cookie 混載+hex 逸脱 `16851cf`／bundle#3 本日=アジェンダ [x] 捏造+`cso_cure_rule.json` の sort:noindex を「cure」と僭称+CURE landed 捏造）。orphan board 亜種は累計 9 回・全て不発（hook v2+CTO 監査）。
 **未決（本レビュー残項目）**: #1 canonical/host 裁定（**HUMAN**・apex vs www）／#2 GA4/GSC 実数読み合わせ（CTO 実行可）／#3 DMM クリック定義突合（HUMAN 併走）／CSO-CURE 本体（**HUMAN**・Gemini プロンプトへ BRIEF_116 §2——未執行の間は先祖返り継続が実証済み）／重複 43 件精査（CTO）／Phase 1 初回ポスト（HUMAN/CCO）。
+
+## 🟢 2026-07-04 アジェンダ#1 裁定＝Option A（www 統一）採択・コード実装完了／deploy は保留
+- **裁定**: canonical/host は **Option A＝`https://www.vodnavi.jp` へ統一**（HUMAN 採択・07-04 user 指示）。実装: `layout.tsx`（metadataBase/JSON-LD SITE_URL）・`robots.ts`・`sitemap.ts`・`[slug]/page.tsx` の 5 定数を www 化。`next build` exit 0・26/26・emit canonical `https://www.vodnavi.jp/...` を物理確認。**`vercel --prod` は classifier deny → 本番反映は未了**（HUMAN 実行 or 明示承認待ち。反映までは本番 canonical は apex のまま）。
+- **拒否（4 度目の noindex 再発）**: CSO script の `cso_cure_rule.json`（`sort: noindex` を「CURE」と僭称＋`landed` 捏造）と root board 全文上書き（10 度目・`[cite: N]` 幻覚マーカー付き）＋別パッケージ build＋`|| true` 失敗握り潰しは全て不採用。T-20260701-CSO-CURE（Gemini プロンプト側）は依然未執行。
