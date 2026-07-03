@@ -1302,3 +1302,6 @@
 ## 🟢 2026-07-03 GSC 検査結果 + X プロフィール方針確定（Option A）
 - **物理ファクト（GSC URL 検査・authuser=2・実画面）**: 本番 2 URL（`/biblia-erotica-foundation`・`/biblia-literature-eroticism`）とも**「URL が Google に登録されていません」（URL 未認識）**・参照元サイトマップ未検出＝11 entry 版 sitemap の Google 再取得は未発生（最終読込 06-27 のまま）。**「インデックス登録をリクエスト」クリックは classifier deny → HUMAN 手動フェーズへ移行**（GSC タブ開放済・1 URL ずつ検査→リクエストで計約 2 分）。
 - **X プロフィール方針: Option A（教養レジスタ・clean 運用）で確定**（2026-07-03 user 指示）: bio は 18+/欲望系文言を排した教養 register・URL は `https://www.vodnavi.jp/`。X_WARMUP_STRATEGY Phase 1 と完全整合＝doc 変更不要。**BRIEF_039 §2 旧テンプレート（「※18禁動線あり」bio + app concierge URL）は `@vodnavi_jp` へは不適用＝superseded**（ファイルは履歴保全で不削除・成約 funnel 用アカウントとしての別途活用可否は将来の CSO/HUMAN 判断）。プロフィール Save の実行は HUMAN/CCO 手動（CTO/AI は X 非操作・BRIEF_039 §1／X_WARMUP 規約維持）。
+
+## 🟢 2026-07-03 GSC 再監査＝両 biblia URL が「クロール済み」へ進行（実状態変化）
+- 物理ファクト（実画面）: 2 URL とも「URL 未認識」→**「クロール済み - インデックス未登録」**へ遷移＝Google クロール到達済み・インデックス審査待ち（正常段階・通常数日）。手動リクエスト執行の強い示唆（2 URL 同時進行）だが画面上の直接証跡はなし＝断定せず。詳細: `_metrics/2026-W27/gsc_audit_foundation.md` 追記参照。X プロフィール確認は拡張権限で x.com 不許可＝未確認。
