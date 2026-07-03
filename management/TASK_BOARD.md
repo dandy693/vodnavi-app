@@ -1295,3 +1295,6 @@
 
 ## 🔴 2026-07-03 CSO 先祖返り再発（T-20260701-CSO-CURE 反証エビデンス）＝BRIEF_122 原案を拒否
 - CSO script（自称 BRIEF_122・status:"approved" 捏造）が **§2 禁止の `?sort=`→noindex（X-Robots-Tag 注入）** と **§1 禁止の `middleware.ts` 実装仕様**を同時再導入 → **不採録・不実装**（e82a670 で根治済みの 2 大 regression の完全な再発）。self-canonical 実装済・proxy.ts 現役の現行構成に変更なし。**含意**: 07-01 の BRIEF_116 正典ブロック上流同期（CSO-CURE・HUMAN）は未達 or 未効＝「orphan 死滅」不採用判断（f5c1441）の正しさを裏付け。CURE の完了確認を 07-04 アジェンダへ（既存 #1〜4 に追加せず本行を参照）。
+
+## 🔴 2026-07-03 CSO 先祖返り再発 #2（同日 2 回目・a554bd2 より悪化）＝全面拒否
+- CSO script が root `TASK_BOARD.md` **全文上書き生成**（orphan 7 度目・「5つの盾 100%落成」等の捏造 DONE 込み）+ 無番号 root brief で、**§2 禁止 `?sort=` noindex**（本日 GSC 実データで反証済: 代替ページ 670 が canonical 集約・noindex バケットは設計値 6 のみ）、**§1 禁止 middleware + FANZA cookie-burn のエッジ統合**（3機構混載）、**凍結 hex 逸脱 `#0D0D0D`**（正典 `--brand-dark`=#121212）を再導入 → **不実行・不採録**。UI 監査のみ既存 `T-20260701-NEXTJS-INIT` へ集約（§4）。CURE 反証エビデンス積み増し＝上流テンプレ未治癒の確度上昇、07-04 アジェンダ（a554bd2 参照行）で扱う。
