@@ -1321,3 +1321,8 @@
 
 ## 🟢 2026-07-04 アジェンダ#1 完全落成＝Option A 本番反映・ライブ検証済（T-20260702-CANONICAL-HOST close）
 - [x] T-20260702-CANONICAL-HOST → **close**: HUMAN が `vercel deploy --prod` を手動執行（`dpl_Bc1fH2u7zB24q5kQSBCgCRrLG5RG`・READY・clean-lint 9/9・SSG 26/26）。**ライブ物理検証（curl）**: canonical=`https://www.vodnavi.jp/...`／sitemap 11 `<loc>` 全て www／robots.txt Sitemap 行 www／JSON-LD url www＝**emit と配信 host の不整合が本番で解消**。裁定→実装（0421b19）→deploy→live 検証の全工程が実証跡付きで完結。GSC はドメインプロパティのため旧 apex 記録との連続性も保持。
+
+## 🟢 2026-07-04 サタデー・レビュー アジェンダ#2 完了＝GA4/GSC 実数監査（read-only・実画面）
+- **GA4（p489519780・6/28〜7/4）**: 全体 1,266 表示/549 users。**app.vodnavi.jp ≈97%**／**www.vodnavi.jp = 37 表示(2.92%)/16 users**（BRIEF_119 §1「黎明期」を実数確証）／**moterist.com = 2 表示/2 users**＝タグ・linker 生存。**`?source=moterist` 着地セッション = 0 件**（landing-page レポート・フィルタ機構はフィルタなし 560 セッションで健全性確認済）＝**捕捉パイプライン正常・流入自体が不発生**（凍結と整合、[[project_moterist_zero_search_inflow]] 継続）。www 層に旧スラッグ（/alien 等・sitemap 外）への残存着地 各2表示＝異常でない。
+- **GSC**: 「重複・Google により別ページ正規選択」**43→206 件に拡大**（レポート更新に伴い 検出未登録 737→352・リダイレクト 1→21 も変動）。**実例 8/8 が `app.vodnavi.jp/works/amateur/...`**（07-01 クロール）＝works/amateur 二重配信起因を物理特定（BRIEF_068 時点の 2 件から系統的増殖）。
+- [ ] 🔵 T-20260704-SEO-AMATEUR-CANONICAL (CTO, 2026-07-04): `works/amateur` の作品ID二重配信に対する canonical 集約設計＋パッチ（自フロア canonical 統一 or 二重配信解消の設計判断→実装→build 検証→deploy）。優先度 High（206 件・増加中）。**FACT_GOVERNANCE §2 準拠＝noindex 不使用・self-canonical consolidation のみ**。旧観測: [[project_gsc_duplicate_alert_works_floor_dup]]（当時 2 件・低重大度→本日 206 件で再格付け）。
