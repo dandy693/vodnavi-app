@@ -1329,3 +1329,6 @@
 
 ## 🟢 2026-07-04 T-20260704-SEO-AMATEUR-CANONICAL 実装完了（deploy 待ち）
 - [/] 実装: `works/[floor]/[id]/page.tsx` に `canonicalWorkPath()`（`apiFloor` 解決＝amateur→videoa）を導入し、**canonical / og:url / Product JSON-LD url の 3 サーフェスを実フロア URL へ統一**。UX 側（パンくず `/?floor=amateur`・フロア表示）は不変更。noindex 不使用（§2）。`tsc` exit 0＋`next build` exit 0（15/15）。commit `（本行と同 push）`。**本番反映は vodnavi-app の deploy 後**＝反映確認は live curl（amateur URL の canonical が videoa を指すこと）→ 以後 GSC 206 バケットの減衰を次回レビューで観測。
+
+## 🟢 2026-07-04 T-20260704-SEO-AMATEUR-CANONICAL 本番反映・live 検証済＝close
+- [x] **live 物理検証（curl）**: `works/amateur/mird00284`・`works/amateur/snos00320` とも canonical / Product JSON-LD url が **`/works/videoa/...` を宣言**（BEFORE=amateur 自己参照を push 前に証跡確保済）。`works/videoa/mird00284` の self-canonical は不変＝正しい非対称。**発見ファクト: `vodnavi-app` は GitHub main push で auto-deploy される**（site-brand と異なる・push 後数分で反映をポーリング実証）＝手動 vercel 不要。残観測: GSC「重複 206」バケットの減衰（数週間スケール・次回以降のレビューで確認、[[project_gsc_duplicate_alert_works_floor_dup]] 系譜の恒久解消判定はそこで）。
