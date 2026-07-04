@@ -581,3 +581,4 @@ $ curl -sI https://app.vodnavi.jp/ | grep -i x-robots-tag
 - **H-3 反証**: 262 users はスパイクでなく通常水準。bot flood なし。
 - hostname: app.vodnavi.jp が主体、www.vodnavi.jp ≈2 users、**moterist.com 1 user・クリック0**（freeze 通り）。
 - **結論**: アプリ/GA4 側は 100% 健全＝**コード修正は一切不要**。残作業は DMM 側「408」の定義（impression 等）を本ファクトと突合する DMM 側確認のみ。詳細 `_metrics/2026-W26-conversion-anomaly.json`。
+- **【完了追記 2026-07-04・CTO DMM 実画面監査】残作業の DMM 側確認を完了＝本アラート系は完全 close**。実測: 7/1〜7/3 累計 **1,327 クリック・報酬 1 件 ¥686**（7/2 ダイレクト）。6/24 以降 400〜500/日で平坦持続＝スパイクでなく**新常態**。決定的関係: DMM クリック 1,327（3 日）＞ GA4 app 全表示 ≈1,227（7 日）＝人間クリックでは構造的に不可能 → **DMM クリック = al.dmm.co.jp リダイレクタ HTTP ヒット（JS 非実行 bot/クローラ含む）／GA4 = JS 実行者（人間）のみ**の定義差で確定。early cookie burn 自動発火説はコードで棄却（`buildEarlyCookieURL` はクリック式 `<a>`）。報酬パイプライン生存（6/23 ¥280・7/2 ¥686）。残精密化（D友報酬別・per-ID 帰属）は 07-11 レビューへ（board 参照）。
