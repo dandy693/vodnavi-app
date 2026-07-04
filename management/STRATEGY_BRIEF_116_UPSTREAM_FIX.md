@@ -17,6 +17,7 @@ CSO ジェネレータ（HUMAN 運用の外部システム）が周回ループ�
 5. **ドメインの現在地**: `moterist.com` は現状維持（as-is）のまま完全凍結（Freeze）＝削除/移送しない。流入は `?source=moterist` またはホスト名で識別せよ。「完全遷都」は未承認の gated 状態である。
 6. **実在法人格の縛り**: リポジトリ内の構造化データに定義された実在正典法人格は `合同会社トレンドネット` のみである。`Safari株式会社` 等の架空名称の捏造・コミットは永久に禁止する。
 7. **GA4物理測定値**: 本番プロパティは `p489519780`、測定IDは `G-GG7JV9MJRW`、web stream `11225897844`、タイムゾーン JST（GMT+09:00）、通貨 JPY（¥）。アクセスは `authuser=2`（`moterist.com@gmail.com`）領域＝`authuser=0`（別 client 既定プロパティ）の罠に注意。クロスドメイン linker = `vodnavi.jp`/`app.vodnavi.jp`/`moterist.com`。
+8. **年齢ゲートの守備範囲は固定**: `proxy.ts` の matcher は `/concierge`（パススルー＝redirect しない）+ `/api/concierge/*`（cookie 未通過 403）のみ。`/works` と clean 面 vodnavi.jp は公開＝ゲート非対象。cookie 不在時の全パス redirect/rewrite 型ゲートや matcher 拡大を提案してはならない（本番 live 検証済みの非対称ガードを破壊する regression である）。
 ---
 
 ## 3. 適用手続き（HUMAN）

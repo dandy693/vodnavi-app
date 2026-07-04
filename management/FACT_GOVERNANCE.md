@@ -6,6 +6,7 @@
 - **`vodnavi.jp` は既に Next.js（App Router）構築済**（`site-brand/`：`next.config.ts` / `src/app/layout.tsx` / `[slug]/page.tsx` dual-read / `03_content/`）。新規 init/スクラッチ構築は厳禁＝既存への拡張のみ。
 - **ブランドトークンは定義済**：`site-brand/src/app/globals.css` の `--brand-gold`(#D4AF37) / `--brand-dark`(#121212) 等 CSS 変数を**参照**。hex 直書き・再定義は禁止。
 - **年齢確認制御は `app-concierge/src/proxy.ts`**（Next.js 16 規約・旧 `middleware.ts` 後継）。`src/middleware.ts` の新規作成は厳禁。
+- **年齢ゲートの守備範囲は固定（非対称ガード）**: matcher は `/concierge`・`/concierge/:path*`（**パススルー＝redirect しない**・`_gl` 着地 log のみ）+ `/api/concierge/:path*`（cookie 未通過 403）に**限定**。`/works` および clean 面 vodnavi.jp は**公開＝ゲート非対象**（SEO 面・BRIEF_051）。cookie 不在時の全パス redirect/rewrite 型ゲート化・matcher 拡大は禁止（2026-07-04 CSO 案で再導入を観測＝live 検証済み T-20260701-MIDDLEWARE-AUTH の破壊）。
 - **クッキーは3機構を絶対に混載しない**：①年齢確認 `vodnavi_age_verified`（`proxy.ts` 検査）②FANZA 早期着火 `buildEarlyCookieURL`（`af_id`）③GA4 クロスドメイン linker `_gl`（gtag 自動消費）。各々独立実装。
 - **実在正典法人格は `合同会社トレンドネット` のみ**（`site-brand` の `layout.tsx` JSON-LD legalName / terms / privacy / about / footer に浸透した検証済値）。`Safari株式会社` 等の架空法人名の捏造・コミットは永久禁止（特商法表記の不備防止・BRIEF_035 で不採用確定）。
 
