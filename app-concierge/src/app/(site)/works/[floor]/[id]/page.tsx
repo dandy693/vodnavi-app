@@ -94,6 +94,18 @@ async function getRelatedWorks(
   }
 }
 
+/**
+ * 擬似フロア（`apiFloor` 保持・例: amateur→videoa）の detail URL は実フロア側へ
+ * canonical 集約する。同一 content_id が複数フロア URL で同一内容を配信すると、
+ * フロア別 self-canonical が相反し Google が正規を再選択する（GSC「重複・Google に
+ * より別ページが正規選択」206 件・2026-07-04 実測）。宣言側で videoa へ集約し解消。
+ * noindex は使わない（FACT_GOVERNANCE §2 / self-canonical consolidation）。
+ */
+function canonicalWorkPath(floor: string, id: string): string {
+  const floorMeta = FANZA_FLOORS.find((f) => f.code === floor);
+  return `/works/${floorMeta?.apiFloor ?? floor}/${id}`;
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -112,7 +124,7 @@ export async function generateMetadata({
   const actresses = joinNames(item.iteminfo?.actress, 3);
   const genres = joinNames(item.iteminfo?.genre, 5);
   const image = pickImage(item.imageURL);
-  const path = `/works/${floor}/${id}`;
+  const path = canonicalWorkPath(floor, id);
   const editorial = getWorkEditorial(item.content_id);
 
   const titleParts = [
@@ -675,7 +687,7 @@ function buildProductLd({
   genres,
   makers,
 }: ProductLdInput): Record<string, unknown> {
-  const url = absoluteUrl(`/works/${floor}/${id}`);
+  const url = absoluteUrl(canonicalWorkPath(floor, id));
   const offerUrl = item.affiliateURL ?? item.URL ?? url;
   const priceRaw = item.prices?.price ?? "";
   const priceMatch = priceRaw.match(/\d[\d,]*/);
