@@ -1332,3 +1332,6 @@
 
 ## 🟢 2026-07-04 T-20260704-SEO-AMATEUR-CANONICAL 本番反映・live 検証済＝close
 - [x] **live 物理検証（curl）**: `works/amateur/mird00284`・`works/amateur/snos00320` とも canonical / Product JSON-LD url が **`/works/videoa/...` を宣言**（BEFORE=amateur 自己参照を push 前に証跡確保済）。`works/videoa/mird00284` の self-canonical は不変＝正しい非対称。**発見ファクト: `vodnavi-app` は GitHub main push で auto-deploy される**（site-brand と異なる・push 後数分で反映をポーリング実証）＝手動 vercel 不要。残観測: GSC「重複 206」バケットの減衰（数週間スケール・次回以降のレビューで確認、[[project_gsc_duplicate_alert_works_floor_dup]] 系譜の恒久解消判定はそこで）。
+
+## 🏆 2026-07-04 ビブリア 2 記事インデックス登録完了（実画面確認）＝SEO コールドスタート突破
+- [x] HUMAN チェックリスト（6f52c76）2 項目 → **目的達成により close**: 両 URL とも GSC URL 検査で**「URL は Google に登録されています」**を実画面確認（リクエスト実行の直接証跡は GSC 上に恒久表示されないため、登録完了という**結果**で closure・_metrics/2026-W27 最終追記参照）。作成→deploy→クロール→**インデックス登録まで約 2 日**。以後の観測は検索パフォーマンス（表示/クリック）と重複 206 減衰＝次回レビュー。
