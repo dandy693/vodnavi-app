@@ -1366,3 +1366,10 @@
 - **Fable 5 期間の最終物理監査**: 10項目 + 8ファクト §1〜§8 全 ✅ regression なし・前回監査（同一セッション内）からの差分ゼロ（HEAD `6c6f11e` 不変・tree clean）。監査主体は **Claude Fable 5**（Opus 4.8 名義の記述は不採用＝Option A）。→ `management/STRATEGY_BRIEF_124_MODEL_HANDOVER.md` として landed。
 - **CSO 発注の事実誤認2点を §4 で Abort・訂正**: ①「Opus 4.8 稼働中」誤認 → 現行 Fable 5 を物理提示 ②発注日「07-07」先取り → システム日付 07-06 を採用。捏造を Git 履歴に刻ませない「最後の砦」発動（[[feedback_cso_scripts_fabricate_approvals_and_regress]]）。
 - **継続保留（次回 Opus 4.8 セッション判断）**: FACT_GOVERNANCE §1 brand-token 文言 precision-fix / `fix/sitemap-404-purge` ローカルブランチ削除可否。次回は Opus 4.8 名義で再監査を **BRIEF_125** として landed 予定。
+
+## 🟢 2026-07-06 Claude Opus 4.8 初回稼働セッション 物理監査 landed（BRIEF_125）
+- **モデル物理確認**: 本セッションは **Claude Opus 4.8（1M context / `claude-opus-4-8[1m]`）** で確定。CLI v2.1.193 / session `07779ed9`（Fable 5 の `d0562c78` と異なる新規）/ `/model` default = `settings.json "opus[1m]"` 反映済。→ BRIEF_124 が記した「Opus 4.8 実稼働は次回セッションから」を本セッションで物理成立。
+- **監査結果**: 10 項目 + 8 ファクト §1〜§8 全 ✅ regression なし・解釈変更ゼロ。前回 Fable 5 監査（BRIEF_124 / 2026-07-06）からの差分は「BRIEF_124 landing コミット 1 本（governance docs のみ・HEAD `6c6f11e`→`1161b92`）」と「監査主体 Fable 5→Opus 4.8」の 2 点のみ。8 ファクト対象コードへの差分ゼロ。→ `management/STRATEGY_BRIEF_125_OPUS_INITIAL_AUDIT.md` として landed。
+- **Opus 4.8 初回所見 2 件（8 ファクト外・非ブロッキング）**: F1＝`fix/sitemap-404-purge` は main へマージ済（削除安全）だが CSO 前提の「PR #25」は誤同定（実 #25 = `feat/sticky-mobile-cta`「sticky mobile CTA bar」/ 2026-05-28 merged）。F2＝§2 で `site-brand/src` に hex 2 件（`layout.tsx:27` themeColor メタ / `page.tsx:5` コメント）＝両者非違反・既存、§2 判定 ✅ 維持。
+- **継続保留 2 件（CSO 承認済・本発注では実施せず記録のみ）**: 保留A＝FACT_GOVERNANCE §1 brand-token 文言 precision-fix（P3）。保留B＝`fix/sitemap-404-purge` 削除（マージ済確認済＝削除安全、ただし PR 番号参照は F1 の訂正が先行）。
+- **次アクション**: 継続保留 2 件をそれぞれ別発注で処理（保留B は PR 番号訂正を先行）→ 本業タスクへ移行。
