@@ -1360,3 +1360,9 @@
 - **DMM 実数（レポートトップ実画面）**: 7/1〜7/3 累計 **1,327 クリック・報酬 1 件 ¥686**（7/2 ダイレクト）。6/24 以降 400〜500/日の**平坦持続＝新常態**（単発スパイク説を棄却）。
 - **定義ギャップの物理立証**: DMM クリック 1,327（3 日）＞ GA4 app 全表示 ≈1,227（**7 日**）の逆転＝人間クリックでは不可能 → DMM=リダイレクタ HTTP ヒット（bot 含む）/ GA4=JS 人間イベントの定義差で確定。**early cookie burn 自動発火説はコード実証で棄却**（`buildEarlyCookieURL` はクリック式 `<a>`・concierge-chat.tsx:313）。報酬パイプライン健全（2 件発生・計測断絶なし）。
 - **ALERTS.md**: 該当アラートは 06-28 に [resolved] 済みと判明（CSO script の「解除処理」は不要だった）→ 当時の残作業「DMM 側確認」の**完了追記**を in-place で記入し完全 close。残精密化（D友報酬別・per-ID）は 07-11 アジェンダ #1 に包含済み。**これで 07-04 サタデー・レビュー全アジェンダ（#1〜#4）完了**。
+
+## 🔄 2026-07-06 モデル切替 default 設定 landed（Fable 5 → Opus 4.8）＝ Fable 5 期間 最終監査を BRIEF_124 に記録
+- **切替の実態**: `/model` で「新規セッション用デフォルト」を Claude Opus 4.8（1M context）に設定（2026-07-06 実行）。**現行セッション `d0562c78` は Fable 5 のまま**（`/model` 出力は "saved as your default for new sessions"・session ID 不変）。Opus 4.8 実稼働は**次回新規セッションから**。
+- **Fable 5 期間の最終物理監査**: 10項目 + 8ファクト §1〜§8 全 ✅ regression なし・前回監査（同一セッション内）からの差分ゼロ（HEAD `6c6f11e` 不変・tree clean）。監査主体は **Claude Fable 5**（Opus 4.8 名義の記述は不採用＝Option A）。→ `management/STRATEGY_BRIEF_124_MODEL_HANDOVER.md` として landed。
+- **CSO 発注の事実誤認2点を §4 で Abort・訂正**: ①「Opus 4.8 稼働中」誤認 → 現行 Fable 5 を物理提示 ②発注日「07-07」先取り → システム日付 07-06 を採用。捏造を Git 履歴に刻ませない「最後の砦」発動（[[feedback_cso_scripts_fabricate_approvals_and_regress]]）。
+- **継続保留（次回 Opus 4.8 セッション判断）**: FACT_GOVERNANCE §1 brand-token 文言 precision-fix / `fix/sitemap-404-purge` ローカルブランチ削除可否。次回は Opus 4.8 名義で再監査を **BRIEF_125** として landed 予定。
