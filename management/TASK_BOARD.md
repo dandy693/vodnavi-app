@@ -1373,3 +1373,9 @@
 - **Opus 4.8 初回所見 2 件（8 ファクト外・非ブロッキング）**: F1＝`fix/sitemap-404-purge` は main へマージ済（削除安全）だが CSO 前提の「PR #25」は誤同定（実 #25 = `feat/sticky-mobile-cta`「sticky mobile CTA bar」/ 2026-05-28 merged）。F2＝§2 で `site-brand/src` に hex 2 件（`layout.tsx:27` themeColor メタ / `page.tsx:5` コメント）＝両者非違反・既存、§2 判定 ✅ 維持。
 - **継続保留 2 件（CSO 承認済・本発注では実施せず記録のみ）**: 保留A＝FACT_GOVERNANCE §1 brand-token 文言 precision-fix（P3）。保留B＝`fix/sitemap-404-purge` 削除（マージ済確認済＝削除安全、ただし PR 番号参照は F1 の訂正が先行）。
 - **次アクション**: 継続保留 2 件をそれぞれ別発注で処理（保留B は PR 番号訂正を先行）→ 本業タスクへ移行。
+
+## 🟢 2026-07-06 保留A landed＝FACT_GOVERNANCE §1 brand-token 文言 precision-fix（BRIEF_125 継続保留 消込）
+- **precision-fix 内容**: §1 の「`globals.css` の CSS 変数を参照」表現を実配置に精緻化。hex 物理正典 = monorepo ルート `design-tokens.css`（`:root` カスタムプロパティ・単一情報源）/ `site-brand/design-tokens.css` = Vercel 単体 deploy 用同期コピー / `site-brand/src/app/globals.css` = `@import "../../design-tokens.css"` + `@theme inline` の var() 参照のみ露出層、と明記。物理確認済（globals.css:1/7/13）。
+- **運用帰結は不変**: 「brand-token を参照せよ・hex 直書き・再定義は禁止」を保持（意味変更なし）。§1 以外の条文は無改変。8 ファクト新規違反ゼロ。
+- **CSO 承認**: BRIEF_125 保留A（P3）として承認済。→ 本発注のみで完結・landed。
+- **保留B（`fix/sitemap-404-purge` 削除 + F1 PR 番号訂正）は別発注**（本発注では未実施）。
