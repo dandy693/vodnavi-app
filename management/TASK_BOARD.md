@@ -1379,3 +1379,10 @@
 - **運用帰結は不変**: 「brand-token を参照せよ・hex 直書き・再定義は禁止」を保持（意味変更なし）。§1 以外の条文は無改変。8 ファクト新規違反ゼロ。
 - **CSO 承認**: BRIEF_125 保留A（P3）として承認済。→ 本発注のみで完結・landed。
 - **保留B（`fix/sitemap-404-purge` 削除 + F1 PR 番号訂正）は別発注**（本発注では未実施）。
+
+## 🟢 2026-07-06 保留B landed＝`fix/sitemap-404-purge` 削除 + BRIEF_125 F1 訂正記録（BRIEF_125 継続保留 消込・完了）
+- **物理確認（削除前・読取専用）**: tip `c58fbd4` は `main` + `origin/main` の ancestor（`merge-base --is-ancestor` YES ×2）、`git log main..fix/sitemap-404-purge` 空＝未 landed 差分ゼロ。→「マージ済・未 landed 差分なし」を満たし削除実行（`git branch -d`）。他ブランチ不干渉。
+- **F1 訂正記録の確定**: CSO は「PR #25 = fix/sitemap-404-purge の PR」と誤想定。実 PR #25 = `feat/sticky-mobile-cta`「sticky mobile CTA bar」（2026-05-28 merged）＝別 PR。**fix/sitemap-404-purge は実 PR 番号を持たない** — GitHub PR 経由でなく direct commit `c58fbd4`（2026-05-28 / author Dandy T / Co-Author Opus 4.7）で landed（`gh api commits/c58fbd4/pulls`=空・`gh pr list --head`=空で物理確認）。commit の `(#25)` は手動誤記。→ BRIEF_125 §5 F1 に訂正記録を追記（他セクション無改変）。
+- **CSO 承認**: BRIEF_125 保留B（P3）として承認済。→ 継続保留 2 件（保留A/保留B）ともに landed 完了。
+- **次アクション**: 継続保留の消込完了により本業タスクへ移行可。
+

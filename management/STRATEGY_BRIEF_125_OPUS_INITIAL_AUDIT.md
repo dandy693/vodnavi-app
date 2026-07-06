@@ -98,6 +98,11 @@ BRIEF_124 §4 の 8 ファクト番号体系（不変条件の平坦列挙。FAC
 ## 5. Opus 4.8 初回セッションでの発見事項
 
 - **F1（要注意・保留B 直結）**: `fix/sitemap-404-purge`（tip `c58fbd4`）は `git branch --merged main` で **main へマージ済（reachable ＝削除安全）**。**ただし CSO 前提の「PR #25」は誤同定** — `gh pr view 25` 実測で **#25 = `feat/sticky-mobile-cta`「sticky mobile CTA bar」（2026-05-28 merged）** の別 PR。branch commit 末尾の `(#25)` は実 PR #25 と不一致。→ 削除自体は merge 判定上安全だが、CSO は PR 番号の参照を訂正すべき。削除実行は別発注。
+  - **【訂正記録・2026-07-06 保留B landed / Opus 4.8 物理確認】**:
+    - **CSO 誤同定**: 「PR #25 = `fix/sitemap-404-purge` の PR」と誤想定していた。
+    - **実際の PR #25**: `feat/sticky-mobile-cta`「sticky mobile CTA bar」（headRef=`feat/sticky-mobile-cta` / 2026-05-28 19:13 JST 相当 merged）＝別 PR。
+    - **`fix/sitemap-404-purge` の実 PR 番号**: **存在しない**。当ブランチの変更は GitHub PR 経由でなく **direct commit `c58fbd4`**（2026-05-28 14:07 +09:00・author Dandy T `<trendnet@trendnet.biz>` / Co-Author Claude Opus 4.7）で main へ landed。`gh api repos/dandy693/vodnavi-app/commits/c58fbd4/pulls` = 空、`gh pr list --head fix/sitemap-404-purge --state all` = 空で物理確認。commit message 内の `(#25)` は手動誤記であり GitHub PR #25 とは無関係。
+    - **削除可否物理確認**: `c58fbd4` は `main` および `origin/main` の ancestor（`git merge-base --is-ancestor` YES ×2）、`git log main..fix/sitemap-404-purge` = 空＝未 landed 差分ゼロ（main→branch の 16,822 削除差分は main が branch より前進しているだけで、branch 側の未 landed 作業ではない）。→ **ローカルブランチ削除実行（`git branch -d fix/sitemap-404-purge`）。他ブランチには一切不干渉。**
 - **F2（精度差分・§2 非違反）**: Fable 5「src 直書き 0 件」に対し、`site-brand/src` に hex 文字列 2 件を検出 — `layout.tsx:27 themeColor:"#121212"`（Next.js viewport メタ＝CSS var 参照不可の枠組み制約）/ `page.tsx:5`（コメント内）。両者非違反・`6c6f11e` から byte 不変の既存。§2 判定 ✅ 維持、Fable 5 の「0 件」表現の精緻化に留まる。
 
 ## 6. CSO からの引き継ぎ判断事項（継続保留 2 件・本発注では実施せず記録のみ）
