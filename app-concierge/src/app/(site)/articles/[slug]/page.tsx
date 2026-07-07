@@ -144,6 +144,36 @@ export default async function ArticlePage({
         </section>
       )}
 
+      {/* fanza-first-guide v1.1（CSO発注 2026-07-08）: 検索直接着地者（リファラなし）
+         の受け皿。配置はクロージングCTA直後＝記事最末尾に限定。内部リンクは
+         この2本のみ（ジャンル列挙等の追加は CTA 希釈防止の CSO 判断で禁止）。
+         アフィリエイトリンクではないため placement なしの素の内部リンク。
+         本文 SQL 再実行（HUMAN 操作）を避けるためレンダラ側 slug 条件で描画。 */}
+      {slug === "fanza-first-guide" && (
+        <section className="mt-10 rounded-xl border border-white/10 bg-white/[0.02] px-4 py-5">
+          <h2 className="mb-2 font-heading text-base font-semibold text-foreground sm:text-lg">
+            観たい作品がまだ決まっていない方へ
+          </h2>
+          <p className="mb-3 text-sm leading-relaxed text-foreground/90">
+            VODNAVIでは、好みをいくつか答えるだけでAIが今夜の1本を提案します。人気作から探すこともできます。
+          </p>
+          <div className="flex flex-col gap-2 sm:flex-row sm:gap-3">
+            <Link
+              href="/lp"
+              className="inline-flex items-center justify-center rounded-full border border-amber-400/30 bg-amber-400/[0.06] px-4 py-2 text-sm font-medium text-amber-300 transition-colors hover:border-amber-400/60 hover:bg-amber-400/10"
+            >
+              AIに今夜の1本を選んでもらう
+            </Link>
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-foreground/90 transition-colors hover:border-amber-400/40 hover:text-amber-300"
+            >
+              人気作品から探す
+            </Link>
+          </div>
+        </section>
+      )}
+
       {article.products.length > 0 && (
         <section className="mt-12 border-t border-white/5 pt-8">
           <h2 className="mb-4 font-heading text-base font-semibold text-foreground sm:text-lg">
