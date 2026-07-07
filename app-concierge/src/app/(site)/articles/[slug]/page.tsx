@@ -3,7 +3,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
-import { buildAffiliateURL } from "@/lib/concierge/url-builder";
+import { GuideReturnCta } from "@/components/guide-return-cta";
+import { buildAffiliateURL, buildTvSignupURL } from "@/lib/concierge/url-builder";
 import { getPublishedArticleBySlug } from "@/lib/editorial-articles";
 import { absoluteUrl, compactDescription, compactTitle } from "@/lib/site";
 
@@ -62,11 +63,19 @@ export default async function ArticlePage({
   if (!article) notFound();
 
   // body は空行区切りの素のテキスト。段落へ分解して描画する
-  // （work-review の本文描画と同方針）。
+  // （work-review の本文描画と同方針）。拡張（新規会員導線 発注 2026-07-07）:
+  //   - "## " 始まりのブロック → <h2>
+  //   - "[[CTA:tv_signup]]" → FANZA TV 登録 CTA（placement=guide_tv_signup_cta）
+  //   - "[[CTA:first_purchase]]" → 作品ページへ戻る CTA（guide_first_purchase_cta）
+  //   - 段落内の単一改行は whitespace-pre-line で保持（手順・FAQ の行構造用）
   const paragraphs = (article.body ?? "")
     .split(/\n{2,}/)
     .map((p) => p.trim())
     .filter(Boolean);
+
+  // TV 登録導線: FANZA ドメイン（dmm.co.jp）登録フォーム経由が成果条件
+  // （報酬料率ページ注記）。url-builder の検証済みターゲットのみ使用。
+  const tvSignupUrl = buildTvSignupURL();
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
@@ -88,9 +97,46 @@ export default async function ArticlePage({
 
       {paragraphs.length > 0 && (
         <section className="space-y-4 text-sm leading-relaxed text-foreground/90 sm:text-base">
-          {paragraphs.map((p, i) => (
-            <p key={i}>{p}</p>
-          ))}
+          {paragraphs.map((p, i) => {
+            if (p === "[[CTA:tv_signup]]") {
+              return (
+                <div key={i} className="py-2">
+                  <FanzaAffiliateLink
+                    href={tvSignupUrl}
+                    content_id="fanza_tv_premium"
+                    title="FANZA TV（DMMプレミアム）"
+                    floor_code="monthly"
+                    placement="guide_tv_signup_cta"
+                    className="btn-luxury-gold inline-flex w-full items-center justify-center gap-2 rounded-xl min-h-12 px-5 py-3 text-sm font-semibold group"
+                  >
+                    <span>FANZA TVを見てみる（登録3分）</span>
+                  </FanzaAffiliateLink>
+                </div>
+              );
+            }
+            if (p === "[[CTA:first_purchase]]") {
+              return (
+                <div key={i} className="py-2">
+                  <GuideReturnCta />
+                </div>
+              );
+            }
+            if (p.startsWith("## ")) {
+              return (
+                <h2
+                  key={i}
+                  className="pt-4 font-heading text-lg font-semibold text-foreground sm:text-xl"
+                >
+                  {p.slice(3)}
+                </h2>
+              );
+            }
+            return (
+              <p key={i} className="whitespace-pre-line">
+                {p}
+              </p>
+            );
+          })}
         </section>
       )}
 

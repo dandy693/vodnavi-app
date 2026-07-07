@@ -178,3 +178,20 @@ export function buildEarlyCookieURL(intent: string | null | undefined): string {
 export function buildSaleFeatureURL(): string {
   return buildEarlyCookieURL("discount");
 }
+
+/**
+ * U2: ガイド記事の FANZA TV（DMMプレミアム）登録 CTA 用 URL。
+ *
+ * 必須条件（DMM 報酬料率ページ注記・2026-07-07 HUMAN 確認）:
+ * DMMプレミアム登録は **FANZA ドメイン（dmm.co.jp）の登録フォーム経由**でないと
+ * FANZA TV カテゴリ成果の対象外。dmm.com 側導線は使用禁止。
+ * ターゲットは 2026-07-07 に到達確認済み（302→age_check・rurl にパス保持）の
+ * `www.dmm.co.jp/monthly/premium/` のみ。新規パスの捏造禁止。
+ */
+const FANZA_TV_SIGNUP_TARGET = "https://www.dmm.co.jp/monthly/premium/";
+
+export function buildTvSignupURL(): string {
+  const affId = resolveAffiliateId("fanza");
+  if (!affId) return FANZA_TV_SIGNUP_TARGET; // 盾: ID 未解決なら追跡なし生 URL
+  return wrapWithDmmAffiliate(FANZA_TV_SIGNUP_TARGET, affId);
+}

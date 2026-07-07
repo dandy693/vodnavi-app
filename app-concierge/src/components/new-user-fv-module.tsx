@@ -14,10 +14,9 @@ import { cn } from "@/lib/utils";
  *   `buildAffiliateURL` 産 primaryUrl（af_id=004）。クリック分散を防ぐ。
  *   placement="works_fv_newuser" で GA4 分離計測のみ行う。
  *
- * 【リリースゲート】コピーの《…》スロットは設計書 §4 の HUMAN 確認
- * （新規報酬単価・初回特典の現行内容）→ CSO コピー確定版の発行まで
- * プレースホルダ。フィーチャーフラグ `FEATURE_FV_NEWUSER=1`（server env）
- * が立つまで本モジュールは描画されない（works page 側でゲート）。
+ * コピーは 2026-07-07 CSO 確定版（設計書 §4 の HUMAN 実画面確認済み文言）。
+ * **改変禁止** — 改善提案は実装せず CSO へ差し戻すこと。
+ * 表示ゲートはフィーチャーフラグ `FEATURE_FV_NEWUSER=1`（server env・works page 側）。
  */
 export function NewUserFvModule({
   href,
@@ -41,8 +40,7 @@ export function NewUserFvModule({
     >
       <summary className="flex cursor-pointer list-none items-center gap-1.5 text-[11px] leading-snug text-amber-200/90 [&::-webkit-details-marker]:hidden">
         <span>
-          FANZAが初めての方：《初回特典スロット※§4-2
-          確認待ち》で今作を観られます
+          FANZAがはじめての方へ｜登録は無料、このページからそのまま購入できます
         </span>
         <ChevronDown
           className="size-3 shrink-0 text-amber-400/60 transition-transform group-open/newuser:rotate-180"
@@ -50,10 +48,26 @@ export function NewUserFvModule({
         />
       </summary>
       <div className="mt-2 flex flex-col gap-2 border-t border-amber-400/10 pt-2">
-        <p className="text-[11px] leading-relaxed text-muted-foreground">
-          登録は無料です。《支払い方法要約スロット※§4
-          確認待ち》。《明細表記の安心情報スロット※§4-2 確認待ち》。
-        </p>
+        <ul className="flex flex-col gap-1 text-[11px] leading-relaxed text-muted-foreground">
+          <li>
+            ・会員登録は無料。支払いはクレジットカードのほかDMMポイント（コンビニ等で購入可）にも対応
+          </li>
+          <li>
+            ・見放題派には月額550円のFANZA
+            TVも（いま登録すると550ptプレゼント＝実質初月分）
+          </li>
+          <li>
+            ・登録3分の手順とよくある不安への答え →{" "}
+            <a
+              href="/articles/fanza-first-guide"
+              target="_blank"
+              rel="noopener"
+              className="text-amber-300/90 underline decoration-amber-400/40 underline-offset-2 transition-colors hover:text-amber-200"
+            >
+              はじめてのFANZAガイド
+            </a>
+          </li>
+        </ul>
         <FanzaAffiliateLink
           href={href}
           content_id={content_id}
@@ -64,14 +78,6 @@ export function NewUserFvModule({
         >
           FANZA公式でこの作品を観る（初めての方はこちらから・18禁）
         </FanzaAffiliateLink>
-        <a
-          href="/articles/fanza-first-guide"
-          target="_blank"
-          rel="noopener"
-          className="text-[11px] text-muted-foreground underline decoration-white/20 underline-offset-2 transition-colors hover:text-foreground"
-        >
-          登録の詳しい手順はこちら（3ステップ図解）
-        </a>
       </div>
     </details>
   );
