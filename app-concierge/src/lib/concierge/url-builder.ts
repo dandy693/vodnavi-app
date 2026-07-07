@@ -167,3 +167,14 @@ export function buildEarlyCookieURL(intent: string | null | undefined): string {
   if (!affId) return target; // 盾: ID 未解決なら追跡なし生 URL
   return wrapWithDmmAffiliate(target, affId);
 }
+
+/**
+ * U3: セール特集テンプレート（新規会員導線 設計書v1）の CTA 先 URL。
+ * 検証済みの FANZA セール特集リスト（`article=sale`・2026-06-07 到達確認済）を
+ * アフィリエイトラップして返す。early cookie burn と同一ターゲットだが、
+ * 用途（記事内の可視 CTA・placement="article_sale_cta"）が異なるため別名で公開する。
+ * 新規パスの捏造禁止＝検証済みパスのみ使用、の原則を維持。
+ */
+export function buildSaleFeatureURL(): string {
+  return buildEarlyCookieURL("discount");
+}

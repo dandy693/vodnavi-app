@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cache } from "react";
 import { FanzaImage } from "@/components/fanza-image";
 import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
+import { NewUserFvModule } from "@/components/new-user-fv-module";
 import {
   ConciergeCtaLink,
   ConciergeCtaPanel,
@@ -212,6 +213,11 @@ export default async function WorkDetailPage({
     actressOrSku: actresses[0]?.name ?? null,
   });
 
+  // U1 新規ユーザー向けFVモジュール（新規会員導線 設計書v1）のリリースゲート。
+  // コピー確定（設計書 §4 HUMAN確認 → CSO確定版発行）まで OFF が既定。
+  // 有効化は Vercel env `FEATURE_FV_NEWUSER=1` + 再デプロイ。
+  const showNewUserModule = process.env.FEATURE_FV_NEWUSER === "1";
+
   const description = [
     `${item.title}の作品情報。`,
     actresses.length > 0
@@ -316,6 +322,16 @@ export default async function WorkDetailPage({
               </span>
               <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
             </FanzaAffiliateLink>
+
+            {/* U1: 新規ユーザー向けマイクロモジュール（mobile FV / CTA直下1行） */}
+            {showNewUserModule && (
+              <NewUserFvModule
+                href={fanzaAffiliate.primaryUrl}
+                content_id={item.content_id}
+                title={item.title}
+                floor_code={floor}
+              />
+            )}
 
             {(actresses.length > 0 || genres.length > 0) && (
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[11px]">
@@ -463,6 +479,18 @@ export default async function WorkDetailPage({
           <p className="text-[10px] leading-snug text-muted-foreground/60">
             ※ FANZA 公式サイトへ移動します。視聴・購入は FANZA 上で行われます。
           </p>
+
+          {/* U1: 新規ユーザー向けマイクロモジュール（lg=右カラムがFVを兼ねるため
+             メインCTA直下に配置。mobile では FV ブロック側で表示済みのため隠す） */}
+          {showNewUserModule && (
+            <NewUserFvModule
+              href={fanzaAffiliate.primaryUrl}
+              content_id={item.content_id}
+              title={item.title}
+              floor_code={floor}
+              className="hidden lg:block"
+            />
+          )}
 
           {/* セカンダリ動線（回遊の盾）: 検索エンジンから本ページに直接着地した
              ユーザー (GA4 物理監査で hostname=app.vodnavi.jp が 96.99% を占有)

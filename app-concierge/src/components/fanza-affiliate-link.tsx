@@ -36,7 +36,11 @@ export function FanzaAffiliateLink({
     | "detail_sample"
     | "detail_sticky_cta"
     | "detail_fv_cta"
-    | "article_product_cta";
+    | "article_product_cta"
+    // 新規会員導線 設計書v1 (2026-07-07 CSO発注) の3面。
+    | "works_fv_newuser" // U1: 作品詳細FV 新規ユーザー向けマイクロモジュール
+    | "guide_first_purchase_cta" // U2: はじめてのFANZAガイド記事末尾
+    | "article_sale_cta"; // U3: セール特集テンプレート
   className?: string;
   children: ReactNode;
 }) {
