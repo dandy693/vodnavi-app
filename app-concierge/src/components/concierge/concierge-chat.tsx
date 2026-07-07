@@ -325,7 +325,7 @@ function EarlyEntryCard({
           <a
             href={earlyHref}
             target="_blank"
-            rel="noopener noreferrer sponsored"
+            rel="nofollow noopener noreferrer sponsored"
             onClick={() => {
               trackEarlyCookieBurn({
                 asp_name: DEFAULT_ASP,
@@ -703,7 +703,7 @@ function WorkCardCta({ work }: { work: Work }) {
       <a
         href={work.affiliateURL}
         target="_blank"
-        rel="noopener noreferrer sponsored"
+        rel="nofollow noopener noreferrer sponsored"
         onClick={() => {
           trackProductClick({
             asp_name: asp,
@@ -734,7 +734,7 @@ function WorkCardCta({ work }: { work: Work }) {
         <a
           href={fallbackUrl}
           target="_blank"
-          rel="noopener noreferrer sponsored"
+          rel="nofollow noopener noreferrer sponsored"
           onClick={() => {
             trackAiAffiliateClick({
               asp_name: asp,

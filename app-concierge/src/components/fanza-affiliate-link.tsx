@@ -44,7 +44,7 @@ export function FanzaAffiliateLink({
     <a
       href={href}
       target="_blank"
-      rel="noopener noreferrer sponsored"
+      rel="nofollow noopener noreferrer sponsored"
       className={className}
       onClick={() => {
         trackProductClick({

@@ -688,7 +688,10 @@ function buildProductLd({
   makers,
 }: ProductLdInput): Record<string, unknown> {
   const url = absoluteUrl(canonicalWorkPath(floor, id));
-  const offerUrl = item.affiliateURL ?? item.URL ?? url;
+  // Offer.url に `item.affiliateURL`（al.dmm + af_id）を置くと、構造化データを
+  // 検証・巡回する bot の fetch が DMM 側で「クリック」として計上される
+  // （2026-06-24〜 クリック25倍事故の主因経路）。af_id を含まない URL のみ許可。
+  const offerUrl = item.URL ?? url;
   const priceRaw = item.prices?.price ?? "";
   const priceMatch = priceRaw.match(/\d[\d,]*/);
   const priceNumber = priceMatch ? priceMatch[0].replace(/,/g, "") : undefined;

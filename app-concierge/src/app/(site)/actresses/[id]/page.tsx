@@ -5,7 +5,12 @@ import { notFound } from "next/navigation";
 import { EmptyState } from "@/components/empty-state";
 import { ProductGrid } from "@/components/product-grid";
 import { fetchItemList } from "@/lib/fanza/client";
-import { FANZA_FLOORS, type DmmItem, type DmmSort } from "@/lib/fanza/types";
+import {
+  FANZA_FLOORS,
+  normalizeFloorForUrl,
+  type DmmItem,
+  type DmmSort,
+} from "@/lib/fanza/types";
 import { getActressEditorial } from "@/lib/actress-editorial";
 import {
   absoluteUrl,
@@ -164,10 +169,15 @@ function buildActressLd({
   totalCount: number;
 }): Record<string, unknown> {
   const url = absoluteUrl(`/actresses/${id}`);
+  // ItemList の url に affiliateURL（al.dmm + af_id）を置くと bot の URL fetch が
+  // DMM クリックとして計上される（2026-06-24〜 クリック25倍事故の主因経路）。
+  // 可視カードと同じ内部詳細 URL を記述する（af_id 入り URL の記載は禁止）。
   const itemListElement = items.slice(0, 20).map((item, idx) => ({
     "@type": "ListItem",
     position: idx + 1,
-    url: item.affiliateURL ?? item.URL ?? url,
+    url: absoluteUrl(
+      `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`,
+    ),
     name: item.title,
   }));
   return {

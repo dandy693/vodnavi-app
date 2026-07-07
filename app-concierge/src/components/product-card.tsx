@@ -120,7 +120,7 @@ export function ProductCard({
       <a
         href={affiliateHref}
         target="_blank"
-        rel="noopener noreferrer sponsored"
+        rel="nofollow noopener noreferrer sponsored"
         className={cn(
           "relative block h-11 overflow-hidden text-center text-sm font-semibold",
           "bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 text-black",
@@ -138,7 +138,7 @@ export function ProductCard({
       <a
         href={fallbackUrl}
         target="_blank"
-        rel="noopener noreferrer sponsored"
+        rel="nofollow noopener noreferrer sponsored"
         className={cn(
           "block border-t border-white/5 bg-black/40 py-1.5 text-center",
           "text-[11px] text-amber-200/70 transition-colors duration-300",
