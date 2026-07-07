@@ -68,7 +68,11 @@ export default async function ArticlePage({
   //   - "[[CTA:tv_signup]]" → FANZA TV 登録 CTA（placement=guide_tv_signup_cta）
   //   - "[[CTA:first_purchase]]" → 作品ページへ戻る CTA（guide_first_purchase_cta）
   //   - 段落内の単一改行は whitespace-pre-line で保持（手順・FAQ の行構造用）
+  // CRLF 正規化: Windows 由来の本文（Studio 貼付等）は改行が \r\n になり、
+  // \n{2,} の段落分割が全滅して見出し・CTA マーカーが生テキスト露出する
+  // （2026-07-08 fanza-first-guide 初回投入で実発生）。\r は無条件に除去する。
   const paragraphs = (article.body ?? "")
+    .replace(/\r/g, "")
     .split(/\n{2,}/)
     .map((p) => p.trim())
     .filter(Boolean);
