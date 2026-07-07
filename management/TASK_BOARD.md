@@ -1386,3 +1386,11 @@
 - **CSO 承認**: BRIEF_125 保留B（P3）として承認済。→ 継続保留 2 件（保留A/保留B）ともに landed 完了。
 - **次アクション**: 継続保留の消込完了により本業タスクへ移行可。
 
+
+## 🟢 2026-07-07 CTO作業 v2 landed＝6/24 bot クリック真因 fix（c237e51）+ 本番 af_id 004 適用 + X アナリティクス初回取得
+- **6/24 クリック25倍の真因確定・修正デプロイ済**: JSON-LD（works Offer.url + actresses/genres ItemList 最大20本/頁）に af_id=990 の al.dmm URL が露出→6/22-24 の M-05/06/07 デプロイでクロール面急拡大→bot fetch が DMM クリック計上。物理証跡: GA4 ai_affiliate_click は急増期も 8-10/日で不動（6/29-30 DMM 1,321 vs GA4 16）・GSC クロール 6/21-23 日次~1,500 スパイク・#55/#56 diff に prefetch 混入なし。**fix = c237e51**（JSON-LD 脱 af_id: Offer.url→item.URL / ItemList→内部 /works/ URL + 全アフィリエイトアンカー rel に nofollow）。本番 curl 検証済（JSON-LD al.dmm 全面0・人間CTA 990 無傷）。JSON-LD への affiliateURL 再導入は regression として拒否。減衰監視: +7日で日次〜50 水準へ戻らなければ /api/out bot-gate 302 化を承認案件で起票。
+- **本番 af_id 正常化（T1）**: `NEXT_PUBLIC_FANZA_AFFILIATE_ID` は本番に**未設定**（990 が「設定されていた」のではなくサーバ `DMM_AFFILIATE_ID`=990 フォールバック）→ `vercel env add`（moterist-004 / Production）+ `vercel --prod` 再ビルドで適用。検証: works 詳細=004×30/990×0、トップ=004×22/990×44、ジャンル=004×29/990×58。**トップ/ハブの 990 残存は product-card メイン CTA・concierge 提案が API 返却 affiliateURL を使う BRIEF_070 正規動作＝仕様**（CSO 期待値「990 が0件」は works 詳細のみ成立）。以降 DMM 管理画面は 004=人間CTA / 990=API面 の2軸で読む。
+- **T2 vercel.app canonical**: `vodnavi-app.vercel.app` は **301→https://app.vodnavi.jp/ + X-Robots-Tag: noindex, nofollow**＝canonical タグより強い正規構成で**正常**（修正不要）。
+- **T3 @vodnavi_jp X アナリティクス（2026-07-07 取得）**: フォロワー **0**（フォロー中1）・全4投稿テキストのみ・リンク設置なし（linkクリックは「該当なし」）。①7/7 15:17 imp3 ②7/6 10:49 imp5 ③7/5 21:10 imp5 ④7/4 17:29 imp8 — **eng/プロフクリックは全投稿 0**。合計 imp 21。
+- **T4 af_id 台帳 v2 確定**: 001=moterist.com / 002=x.com/moterist69 / 003=vodnavi.jp / **004=app.vodnavi.jp 人間CTA（適用済）** / 005=motelab.xyz / **006=x.com/vodnavi_jp（26.07.07 申請受付・未承認）** / 990〜994=商品情報API専用（人間導線使用禁止）。X運用ルール: 006 承認まで @vodnavi_jp にアフィリンク禁止（app への誘導リンクは可）、承認後 X 用 af_id=006（媒体別分離）。
+- **汚染前 EPC（CSO 逆算用の正値）**: 6/01-21 実測 482cl/¥1,102=2.29円・6/01-23 合成 527cl/¥1,382=2.62円 → **採用幅 約1.7〜2.6円**（n=4件）。希釈値 0.22円 は使用禁止。
