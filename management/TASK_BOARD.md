@@ -1401,3 +1401,9 @@
 - **T3 U2投入 ブロック**: supabase MCP が `--read-only` 起動＝INSERT 25006 拒否。Management API 直叩きは auto-mode classifier が deny（トークン抽出・MCP制限迂回のため正当）。→ **投入SQL を `management/templates/fanza-first-guide.insert.sql` に完成品で用意**。解除ルート: ①HUMAN が Supabase Studio SQL Editor で実行（最速・貼るだけ）②.mcp.json の --read-only 除去+Claude Code 再起動（恒久変更のため要 HUMAN 判断）。
 - **仕様突き合わせ（原文のまま投入・修正せず差し戻し1点）**: 有料会員の解約→有効期限まで視聴可 ✅（support.dmm.com/premium/article/48412）・単品購入はプレミアム解約後も視聴可 ✅（47503）。⚠️ **無料体験中の解約は即時解約**（48411・Amazon/Apple/Google課金経由を除く）→ FAQ Q3「その月の期間終了まで視聴可能」は有料会員には正・無料体験中には不成立。CSO 判断待ち（加筆可否）。
 - **T4 リリース待機**: U2公開→本番到達確認→FEATURE_FV_NEWUSER=1→再デプロイ→U1表示+GA4計上確認、の順で実施予定。フォールバック（ガイドリンク行削除で先行ON）は「24時間以上遅延」条件のため未発動。
+
+## 🟢 2026-07-08 新規会員導線 リリース完了＝U2公開 + U1フラグON 本番稼働（T3/T4消込）
+- **T3 U2投入 完了**: HUMAN が Studio SQL 実行（id 5b3126e3・published）。初回レンダで**CRLF障害が実発生**（Studio貼付の \r\n で段落分割全滅→見出し/CTAマーカー生テキスト露出）→ レンダラに \r 正規化を恒久実装（**f96913d**）。本番確認: h2 5本・マーカー露出0・TV CTA（**FANZAドメイン monthly/premium + af_id=004**・utm_source=moterist-004 着地まで実クリックでエンドツーエンド確認）・戻りCTA・JSON-LD al.dmm 0。
+- **T4 U1フラグON 完了**: `FEATURE_FV_NEWUSER=1` を Production 投入 + `vercel --prod` 再ビルド。本番作品詳細で確定コピーの `<details>` モジュール2箇所（mobile FV / lg メインCTA直下）描画・展開動作・ガイドリンク配線を実画面確認。
+- **GA4計上確認は端末要因で不可（未確認と明記・捏造せず）**: 検証用 Chrome は gtag.js/gtm.js 200 だが **/g/collect を1本も送信しない**（page_view すらリアルタイム不達・他実ユーザーのイベントは同時刻に到達）＝サイト配線でなくブラウザのトラッキング防止。配線自体は実績ある detail_main_cta 等と同一機構（FanzaAffiliateLink placement 軸）。**代替検証: 翌日以降に top-events + placement=works_fv_newuser の実データ到着を確認**（作品詳細は流入の95%＝データは即日溜まる見込み）。
+- 残タスク: ①placement 実データ確認（+1日）②DMM 6/24 bot クリック減衰監視（~7/14、日次〜50水準）③U3セール特集はセール判明時に公開。
