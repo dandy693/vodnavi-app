@@ -50,7 +50,7 @@
           "version": 7,
           "parameters": { "__IMTCONN__": null },
           "mapper": {
-            "to": ["HUMAN_EMAIL_PLACEHOLDER"],
+            "to": ["hdktchkw33@gmail.com"],
             "subject": "X投稿エラー: VODNAVI X Scheduler",
             "text": "Airtable record {{1.id}} の投稿に失敗しました。\nエラー: {{error.message}}\n投稿文: {{1.`投稿文`}}"
           },
@@ -103,7 +103,7 @@
     "notes": [
       "大原則: 配信されるのは Airtable ステータス='承認済' のみ。無承認の自動投稿経路なし。フォロー/リプライ自動化は実装禁止。",
       "接続(__IMTCONN__)はインポート後に HUMAN が認可・紐付けする（APIキー/OAuthはHUMAN管理）。",
-      "HUMAN_EMAIL_PLACEHOLDER をひできの通知先アドレスに差し替えること。",
+      "エラー通知先: hdktchkw33@gmail.com（2026-07-09 HUMAN指定・反映済み）。",
       "画像(attachments)のマッピングはMakeのXモジュール仕様により別モジュール(Upload Media)が必要な場合あり。インポート時のUIで確認・調整する。",
       "スケジュールは15分間隔。テスト(工程3)全PASSまでシナリオはOFFのまま保存。"
     ]
