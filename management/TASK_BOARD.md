@@ -1470,3 +1470,14 @@
   3. 修正後、HUMANに**再認可**依頼（Make の接続画面から新規開始・**古いタブの再読込は不可**）。
   4. それでも unauthorized_client なら、X Dev Portal のアプリ種別が「機密クライアント」で保存済みか再確認＋Client Secret 再生成→再入力（値ずれ排除）を提案して停止。
 - **引継ぎ注意**: ブラウザ操作は必ず正しい tool-call 形式で実行（本セッションで誤形式による不発が発生・作業が進まなかった主因）。前提の scope/PKCE 構成は 2026-07-10 セクション（PKCE/scope 修正）を参照。
+
+## 🟡 2026-07-10 Make X OAuth2 unauthorized_client 修正 — 接続ダイアログ再構築完了（HUMAN入力3点待ち・ダイアログ開いたまま）
+- **再開結果**: 前セッションの旧タブは消失。新タブでシナリオ5615632（team 1963533）を開き直したところ、**前回の接続設定は未保存で消失**（token交換失敗時に Make が接続を永続化しないため）。Create a connection を Advanced settings 込みで再構築した。
+- **設定済（スクショで物理確認済・Save はまだ押していない）**: name=`X @vodnavi_jp OAuth2 (Basic auth fix)` / Flow=Authorization Code / Authorize URI=`https://x.com/i/oauth2/authorize` / Token URI=`https://api.x.com/2/oauth2/token` / Scope 4件（tweet.read / tweet.write / users.read / offline.access）/ separator=**SPACE** / Authorize parameters: `code_challenge`（BRIEF既存の静的S256値）+ `code_challenge_method=S256` / Access token parameters: `code_verifier`（同静的値）。静的PKCE値は 1457行セクション記載の検証済ペアを再使用。
+- **unauthorized_client 対策（CSO指示1の実装形）**: Make HTTP(legacy) OAuth2 接続設定に「client credentials を Header で送る」ネイティブオプションは**不在**（全フィールド目視確認）。よって第2経路＝**Custom Headers に Key=`Authorization` を追加済（Value は空欄＝HUMAN貼付枠）**。Value に `Basic {base64(client_id:client_secret)}` が入ると token/refresh リクエストに Basic 認証ヘッダーが付く想定。
+- **CSO指示2（redirect_uri / grant_type）**: Make OAuth2 標準実装が token リクエストへ自動付与する仕様のため明示追加せず（二重付与による別エラーを回避）。再認可でなお unauthorized_client の場合のみ Access token parameters への明示追加を次段で検討。
+- **HUMAN 次作業（3点・Make のダイアログは開いたまま渡す）**:
+  1. Client ID / Client Secret に X Dev Portal の値を入力。
+  2. **このセッションとは別の** PowerShell 窓で `[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("CLIENT_ID:CLIENT_SECRET"))` を実行（CLIENT_ID:CLIENT_SECRET を実値に置換）→ 出力文字列の先頭に `Basic ` を付けて Custom Headers の Value へ貼付。**Secret原文・base64値をこのセッション/ファイル/ログへ貼らないこと**（base64は可逆＝Secret同等）。
+  3. Save → @vodnavi_jp アカウントで再認可（認可画面は新規に開始・古いタブの再読込は不可）。
+- **なお unauthorized_client が続く場合（CSO指示4）**: X Dev Portal のアプリ認証設定が「機密クライアント（Web App, Automated App or Bot = Confidential client）」で保存済みか確認 → Client Secret 再生成 → 上記1〜3をやり直し。
