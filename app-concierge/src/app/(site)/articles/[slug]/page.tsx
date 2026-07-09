@@ -4,7 +4,11 @@ import { notFound } from "next/navigation";
 
 import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
 import { GuideReturnCta } from "@/components/guide-return-cta";
-import { buildAffiliateURL, buildTvSignupURL } from "@/lib/concierge/url-builder";
+import {
+  buildAffiliateURL,
+  buildSaleFeatureURL,
+  buildTvSignupURL,
+} from "@/lib/concierge/url-builder";
 import { getPublishedArticleBySlug } from "@/lib/editorial-articles";
 import { absoluteUrl, compactDescription, compactTitle } from "@/lib/site";
 
@@ -114,6 +118,24 @@ export default async function ArticlePage({
                     className="btn-luxury-gold inline-flex w-full items-center justify-center gap-2 rounded-xl min-h-12 px-5 py-3 text-sm font-semibold group"
                   >
                     <span>FANZA TVを見てみる（登録3分）</span>
+                  </FanzaAffiliateLink>
+                </div>
+              );
+            }
+            if (p === "[[CTA:sale]]") {
+              // U3 セール特集: 検証済み article=sale 会場への CTA（af_id=004 /
+              // placement=article_sale_cta）。SALE_FEATURE_TEMPLATE 規定。
+              return (
+                <div key={i} className="py-2">
+                  <FanzaAffiliateLink
+                    href={buildSaleFeatureURL()}
+                    content_id="sale_feature"
+                    title="FANZAセール会場"
+                    floor_code="videoa"
+                    placement="article_sale_cta"
+                    className="btn-luxury-gold inline-flex w-full items-center justify-center gap-2 rounded-xl min-h-12 px-5 py-3 text-sm font-semibold group"
+                  >
+                    <span>セール会場はこちら（18禁）</span>
                   </FanzaAffiliateLink>
                 </div>
               );
