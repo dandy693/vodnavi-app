@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 
+import { getPublishedArticleSlugs } from "@/lib/editorial-articles";
 import { fetchItemList } from "@/lib/fanza/client";
 import { FANZA_FLOORS } from "@/lib/fanza/types";
 import { absoluteUrl } from "@/lib/site";
@@ -147,5 +148,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // SEO 価値の低い優先度0.5 の周辺 URL のため、整形式回復を最優先に pagination 出力を廃止する。
   // (floor ランディング `/?floor=videoa` は単一パラメータで `&` を含まないため維持)
 
-  return [...root, ...floors, ...works, ...genres, ...actresses];
+  // 編集記事（Supabase editorial_articles / published のみ）。記事は Studio 投入で
+  // publish された時点から次回 sitemap 再生成（revalidate 3600s）で自動収録される
+  // ＝公開ごとの手動配線・SQL 再実行は不要（今後の記事投入計画の前提条件）。
+  // getPublishedArticleSlugs はエラー/未配線時に空配列を返すため、Supabase 障害時も
+  // 既存の works/genres/actresses 収録には影響しない。
+  const articleSlugs = await getPublishedArticleSlugs();
+  const articles: MetadataRoute.Sitemap = articleSlugs.map((slug) => ({
+    url: absoluteUrl(`/articles/${slug}`),
+    lastModified: now,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  return [...root, ...floors, ...works, ...genres, ...actresses, ...articles];
 }
