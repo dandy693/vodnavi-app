@@ -1460,3 +1460,13 @@
 - **停止理由**: Client ID / Client Secret は HUMAN 管理（Claude Code には渡さない原則）＝私は入力不可。この2値が入るまで接続作成（=認可URL生成）不可のため、指示3「認可URLに scope=/code_challenge= が含まれるか確認」は Client ID 入力後に実施。
 - **技術的懸念（CSO判断要）**: 静的 code_verifier/challenge 方式は「リクエスト毎に動的生成」という PKCE 本来要件から外れる。初回認可は1組が整合するため通る公算だが、X が固定challengeを拒否/ refresh時に再検証する場合は失敗しうる。**代替案**: ①Make の HTTP新モジュール(PKCE対応の可能性)へ差し替え評価 ②Make の専用 X/Twitter connector 復活可否を再確認 ③X API を使わず「Make → n8n/GAS 等 PKCE 動的対応基盤」へ移行。まず現行構成で HUMAN が Client ID/Secret 入力→認可試行し、失敗時に代替案②③へ。
 - **HUMAN 次作業**: 同ダイアログの Client ID / Client Secret に X Dev Portal の値を入力→ Save →（接続が張れたら）認可。認可画面が出る前に CTO が認可URLの scope=/code_challenge= 混入を確認予定（要再開連絡）。
+
+## 🟡 2026-07-10 Make X OAuth2 トークン交換 unauthorized_client 修正（未着手・HUMAN待ち／再開TODO）
+- **現状（正直な進捗）**: 本修正は**未着手＝Make への変更は未適用**。ブラウザ操作が不正な tool-call 形式（`court`/`invoke` リテラル露出）で不発を繰り返し、Make シナリオ画面のスクショ取得前に中断・セッション終了。両タブは開いた状態で保存（Airtable posts=tab290616038 / Make シナリオ5615632=tab290616042、スケジュールOFF）。
+- **CSO診断（2026-07-10）**: 認可は**成功**（X が code 発行・us2.make.com callback 到達）。前回の scope/PKCE 修正は有効。失敗点は**トークン交換**で `SC424 / suberror="unauthorized_client"`。想定原因＝X の機密クライアントは token リクエストに **HTTP Basic 認証ヘッダー base64(client_id:client_secret)** を要求するが、Make HTTP(legacy) OAuth2接続の client-credentials 送信方式が Header(Basic) になっていない可能性。
+- **再開時 TODO（優先順・未実施）**:
+  1. Make HTTP(legacy) OAuth2接続設定の「client credentials 送信方式」を確認 → 「Header で送る(Basic)」オプションがあれば変更。無ければ Access token parameters にカスタムヘッダー `Authorization: Basic {base64値}` を追加。**base64値の生成には Client Secret が必要＝HUMANに生成手順を渡し値のみ受領（Secret 原文はログ/ファイルに残さない原則）**。
+  2. token リクエストに `redirect_uri`（authorize 時と同一値）と `grant_type=authorization_code` が含まれるか確認。
+  3. 修正後、HUMANに**再認可**依頼（Make の接続画面から新規開始・**古いタブの再読込は不可**）。
+  4. それでも unauthorized_client なら、X Dev Portal のアプリ種別が「機密クライアント」で保存済みか再確認＋Client Secret 再生成→再入力（値ずれ排除）を提案して停止。
+- **引継ぎ注意**: ブラウザ操作は必ず正しい tool-call 形式で実行（本セッションで誤形式による不発が発生・作業が進まなかった主因）。前提の scope/PKCE 構成は 2026-07-10 セクション（PKCE/scope 修正）を参照。
