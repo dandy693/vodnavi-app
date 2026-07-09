@@ -1438,3 +1438,10 @@
 - **U3準備（campaign=kyonyucp 解析）: 抽出不可（現時点）** — LP は完全CSR（SSR/NEXT_DATA なし・HTML に content_id 0件）、公開 API 端点不明、FANZA Webservice ItemList に campaign フィルタなし（ローカル API 認証なし+IP スロットル既知で全件走査も不可）。**投入SQLドラフトは条件不成立によりスキップ**。代替案: ①HUMAN がログイン Chrome で LP を「ページのソースを保存」→CTO が解析（最速）②Vercel 上での ItemList 走査 one-off（要承認）③特設ページの手動転記。公開判定（7/14）までに①を推奨。
 - **7/14バッチ タスクリスト追加**: U1コピーv2（14日間無料トライアル反映・プリペイド注記）＋ fanza-first-guide セクション3更新SQL（**次回 Studio 実行に同梱**）。
 - **X運用ルール改訂（CSO指定・1行）**: T1改のリンク先は app.vodnavi.jp 作品詳細に変更／006 直貼りは T3・T6 のみ・1日1本まで。
+
+## 🟡 2026-07-09 X投稿ストック&予約配信システム（Airtable+Make）— 工程0未完了により構築停止・Blueprint先行配置
+- **大原則の固定（CSO指定・運用ルール）**: 自動化は**「承認済」投稿の配信のみ**。フォロー・リプライの自動化は実装禁止（X規約・凍結リスク）。無承認の自動投稿経路を作らない。シナリオ②（API自動下書き生成）は未実装・7/14以降にCSO判断。006直貼りはT3/T6のみ・1日1本まで（Airtableリンク種別で目視管理）。予約時刻は21:00〜23:59に分散・分単位ランダム。動画付き投稿（T2）は当面手動。
+- **【指示書訂正・CSO指示】X API は「Freeプラン500件/月」ではなく従量課金制（pay-per-use・URL付き投稿 $0.20/件）**。Developer Console 物理確認（2026-07-09 スクショ保存）: @vodnavi_jp = pay-per-use・残高 $10.00（無料クレジット $0.00）。**残高は週次確認**を運用に追加（料率ページ週2監視と同時実施可）。
+- **工程0 完了確認の結果**: X Developer=**完了**（アプリ 2075115288241000448vodna… Development/active・課金&残高確認済）／**Make.com=未ログイン／Airtable=未ログイン → 工程1以降の構築は停止**（指示書の停止条件）。
+- **先行配置**: Make Blueprint `management/templates/make-x-scheduler-v1.blueprint.json` を生成・commit（JSON valid 検証済）。承認済フィルタ AND({ステータス}='承認済', {予約日時}<=NOW())・maxRecords=1（連投防止）・エラー経路（Airtable書戻し→メール通知→Ignore継続）・15分間隔・接続はHUMAN認可前提の null プレースホルダ。
+- **HUMAN 再開チェックリスト**: ①Make.com ログイン ②Airtable ログイン ③（再開連絡）→ CTO が工程1 Airtableベース構築→Blueprint インポート→接続画面で停止→HUMAN認可→工程3テスト、の順で再開。
