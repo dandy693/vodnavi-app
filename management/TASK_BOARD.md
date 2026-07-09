@@ -1424,6 +1424,7 @@
 - **CSO裁定（2026-07-09）**:
   - **D1（旧作 works の sitemap 落ち対策＝全作品アーカイブ sitemap 分割等）: 承認済み・実装は 7/14 の bot 減衰判定後**
   - **D2（/concierge?source= 変種の canonical consolidation 整理）: 承認済み・実装は 7/14 の bot 減衰判定後**（noindex 不使用＝FACT_GOVERNANCE §2 遵守）
-  - **D3（favicon/OG 画像変種 8件）: 保留**
-  - **D4（actresses/genres ハブの薄さ）: 対応なし**（M-05 editorial 浸透待ちの既知評価）
+  - **D3（ハブのページネーション露出）: 保留** — D1 実装後 2〜4 週間の効果測定（旧作 works のインデックス転換率）を見て要否を再判断。**再判断トリガー: D1 効果測定完了時**
+  - **D4（actresses/genres 128件）: 対応なし**（M-05 editorial 浸透待ち）／favicon・OG 画像変種は無害につき放置（判断案件ではない）
+  - ※D3/D4 の当初記載は CTO の対応付け誤りにつき 2026-07-09 CSO 指摘で本文訂正（eca17ad → 本 commit）
 - 実装着手条件: 7/14 チェックポイントの bot 減衰判定完了後（議題①）。それまで D1/D2 のコード変更は行わない。
