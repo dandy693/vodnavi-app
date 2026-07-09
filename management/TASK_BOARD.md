@@ -1418,3 +1418,12 @@
   - **日次「DMMクリック数 vs GA4 ai_affiliate_click」乖離監視**を定常項目化（bot汚染の早期警報・6/24事案の再発防止）。
 - **7/14 チェックポイント議題（確定版）**: ①bot減衰判定（DMM日次〜50水準未達なら /api/out bot-gate 302化を起票）②U1/U2初動（works_fv_newuser クリック=GA4配線確認兼務 / guide_tv_signup_cta 反応 / サービス新規報酬の初発生有無）③006承認状況→X解禁テンプレ（T1改・T6）運用開始判断 ④X第1週実績（フォロワー・接触活動量・投稿反応）⑤報酬UPキャンペーン期日を踏まえた集中投下計画（HUMAN確認待ち）。
 - **HUMAN未了タスク（リマインド）**: 報酬UPキャンペーン終了期日確認（DMMお知らせ）/ moterist-006 承認通知の共有（DMMメッセージ欄）/ X接触活動の毎日実施（フォロー20〜30/日・リプライ5〜10/日）。
+
+## 🟡 2026-07-09 「クロール済み-未登録」1,190件 分類分析 → CSO裁定記録（実装は7/14以降）
+- **分析結果（例示上限1,000/母数1,190・DOM抽出代替）**: /works/ 800（80%・videoa647/amateur81/videoc26/nikkatsu24/anime22）/ actresses 93 / param変種 69（**/concierge?source= 63**・/?floor= 1・favicon/OG変種 5）/ genres 35 / その他3（非HTMLアセット）。works サンプル10件の到達性: **生存10/10・sitemap収録1/10・女優ハブ掲載5/10・ジャンルハブ掲載1/10・完全孤立4/10**（ハブ判定は1ページ目出現の保守値）。主因読み=「sitemap ローテーション落ちした旧作 works の内部リンク痩せ」。
+- **CSO裁定（2026-07-09）**:
+  - **D1（旧作 works の sitemap 落ち対策＝全作品アーカイブ sitemap 分割等）: 承認済み・実装は 7/14 の bot 減衰判定後**
+  - **D2（/concierge?source= 変種の canonical consolidation 整理）: 承認済み・実装は 7/14 の bot 減衰判定後**（noindex 不使用＝FACT_GOVERNANCE §2 遵守）
+  - **D3（favicon/OG 画像変種 8件）: 保留**
+  - **D4（actresses/genres ハブの薄さ）: 対応なし**（M-05 editorial 浸透待ちの既知評価）
+- 実装着手条件: 7/14 チェックポイントの bot 減衰判定完了後（議題①）。それまで D1/D2 のコード変更は行わない。
