@@ -1508,3 +1508,13 @@
 - **シナリオ保存済（スケジュールOFF維持）**。Run onceはEmail接続未作成が必須値のためブロック＝dry run未実施。
 - **HUMAN 次作業（1点）**: シナリオ5615632のエラーメール通知モジュール(5)を開き Create a connection → Google(Gmail)認可（送信先hdktchkw33@gmail.comは設定済）。完了連絡でCTOがRun once疎通→工程3テスト（実投稿=HUMANがテスト行を承認済に変更する明示承認後のみ）へ。
 - **工程3の残り**: ①Run once 0件dry run（承認済行なし=安全） ②HUMAN承認でテスト行を承認済化→実投稿1件→投稿済書き戻し確認→ポストIDマッピング追加 ③スケジュール窓設定（夜間20:45-24:00・15分間隔）→ON はCSO/HUMAN判断。
+
+## 🟢 2026-07-10 エラー通知手段の差し替え完了（CSO決定対応）+ Run once疎通確認PASS
+- **優先1の検証結果: 不可と確定** — Makeに「認可不要のEmail送信」モジュールは存在しない（物理確認: Emailアプリの接続タイプはOthers(SMTP)/Google Restricted/Microsoft SMTP/IMAP OAuthの3種のみ＝全て資格情報必須。ピッカー"email"検索もGmail/サードパーティのみ）。HUMANが試行したGoogle Restricted接続のエラー「It is not possible to use restricted scopes with customer @gmail.com accounts」も画面で実物確認。
+- **優先2で実装: エラーメール通知モジュール(5)を削除し「Airtable書き戻しのみ」に簡素化**。削除時にMakeが自動で 8(エラー書き戻し)→6(続行/Ignore) を再連結、エラー経路 2→8→6 の配線維持を確認。警告ゼロで保存成功。
+- **【追加発見・修正2点】初回Run onceで判明**:
+  1. **Airtable Search Recordsが0件時に空バンドルを1個emitする** → 空textでPOST /2/tweets(400)→Airtable3がID空でエラーになる潜在バグ。**モジュール1-2間にフィルタ「承認済レコードあり」(1.ID Exists)を追加して根治**。
+  2. **HTTP(legacy) OAuth2モジュールは4xx/5xxも成功扱い**（Evaluate all states as errorsオプション自体が不在）→ 投稿失敗でも投稿済に書き変わるバグ予備軍。**2-3間にフィルタ「投稿成功(201のみ通過)」(get(2.bundle; statusCode) = 201 数値一致)を追加**。失敗時はレコードが承認済のまま残り次サイクル再試行（エラー経路8はOAuth失敗等のハードエラー時に発火）。
+  3. 副産物の確証: 初回Run onceの空POSTに X が**400**を返した（401/403でない）＝**Bearer token有効・OAuth疎通は本物**。実投稿はされていない。
+- **最終Run once: PASS** — 検索1op→フィルタ0件通過→以降未実行・エラーなし（空サイクルコスト=1op）。シナリオ保存済・スケジュールOFF維持。
+- **残タスク**: ①Airtable側オートメーション（ステータス=エラー時にメール通知、無料枠）＝Airtable UI設定はHUMANまたは次セッション（Airtable automations はAPI/MCP非対応） ②工程3実投稿テスト（HUMANがテスト行を承認済化する明示承認後）→成功時にポストID(data.data.id)マッピング追加 ③夜間スケジュール窓設定→ON判断。
