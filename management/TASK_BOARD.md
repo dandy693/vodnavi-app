@@ -1490,3 +1490,9 @@
   2. （ログイン後 CTO が接続ダイアログの消失確認・再構築を実施してから）X Dev Portal で Client Secret を**再生成**（旧Secret無効化）。あわせてアプリ認証設定が「機密クライアント（Web App, Automated App or Bot）」で**保存済み**か確認。
   3. 別の PowerShell 窓で `[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("CLIENT_ID:CLIENT_SECRET"))`（実値に置換）→ 出力に `Basic ` を前置して Custom Headers Value 用に控える。**Secret原文・base64値をセッション/ファイル/ログへ貼らない**。
 - **CTO 再開後の分岐**: 成功→マッピング仕上げ→工程3テスト / unauthorized_client 再発→静的PKCE拒否と確定し代替案 (a)HTTP新モジュール/カスタムOAuth2のPKCE動的対応 (b)初回トークン手動交換+refresh_token を Make データストアで自前リフレッシュ (c)n8n/GAS移行 を比較提示して停止。
+
+## 🟡 2026-07-10 Make X OAuth2 修正・再開第2次 — ログイン後に接続消失を確認→ダイアログ再構築完了（HUMAN入力3点待ち・Save未押下）
+- **HUMAN ログイン完了** → シナリオ5615632 を新タブで開き HTTP(legacy) モジュール(2)を確認。**接続は予想どおり消失**（Connection欄が Create a connection のみ）。※モジュール本体の URL/Method 等も空表示＝接続確立後に blueprint 値で再設定要（既知の工程2-2残作業と同じ）。
+- **接続ダイアログ再構築完了（全項目スクショで物理確認済・Save未押下）**: name=`X @vodnavi_jp OAuth2 (Basic auth fix)` / Flow=Authorization Code / Authorize URI=`https://x.com/i/oauth2/authorize` / Token URI=`https://api.x.com/2/oauth2/token` / Scope 4件(tweet.read/tweet.write/users.read/offline.access) / **Scope separator=SPACE** / Authorize parameters: `code_challenge`(静的S256値)+`code_challenge_method=S256` / Access token parameters: `code_verifier`(検証済ペア) / **Custom Headers: Key=`Authorization`・Value=空欄（HUMAN貼付枠）** / Access token placement=In the header・Token prefix=Bearer（既定）。
+- **HUMAN 次作業（3点・ダイアログ開いたまま）**: ①Client ID / Client Secret（X Dev Portal で Secret**再生成**した新値）を入力 ②Custom Headers の Value に `Basic {base64(client_id:client_secret)}` を貼付（別窓PowerShellで生成・Secret原文/base64をチャットやファイルに貼らない） ③Save → @vodnavi_jp で再認可。※Secret再生成前にアプリ種別=機密クライアント（Web App, Automated App or Bot）保存済みかも確認。
+- **分岐**: 成功→CTO がモジュール再設定（URL https://api.x.com/2/tweets / POST / JSON / マッピング）→工程3テスト ／ unauthorized_client 再発→静的PKCE拒否と確定し代替案 (a)Make HTTP新モジュール/カスタムOAuth2 (b)初回手動トークン交換+データストア自前リフレッシュ (c)n8n/GAS移行 を比較提示して停止。
