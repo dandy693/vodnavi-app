@@ -1497,3 +1497,14 @@
 - **HUMAN 次作業（3点・ダイアログ開いたまま）**: ①Client ID / Client Secret（X Dev Portal で Secret**再生成**した新値）を入力 ②Custom Headers の Value に `Basic {base64(client_id:client_secret)}` を貼付（別窓PowerShellで生成・Secret原文/base64をチャットやファイルに貼らない） ③Save → @vodnavi_jp で再認可。※Secret再生成前にアプリ種別=機密クライアント（Web App, Automated App or Bot）保存済みかも確認。
 - **分岐**: 成功→CTO がモジュール再設定（URL https://api.x.com/2/tweets / POST / JSON / マッピング）→工程3テスト ／ unauthorized_client 再発→静的PKCE拒否と確定し代替案 (a)Make HTTP新モジュール/カスタムOAuth2 (b)初回手動トークン交換+データストア自前リフレッシュ (c)n8n/GAS移行 を比較提示して停止。
 - **【2026-07-10 追記】ダイアログ再消失→2回目の再構築完了**: HUMAN入力前に画面が変わり未保存設定が再び消失（Makeは失敗/未Save接続を保持しない仕様を再確認）。同一内容で再構築し全項目スクショ検証済み（Scope4件SPACE/PKCE2+1/Custom Headers Authorization=Value空欄）。**ダイアログは開いたまま維持＝HUMANは他画面へ遷移せずそのまま3点入力→Save→認可すること**（途中でタブ/画面を切り替えると三たび消失する）。
+
+## 🟢 2026-07-10 X予約配信 工程2-2完了 — X OAuth2認可成功(unauthorized_client解消)+モジュール全面再設定+シナリオ保存済（残: Email接続=HUMAN 1点）
+- **X OAuth2 認可成功**: Client Secret再生成+Basic認証ヘッダー(Custom Headers)+scope4件SPACE+静的PKCE構成で @vodnavi_jp 認可完了。接続「X @vodnavi_jp OAuth2 (Basic auth fix)」がHTTP(legacy)モジュールに紐付き済み（スクショ物理確認）。**CSO診断のBasic認証ヘッダー欠落が真因で確定**。静的PKCE代替案(a)(b)(c)は不要となり閉じる。
+- **モジュール再設定完了（接続消失の影響で全モジュール再構築）**:
+  1. 配信キュー取得(1): Airtable接続/Base=VODNAVI X Calendar/Table=posts/Formula=AND({ステータス}='承認済',{予約日時}<=NOW())/Limit=1/Sort=予約日時asc（blueprint値が自動復元）
+  2. HTTP(2): URL=https://api.x.com/2/tweets/POST/Raw+JSON/**本文={"text":"{{escapeJSON(投稿文+newline+リンクURL)}}"}**（Make組込escapeJSON関数でJSONエスケープ問題を根治・改行/引用符安全）/Parse response=Yes
+  3. Airtable(3): Record ID={{1.ID}}/ステータス=投稿済（ポストIDは初回実行でレスポンス構造取得後にdata.data.idをマッピング予定）
+  4. **エラー経路再構築**: 旧4→5→6チェーンがblueprintインポート時からモジュール2に未接続の孤立チェーンだったことを発見（unauthorized_client問題とは別の潜在バグ）。旧モジュール4を削除し、新モジュール8(Airtable Update: Record ID={{1.ID}}/ステータス=エラー/エラー詳細={{2.Error.Message}})を2のエラーハンドラとして作成→8→5(メール)→6(続行)を接続。
+- **シナリオ保存済（スケジュールOFF維持）**。Run onceはEmail接続未作成が必須値のためブロック＝dry run未実施。
+- **HUMAN 次作業（1点）**: シナリオ5615632のエラーメール通知モジュール(5)を開き Create a connection → Google(Gmail)認可（送信先hdktchkw33@gmail.comは設定済）。完了連絡でCTOがRun once疎通→工程3テスト（実投稿=HUMANがテスト行を承認済に変更する明示承認後のみ）へ。
+- **工程3の残り**: ①Run once 0件dry run（承認済行なし=安全） ②HUMAN承認でテスト行を承認済化→実投稿1件→投稿済書き戻し確認→ポストIDマッピング追加 ③スケジュール窓設定（夜間20:45-24:00・15分間隔）→ON はCSO/HUMAN判断。
