@@ -1481,3 +1481,12 @@
   2. **このセッションとは別の** PowerShell 窓で `[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("CLIENT_ID:CLIENT_SECRET"))` を実行（CLIENT_ID:CLIENT_SECRET を実値に置換）→ 出力文字列の先頭に `Basic ` を付けて Custom Headers の Value へ貼付。**Secret原文・base64値をこのセッション/ファイル/ログへ貼らないこと**（base64は可逆＝Secret同等）。
   3. Save → @vodnavi_jp アカウントで再認可（認可画面は新規に開始・古いタブの再読込は不可）。
 - **なお unauthorized_client が続く場合（CSO指示4）**: X Dev Portal のアプリ認証設定が「機密クライアント（Web App, Automated App or Bot = Confidential client）」で保存済みか確認 → Client Secret 再生成 → 上記1〜3をやり直し。
+
+## 🔴 2026-07-10 Make X OAuth2 修正・再開第2次 — Makeセッション切れでログイン待ち停止（HUMAN作業1点）
+- **状況**: 前セッションの2タブ（Airtable posts / Make シナリオ5615632）は消失。新タブで `us2.make.com/1963533/scenarios/5615632/edit` を開いたところ **make.com の Sign in 画面へリダイレクト＝Make セッション期限切れ**。ログイン（パスワード/Google SSO 選択）は Claude 実行不可の HUMAN 専管操作。
+- **前提（CSO外部検証済の現在地）**: 工程0/1/2-1 完了（Airtable ベース+テスト行は CSO が MCP で実在確認済）。ブロッカーは工程2-2 の X OAuth2 接続のみ（認可成功→トークン交換 unauthorized_client、Basic ヘッダー追加後も再発）。
+- **HUMAN 次作業（順に）**:
+  1. Chrome の当該タブで Make にログイン（team 1963533 を持つアカウント）→ 完了を CTO に連絡。
+  2. （ログイン後 CTO が接続ダイアログの消失確認・再構築を実施してから）X Dev Portal で Client Secret を**再生成**（旧Secret無効化）。あわせてアプリ認証設定が「機密クライアント（Web App, Automated App or Bot）」で**保存済み**か確認。
+  3. 別の PowerShell 窓で `[Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("CLIENT_ID:CLIENT_SECRET"))`（実値に置換）→ 出力に `Basic ` を前置して Custom Headers Value 用に控える。**Secret原文・base64値をセッション/ファイル/ログへ貼らない**。
+- **CTO 再開後の分岐**: 成功→マッピング仕上げ→工程3テスト / unauthorized_client 再発→静的PKCE拒否と確定し代替案 (a)HTTP新モジュール/カスタムOAuth2のPKCE動的対応 (b)初回トークン手動交換+refresh_token を Make データストアで自前リフレッシュ (c)n8n/GAS移行 を比較提示して停止。
