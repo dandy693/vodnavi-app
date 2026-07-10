@@ -1518,3 +1518,10 @@
   3. 副産物の確証: 初回Run onceの空POSTに X が**400**を返した（401/403でない）＝**Bearer token有効・OAuth疎通は本物**。実投稿はされていない。
 - **最終Run once: PASS** — 検索1op→フィルタ0件通過→以降未実行・エラーなし（空サイクルコスト=1op）。シナリオ保存済・スケジュールOFF維持。
 - **残タスク**: ①Airtable側オートメーション（ステータス=エラー時にメール通知、無料枠）＝Airtable UI設定はHUMANまたは次セッション（Airtable automations はAPI/MCP非対応） ②工程3実投稿テスト（HUMANがテスト行を承認済化する明示承認後）→成功時にポストID(data.data.id)マッピング追加 ③夜間スケジュール窓設定→ON判断。
+
+## 🟢 2026-07-11 Airtableエラー通知オートメーション構築完了（CSO発行タスク・全項目PASS）
+- **構成（エラー通知=Airtableオートメーション方式で確定・Make側メールモジュール削除済みと整合）**: ベース VODNAVI X Calendar に automation「エラー通知」を新規作成。トリガー=When a record matches conditions（Table=posts / ステータス is エラー）→ アクション=Send email（Subject「X投稿エラー: VODNAVI」/ 本文=固定文+{投稿文}+{エラー詳細}の動的トークン挿入済み）。
+- **【重要変更】宛先は moterist.com@gmail.com**（hdktchkw33@gmail.com は「Cannot email non-collaborators on the current billing plan」で送信不可＝コラボレーター外。ベースオーナー=moterist.com@gmail.com（アカウント名モテリスト）は送信可能なため変更）。hdktchkw33 へ届けたい場合は (a)HUMANがhdktchkw33をベースコラボレーター招待（権限変更=HUMAN専管）or (b)moterist側Gmailで転送設定、のどちらかをHUMAN判断で。
+- **検証全PASS**: ①トリガーテスト=検証行(rec作成)でマッチ確認 ②アクションテスト「Run as configured」=Step successful・Sent an email（テストメール1通送信済み） ③**automation ON後の実発火**=検証行ステータスをストック→エラーに変更→Run history「Ran successfully 2026/7/11 午前0:15」を物理確認（実発火メール1通送信済み） ④検証行削除済み。**moterist.com@gmail.com 受信箱に計2通届いているはずなので受信確認をひできに依頼**。
+- **実行枠**: 現在ベースはTeamトライアル中（13日残）。トライアル終了後Free枠=月100回でも、エラー発火時のみの実行のため十分成立（夜間窓13サイクル/日が全滅しても月100回内に収まらない極端ケースはMake側が先に止まる規模＝実質問題なし）。トライアル終了時の再確認のみ留意。
+- **Airtable UI操作の注意（引継ぎ）**: automationsエディタはレンダラが重くCDPスクリーンショットがタイムアウトしやすい→get_page_textでの状態確認が有効。テスト用レコード操作はAirtable MCP（create/update/delete_records_for_table）が確実。
