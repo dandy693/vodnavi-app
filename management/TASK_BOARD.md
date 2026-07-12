@@ -1548,3 +1548,9 @@
 - **結論**: ガイド誘導XポストはX実タイムライン(表示5件)・Airtable posts(全10レコード)ともに**0件**。流入ゼロの真因はリンク不備/表示制限でなく**誘導投稿が配信計画に存在しない**こと（week1カレンダーにガイド枠なし、ガイドへのリンクは設計上U1展開部のサイト内導線のみ）。詳細: `management/_metrics/2026-W28/x-guide-post-zero-inflow-investigation-2026-07-12.md`
 - 存在する2投稿(A1=006TV/A2=/lp)はURL照合一致・t.co着地200正常・possibly_sensitive:false・検索表示可。アカウント全体はフォロワー0・全投稿2〜10impのリーチ極小状態（参考判定b）
 - ガイド誘導枠の新設可否はCSO判断待ち
+
+## 🟢 2026-07-12 week2 T1改 新作候補10件の抽出完了（CSO発注・確認/抽出のみ・Airtable未登録）
+- 候補10件（発売日7/10〜7/19・人気9〜119位・**全件 app.vodnavi.jp 200確認済み・未収録除外0件**）: `management/_metrics/2026-W28/week2-t1kai-candidates-2026-07-12.md`
+- 取得方法の差分注記: Chrome拡張が dmm.co.jp 非許可＋ランキングはSPAのため、DMM API `sort=rank`（本番同一ソース・990系API専用ID・3コールのみ）で代替。アフィリンクは不使用
+- 前提訂正: Supabaseに works テーブルは不存在（editorial_articles/article_products のみ）＝作品詳細はDMM API直結で「Supabase収録」は適用外、200確認が収録確認
+- 次工程: CSOコピー確定 → HUMAN承認 → Airtable登録（別途指示）
