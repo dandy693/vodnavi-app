@@ -1554,3 +1554,10 @@
 - 取得方法の差分注記: Chrome拡張が dmm.co.jp 非許可＋ランキングはSPAのため、DMM API `sort=rank`（本番同一ソース・990系API専用ID・3コールのみ）で代替。アフィリンクは不使用
 - 前提訂正: Supabaseに works テーブルは不存在（editorial_articles/article_products のみ）＝作品詳細はDMM API直結で「Supabase収録」は適用外、200確認が収録確認
 - 次工程: CSOコピー確定 → HUMAN承認 → Airtable登録（別途指示）
+
+## 🟢 2026-07-12 week2カレンダー Airtable登録完了 + week1残レコード競合のCSO裁定 + 標準手順追加
+- **A11〜A20 登録完了（全10件・承認済）**: TG新枠2本(ガイド誘導)含む。URL5件は登録前に全件200再確認、A16はweek1 A1文面流用+af_id=moterist-006再確認済。ログ: `management/_metrics/2026-W29/week2-airtable-registration-log-2026-07-12.md` / 確定稿: `management/_metrics/2026-W29/x-calendar-week2-v1-confirmed.md`
+- **競合検出→CSO裁定**: week1 A5〜A10(7/13〜17・承認済残存)がweek2と二重配信+7/17に006直リンク2本(3分差)のルール違反を構成 → CTOが実行前に停止・列挙報告、CSO裁定で**A5〜A10は削除せず「ストック」化（文面保全・再利用可否はCSO後日判断）**。「下書き」選択肢不在のため既存非配信ステータス「ストック」を使用
+- **Make シナリオ5615632**: blueprint選定式 `AND({ステータス}='承認済',{予約日時}<=NOW())` は週非依存＝設定変更不要でweek2を拾う。実証: 登録当夜7/12にweek1 A3が自動投稿(投稿済遷移)＝Active稼働をlive確認。**Make管理画面の目視はセッション切れ(ログイン=HUMAN)のため未実施**、blueprint+実挙動で代替
+- **標準手順追加（CSO裁定）**: **次週カレンダー設計前に posts の未配信レコード在庫（承認済・ストック）を CSO へ報告する**（二重配信/006二重の再発防止）
+- 配信キュー現況: 11件待機（今夜A4 + week2 10件）、スクショ ss_4968lda5b
