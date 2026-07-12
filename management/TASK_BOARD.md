@@ -1561,3 +1561,8 @@
 - **Make シナリオ5615632**: blueprint選定式 `AND({ステータス}='承認済',{予約日時}<=NOW())` は週非依存＝設定変更不要でweek2を拾う。実証: 登録当夜7/12にweek1 A3が自動投稿(投稿済遷移)＝Active稼働をlive確認。**Make管理画面の目視はセッション切れ(ログイン=HUMAN)のため未実施**、blueprint+実挙動で代替
 - **標準手順追加（CSO裁定）**: **次週カレンダー設計前に posts の未配信レコード在庫（承認済・ストック）を CSO へ報告する**（二重配信/006二重の再発防止）
 - 配信キュー現況: 11件待機（今夜A4 + week2 10件）、スクショ ss_4968lda5b
+
+## 🟢 2026-07-12 Xプロフィール画像2枚 生成完了（CSO発注 2026-07-13分・アップロード=HUMAN待ち）
+- 生成物: `management/_assets/x-profile/x_icon_400x400.png`（400×400）/ `x_header_1500x500.png`（1500×500）、いずれもPNG・寸法検証済み
+- デザイン: brand-token凍結値のみ使用（背景 --brand-dark #121212 / ロゴ --brand-gold #D4AF37 / サブコピー --brand-text-secondary #A0A0A0）。書体はAGaramondPro（--font-luxury-heading系統のセリフ）+Meiryo。作品画像・人物画像は不使用、ヘッダーにサブコピー「FANZA 50,000作品データベース」を配置
+- 残: X プロフィールへのアップロード（HUMAN実施）
