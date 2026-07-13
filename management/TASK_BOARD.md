@@ -1582,3 +1582,25 @@
 - **H1成分**: Edge Requests(bot含む)は c237e51(7/7 21:30 JST)以降ピーク帯消失(4hビン15K→5〜9K)=bot減衰は実在。**FANZA管理画面(af_id別日別/EPC)はHUMANログイン待ちで未取得**(accounts.dmm.comパスワード入力はCTO実施不可)
 - **7/14チェックポイントへの影響**: ①c237e51 bot減衰判定の材料としてVercelリクエスト減は使用可、②確定にはHUMANがFANZA管理画面で004(人間クリック残存)/990系(減衰カーブ)を取得、③**GSC 7/11-12の表示回数を7/14に必ず再確認**(7/12=46は過去日曜比半分以下で未説明残り)
 - 詳細: `management/_metrics/2026-W29/traffic-drop-investigation.md`
+
+## 🔵 2026-07-13 D3(再発防止): デプロイ起因FANZA API障害の再発防止 — 正式タスク化(CSO発行・設計まで/適用は別途承認)
+- **⚠ 採番衝突の明示**: 識別子「D3」は 2026-07-09 CSO裁定の「D3（ハブのページネーション露出・保留）」と衝突する（FACT_GOVERNANCE §4 タスクID一意）。本タスクは **「D3(再発防止)」** と表記して区別する。採番の整理（例: 本件を R1 等へ改番）はCSO裁定待ち
+- **背景**: 6/25 SEV-1 と 7/6-7/10 障害は同一の構造的再発パターン（デプロイ連発 → キャッシュ一斉再生成 → DMMスロットル → FANZA API 400 → works描画失敗 → 検索露出低下）。7/8 02:16-02:55 JST の5連続デプロイ直後にエラー密集（02:43-02:53 JST）を実測
+- **D3-a: Vercel Ignored Build Step の設定（設計案・未適用）**
+  - **CSO例示コマンドへの是正**: `':!*.md'`（*.md全除外）は**不採用を進言** — app-concierge は `src/data/work-reviews/*.md`（CCOレビュー・live機能）をビルドで消費するため、レビュー注入コミットでビルドが誤スキップされる
+  - **推奨案（allowlist方式）**: vodnavi-app プロジェクトの Settings → Git → Ignored Build Step に `git diff --quiet HEAD^ HEAD -- app-concierge` を設定（exit 0=app配下に変更なし=ビルドスキップ / exit 1=ビルド続行）。governance系（management/・root直下docs）のみのコミットでデプロイ誘発しなくなる
+  - 留意点: ①force-push/初回push等で HEAD^ 不在時は git がエラー終了→Vercel はビルド続行（fail-open で安全側）②site-brand-vodnavi は手動 `vercel --prod` 運用のため対象外③Root Directory 設定値の現況確認をHUMAN適用時に併せて実施
+  - **適用はCSO承認後（本指示スコープ外）**。適用作業自体はVercel Dashboard設定変更=HUMAN or 承認済CTOタスク
+- **D3-b: FANZA API呼び出し staggering 調査（棚卸し結果）**
+  - 現行ISR/キャッシュ棚卸し: `revalidate=300` ×5ルート（home `page.tsx` / works `[floor]/[id]` / genres / actresses / articles）、`sitemap.ts`=3600、fetch層デフォルト `client.ts:135` `next.revalidate=300`。fetchItemList呼出箇所: home/works詳細/genres/actresses/concierge tools/sitemap の6系統
+  - 機構仮説: デプロイで Full Route Cache が無効化 → 再訪問時に一斉再レンダ → revalidate=300 の Data Cache はほぼ常時失効済 → DMM API へ集中 → スロットル400。ビルド時プリレンダ分も加算
+  - **変更候補（列挙のみ・未実装）**: ①`client.ts` に同時実行上限（p-limit系・in-flight dedupe）②400/スロットル時の指数バックオフ+リトライ③400時に last-known-good を返す stale-serve フォールバック（SILENT_DEATH_GUARD拡張）④works詳細の revalidate 300→3600 延長（内容変化頻度に対し過剰な再検証を削減）⑤デプロイ集中の抑制（D3-a が最大レバー）
+  - **DMMスロットル閾値の推定**: 逆算は**不能に近い**と判定 — エラーログは分粒度未満の密度が取れず、Edge Requests は4hビン（7/7 9-13時=14K≒平均1req/s）で瞬間密度を反映しない。言えるのは「7/8 02:43-02:53 の10分帯にサンプル集中」「6月のローカルIPスロットル事例([[project_actress_hub_pillar1]])と同型」まで。閾値非公開のため、対策は閾値推定に依存しない設計（上限・バックオフ・stale-serve）を推奨
+- **期限**: 7/14チェックポイント議題に含める（設計案提示=本エントリ）。適用はCSO承認後
+
+## 🔵 2026-07-13 7/21 U1/U2評価への障害期間補正 + 7/14チェックポイント残タスク（CSO発行）
+- **7/21評価への補正**: **障害汚染期間(7/6-7/10)は集計から除外/別掲**とする（分母=U1露出が約4割縮小しCVR誤診リスク。ai_affiliate_click 週79→40 は H1/H2 混在で分離不能=脚注扱い）。詳細: `management/_metrics/2026-W29/traffic-drop-investigation.md` §「7/21評価への影響と補正方針」。※board上に7/21評価の独立エントリは現存しないため本行が正記録（独立起票の要否はCSO裁定）。実質クリーン計測は7/11以降=7/21時点の有効サンプル約10日
+- **7/14チェックポイント残タスク（議題確定版①〜⑤への追補）**:
+  - [HUMAN] FANZAアフィリエイト管理画面ログイン: af_id 004の人間クリック残存、990系の減衰カーブ、EPC回復兆候（ベースライン¥1.7〜2.6）の取得 → CSO(ひでき)実施
+  - [Claude Code] GSC 7/11-12 の反映確認: 7/12=46（過去日曜の半分以下）の未説明低下の白黒判定。回復していれば反映ラグとして解消／未回復なら「障害期間中にGooglebotが踏んだエラーページの再クロール待ち」シナリオを深掘り（GSCクロール統計、works詳細のURL検査サンプル2〜3件）
+  - [Claude Code] D3(再発防止)設計案の提示（上記エントリ=提示済み、7/14はCSO裁定）
