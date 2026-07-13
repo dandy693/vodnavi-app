@@ -1646,3 +1646,12 @@
 - **恒久ルール**: 一括push実行時点で、指定コミット以降にdocs-onlyコミットが積まれている場合は、**最新のdocs-onlyコミットまで含めてpushしてよい**。ただし**コード・設定変更を含むコミットが1つでも混ざった時点で停止しCSO確認を取る**こと（2026-07-13制定、push対象の都度確認を不要化するため）
 - **7/14 03:00 push対象の最終裁定**: `b8fca07:main`（5コミット直列: 5d2bac1/a0f2832/48e6c08/dda8746/b8fca07、全docs）。以降に積まれるdocs-onlyコミット（本エントリ含む）は上記ルールで自動的に対象へ含める
 - **実行手順書**: `management/_metrics/2026-W29/push-runbook-20260714-0300.md`（直前docs-only確認 → push → デプロイ誘発確認 → READY/4ページ200/GUARDゼロの約10分監視 → 異常時は追加デプロイ禁止でCSO報告待ち → 正常時はTASK_BOARDへ完了追記=次回一括へ）
+
+## 🟢 2026-07-13 ワーキングツリー棚卸し完了（03:00 push前・誤コミット経路の遮断）
+- **patch_add_public_read_policy.sql の隔離（最優先）**: diff確認の結果、変更は意図的編集ではなく**破損** — SQLコメント行の途中（「anon クライアント」の語中）に 2026-07-02付CSOスクリプト断片（`X_WARMUP_STRATEGY.md` heredoc + `@moterist69`/`PROMOTION_ASSETS_077.md`/biblia記事参照 + **git add/commit自動実行シーケンス**）が誤ペースト混入。board上に該当スクリプトの実行記録なし=未執行スクリプトの残骸がファイルを汚損した状態。**`git stash push` で退避済み（stash@{0}「sql由来確認待ち(7/14議題⑥)」）**、ワーキングツリーはHEADのクリーンなDRAFT版に復帰。**復元方法: `git stash pop`（または `git stash apply stash@{0}`）で破損diffを再展開できる**（7/14議題⑥の由来調査用に保全・削除禁止）
+- **未追跡ファイル9件の3分類**:
+  - **a) 永続化済み（本コミットでdocs追加6点→ `management/_metrics/2026-W28/`）**: x-calendar-week1-v1.md（week1確定稿・従来未保存）/ kensaku-ito-map-v1.md（CSO 7/8 検索意図マップ=15本設計）/ nouhin-u1-copy-x-template-20260707.md（U1確定コピー納品）/ u2-fanza-first-guide-genkou.md（U2記事原稿）/ x-manual-unyo-tejunsho-v1.md（X手動運用手順書）/ app.vodnavi.jp-Coverage-Drilldown-2026-07-09.zip（GSCカバレッジエクスポート）。※**week2確定稿は7/12指示どおり保存済みだった**（root草稿と `x-calendar-week2-v1-confirmed.md` は実質同一=未完了ではない）
+  - **b) 作業メモ（コミット不要・.gitignore候補の提案のみ）**: 「X投稿用006のアフィリリンク2本.txt」（Shift-JIS作業メモ・内容はAirtable登録済みリンク）/ 「巨乳キャンペーン…FANZA動画.mhtml」（3.7MBページ証跡スナップショット・要点はboard記録済み）。**gitignore追加案（7/14以降にCSO承認後の別コミット）**: `/*.mhtml` と `/X投稿用*.txt`。root残存の草稿md 7点（a永続化済み+week2草稿）はignoreでなく**確認後にHUMAN削除を推奨**
+  - **c) 判断保留（CSO確認要）**: ①root草稿mdの削除可否（上記推奨） ②stash@{0}の最終処置（7/14議題⑥の調査後に破棄 or 正規パッチ化）
+- **「問題18件」の判定**: 全18件が root `x_manual_unyo_tejunsho_v1.md` への **markdownlint Warning のみ**（MD022見出し空行/MD032リスト空行/MD060表スタイル）。**Error 0・ビルド/実行への影響なし=対応不要**（app-concierge/site-brandのコード診断は0件）
+- **03:00 push前の最終検証**: `git log --stat origin/main..main` で未pushコミット直列（本コミット含め7本）の全変更が `management/` 配下のみ=**全てdocs-only**を再確認済み → 恒久ルールにより最新コミットまで一括push可
