@@ -1655,3 +1655,16 @@
   - **c) 判断保留（CSO確認要）**: ①root草稿mdの削除可否（上記推奨） ②stash@{0}の最終処置（7/14議題⑥の調査後に破棄 or 正規パッチ化）
 - **「問題18件」の判定**: 全18件が root `x_manual_unyo_tejunsho_v1.md` への **markdownlint Warning のみ**（MD022見出し空行/MD032リスト空行/MD060表スタイル）。**Error 0・ビルド/実行への影響なし=対応不要**（app-concierge/site-brandのコード診断は0件）
 - **03:00 push前の最終検証**: `git log --stat origin/main..main` で未pushコミット直列（本コミット含め7本）の全変更が `management/` 配下のみ=**全てdocs-only**を再確認済み → 恒久ルールにより最新コミットまで一括push可
+
+## 🟢 2026-07-13 棚卸しc項目のCSO裁定反映
+- **裁定1: root草稿の削除承認（03:00 push成功後にHUMAN削除）** — 削除対象チェックリスト（永続化済み原本のroot残骸7点=md6+zip1。txt/mhtmlはgitignore対象のため削除対象外）:
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\kensaku_ito_map_v1.md`
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\nouhin_u1_copy_x_template.md`
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\u2_fanza_first_guide_genkou.md`
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\x_haishin_calendar_week1.md`
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\x_haishin_calendar_week2_v1.md`
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\x_manual_unyo_tejunsho_v1.md`
+  - [ ] `C:\Users\Tachi\projects\VODNAVI-GROUP\app.vodnavi.jp-Coverage-Drilldown-2026-07-09.zip`（原本。永続化コピーは `management/_metrics/2026-W28/` に同名で存在）
+  - 前提: 03:00 pushが成功し、永続化コピー6点が origin/main に到達していることを確認してから削除
+- **裁定2: stash@{0}の処置=7/14議題⑥を「証跡保全→破棄承認」に更新** — 議題資料手順: ①`git stash show -p stash@{0} > management/_metrics/2026-W29/sql-paste-incident-20260713.md`（先頭に事案サマリを追記: SQLコメント語中への2026-07-02付CSOスクリプト断片=X_WARMUP_STRATEGY heredoc+git自動commitシーケンスの誤ペースト混入）で断片全文を証跡保全 ②保全ファイルをdocsコミット ③CSO承認後に `git stash drop stash@{0}`。**保全実施とdropは議題後・CSO承認後**（本日は実施しない）
+- **裁定3: gitignore追加案（`/*.mhtml` `/X投稿用*.txt`）は7/14議題に併合** — **R1-a（Ignored Build Step）適用と同一コミットで実施予定**と記録（コード側変更をdocs-only pushと分離する趣旨）
