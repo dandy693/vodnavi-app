@@ -1,3 +1,10 @@
+import {
+  buildCacheKey,
+  persistStaleCandidate,
+  readStaleCache,
+  STALE_MAX_AGE_CID_S,
+  STALE_MAX_AGE_LIST_S,
+} from "./stale-cache";
 import type {
   DmmArticle,
   DmmErrorResponse,
@@ -114,7 +121,73 @@ function getCredentials(): { apiId: string; affiliateId: string } {
   return { apiId, affiliateId };
 }
 
+/**
+ * 画像検証フィルタを適用するかの判定。upstream 本体とキャッシュキー生成の両方で
+ * 使う（判定ロジックのドリフト防止）。
+ * - 詳細ページ (cid 指定) のように単体取得時は破棄しないので既定でスキップ。
+ * - hits=1 のみ取得時もスキップ（取りこぼし防止）。
+ * - skipImageValidation が明示されていればそれを最優先。
+ */
+function shouldFilterItems(
+  params: ItemListParams,
+  options: FetchOptions,
+): boolean {
+  const isSingleItemLookup = !!params.cid || params.hits === 1;
+  return options.skipImageValidation === undefined
+    ? !isSingleItemLookup
+    : !options.skipImageValidation;
+}
+
+/**
+ * R1-b①: fetchItemList の stale-serve ラッパ（設計書
+ * r1b1-stale-serve-design-20260714.md / CSO裁定 2026-07-14）。
+ * 呼び出し側 6 系統は無変更でこの経路を通る。
+ *   - 正常時: 応答を Supabase へ write-through（fire-and-forget・失敗無視）
+ *   - FanzaApiError / ネットワーク例外時: GUARD ログは upstream 内で発火済みのまま、
+ *     鮮度上限内（一覧 48h / cid 7日）の stale があれば返却し
+ *     VODNAVI_STALE_SERVED を射出。無ければ現行どおり throw。
+ *   - FanzaConfigError（env 未設定）は設定事故のため stale で隠蔽しない。
+ */
 export async function fetchItemList(
+  params: ItemListParams = {},
+  options: FetchOptions = {},
+): Promise<DmmItemListResponse> {
+  const filtered = shouldFilterItems(params, options);
+  const cacheKey = buildCacheKey(
+    params as unknown as Record<string, unknown>,
+    filtered,
+  );
+  const kind = params.cid ? ("cid" as const) : ("list" as const);
+
+  try {
+    const data = await fetchItemListUpstream(params, options);
+    persistStaleCandidate(cacheKey, kind, data);
+    return data;
+  } catch (error) {
+    if (error instanceof FanzaConfigError) throw error;
+
+    const maxAgeS =
+      kind === "cid" ? STALE_MAX_AGE_CID_S : STALE_MAX_AGE_LIST_S;
+    const stale = await readStaleCache(cacheKey, maxAgeS);
+    if (!stale) throw error;
+
+    console.warn(
+      JSON.stringify({
+        level: "warn",
+        tag: "VODNAVI_STALE_SERVED",
+        kind,
+        cache_key: cacheKey,
+        age_s: stale.ageS,
+        upstream_status:
+          error instanceof FanzaApiError ? error.status : null,
+        ts: new Date().toISOString(),
+      }),
+    );
+    return stale.data;
+  }
+}
+
+async function fetchItemListUpstream(
   params: ItemListParams = {},
   options: FetchOptions = {},
 ): Promise<DmmItemListResponse> {
@@ -164,14 +237,8 @@ export async function fetchItemList(
     throw err;
   }
 
-  // 画像の生存確認フィルタ。
-  // - 詳細ページ (cid 指定) のように単体取得時は破棄しないので既定でスキップ。
-  // - hits=1 のみ取得時もスキップ（取りこぼし防止）。
-  // - skipImageValidation が明示されていればそれを最優先。
-  const isSingleItemLookup = !!params.cid || params.hits === 1;
-  const shouldFilter = options.skipImageValidation === undefined
-    ? !isSingleItemLookup
-    : !options.skipImageValidation;
+  // 画像の生存確認フィルタ（判定基準は shouldFilterItems に集約）。
+  const shouldFilter = shouldFilterItems(params, options);
 
   if (shouldFilter && data.result?.items?.length) {
     const filtered = await filterItemsByImage(data.result.items, {
