@@ -1700,3 +1700,17 @@
 - **R1-a検証は両側成立で完了**: app-concierge変更=ビルド実行(フェーズ1)/docs-only=スキップ(フェーズ2)。**docs-only pushによるデプロイburstは根絶**=今後のdocs pushは時間帯を問わずデプロイを誘発しない(03:00縛りの根拠が消滅→push運用ルールの緩和はCSO裁定事項)
 - **裁定①の着手条件成立**: R1-a検証完了 → D1(アーカイブsitemap分割)/D2(canonical consolidation)とR1-b①(stale-serveフォールバック設計案)は**CSO次指示待ち**
 - 議題⑥クローズ済(stash@{0}=証跡保全db8edc3→drop完了・stash list空)
+
+## 📌 2026-07-14 push運用ルール更新（03:00縛り撤廃・CSO裁定）
+- R1-a検証完了（docs-only push はビルドを誘発しない=CANCELED）を受け、2026-07-13制定の深夜帯縛り・一括バッチ前提を更新:
+  - **docs-only push = 任意時刻・実行可（デプロイがCANCELEDになることの確認のみ）**
+  - **コード変更を含む push = デプロイ監視必須（READY → 主要4ページ200 → GUARDゼロ、約10分）+ 実施タイミングは事前にCSO裁定**
+- 「docs-onlyなら最新コミットまで一括push可・コード混入で停止しCSO確認」（2026-07-13 📌）は**維持**（push対象の判定ルールとして有効）
+- push-runbook-20260714-0300.md には「役目完了・新ルールへ移行」を追記済み（履歴保全・削除しない）
+
+## 🟢 2026-07-14 D1/D2設計案 + R1-b①設計案 提出（実装はCSOレビュー後）
+- **成果物**: `management/_metrics/2026-W29/d1-d2-design-20260714.md` / `r1b1-stale-serve-design-20260714.md`
+- **D1（旧worksアーカイブsitemap）**: 推奨=Supabase累積テーブル+新route `/sitemap-archive.xml`+robots.ts配列宣言。既存`/sitemap.xml`は無変更・追加FANZA APIコール0・**デプロイ1回**（+Supabase DDL 1本）。鮮度キャップ180日で廃売404蓄積を緩和。index化(generateSitemaps)とPAGES_PER_FLOOR増は棄却
+- **D2（/concierge?source= canonical統合）**: **物理検証の結果、既に実装済み**（`concierge/layout.tsx:10`のセグメントmetadata・本番curlで`canonical=/concierge`+`index,follow`確認 2026-07-14）。source=はGA4識別+挨拶分岐の機能パラメータのためリダイレクト不採用が正。**0デプロイ・7/21計測への干渉ゼロ** → 「実装済み確認・クローズ（月次観測のみ）」への再分類を進言
+- **R1-b①（stale-serve）**: client.ts単一ラッパで6系統に一括適用（呼び手変更ゼロ）。write-through(fire-and-forget)+エラー時のみstale返却。鮮度上限=一覧24h/cid単品7日（48h拡大はCSO裁定余地）。GUARD発火は不変+`VODNAVI_STALE_SERVED`ログ新設で監視性担保。**R1-b②とは①先行を推奨**（実害遮断優先・変更点単一化）。デプロイ1回（+Supabase DDL 1本）
+- 禁止事項遵守: 本指示はdocsのみ・app-concierge配下のコード変更なし。実装はCSOレビュー後
