@@ -1694,3 +1694,9 @@
 - **検証フェーズ1(app-concierge変更→ビルド実行): 成立** — dpl_2LUrdxfJ6vWddav8hioEC9ySeDWY が BUILDING→**READY**(ビルド66秒・app.vodnavi.jpエイリアス済)。4ページ200・runtime errors 0件
 - **検証フェーズ2(docsのみpush→スキップ)**: 本エントリのdocs-onlyコミットのpushで実施(結果は次エントリに記録)
 - 注記: fd97e11のコミットメッセージ内「07:06実行」はUTC誤表記(正=16:06 JST)。履歴書き換えは行わず、訂正はdb8edc3と本文側に記録済み
+
+## 🟢 2026-07-14 R1-a検証フェーズ2(スキップ側)成立 — R1-a検証完了・D1/D2着手条件成立(次指示待ち)
+- **検証フェーズ2(docsのみpush→スキップ): 成立** — b857ffb(docs-only)のpushで dpl_7aqZZJJRu5LVK4HvZJsxVL8qbkM6 が **CANCELED**(Ignored Build Step発動・ビルド未実行)。本番は a5bae39 の READY デプロイのまま・app.vodnavi.jp 200維持
+- **R1-a検証は両側成立で完了**: app-concierge変更=ビルド実行(フェーズ1)/docs-only=スキップ(フェーズ2)。**docs-only pushによるデプロイburstは根絶**=今後のdocs pushは時間帯を問わずデプロイを誘発しない(03:00縛りの根拠が消滅→push運用ルールの緩和はCSO裁定事項)
+- **裁定①の着手条件成立**: R1-a検証完了 → D1(アーカイブsitemap分割)/D2(canonical consolidation)とR1-b①(stale-serveフォールバック設計案)は**CSO次指示待ち**
+- 議題⑥クローズ済(stash@{0}=証跡保全db8edc3→drop完了・stash list空)
