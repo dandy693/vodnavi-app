@@ -1722,3 +1722,10 @@
 - **DDL(CSO確認後に本番適用・適用前報告済み)**: `fanza_response_cache`(cache_key PK/kind check/payload jsonb/fetched_at)+fetched_at index+RLS有効・ポリシー無し=service_roleのみ
 - **動作検証計画**: stale実発火はAPI障害時のみ=本番自然検証不可。①デプロイ後正常時=write-through行の生成をSupabaseで確認+STALE_SERVED誤発火ゼロ確認 ②模擬検証(任意・HUMAN協力要)=ローカルでSupabase env配線→正常fetch→hosts等でapi.dmm.com遮断→stale返却とログ確認 ③本番事後確認方針=次回GUARD>0イベント時にget_runtime_logsでSTALE_SERVED>0の随伴を確認し「機能した」を事後判定(定常監視に2状態判読を追加済み・設計書§5)
 - **7/14チェックポイント議題 最終ステータス**: ①bot減衰=**裁定完了**(J2確定・bot-gate起票不要) ②D1/D2=**D2クローズ・D1待機**(R1-b①安定確認後) ③006=**クローズ** ④X第1週=X Analytics取得のみHUMAN残 ⑤報酬UP集中投下=HUMAN確認待ち継続 ⑥sql=**クローズ**(証跡保全→drop完了) ⑦R1系=R1-a適用検証完了・**R1-b①実装中**(デプロイ待ち)・R1-b②=①安定確認後に設計着手
+
+## 🟡 2026-07-14 R1-b①デプロイ未成立(インシデント記録・CSO裁定待ち)
+- **事象**: DDL適用成功(fanza_response_cache生成・RLS有効/policy 0/index 2を検証済み)→ push 0c1e276..b10fc43 成功。しかしデプロイは**CANCELED** — pushのHEADがdocsコミット(b10fc43)のため、ignoreCommand(`git diff HEAD^ HEAD -- .`)が「app-concierge変更なし」と判定し、**コード0667855が未デプロイ**
+- **真因**: R1-a設計時に注記した既知制約「Vercelはpush headのみを親比較で評価」に、コード→docsの順でコミットを積んだCTOのスタック構成が抵触。`vercel redeploy`(手動)も同一コミット評価で再CANCELED(2回)
+- **本番影響: なし**(旧ビルドのまま健全・4ページ200)。DDL済みテーブルは未使用で無害
+- **恒久対策候補(CSO裁定待ち)**: (a推奨) vercel.json の ignoreCommand を `git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- .` へ改良=「前回デプロイ成功SHA」比較でスタック順に依存しなくなる(変数未提供/浅clone解決不能時はfail-openビルド)。この修正コミット自体がapp-concierge変更=pushでR1-b①を含むビルドが走る (b) app-concierge空タッチコミット(ノイズ・非推奨) (c) 運用ルール「コードコミットは常にスタック最上位でpush」の徹底のみ(再発余地残る)
+- **教訓(運用ルール化候補)**: コード変更を含むpushは**コードコミットをHEADにして**pushする(docsは先に単独push or 後回し)
