@@ -1739,3 +1739,6 @@
 - **推奨慣行追加(CSO裁定・二重防御)**: コード変更を含むpushは**コードコミットをHEADに積んで**pushする(docsは先に単独push or 後回し)。fail-open頼みを減らす
 - **検証待ち項目**: 新ignoreCommand(PREVIOUS_SHA比較)の**スキップ側**動作=次の自然なdocs-only pushでCANCELEDを確認(専用push不要)→ 本エントリのpushが該当予定
 - **D1ゴーサイン条件(提案)**: R1-b①安定確認 = **稼働開始から48時間(〜7/16 22:47 JST)で以下すべて成立** ①STALE_SERVED誤発火0(GUARD=0期間中の発火なし) ②write-through蓄積の継続(行数増加・newest更新・7日超行の機会的削除が動作) ③GUARD/400発生0、または発生時にSTALE_SERVED随伴(=機能実証でむしろ加点) ④主要ページ200維持 ⑤新ignoreCommandスキップ検証1回成立。→ 7/16夜〜7/17チェックで判定しD1実装着手
+
+## 🟢 2026-07-14 新ignoreCommandスキップ側検証成立(検証待ち項目クローズ)
+- docs-onlyコミット90f5acbのpushで dpl_5YBarsqUNry2M8DSsbrNiRXFGJwz が**CANCELED**(PREVIOUS_SHA=fcc27a6 との比較でapp-concierge変更なし=スキップ)。**新ignoreCommandは両側(ビルド実行/スキップ)とも検証成立**・本番は dpl_91hKxJZ(fcc27a6+R1-b①)のまま
