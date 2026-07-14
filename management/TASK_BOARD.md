@@ -1687,3 +1687,10 @@
 - **裁定④**: **stash@{0}証跡保全承認** — 保全ファイル作成→docsコミット→確認後にstash dropまで一括実行可=**議題⑥クローズ**
 - **GSC方針**: 7/15-16にGSC 7/13-14反映で再判定(平日回復の有無で週末要因/残存低下切り分け)。7/21ゲートは既定基準で機械判定・未達なら7/28順延
 - 実施順序: 0(時刻検証・完了)→4(stash保全)→2(R1-a適用検証)→報告。R1-b①設計とD1/D2は次指示待ち
+
+## 🟢 2026-07-14 R1-a適用完了+検証フェーズ1(ビルド実行側)成立 — 裁定②実行記録
+- **適用コミット a5bae39(単独)**: `app-concierge/vercel.json` に `"ignoreCommand": "git diff --quiet HEAD^ HEAD -- ."`(Root Directory=app-concierge内で実行・配下無変更=exit 0=スキップ/変更あり=exit 1=ビルド/HEAD^不在=fail-openビルド) + root `.gitignore` に `/*.mhtml` `/X投稿用*.txt`(即時有効=対象2ファイルが未追跡一覧から消失を確認)
+- **push aa4cd91..a5bae39**(16:51 JST・fd97e11/db8edc3/a5bae39の3コミット・head=設定変更につきビルド想定)
+- **検証フェーズ1(app-concierge変更→ビルド実行): 成立** — dpl_2LUrdxfJ6vWddav8hioEC9ySeDWY が BUILDING→**READY**(ビルド66秒・app.vodnavi.jpエイリアス済)。4ページ200・runtime errors 0件
+- **検証フェーズ2(docsのみpush→スキップ)**: 本エントリのdocs-onlyコミットのpushで実施(結果は次エントリに記録)
+- 注記: fd97e11のコミットメッセージ内「07:06実行」はUTC誤表記(正=16:06 JST)。履歴書き換えは行わず、訂正はdb8edc3と本文側に記録済み
