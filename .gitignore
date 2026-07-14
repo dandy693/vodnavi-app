@@ -114,3 +114,8 @@ secrets/
 
 .vercel
 .env*.local
+
+# ---------- R1-a 併合分 (2026-07-14 CSO裁定②): root直下の作業用ドラフト ----------
+# MHTML保存ページ / X投稿用テキストは repo root に置かれてもコミット対象外
+/*.mhtml
+/X投稿用*.txt
