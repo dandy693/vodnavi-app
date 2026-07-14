@@ -1714,3 +1714,11 @@
 - **D2（/concierge?source= canonical統合）**: **物理検証の結果、既に実装済み**（`concierge/layout.tsx:10`のセグメントmetadata・本番curlで`canonical=/concierge`+`index,follow`確認 2026-07-14）。source=はGA4識別+挨拶分岐の機能パラメータのためリダイレクト不採用が正。**0デプロイ・7/21計測への干渉ゼロ** → 「実装済み確認・クローズ（月次観測のみ）」への再分類を進言
 - **R1-b①（stale-serve）**: client.ts単一ラッパで6系統に一括適用（呼び手変更ゼロ）。write-through(fire-and-forget)+エラー時のみstale返却。鮮度上限=一覧24h/cid単品7日（48h拡大はCSO裁定余地）。GUARD発火は不変+`VODNAVI_STALE_SERVED`ログ新設で監視性担保。**R1-b②とは①先行を推奨**（実害遮断優先・変更点単一化）。デプロイ1回（+Supabase DDL 1本）
 - 禁止事項遵守: 本指示はdocsのみ・app-concierge配下のコード変更なし。実装はCSOレビュー後
+
+## 🟢 2026-07-14 R1-b①実装完了(ローカルコミット0667855・デプロイ/DDLはCSO裁定待ち) + D2クローズ + 議題最終ステータス
+- **CSO裁定確定**: D2=実装済み確認・クローズ(月次観測)/D1=設計承認・実装はR1-b①安定確認後/R1-b①=実装承認・**鮮度上限は一覧48h/cid7日**(設計書の24hから48hへCSO裁定)/実装順序=R1-b①→D1直列
+- **R1-b①実装(コミット0667855・未push)**: `stale-cache.ts`新規+`client.ts`ラッパ化(公開名不変=呼び手6系統無変更)。write-through=fire-and-forget/エラー時のみstale返却+`VODNAVI_STALE_SERVED`/GUARD不変/FanzaConfigErrorは対象外/`request.parameters`(api_id echo)は保存前除去/テーブル・env不在時は全経路fail-safe。tsc 0・eslint 0(ローカルnext buildはDMMローカルIPスロットル既知リスクのため実施せず)
+- **デプロイ計画(新ルール=コードpushはCSOタイミング裁定制)**: 変更2ファイル(+193/-8)。**DDL先行を推奨**(コードはテーブル不在でも安全だが、先行すればデプロイ直後からwrite-through開始)。ロールバック=`git revert 0667855` 1コミットで完全復元(テーブルは残置無害)。デプロイ後監視=READY→4ページ200→GUARDゼロ→**STALE_SERVED=0**(正常時に誤発火しないこと)
+- **DDL(CSO確認後に本番適用・適用前報告済み)**: `fanza_response_cache`(cache_key PK/kind check/payload jsonb/fetched_at)+fetched_at index+RLS有効・ポリシー無し=service_roleのみ
+- **動作検証計画**: stale実発火はAPI障害時のみ=本番自然検証不可。①デプロイ後正常時=write-through行の生成をSupabaseで確認+STALE_SERVED誤発火ゼロ確認 ②模擬検証(任意・HUMAN協力要)=ローカルでSupabase env配線→正常fetch→hosts等でapi.dmm.com遮断→stale返却とログ確認 ③本番事後確認方針=次回GUARD>0イベント時にget_runtime_logsでSTALE_SERVED>0の随伴を確認し「機能した」を事後判定(定常監視に2状態判読を追加済み・設計書§5)
+- **7/14チェックポイント議題 最終ステータス**: ①bot減衰=**裁定完了**(J2確定・bot-gate起票不要) ②D1/D2=**D2クローズ・D1待機**(R1-b①安定確認後) ③006=**クローズ** ④X第1週=X Analytics取得のみHUMAN残 ⑤報酬UP集中投下=HUMAN確認待ち継続 ⑥sql=**クローズ**(証跡保全→drop完了) ⑦R1系=R1-a適用検証完了・**R1-b①実装中**(デプロイ待ち)・R1-b②=①安定確認後に設計着手
