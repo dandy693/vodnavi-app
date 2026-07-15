@@ -2,6 +2,10 @@ import type { MetadataRoute } from "next";
 
 import { getPublishedArticleSlugs } from "@/lib/editorial-articles";
 import { fetchItemList } from "@/lib/fanza/client";
+import {
+  persistSitemapWorksArchive,
+  type ArchiveEntry,
+} from "@/lib/fanza/sitemap-archive";
 import { FANZA_FLOORS } from "@/lib/fanza/types";
 import { absoluteUrl } from "@/lib/site";
 
@@ -52,6 +56,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const works: MetadataRoute.Sitemap = [];
   const genreMap = new Map<number, Date>();
   const actressMap = new Map<number, Date>();
+  // D1: 観測した works を Supabase 累積テーブルへ記録するためのバッファ。
+  // 回転式収録から押し出された旧作は /sitemap-archive.xml が恒久提示する。
+  const archiveEntries: ArchiveEntry[] = [];
 
   for (const floor of FANZA_FLOORS) {
     // FANZA Webservice 側に投げる floor は `apiFloor` 優先（`amateur` のように
@@ -93,6 +100,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
             lastModified: itemDate,
             changeFrequency: "weekly",
             priority: 0.8,
+          });
+          archiveEntries.push({
+            content_id: item.content_id,
+            floor_code: floor.code,
+            released_at: item.date
+              ? new Date(item.date.replace(" ", "T")).toISOString()
+              : null,
           });
 
           for (const genre of item.iteminfo?.genre ?? []) {
@@ -153,6 +167,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // ＝公開ごとの手動配線・SQL 再実行は不要（今後の記事投入計画の前提条件）。
   // getPublishedArticleSlugs はエラー/未配線時に空配列を返すため、Supabase 障害時も
   // 既存の works/genres/actresses 収録には影響しない。
+  // D1: fire-and-forget 記録（await しない）。Supabase 障害・env 未配線でも
+  // 本体 sitemap 生成には一切影響しない（persist 内部で握り潰す）。
+  persistSitemapWorksArchive(archiveEntries);
+
   const articleSlugs = await getPublishedArticleSlugs();
   const articles: MetadataRoute.Sitemap = articleSlugs.map((slug) => ({
     url: absoluteUrl(`/articles/${slug}`),

@@ -28,7 +28,8 @@ export default function robots(): MetadataRoute.Robots {
       { userAgent: "*", ...baseRule },
       ...aiCrawlers.map((userAgent) => ({ userAgent, ...baseRule })),
     ],
-    sitemap: absoluteUrl("/sitemap.xml"),
+    // D1: 本体(回転式・最新)とアーカイブ(累積・旧作)の2本を宣言し自動発見させる。
+    sitemap: [absoluteUrl("/sitemap.xml"), absoluteUrl("/sitemap-archive.xml")],
     host: getSiteUrl(),
   };
 }
