@@ -1804,3 +1804,10 @@
   3. **push**(コード2コミット=ステマ表記+D1がHEAD側・docs積み替え済み) → ビルド実行を確認
   4. **監視10分**: READY → 主要4ページ200 → GUARD/400ゼロ → STALE誤発火なし → **`/sitemap-archive.xml` 200+XML整形式+URL件数確認** → **ステマ表記帯の全ページ表示確認**(トップ/works/記事/lp)
   5. 異常時=追加デプロイ禁止・CSO報告待ち / 正常時=TASK_BOARDへ完了追記+アーカイブ蓄積の初期観測
+
+## 🟡 2026-07-16未明 R1-a二次欠陥の検知と修正準備 — docs push(0a24d0e)がデプロイERROR(本番無影響)
+- **事象**: docs-only push 0a24d0e のデプロイ dpl_6rsjY3cb… が CANCELED でなく **ERROR**。ビルドログ実測=`fatal: bad object fcc27a6`(PREVIOUS_SHA が浅clone外・前回デプロイから10コミット目=depth境界、cle1リージョン・キャッシュなし)
+- **真因**: Vercel は ignoreCommand の **exit 1 のみを「ビルド実行」として扱い、exit 128(git fatal)はデプロイERROR扱い** — 設計時の「nonzero=fail-openビルド」想定が exit>1 で成立しなかった(R1-aの二次欠陥)
+- **本番影響: なし**(ERRORデプロイは昇格せず・本番200維持=fcc27a6のまま)
+- **修正準備(コミット済み・push保留)**: ignoreCommand を終了コード正規化版へ — `if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi`(object不明/浅clone時は exit 1=真のfail-openビルド)。今夜22:47のD1デプロイ便に同乗(vercel.json=app-concierge配下のため同一push)。**CSOは22:47セッション前に本修正の可否を確認**(否ならpush前にreset可能)
+- 副作用メモ: 前回デプロイから10コミット超離れたdocs-only pushは以後fail-openでビルドが走る(スキップされない)=デプロイ間隔が空いた場合の既知コスト。根本対処候補(将来)=深いclone設定 or デプロイ距離の定期リセット
