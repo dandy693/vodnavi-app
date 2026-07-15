@@ -1811,3 +1811,12 @@
 - **本番影響: なし**(ERRORデプロイは昇格せず・本番200維持=fcc27a6のまま)
 - **修正準備(コミット済み・push保留)**: ignoreCommand を終了コード正規化版へ — `if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi`(object不明/浅clone時は exit 1=真のfail-openビルド)。今夜22:47のD1デプロイ便に同乗(vercel.json=app-concierge配下のため同一push)。**CSOは22:47セッション前に本修正の可否を確認**(否ならpush前にreset可能)
 - 副作用メモ: 前回デプロイから10コミット超離れたdocs-only pushは以後fail-openでビルドが走る(スキップされない)=デプロイ間隔が空いた場合の既知コスト。根本対処候補(将来)=深いclone設定 or デプロイ距離の定期リセット
+
+## 🟢 2026-07-16 00:15頃 P1記事#1(fanza-tv-guide)公開完了 — CSO承認に基づく editorial_articles 投入
+- **公開URL**: https://app.vodnavi.jp/articles/fanza-tv-guide(publish_status=published・本文1,759字)
+- **公開前検証**: 内部リンク先200×2(fanza-first-guide/lp)・CTAコンポーネント=004(実物照合)・ロック済みファクト照合OK(550円/2,200作品以上/550pt/14日0円/2日経過後解約/プリペイド対象外/48411解約挙動)
+- **公開後検証**: 200・h2×7正常・**CTA(004)×2**・生マーカー漏れ0・gtag G-GG7JV9MJRW適用・title/description正。**GSC URL検査→インデックス登録リクエスト済み**(公開直後1回)
+- **sitemap**: getPublishedArticleSlugs 経由で次回regen(revalidate 3600)から自動収録(今夜のD1デプロイで即regen)
+- **ステマ表記の整合**: 記事ページへの表記帯は**413d0adデプロイ後に有効**。デプロイ前の現時点はフッター包括開示+rel=sponsoredの既存担保で暫定カバー(audit判定どおり)と記録
+- **レンダラ制約と調整2点**: ①CTAボタン文言は共通コンポーネント固定(「FANZA TVを見てみる(登録3分)」)=確定稿の文言案と相違・コード変更なしを優先 ②本文ハイパーリンク非対応+末尾発見導線がfanza-first-guide限定のため、**相互リンク/lp導線は本文テキスト参照に調整**。クリック可能な導線は「発見導線ブロックの全記事共通化」(小規模コード変更)として**別途設計=CSO裁定へ**(今夜の便には同乗させない・指示どおり)
+- **P1進捗**: #1完了 → 次は#7(fanza-tv-free-trial・執筆条件充足済み・追加アクション不要で即着手可)
