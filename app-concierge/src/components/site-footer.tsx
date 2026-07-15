@@ -32,7 +32,7 @@ export function SiteFooter() {
             当サイトは
             <span className="px-1 font-medium text-foreground">FANZA</span>
             公式アフィリエイトプログラムに参加し、商品情報API v3.0
-            を利用して作品情報を表示しています。すべての作品の閲覧・購入は
+            を利用して作品情報をアフィリエイト広告（PR）として表示しています。すべての作品の閲覧・購入は
             FANZA 公式サイト上で行われます。運営: VODNavi運営事務局。
           </p>
         </div>

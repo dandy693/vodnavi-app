@@ -102,6 +102,14 @@ export default function RootLayout({
            注入されるため LCP には影響しない。NEXT_PUBLIC_GTM_ID 未設定 / 非本番では
            コンテナ自体をマウントしないので noscript も emit されない。 */}
         <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
+        {/* 景表法ステマ規制・DMMアフィリエイト参加規約 第4条4項対応: 「広告」「PR」等の
+           可視文言による表示が必須のため、全ページ冒頭に常設表示する
+           (ad-disclosure-audit-20260716 / CSO裁定④=①案)。text-xs + muted だが
+           コントラストは維持し「視認性の異なる小さな打消し表示」(disclaimer が自ら
+           否定する類型) にならない範囲でCTAを阻害しない控えめな帯とする。 */}
+        <p className="border-b border-white/10 bg-background px-4 py-1.5 text-center text-xs leading-relaxed text-muted-foreground">
+          本サイトはアフィリエイト広告（PR）を含みます
+        </p>
         {children}
         {/* Phase-3: 空 GTM をバイパスし 25/50/75% スクロール深度を GA4 へ直送。
            track() が非本番で no-op のため常時マウント可。usePathname で per-page リセット。 */}
