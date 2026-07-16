@@ -1854,3 +1854,12 @@
 - **防御系**: GUARD/FANZA 400・500 = **0**(残存はDMM TLS一過性2件のみ)・STALE_SERVED=0(API障害誘発なし)・fanza_response_cache=**30,648行**(クロールがロングテールworksを踏み cid蓄積が加速 15K→23.6K・newest 22:13)=**write-throughがクロール集中を静かに資産化中**
 - **22:47デプロイ便への影響評価: 予定どおり実行可**(サイト健全=200率99.98%・防御系無風・API無風。D1はむしろこのクロール需要の受け皿)
 - Firewall/レート制限は判定どおり**不適用**(正規クローラー遮断リスク回避)
+
+## 🟢 2026-07-16 23:25 D1+ステマ表記+R1-a修正 本番デプロイ完了 — 監視全通過・アーカイブ蓄積即開始
+- **48h判定: 5条件成立で実行**(①誤発火0 ②蓄積継続 ③実障害15h随伴実証※7/16 15:29の単発GUARD2件はstale未保有キーの設計内fail-open ④200維持 ⑤スキップ検証済)。**R1-b①は正式に安定確認=D1ゴーサイン成立**
+- **DDL**: sitemap_works_archive 適用・検証済(RLS有効/policy 0/index 2)
+- **積み替えインシデント(軽微)**: docs/コードの並べ替えcherry-pickが競合(30f21caがvercel.json+TASK_BOARD混在コミットのため)→**中止し元スタックb3abfffへ完全復元**。修正済みignoreCommandがツリーに含まれるためHEAD=docsのままfail-openでビルド可能と判断し、積み替えを省略(教訓: 混在コミットはreorder不能・今後はコード/docs分離を徹底)
+- **push 0a24d0e..b3abfff**(23:18 JST・9コミット=コード3+docs6)→ dpl_4uUU9YjN… **BUILDING→READY**(70秒)
+- **監視全通過(23:20-23:25)**: ①7ページ200(4基本+#1+#7+lp) ②**ステマ表記帯を全面で表示確認**(トップ/works/記事/lp/concierge) ③フッター「アフィリエイト広告(PR)として表示」確認 ④**/sitemap-archive.xml 200・整形式**(表示は0件=ISRキャッシュ初回・次regen最大1hで反映、**テーブル実蓄積は1,100行を即確認** newest 23:19) ⑤robots.txt 2本宣言 ⑥**sitemap.xmlに記事3本収録**(first-guide/tv-guide/tv-free-trial) ⑦GUARD/400/STALE誤発火=0(デプロイ後30分)
+- **ステマ規制対応はこのデプロイで本番有効化**=X(#PR/bio)+サイト(冒頭帯+フッター)の両面完了
+- 残タスク: sitemap-archive.xmlの中身反映確認(次regen後・7/17朝)/GSCへのアーカイブsitemap追加登録(HUMAN任意)/クロール統計突合(7/17)
