@@ -1893,3 +1893,8 @@
 - **R1系全緑**: GUARD/STALE 24h=0・probe張り付き0件(完全収束・防御案①発動不要)・cache 50,488行(+20K/日)・Edge=クローラー波継続中も200率99.8%/5xx0。archive 1,100行単一バッチのまま(本体sitemap regen未走行=観察事項)
 - **FANZA成果: セッション切れでスキップ → HUMAN: 7/19レビュー前にDMMログイン要**
 - CSO判断事項: ①7/21→7/28順延の正式裁定(7/19) ②Week3のA13型比重増 ③R1-b②着手判断
+
+## 🟡 2026-07-18 00:20 Vercel webhook取りこぼし疑い(観察) — 5a594a4のデプロイレコード未生成
+- docs-only push 5a594a4(00:12 JST)がGitHub反映済みにもかかわらず、**Vercel側デプロイレコードが8分以上未生成**(過去のdocs pushは数秒でCANCELED生成・02e2e4eまで正常)。本番はb3abfff READY・全ページ200維持=**実害なし**(docs-onlyのためビルド不要)
+- 含意: R1-aのignoreCommandはfail-open設計のため次のコードpushに支障なし。ただし**次のコードpush時はデプロイ生成を必ず目視確認**(webhook断が続く場合はビルドが走らないリスク)
+- 本コミットのpushがwebhook復帰の検証を兼ねる(レコード生成=復帰/未生成=Vercel-GitHub連携の点検をHUMANへ)
