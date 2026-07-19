@@ -1936,3 +1936,9 @@
 - 資産実測: 総4,054URL(works1,600+archive1,100/女優1,143/ジャンル200/記事3)・記事3本**全インデックス済**(#7を今回URL検査で確認)・記事のストック型クエリ初表示3種(fanza tv/登録/会員登録)
 - インフラ: 200率99.85%/24h・5xx0・STALE/GUARD実質0・**Edge波が116req/分へ拡大**(7/17比6倍・実害なし・観察R3)
 - 取得制約の明記: GA4時間帯別/日別×チャネル28日表はexploration新規作成(=書き込み)のため未取得・週次4窓+GSC日別で代替
+
+## 🟡 2026-07-20 01:50頃 R1-a fail-open発動の観察 — docs-only push 30808e4がCANCELEDにならずフルビルド(READY)
+- **事象**: レポートcommit 30808e4(docs-only)のデプロイが従来のCANCELEDスキップにならず、ビルド完走→READY→本番alias切替(dpl_3sSwSknL…)
+- **原因(ビルドログで確認)**: 新規ビルド環境(cle1・「Previous build caches not available」)でignoreCommandのgit diffがPREVIOUS_SHA履歴を引けず失敗→ **設計どおりfail-open(=誤スキップよりビルドを選ぶ安全側)が発動**。ignoreCommand自体のロジック退行ではない
+- **影響評価: 実害なし**。コードはb3abfff以降無変更=同一アプリの再デプロイ。デプロイ後検証: 主要6パス200・GUARD/STALE 20分間0件。副作用はISRキャッシュのリセットのみ(クローラー波下で再ウォーム中・Supabase側stale-cache 67,744行は保持)
+- **含意**: docs pushでも稀にフルビルドが走り得る(ビルド環境が変わった初回など)。「CANCELED確認」は「CANCELED **または** fail-openビルドのREADY+本番健全性確認」に読み替えて運用。頻発する場合はignoreCommandのfetch-depth対策を検討(コード変更=承認要)
