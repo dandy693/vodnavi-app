@@ -323,13 +323,15 @@ export default async function WorkDetailPage({
               <ArrowRight className="size-4 shrink-0 transition-transform group-hover:translate-x-1" />
             </FanzaAffiliateLink>
 
-            {/* U1: 新規ユーザー向けマイクロモジュール（mobile FV / CTA直下1行） */}
+            {/* U1: 新規ユーザー向けマイクロモジュール（mobile FV / CTA直下1行）
+               defaultOpen=展開表示バリアント（CSO裁定 2026-07-23・7/28評価まで） */}
             {showNewUserModule && (
               <NewUserFvModule
                 href={fanzaAffiliate.primaryUrl}
                 content_id={item.content_id}
                 title={item.title}
                 floor_code={floor}
+                defaultOpen
               />
             )}
 
@@ -481,7 +483,8 @@ export default async function WorkDetailPage({
           </p>
 
           {/* U1: 新規ユーザー向けマイクロモジュール（lg=右カラムがFVを兼ねるため
-             メインCTA直下に配置。mobile では FV ブロック側で表示済みのため隠す） */}
+             メインCTA直下に配置。mobile では FV ブロック側で表示済みのため隠す）
+             defaultOpen=展開表示バリアント（CSO裁定 2026-07-23・7/28評価まで） */}
           {showNewUserModule && (
             <NewUserFvModule
               href={fanzaAffiliate.primaryUrl}
@@ -489,6 +492,7 @@ export default async function WorkDetailPage({
               title={item.title}
               floor_code={floor}
               className="hidden lg:block"
+              defaultOpen
             />
           )}
 
