@@ -9,13 +9,16 @@ import { cn } from "@/lib/utils";
  * 設計3原則の実装制約:
  * - 迂回させない: FV内・メインCTA直下1行。<details> の展開式で FV を圧迫しない
  *   （JS不要のネイティブ開閉＝server component から直接描画可能）。
+ *   ※折りたたみ要件は「7/28評価までの実験期間中は展開表示（defaultOpen）を許可」
+ *   （CSO裁定 2026-07-23・「折りたたみ2週 vs 展開1週」の比較評価）へ更新済み。
  * - 検索意図に逆らわない: 訴求は「この作品を観るには→未登録なら最安」の従属順序。
  * - リンク先は変えない: 展開部の購入リンクもメインCTAと同一の
  *   `buildAffiliateURL` 産 primaryUrl（af_id=004）。クリック分散を防ぐ。
  *   placement="works_fv_newuser" で GA4 分離計測のみ行う。
  *
  * コピーは 2026-07-07 CSO 確定版（設計書 §4 の HUMAN 実画面確認済み文言）。
- * **改変禁止** — 改善提案は実装せず CSO へ差し戻すこと。
+ * **改変禁止** — 改善提案は実装せず CSO へ差し戻すこと
+ * （defaultOpen による展開表示バリアントは 2026-07-23 CSO 裁定準拠の正規変更）。
  * 表示ゲートはフィーチャーフラグ `FEATURE_FV_NEWUSER=1`（server env・works page 側）。
  */
 export function NewUserFvModule({
@@ -24,15 +27,18 @@ export function NewUserFvModule({
   title,
   floor_code,
   className,
+  defaultOpen,
 }: {
   href: string;
   content_id: string;
   title: string;
   floor_code: string;
   className?: string;
+  defaultOpen?: boolean;
 }) {
   return (
     <details
+      open={defaultOpen}
       className={cn(
         "group/newuser rounded-lg border border-amber-400/15 bg-amber-400/[0.02] px-3 py-2",
         className,
