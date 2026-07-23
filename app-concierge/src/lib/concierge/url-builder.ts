@@ -185,10 +185,16 @@ export function buildSaleFeatureURL(): string {
  * 必須条件（DMM 報酬料率ページ注記・2026-07-07 HUMAN 確認）:
  * DMMプレミアム登録は **FANZA ドメイン（dmm.co.jp）の登録フォーム経由**でないと
  * FANZA TV カテゴリ成果の対象外。dmm.com 側導線は使用禁止。
- * ターゲットは 2026-07-07 に到達確認済み（302→age_check・rurl にパス保持）の
- * `www.dmm.co.jp/monthly/premium/` のみ。新規パスの捏造禁止。
+ * ターゲットは `premium.dmm.co.jp`（2026-07-22 HUMAN 実査: 14日無料0円・月額550円・
+ * 550pt・TV/TV Plus の全表記を確認済み。X の T6 直リンク（B3）で運用実績あり）。
+ *
+ * ⚠️リグレッションブロック（CSO 裁定 2026-07-23）:
+ * 旧ターゲット `www.dmm.co.jp/monthly/premium/` は 2026-07-23 時点で
+ * video.dmm.co.jp/svod/deluxe/（見放題chデラックス・月額8,980円・無料期間なし＝
+ * 記事記載と別商品）への 301 に変異していることを HUMAN 実クリックで確認済み。
+ * 旧 URL への差し戻しは表示整合違反＝禁止。新規パスの捏造も禁止。
  */
-const FANZA_TV_SIGNUP_TARGET = "https://www.dmm.co.jp/monthly/premium/";
+const FANZA_TV_SIGNUP_TARGET = "https://premium.dmm.co.jp/";
 
 export function buildTvSignupURL(): string {
   const affId = resolveAffiliateId("fanza");
