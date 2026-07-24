@@ -2166,3 +2166,11 @@
 - **成果物**: `management/_metrics/2026-W30/datapull-20260724.md`(分析フレーム回答込み)。手法進歩: GA4はJS(innerText)抽出へ切替=読み取り堅牢化・hostname+チャネルの2条件フィルタURL化を確立(fieldName=sessionDefaultChannelGrouping)
 - **要旨**: ①Organic日次=ピーク104(7/18)→63-64で下げ止まり(7/14-20合算569=ゲート値と完全一致の検算成立) ②LP内訳=works 95.87%/articles 0.17%(フロー型偏重の現状値確定) ③クリック=層A 10/13/12・層B(7/24)3@23:45(全てdetail系・guide=0=セルフクリック混入なし再確認) ④**works_fv_newuser=0継続(U1第一判定No)** ⑤GSC14日=755cl/1.37万impr/順位16.4・上位20全てフロー型・**articlesは4クエリ17impr(fanza tv 49.8位)へ微増** ⑥**P1記事4本すべてインデックス登録済み(#8=公開17hの最速)** ⑦sitemap-archive=GSC1,138/DB1,390/配信1,390=乖離なし・**edgeキャッシュ問題はCTA修正デプロイで解消を確認**
 - 分析: 減衰は構造どおり(API再点検不要)・ストック型は「順位形成フェーズ」(CTR議論の前段=7/28議題は内部リンク/クラスタ深化が適切)・層B維持判定は明日の確定値で
+
+## 🟠 2026-07-25 (JST) P1記事#3(meisai)公開実装 Phase 1完了 — **停止・CSO/HUMAN待ち**(公開はCSO最終承認後のPhase 2)
+- **slug確定: `fanza-payment-statement`**(既存命名規則=fanza-プレフィックスkebabに整合・Supabase全slugと重複なし。intent mapのコードネーム「fanza-meisai」とは異なるがCSOインライン指定を正とする)
+- **記事データ整形済み**(scratchpad/body_meisai.txt・1,681字・h2×6・CTAマーカー×1・INSERT SQL準備済み=未実行)。**レンダラ適合の差分(v2前例踏襲・要CSO確認)**: ①###見出し→##(h2化) ②太字\*\*記号の除去(プレーン表示) ③**比較表→箇条書き2行に変換**(表レンダリング非対応のため。情報は月額550/650・解約後の扱いを全て保持) ④箇条書き「- 」→「・」 ⑤[CTA:004]→[[CTA:tv_signup]]マーカー(**指定ボタン文言「まずはプレミアム単体を14日無料で試す」は固定文言コンポーネントのため反映不可**=既存文言「FANZA TVを見てみる(登録3分)」になる) ⑥末尾---区切りの除去。**¥550等の¥表記は原文維持**(既存記事の「550円」表記と不統一だが文言変更を避けた=統一可否はCSO判断)
+- **⚠️placementの論点(CSO裁定要)**: 現行レンダラは[[CTA:tv_signup]]→**placement=guide_tv_signup_cta固定(全記事共通)**。専用値(例guide_meisai_cta)はコード変更+デプロイが必要=「デプロイ不要想定」と矛盾+層B観測中のCTA/計測系コード変更禁止に抵触 → **推奨: placement=guide_tv_signup_cta(共通)+記事識別はGA4ページパス次元**(pagePath=/articles/fanza-payment-statement・月次KPI「ページパス別placementクリック」と同型で層別可能・本日のdatapullで取得手法実証済み)。代替=専用placement新設は7/28後のデプロイ枠で
+- **プリフライト3点=全クリア**: ①チェーン検査=CTA定義は全記事共通コンポーネント(al.dmm.co.jp?lurl=premium.dmm.co.jp&af_id=moterist-004・#8実レンダリングで確認)・最終ターゲットpremium.dmm.co.jp=**200直答(リダイレクトなし・svod/deluxe到達なし)**。※al wrapperはcurlで踏まず(DMMクリック計上汚染の回避・定義+最終着地で検査) ②grep=svod/deluxe 0・同時系は否定文脈1件のみ(「最初から同時に申し込む必要はありません」=v2同型・推奨文脈0)・クーポン/90%OFF/割引コード0・990〜994=0 ③リンク棚卸し=**本文内リンクはCTAマーカー1箇所のみ**(内部リンク・外部URLなし)
+- ファクト照合: 全て台帳v2/v3整合(請求表記11103/除外47506/650円47490・Amazon非言及/解約2日/550pt/TV Plus後から追加=注記④)。矛盾なし
+- **次: HUMAN 2項目**((a)請求表記の再確認 (b)CTA実クリック着地確認)→**CSO最終承認→Phase 2実行**(INSERT→時刻記録→公開後チェック→GSC申請→台帳記録)
