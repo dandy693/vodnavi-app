@@ -19,6 +19,7 @@
 2. **GA4-DMM差分レンジ**: 層B日次差分の一覧と±3/日基準の超過日明記(超過日は翌々日に再確認して確定=7/27差4の7/29再確認をここに組込)
 3. **actresses順位・vol推移**: 河北彩花(/actresses/1044864)ほか上位ページのGSC順位+ahrefs推定vol(ログイン済み時)
 4. **articlesクエリ数の週次推移**: クエリ種数・impr計・クリック計の週次時系列(4→5→8種の系列を継続)
+5. **/articles/セッションの由来分離**(2026-07-28 CSO追加指示・7/29以降必須): /articles/のLPセッションを「Organic Search由来」と「X由来」に分離集計。B2効果測定(内部リンクによるOrganic順位形成の前後比較)をX送客から隔離するため。X由来の識別=sessionSourceMedium「x_vodnavi / social」(チャネルは「Organic Social」)。**確認済(7/28実査)**: TG系utm(source=x_vodnavi/medium=social)はGA4デフォルトチャネルで100%「Organic Social」に分類=Organic Search系列へ構造上混入しない
 
 ## 取得手法(確立済み)
 - GA4: フィルタURL方式+JS(innerText)抽出。2条件目は`sessionDefaultChannelGrouping`
