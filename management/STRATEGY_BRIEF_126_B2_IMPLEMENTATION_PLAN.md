@@ -67,7 +67,8 @@ alter table editorial_articles add column og_accent text check (og_accent in ('g
 ## 10. C2方針=soft-keep【CSO承認済 2026-07-28・条件付き】
 - **裁定: (b) soft-keep採用**。キャッシュ済みメタで「配信終了」表示・インデックスとリンクエクイティを維持し、再配信時に自動復帰。sitemap-archiveは現状維持(DB突合1,418一致の仕組みを流用)。
 - **CSO条件(遵守必須)**: soft-keepページには**af_id 004のCTAを表示しない**(detail_sample/fv/main/stickyの購入系CTAブロックは非表示)。導線は**fallbackUrl検索導線のみ**。価格・特典表示は落とす(台帳整合)。
-- **実装前の確認1点(PR-2着手前にCSO一行回答を依頼)**: 現行実装のfallbackUrl(`url-builder.ts` buildAffiliateURL)は検索ターゲットをaf_id(NEXT_PUBLIC_FANZA_AFFILIATE_ID=004系)でラップする。条件の趣旨が(a)「購入系CTAブロックの除去」であればfallbackUrlのラップは現行維持、(b)「soft-keepページからaf_id 004を全排除」であれば生URL(`affiliateIdOverride`不使用の非ラップ分岐追加)とする。**CTO既定案=(b) 生URL**(理由: 条件文言「af_id 004のCTAを表示しない」の安全側解釈・配信終了ページからの成果クリック計上はEPC系列の汚染源になり得る)。裁定あるまで(b)で設計。
+- **fallbackUrl=(b)生URL化【CSO裁定確定 2026-07-28】**: soft-keepページのfallbackUrlはaf_idラップなしの生URL(検索一覧直リンク)とする。理由(CSO): DMMレポートはaf_id単位でしか分解できずGA4のplacement分離では防げないため、**層B評価中のEPC系列(分母180cl)を汚染しない方を優先**。期待収益の逸失は現状規模では無視可能。実装: soft-keep描画経路では`wrapWithDmmAffiliate`を通さない非ラップ分岐(既存の「ID未解決時は生URL」分岐と同型)。
+- **将来の再検討パス(CSO指示・実装はしない)**: 層B確定後、**soft-keep専用のaf_id新規取得を検討**する(DMM側で新規af_id発行が可能なら、収益化と系列分離を両立できる——990系=API専用と同じ「用途別ID分離」の設計思想)。発行可否の確認と申請はその時点のCSO裁定事項。**それまで(b)生URLを維持**。
 - 実装規模: PR-2へ同梱可能。棄却案の記録: (a)410+sitemap除外=エクイティ放棄/(c)404現状維持=GSC 404蓄積(過去237件問題の再演リスク)。
 
 ## 11. 見積り
