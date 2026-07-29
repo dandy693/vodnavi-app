@@ -112,7 +112,12 @@ alter table editorial_articles add column og_accent text check (og_accent in ('g
 
 **発行後のCTO作業(それぞれCSO承認後)**: af_id台帳(v2追補)へ実番号・用途・発行日を追記→007=B2 PR-5でbuildTvPlusAddURL()に配線→008=fallbackUrl切替PR(独立・層B確定後)
 
-### §12-3. 分母注記の運用ルール【rev2新設・遵守必須】
+### §12-3. 分母注記の運用ルール【rev2新設・遵守必須】+設置面の固定【rev3裁定 2026-07-29】
+
+**【rev3裁定】works面は単品専用で固定・B2⑥の設置面はarticles面のみ**:
+- works面へのTV系CTA(af_id 004のプレミアム/TV Plus導線)追加=**不採用**。理由(CSO): FANZA TV新規¥2,750 vs 高額単品ダイレクト¥1,736=1.6倍にとどまる一方、¥2,750はDMM未登録者限定(確定ファクト注記2)でworks面の指名検索層はほぼ既会員と推定=期待値1.6倍・成約率数分の一では現在の収益源(works単品=収益の全額)の毀損リスクが上回る。
+- 現行works面CTA(sample/fv/main/sticky)=**変更しない**。`[[CTA:tvplus_add]]`/`guide_tvplus_add_cta`の**works面テンプレートへの適用は禁止**(将来検討はCSO裁定要)。
+
 TV Plus CTA(guide_tvplus_add_cta)公開時刻以降、004クリックには2種類の導線が混在する。以降のEPC算出は**二本立て**で報告する:
 
 | 指標 | 定義 | 用途 |
