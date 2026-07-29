@@ -2552,3 +2552,9 @@
 - **指示AE=繰越**(コンテキスト上限・次セッションで実施: support.dmm.com系のTV Plus 4項目・premium/book/video不遷移の制約維持)
 - **archive XML**: 00:39時点amateur887(Age2,301)・TTL満了01:01頃→バックグラウンド監視継続中(反映確認は通知後に追記報告・「1秒前」で確定させない運用維持)
 - 閲覧URL一覧: GSC index/affiliate.dmm.com(fee/index.html→guide/diagram/fee)/support.dmm.com(トップ・affiliate・subcategory691/692・article 47549・44100)/affiliate.dmm.com(message→トップ転送・report/top→ログイン画面)
+
+---
+### 2026-07-30 配信archive XMLのvideoa化を確認(01:27 JST)——Q検証クリア
+- **配信sitemap-archive.xml=videoa 887/anime 413/nikkatsu 402/amateur 0**(TTL満了後の再検証で反映・バックグラウンド監視01:02〜01:27の間に着地)。**rev8停止条件2/rev10停止条件2=非該当で最終確定**(0-2の「1秒前」不整合は判定材料として使用不要になった=結論不変)
+- 付随: TTL満了後の自然な再検証でDB状態が配信に反映された事実=**archiveルートのランタイム再検証が機能する追加実証**(2回目・route種別仮説と整合)
+- 残る次ステップ: AH(route handler化)のCSO実装承認待ち/AE+参加規約+メッセージ(要HUMAN再ログイン)=次セッション/GSC更新待ち(Q効果観測)
