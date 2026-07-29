@@ -41,6 +41,7 @@ export function FanzaAffiliateLink({
     | "works_fv_newuser" // U1: 作品詳細FV 新規ユーザー向けマイクロモジュール
     | "guide_first_purchase_cta" // U2: はじめてのFANZAガイド記事末尾
     | "guide_tv_signup_cta" // U2: ガイド記事内 FANZA TV/プレミアム登録CTA
+    | "guide_tvplus_add_cta" // B2⑥: 既存プレミアム会員向け TV Plus 追加CTA（第2ファネル）
     | "article_sale_cta"; // U3: セール特集テンプレート
   className?: string;
   children: ReactNode;

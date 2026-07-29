@@ -201,3 +201,33 @@ export function buildTvSignupURL(): string {
   if (!affId) return FANZA_TV_SIGNUP_TARGET; // 盾: ID 未解決なら追跡なし生 URL
   return wrapWithDmmAffiliate(FANZA_TV_SIGNUP_TARGET, affId);
 }
+
+/**
+ * B2⑥: 既存プレミアム会員向け TV Plus 追加 CTA（第2ファネル・¥2,200）用 URL。
+ * placement=guide_tvplus_add_cta（新規値）。既存 buildTvSignupURL とは別実装
+ * （BRIEF_126 §12 論点5: 既存 CTA 系へ条件分岐を入れない）。
+ *
+ * af_id は設定定数として外出し（rev2 決定ログ3）: 環境変数
+ * NEXT_PUBLIC_TVPLUS_ADD_AFFILIATE_ID があればそれを使用し、無ければ既存の
+ * fanza 解決系（=004）へフォールバック。将来 007 発行時は env 追加のみで
+ * 差し替え可能（既存 004 系コードには触れない）。
+ *
+ * 着地ターゲットは検証済み実 URL のみ使用（新規パス捏造禁止）。現行値は
+ * premium.dmm.co.jp ルート（2026-07-22 HUMAN 実査で TV/TV Plus 表記確認済み）。
+ * HUMAN 実査①（TV Plus 追加手続きの実画面 URL）確認後、公開前にこの定数を
+ * 実査確認 URL へ更新する（未確認パスのままの公開は不可）。
+ */
+const TVPLUS_ADD_TARGET = "https://premium.dmm.co.jp/";
+
+function resolveTvPlusAddAffiliateId(): string | null {
+  return (
+    process.env.NEXT_PUBLIC_TVPLUS_ADD_AFFILIATE_ID ??
+    resolveAffiliateId("fanza")
+  );
+}
+
+export function buildTvPlusAddURL(): string {
+  const affId = resolveTvPlusAddAffiliateId();
+  if (!affId) return TVPLUS_ADD_TARGET; // 盾: ID 未解決なら追跡なし生 URL
+  return wrapWithDmmAffiliate(TVPLUS_ADD_TARGET, affId);
+}
