@@ -2544,3 +2544,11 @@
 - **0項記録**: Z-2判定受理・**CSO「Hobbyの可能性」見立て=外れ・撤回**・maxDuration引き上げ不要を記録。**訂正: manifestのISR登録(Revalidate=5m表示)は「再検証が実際に走ること」を保証しない**——rev5でroute種別仮説を捨てた根拠は判定として不十分だった。エラーログ不在は「失敗」より「**再生成が試行されていない**」に整合(Age4.4日連続増と一致)
 - **指示AG完了(00:40:05 JST・curl 2本)**: ヘッダ差分——sitemap.xml=**Last-Modifiedあり(23:59:36 JST=Qデプロイのビルド時刻)+Content-Disposition filename付き+Varyなし**=ビルド時静的アセット配信の特徴/sitemap-archive.xml=**Vary: rsc, next-router-state-tree系あり+Last-Modifiedなし**=App Routerランタイムroute handler経路の特徴。x-nextjs-cache=両者になし(判定不能項目)・X-Vercel-Cache=両者HIT・Cache-Control同一。**言えること=配信経路が異なる物理差分がありroute種別仮説と整合/言えないこと=「再検証が試行されていない」ことの直接証明ではない**。route種別以外の明確な別原因は読み取れず→停止条件4非該当=AH続行可
 - **指示AH設計(実装はCSO承認後)**: ①新設`app/sitemap.xml/route.ts`(revalidate=3600・**生成ロジックは現行のまま**=Supabase化しない) ②**既存sitemap.tsは削除必須**(併存は/sitemap.xmlのルート衝突=不定挙動)——生成関数を`src/lib/sitemap-builder.ts`へ移設しroute.tsから呼ぶ・metadata routeファイル削除 ③robots.tsのsitemap宣言=URL文字列のため影響なし ④ロールバック=単独PR revertで完全復元 ⑤**B2①(PR#62)とは別PR・別デプロイ系列** ⑥検証=生成時刻の自動更新2回連続(TTL超過後)→着地=原因route種別で確定・(a)+(c)不採用/不着地=(a)+(c)へ移行(rev8承認設計を復活)。**Cron/sitemap_windowテーブルは判定まで着手しない**
+
+---
+### 2026-07-30 rev10実行②(00:45〜01:00 JST・閲覧のみ・クリック/送信/変更/認証操作ゼロ)
+- **指示AF/AI-2**: GSC最終更新=**7/24のまま**(00:47確認)=Q効果測定は開始不能・観測来週へ(8/1でも7/24なら通常ラグ超過として報告)
+- **指示AD(部分完了)**: ①**Q3=公式ヘルプで確定**——**ヘルプ記事47549**「月額コンテンツの継続成果は発生するのでしょうか？」=「**月額サービスの成果は初回の購入時にのみ発生。それ以降の継続課金時には成果の発生はございません**」→**継続報酬(レベニューシェア)は存在しない**(rev3 0-4用語訂正と完全整合・サポート回答を待たず裁定可能)。報酬の種類ページ(guide/diagram/fee)も3種のみ列挙=整合 ②**Q4=直接記載なし**——**ヘルプ記事44100**「報酬の取り消し処理」=「購入したユーザーがキャンセル・返品した場合、報酬は取り消し」の一般則のみで、**無料体験期間中の解約による「サービス新規」成果の取消可否・判定タイミングへの直接記載は見つからず**=「記載なし」としてサポート回答待ち継続 ③**メッセージ一覧=ログイン状態切れ**(report/topがaccounts.dmm.comへリダイレクト)→**停止条件3適用: 認証操作を行わずHUMAN枠へ差し戻し** ④参加規約=未確認(繰越)
+- **指示AE=繰越**(コンテキスト上限・次セッションで実施: support.dmm.com系のTV Plus 4項目・premium/book/video不遷移の制約維持)
+- **archive XML**: 00:39時点amateur887(Age2,301)・TTL満了01:01頃→バックグラウンド監視継続中(反映確認は通知後に追記報告・「1秒前」で確定させない運用維持)
+- 閲覧URL一覧: GSC index/affiliate.dmm.com(fee/index.html→guide/diagram/fee)/support.dmm.com(トップ・affiliate・subcategory691/692・article 47549・44100)/affiliate.dmm.com(message→トップ転送・report/top→ログイン画面)
