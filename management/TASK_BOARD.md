@@ -2538,3 +2538,9 @@
 - **archive XML反映**: 00:31時点=amateur887のまま(TTL次回01:02頃・バックグラウンド監視継続)。0-2に従い「1秒前」説明では確定させない——videoa887不出現の場合は不整合と併せて報告(停止条件5)
 - **指示AF**: GSC最終更新=**7/24のまま**(00:20確認)=Q効果測定は開始不能・観測は来週へ。8/1時点でも7/24なら通常ラグ超過として報告
 - **指示AD/AE=未実施・次セッションへ繰越**(コンテキスト上限による部分報告・停止条件4の運用=到達できた範囲までを報告)。対象範囲・禁止事項はrev9本文どおり(affiliate.dmm.comの報酬料率/規約/ヘルプ/メッセージ+DMM公式ヘルプのTV Plus 4項目・premium/book/video=HUMAN枠のまま)
+
+---
+### 2026-07-30 rev10実行①(00:39〜00:45 JST・読み取りのみ)
+- **0項記録**: Z-2判定受理・**CSO「Hobbyの可能性」見立て=外れ・撤回**・maxDuration引き上げ不要を記録。**訂正: manifestのISR登録(Revalidate=5m表示)は「再検証が実際に走ること」を保証しない**——rev5でroute種別仮説を捨てた根拠は判定として不十分だった。エラーログ不在は「失敗」より「**再生成が試行されていない**」に整合(Age4.4日連続増と一致)
+- **指示AG完了(00:40:05 JST・curl 2本)**: ヘッダ差分——sitemap.xml=**Last-Modifiedあり(23:59:36 JST=Qデプロイのビルド時刻)+Content-Disposition filename付き+Varyなし**=ビルド時静的アセット配信の特徴/sitemap-archive.xml=**Vary: rsc, next-router-state-tree系あり+Last-Modifiedなし**=App Routerランタイムroute handler経路の特徴。x-nextjs-cache=両者になし(判定不能項目)・X-Vercel-Cache=両者HIT・Cache-Control同一。**言えること=配信経路が異なる物理差分がありroute種別仮説と整合/言えないこと=「再検証が試行されていない」ことの直接証明ではない**。route種別以外の明確な別原因は読み取れず→停止条件4非該当=AH続行可
+- **指示AH設計(実装はCSO承認後)**: ①新設`app/sitemap.xml/route.ts`(revalidate=3600・**生成ロジックは現行のまま**=Supabase化しない) ②**既存sitemap.tsは削除必須**(併存は/sitemap.xmlのルート衝突=不定挙動)——生成関数を`src/lib/sitemap-builder.ts`へ移設しroute.tsから呼ぶ・metadata routeファイル削除 ③robots.tsのsitemap宣言=URL文字列のため影響なし ④ロールバック=単独PR revertで完全復元 ⑤**B2①(PR#62)とは別PR・別デプロイ系列** ⑥検証=生成時刻の自動更新2回連続(TTL超過後)→着地=原因route種別で確定・(a)+(c)不採用/不着地=(a)+(c)へ移行(rev8承認設計を復活)。**Cron/sitemap_windowテーブルは判定まで着手しない**
