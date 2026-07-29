@@ -9,13 +9,20 @@ import {
 import { FANZA_FLOORS } from "@/lib/fanza/types";
 import { absoluteUrl } from "@/lib/site";
 
-export const revalidate = 3600;
+/**
+ * AH(rev10/承認2026-07-30): 旧 `src/app/sitemap.ts`(metadata route)の生成ロジックを
+ * **そのまま**移設したもの。metadata route は `export const revalidate` の宣言値が
+ * ビルド manifest に反映されず(宣言3600 に対し manifest 5m)、ランタイム再検証が
+ * 一度も着地しない実測(Age 4.4日連続増・ヘッダ=静的アセット配信の特徴)があるため、
+ * 配信は route handler(`src/app/sitemap.xml/route.ts`)へ移行する。
+ * 生成ロジック自体は現行のまま(API ベース維持・Supabase 化しない)。
+ */
 
 const HITS_PER_REQUEST = 100;
 const PAGES_PER_FLOOR = 4;
 const MAX_GENRES = 200;
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
   const now = new Date();
 
   const root: MetadataRoute.Sitemap = [
@@ -167,7 +174,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // (floor ランディング `/?floor=videoa` は単一パラメータで `&` を含まないため維持)
 
   // 編集記事（Supabase editorial_articles / published のみ）。記事は Studio 投入で
-  // publish された時点から次回 sitemap 再生成（revalidate 3600s）で自動収録される
+  // publish された時点から次回 sitemap 再生成で自動収録される
   // ＝公開ごとの手動配線・SQL 再実行は不要（今後の記事投入計画の前提条件）。
   // getPublishedArticleSlugs はエラー/未配線時に空配列を返すため、Supabase 障害時も
   // 既存の works/genres/actresses 収録には影響しない。
