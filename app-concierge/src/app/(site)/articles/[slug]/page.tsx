@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -10,7 +11,10 @@ import {
   buildTvPlusAddURL,
   buildTvSignupURL,
 } from "@/lib/concierge/url-builder";
-import { getPublishedArticleBySlug } from "@/lib/editorial-articles";
+import {
+  getPublishedArticleBySlug,
+  getPublishedArticleSlugs,
+} from "@/lib/editorial-articles";
 import { absoluteUrl, compactDescription, compactTitle } from "@/lib/site";
 
 // genres/[id] と同方針: 動的 SSR + on-demand ISR。generateStaticParams は
@@ -18,6 +22,42 @@ import { absoluteUrl, compactDescription, compactTitle } from "@/lib/site";
 export const revalidate = 300;
 
 type Params = { slug: string };
+
+// B2①(PR-1): 本文の内部リンク描画。`[テキスト](/articles/slug)` 形式**のみ**を
+// リンク化する。リンク先は公開済み記事 slug のホワイトリスト完全一致が条件で、
+// 不一致(未公開・タイポ・外部URL・af_id・DMMドメイン等)はパターン不一致または
+// 照合不一致としてプレーンテキストのまま残す=描画拒否(スペック§2-4 ガードレール)。
+// CTA マーカー分岐・placement 系列には一切触れない(層B系列に非接触)。
+const ARTICLE_LINK_RE = /\[([^\]\n]+)\]\(\/articles\/([a-z0-9-]+)\)/g;
+
+function renderBodyText(
+  text: string,
+  publishedSlugs: ReadonlySet<string>,
+  keyPrefix: string,
+): ReactNode[] {
+  const nodes: ReactNode[] = [];
+  let cursor = 0;
+  let n = 0;
+  for (const m of text.matchAll(ARTICLE_LINK_RE)) {
+    const [whole, label, slug] = m;
+    const at = m.index ?? 0;
+    if (!publishedSlugs.has(slug)) continue; // 非公開slugはリンク化しない(本文はそのまま)
+    if (at > cursor) nodes.push(text.slice(cursor, at));
+    nodes.push(
+      <Link
+        key={`${keyPrefix}-${n++}`}
+        href={`/articles/${slug}`}
+        className="text-amber-300 underline underline-offset-2 hover:text-amber-200"
+      >
+        {label}
+      </Link>,
+    );
+    cursor = at + whole.length;
+  }
+  if (nodes.length === 0) return [text];
+  if (cursor < text.length) nodes.push(text.slice(cursor));
+  return nodes;
+}
 
 // インデックス方針（BRIEF_085 §3 / BRIEF_086 §4 / e82a670 canonical 統制）:
 //   - self-canonical でクエリを consolidation。個別 noindex は注入しない。
@@ -85,6 +125,10 @@ export default async function ArticlePage({
   // TV 登録導線: FANZA ドメイン（dmm.co.jp）登録フォーム経由が成果条件
   // （報酬料率ページ注記）。url-builder の検証済みターゲットのみ使用。
   const tvSignupUrl = buildTvSignupURL();
+
+  // B2①: 内部リンクのホワイトリスト(公開済みslugのみ)。取得失敗時は空配列=
+  // 全リンクがプレーンテキストに落ちるだけで本文描画は壊れない(フェイルセーフ)。
+  const publishedSlugs = new Set(await getPublishedArticleSlugs());
 
   return (
     <article className="mx-auto max-w-3xl px-4 py-6 sm:px-6 sm:py-10">
@@ -181,7 +225,7 @@ export default async function ArticlePage({
             }
             return (
               <p key={i} className="whitespace-pre-line">
-                {p}
+                {renderBodyText(p, publishedSlugs, `bl-${i}`)}
               </p>
             );
           })}
