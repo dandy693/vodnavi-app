@@ -1,4 +1,4 @@
-# DATAPULL_SPEC v1.2(2026-07-28 CSO C3裁定反映)
+# DATAPULL_SPEC v1.3(2026-07-29 rev2指示1反映)
 
 > 週次評価用データ取得の項目定義。層別スペックv1.1(集計=前日確定値のみ・層B=7/24〜・境界2026-07-24 00:00:54 JST)を継承。取得は閲覧のみ・判定は書かない。時刻=JST明記+PowerShell実測。
 
@@ -20,6 +20,12 @@
 3. **actresses順位・vol推移**: 河北彩花(/actresses/1044864)ほか上位ページのGSC順位+ahrefs推定vol(ログイン済み時)
 4. **articlesクエリ数の週次推移**: クエリ種数・impr計・クリック計の週次時系列(4→5→8種の系列を継続)
 5. **/articles/セッションの由来分離**(2026-07-28 CSO追加指示・7/29以降必須): /articles/のLPセッションを「Organic Search由来」と「X由来」に分離集計。B2効果測定(内部リンクによるOrganic順位形成の前後比較)をX送客から隔離するため。X由来の識別=sessionSourceMedium「x_vodnavi / social」(チャネルは「Organic Social」)。**確認済(7/28実査)**: TG系utm(source=x_vodnavi/medium=social)はGA4デフォルトチャネルで100%「Organic Social」に分類=Organic Search系列へ構造上混入しない
+
+## v1.3追加(rev2指示1・C3統合・週次)
+6. **004クリックのページ種別内訳**: ai_affiliate_clickを/works//articles//actresses/その他に週次分解(GA4・hostnameフィルタ・seldim=unifiedPagePathScreen)
+7. **placement別クリック数(実測値全列挙)**: 既知5値+想定外値の有無を明記(seldim=customDimensionsGroup2Slot04)
+8. **二本立てEPC(TV Plus CTA公開後から)**: 総EPCと層B評価EPC(=TV Plus初回登録分とguide_tvplus_add_ctaクリックを控除)を併記。分母控除=GA4近似・GA4-DMM差ぶんの誤差を毎回注記(BRIEF_126§12-3)。境界=公開時刻JST秒
+- 注記: DMM側の成果はaf_id単位でしかページ・CTA別に分解できない(報酬種別・サービス別は分解可)→クリック側分布のみの集計である旨を毎回1行明記
 
 ## 取得手法(確立済み)
 - GA4: フィルタURL方式+JS(innerText)抽出。2条件目は`sessionDefaultChannelGrouping`

@@ -2429,3 +2429,12 @@
 - **新設運用ルール**: TV Plus CTA公開時刻以降のEPCは**総EPC/層B評価EPC二本立て**(BRIEF_126 §12-3)。分母控除=GA4近似・誤差注記毎回必須・境界=公開時刻JST秒
 - **事前監査**: rev2の報酬種別実績値(カテゴリ2件254円/ダイレクト1件213円)=datapull-20260728 C-8a(58+196=254/213)と完全一致✓。案B→004の反転はrev2自身が変更点として明示+新事実(URL紐付け必須)による改訂のため停止条件(台帳矛盾)に非該当と判定
 - **HUMAN枠(CSO実施・CTO対象外)**: DMMサポート照会2問(別ディレクトリ別ID可否/ID内サブパラメータ有無)。2問目肯定なら007/008恒久不要
+
+---
+### 2026-07-29 rev2実行完了(11:19〜12:10 JST・PowerShell実測)
+- **指示1-D【判定=分解される→指示2進行可】**: サービス別レポートFANZAタブに親「FANZA TV」配下で**「新規無料登録(お試し登録無料)」と「FANZA TV Plus 初回登録」が独立別行**を物理確認(スクリーンショット取得済・現在両行0件のため「行の存在=仕様上の分解構造」の確認であり実成果の計上先は初成果時に追認)。付随実測: 004クリック190(7/16-28)=FANZA186(動画185+月額1)+**DMM.com「その他」4**=guide系着地(premium.dmm.co.jp)のクリックはDMM側では「その他」合流=クリック側のCTA別分解は構造上不能→GA4 placement分離(二本立てEPC)の必然性を実測で裏付け
+- **指示1-A/B完了**: 層A(7/21-23)=35クリック全て/works/(sample17/fv10/main4/sticky4)。層B(7/24-28)=49=works47+**articles2**(fanza-kaiyaku/fanza-tv-free-trial各1=guide_tv_signup_cta 2と一致)・actresses=0・想定外placement値なし。GSC works系(7/21-28)=370cl/612クエリ・上位10=全て作品タイトル型・**「fanza」含みクエリ=1種0cl(それもタイトル型)=一般名詞クエリ実質ゼロ**・一般名詞系はarticlesセグメントのみに出現。制約注記: DMM成果はaf_id単位でしかページ/CTA別に分解不能=本集計はクリック側分布のみ。詳細=_metrics/2026-W31/datapull-20260729-instr1-3.md
+- **C3: 7/27差4=確定**(翌々日再確認・DMM 7/27=8変動なし vs GA4 4)。±3超過確定の初日として記録。参考: 7/28=GA4 5 vs DMM 9=差4(両側前日値=初回読み・確定確認7/30)
+- **指示2段階1完了**: PR **#60**(branch b2-6-tvplus-add-cta・84cc23c)——[[CTA:tvplus_add]]+placement=guide_tvplus_add_cta+buildTvPlusAddURL()(af_id設定定数外出し=NEXT_PUBLIC_TVPLUS_ADD_AFFILIATE_ID優先→004フォールバック)・文言「TV Plusを追加する（月+1,078円）」。非接触検証: diff=53挿入**0削除**・既存placement値/既存CTA無変更grep確認・禁止文言grep 0件・tsc PASS。**マージはCSO承認待ち**・着地URLはHUMAN実査①後に公開前更新
+- **指示3段階0完了+段階1起案=BRIEF_128**: 三点照合=API実在庫**≥6万**(videoa=50,000キャップ/anime3,869/nikkatsu6,125)vs sitemap4,370(works1,600=上限張り付き・genres200=張り付き・actresses1,138・archive1,418)vs GSC登録12,500。原因=**②生成上限(回転式PAGES_PER_FLOOR=4)**=①品質ゲートではない→**停止条件4非該当**。クロール317/日・ホスト問題なし→**停止条件5非該当**。段階1起案=コホート方式5,000URL/2週間実測(選定基準3案・soft-keep整合・B2公開後1週間空けて投入)
+- **DATAPULL_SPEC v1.3**: C3統合の週次項目(ページ種別内訳/placement全列挙/二本立てEPC=公開後から)+af_id単位制約の毎回注記を追加
