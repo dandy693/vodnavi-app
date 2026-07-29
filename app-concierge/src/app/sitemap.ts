@@ -103,7 +103,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           });
           archiveEntries.push({
             content_id: item.content_id,
-            floor_code: floor.code,
+            // Q(rev7): canonicalWorkPath と同一の apiFloor 解決で記録する。
+            // floor.code(UIフロア)のままだと amateur 列挙(videoa と同一リスト)が
+            // 後勝ちで floor_code を amateur に上書きし、archive が代替 canonical 行きの
+            // 鏡像 URL(/works/amateur/)を恒久提示してしまう(2026-07-29 実測 887 行)。
+            floor_code: floor.apiFloor ?? floor.code,
             released_at: item.date
               ? new Date(item.date.replace(" ", "T")).toISOString()
               : null,
