@@ -93,3 +93,36 @@
 - コホート1で確定させるのは**①インデックス率(GSCカバレッジ・2週間)②セッション/ページ(GA4)の2点のみ**。
 - **収益(帯別の円/クリック)はコホート1では判定しない**: 現在の総クリック=月約440件では帯別購入がn=1桁となり有意差が出ないため。**収益判定は次サイクルへ持ち越し**。
 - 投入タイミング: **指示B回収(少なくともR1修理)完了+B2公開後の系列安定を確認した後。指示Bより先に実行しない。**
+
+## 7. 【rev6指示Q】archive floor正規化バグ修正の起案(実装はCSO承認後・単独PR)
+
+### Q-1. 修正設計
+1. **記録時のfloor解決統一**: `sitemap.ts`のarchiveEntries.pushで`floor_code: floor.apiFloor ?? floor.code`(=canonicalWorkPathと同一のapiFloor解決)。効果=amateur列挙分はvideoaとして記録され、content_id主キーのupsertで自然に単一行化(以後amateur行は発生しない)。
+2. **既存887行の移行=一括を提案**: `UPDATE sitemap_works_archive SET floor_code='videoa' WHERE floor_code='amateur'`(887行)。根拠: ①移行先videoa URLはGoogleが既に正規と認識(canonical集約済)=「代替ページの提出取り下げ+正規URLの提出」で整合的 ②887件はクロール規模(317/日)比で約3日分=急変リスク小 ③段階化の観測利益が薄い。段階案(併記): 最終クロール日の新しい順500→387の2分割・各1週間で代替canonical推移とクロール消化を観測。
+3. **ロールバック**: 既定第一手status=retiredは**使えない**(テーブルにstatus列なし)→代替2段: (i) 実装前に887行の全カラムスナップショットをmanagement/_metrics配下へCSV保存→逆UPDATE(videoa→amateur)で完全復元 (ii) コード側は単独PRのrevert。**手段あり=停止条件2非該当**。
+### Q-2. R2要否の判定【実装根拠あり: R2は依然必要】
+- sitemap本体のamateur 400 URLは`sitemap.ts`のworksループが`/works/${floor.code}/${cid}`で**URL生成に floor.code を直接使用**して出力するもの(seenWorksもパス単位)。archiveEntriesのfloor_code修正は**worksの出力配列に一切触れない**→**floor正規化後もsitemap本体にamateur 400は残る=R2(worksループでamateurスキップ)は引き続き必要**。統合はしない(コード行レベルで別出力と確認済・推定でない)。
+### Q-3. 観測ベースライン(実装前記録・GSC 7/24値)
+代替canonical=1,829/検出未登録=607/クロール済未登録=595/archive=1,702行(amateur887/anime413/nikkatsu402/videoa0)/GSC登録済み=12,500(ドメイン全体)。
+
+## 8. 【rev6指示R】sitemap再生成の再設計起案(起案のみ・M-2停止継続)
+
+### R-1. 切り分け(混同禁止)
+| 層 | 実測状態 |
+|---|---|
+| ①XML配信の再生成 | archive=**ランタイム着地を実証**(1,702行論証)/sitemap本体=ISR登録済(manifest 5m)なのに**不着地** |
+| ②元データの更新 | archive DBのupsertは**ビルド時のsitemap.xml生成に依存=ビルド依存のまま**(rev5 0-5の指摘どおり) |
+### R-2. 候補評価と推奨
+- (a)Supabaseベース化単独: ①は解決見込み(軽量=実証パターン)だが**②の更新者不在=未解決**→単独不採用。
+- (b)並列化+maxDuration: 実装小だが「重さ仮説」未実証のため効果不確実+DMM同時接続のスロットルリスク→保険としては可・本命にしない。
+- (c)Cron単独: ②は解決するが①の重い生成が残るなら同じ制限に当たり得る。Cron静黙失敗の検知が必須。
+- **推奨=(a)+(c)ハイブリッド**(CSO見立てに実装可能性からも同意): Vercel Cron(1h)が16 API呼出→`sitemap_window`テーブルUPSERT(+archive upsert=Q正規化済みロジックを共用)→`revalidatePath('/sitemap.xml')`。sitemap.xml route=Supabase読むだけ(archive同型・軽量)。①=軽量route(実証パターン)・②=Cron(明示の更新者)で**両層とも解決**。Cron関数はmaxDuration=60を設定(またはフロア別4分割Cron)。**Cron失敗検知**: `cron_runs`記録(開始/完了/件数)+週次datapullにsitemap生成時刻直読の監視項目を追加(既存手法)+2回連続失敗でTASK_BOARD警告。
+### R-3. 原因仮説の扱い(明記)
+- 「重さによる実行制限超過」は**未実証のまま**。軽量経路で再生成が着地すること自体はarchiveで実証済み(停止条件5=否定されず)。追加の検証経路はコード変更を伴うため未実施。**本起案は「原因未特定のまま、重さを回避する設計を選ぶ」判断である**(原因特定とは主張しない)。
+### R-4. 実施順序
+**Q(floor正規化・Supabaseのfloorを正しくする)→R(窓テーブル+Cron+route軽量化)→検証(生成時刻の自動更新×2回連続+デプロイなし記事収録)→R2/H(amateur除外)→R4はその後CSO再裁定**。QはRの前提(Supabaseベース化はfloorが正しいことに依存)。
+
+## 9. 【rev6指示S】コホート要否の再評価(保留継続・起案保持)
+- Q完了後の自然流入=窓退出works約60〜65件/日が**videoa正規URLで**恒久提出=年2.2〜2.4万件>コホート5,000→**「投入する必要があるか」をQ後の観測で再裁定**(どう投入するかは差し戻し)。
+- S-1観測設計(追加実装なし): ①archive日次新規件数(sitemap_works_archiveのlast_seen_at/新規cid日次カウント=SQL読み取り) ②うちクロール着手率(GSC検出未登録→クロール済への転換・サンプル可) ③インデックス到達件数と所要期間(GSC登録済み推移+週次datapull) 。
+- **S-2注記(台帳記録)**: 31-60日帯の単価優位(中央値1,508円)は妥当だが、①在庫2,834件<5,000(61-90日≈2,861件を足して5,695件) ②需要側(クリック・検索需要)の実証なし——**単価のみを根拠とした帯選定は不採用**(rev3の価格ハードフィルタ却下と同一論理)。
