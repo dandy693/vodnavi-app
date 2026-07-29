@@ -7,6 +7,7 @@ import { GuideReturnCta } from "@/components/guide-return-cta";
 import {
   buildAffiliateURL,
   buildSaleFeatureURL,
+  buildTvPlusAddURL,
   buildTvSignupURL,
 } from "@/lib/concierge/url-builder";
 import { getPublishedArticleBySlug } from "@/lib/editorial-articles";
@@ -118,6 +119,27 @@ export default async function ArticlePage({
                     className="btn-luxury-gold inline-flex w-full items-center justify-center gap-2 rounded-xl min-h-12 px-5 py-3 text-sm font-semibold group"
                   >
                     <span>FANZA TVを見てみる（登録3分）</span>
+                  </FanzaAffiliateLink>
+                </div>
+              );
+            }
+            if (p === "[[CTA:tvplus_add]]") {
+              // B2⑥: 既存プレミアム会員向け TV Plus 追加 CTA（第2ファネル・¥2,200）。
+              // 既存 [[CTA:tv_signup]]（新規向けファネル）とは別マーカー・別 placement
+              // （guide_tvplus_add_cta）・別 URL ビルダ。1記事内で両マーカー共存可
+              // （読者A/B分岐設計）。表示文言の制約: 新規向けの所要時間訴求や、
+              // 2サービスを一括で申し込ませる示唆は禁止（確定ファクト注記3の地雷）。
+              return (
+                <div key={i} className="py-2">
+                  <FanzaAffiliateLink
+                    href={buildTvPlusAddURL()}
+                    content_id="fanza_tv_plus"
+                    title="FANZA TV Plus"
+                    floor_code="monthly"
+                    placement="guide_tvplus_add_cta"
+                    className="btn-luxury-gold inline-flex w-full items-center justify-center gap-2 rounded-xl min-h-12 px-5 py-3 text-sm font-semibold group"
+                  >
+                    <span>TV Plusを追加する（月+1,078円）</span>
                   </FanzaAffiliateLink>
                 </div>
               );
