@@ -262,7 +262,7 @@ export default async function GenrePage({
       {page.items.length === 0 ? (
         <EmptyState title="このジャンルの作品はまだ表示できません" />
       ) : (
-        <ProductGrid items={page.items} />
+        <ProductGrid items={page.items} surface="genres" />
       )}
 
       {relatedGenres.length > 0 && (

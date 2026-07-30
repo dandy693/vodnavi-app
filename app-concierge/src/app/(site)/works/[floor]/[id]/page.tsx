@@ -211,6 +211,8 @@ export default async function WorkDetailPage({
     asp: "fanza",
     contentId: item.content_id,
     actressOrSku: actresses[0]?.name ?? null,
+    // S2: 詳細 URL のパスをフロア別に出し分ける（旧実装は videoa 固定だった）。
+    floor: normalizeFloorForUrl(floor),
   });
 
   // U1 新規ユーザー向けFVモジュール（新規会員導線 設計書v1）のリリースゲート。

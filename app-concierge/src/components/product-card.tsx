@@ -1,5 +1,6 @@
 "use client";
 
+import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
 import { FanzaImage } from "@/components/fanza-image";
 import Link from "next/link";
 import { useState } from "react";
@@ -16,12 +17,24 @@ import type { DmmItem } from "@/lib/fanza/types";
 import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { cn } from "@/lib/utils";
 
+/** S1: 一覧系の面を GA4 placement へ写像する（href は変更しない）。 */
+export type ListSurface = "top" | "genres" | "actresses";
+
+const SURFACE_PLACEMENT = {
+  top: "list_top_card_cta",
+  genres: "list_genres_card_cta",
+  actresses: "list_actresses_card_cta",
+} as const;
+
 export function ProductCard({
   item,
   priority = false,
+  surface,
 }: {
   item: DmmItem;
   priority?: boolean;
+  /** S1: 面の識別。未指定時は placement="list_card_cta"（フォールバック）。 */
+  surface?: ListSurface;
 }) {
   const image = pickImage(item.imageURL);
   const [imageBroken, setImageBroken] = useState(false);
@@ -49,6 +62,8 @@ export function ProductCard({
     asp: "fanza",
     contentId: item.content_id,
     actressOrSku: primaryActress ?? skuCode,
+    // S2: フロア別パス（fallbackUrl は検索一覧のため実質不変だが、呼び出しを統一）。
+    floor: normalizeFloorForUrl(item.floor_code),
   });
   const fallbackLabel = primaryActress
     ? `${primaryActress}の作品を探す`
@@ -117,10 +132,16 @@ export function ProductCard({
         </div>
       </Link>
 
-      <a
+      {/* S1(2026-07-31 CSO承認): 素の <a> から FanzaAffiliateLink へ差し替え。
+         **href の値は一切変更しない**（API 返却の af_id=990 のまま）。目的は
+         GA4 計装のみで、works 詳細と同等の product_click / ai_affiliate_click を
+         発火させ、面を placement で区別できるようにする。 */}
+      <FanzaAffiliateLink
         href={affiliateHref}
-        target="_blank"
-        rel="nofollow noopener noreferrer sponsored"
+        content_id={item.content_id}
+        title={item.title}
+        floor_code={normalizeFloorForUrl(item.floor_code)}
+        placement={surface ? SURFACE_PLACEMENT[surface] : "list_card_cta"}
         className={cn(
           "relative block h-11 overflow-hidden text-center text-sm font-semibold",
           "bg-gradient-to-r from-amber-500 via-yellow-300 to-amber-500 text-black",
@@ -132,7 +153,7 @@ export function ProductCard({
         aria-label={`${item.title} を FANZA で視聴`}
       >
         <span className="relative z-10">今すぐ視聴 →</span>
-      </a>
+      </FanzaAffiliateLink>
 
       {/* 盾④ 404 フォールバック動線: 作品が配信終了でも検索一覧へ逃がす。 */}
       <a

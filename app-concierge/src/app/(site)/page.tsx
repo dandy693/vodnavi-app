@@ -270,7 +270,7 @@ async function ResultsSection({
           <EmptyState />
         ) : (
           <>
-            <ProductGrid items={items} />
+            <ProductGrid items={items} surface="top" />
             <Pagination
               currentPage={currentPage}
               hasNext={
