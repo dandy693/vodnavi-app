@@ -153,3 +153,43 @@
 - href内990→004置換・回帰ブロック追加・デプロイ=**すべて未実施**(CSO承認待ち)
 
 > 本追記は事実の転記のみ。提案・設計・評価は記載していない(指示準拠)。
+
+---
+
+# S1/S2 実装・デプロイ・検証【2026-07-31・CSO承認済み】
+
+- 実装〜検証: 2026-07-31 05:50頃〜**06:27:51 JST**(PowerShell実測)
+- PR **#64**(squash `5c2579a`)。**S3・S4は未承認のため未着手**
+
+## S1: 一覧系CTAのGA4計装(href不変)
+- 変更: `product-card.tsx` の素の `<a>` を **`FanzaAffiliateLink`** へ差し替え(works詳細と同一の計装経路=`trackProductClick`+`trackAiAffiliateClick`)
+- **href の値は一切変更していない**(`item.affiliateURL ?? item.URL` のまま=API返却の af_id=**990** を維持)
+- placement(新設4値・`fanza-affiliate-link.tsx` の型に追加): `list_top_card_cta` / `list_genres_card_cta` / `list_actresses_card_cta` / `list_card_cta`(面未指定時)
+- 配線: `ProductGrid` に `surface` propを追加 → トップ(`surface="top"`)・genres(`"genres"`)・actresses(`"actresses"`)から引き渡し
+- **本番検証(06:27 JST・href不変の確認)**: `/`=href_990 **23**/href_004 23・`/genres/6925`=**21**/21・`/actresses/1078618`=**28**/28 → **990は置換されずそのまま**(=指示どおり)。※トップの件数が20→23に増えているのは新着ローテーションによる掲載作品数の変動
+
+## S2: buildAffiliateURL のフロア別パス対応(990とは独立の是正)
+- 変更: `FANZA_DETAIL_BASE`(全フロア `digital/videoa/-/detail/=/cid=` 固定)を廃し、**`FANZA_CONTENT_BASE` マップ**へ:
+  - `videoa` / `amateur` → `https://video.dmm.co.jp/av/content/?id=`
+  - `anime` → `https://video.dmm.co.jp/anime/content/?id=`
+  - `nikkatsu` → `https://video.dmm.co.jp/cinema/content/?id=`
+  - 未指定・未知フロア → av 面(従来相当の既定)
+- `BuildAffiliateURLInput` に `floor?: string | null` を追加。works詳細(`normalizeFloorForUrl(floor)`)と product-card のfallback(`normalizeFloorForUrl(item.floor_code)`)から引き渡し
+- **【検証】生成URL vs API返却 `affiliateURL` の機械的突合(4フロア×2作品=8件)**: **一致8件 / 不一致0件**(不一致の残存なし)
+- **本番検証(06:27 JST・works詳細の実出力)**: videoa→`video.dmm.co.jp/av` / anime→`video.dmm.co.jp/anime` / nikkatsu→`video.dmm.co.jp/cinema` / amateur→`video.dmm.co.jp/av` = **全フロアでAPI準拠のパスに是正**
+
+### S2の副次確認(修正前の実測=是正の根拠)
+- 修正前(2026-07-31 05:4x JST)、`works/anime/196glod00426` と `works/nikkatsu/174okuram00787` の**004リンクはいずれも `www.dmm.co.jp/digital/videoa/-/detail/=/cid=<当該cid>/` を出力**していた(=videoa固定パス)。**anime 3,869件・nikkatsu 6,125件の既存リンクが同じ形式だった**ことになる
+- **ffe3cd1同系統の着地不良の有無**: 修正前URLは**302 → `www.dmm.co.jp/age_check/=/?rurl=<元URL>`**(パス保持)までは確認済み。**年齢確認より先の実ページ到達可否・作品同一性は未確認=HUMAN枠**(ffe3cd1と同手順)。したがって「着地不良が発生していた」とも「していなかった」とも本フェーズでは判定していない
+- 本修正はaf_id 990の件とは**独立の是正**(対象=004リンクの着地先パス)
+
+## 繰越項目の進捗
+| # | 項目 | 状態 |
+|---|---|---|
+| 1 | **GSC最終更新日** | **2026/07/24 のまま**(2026-07-31 06:1x JST確認)=**7日間更新なし**。登録済1.25万・未登録4,700・代替canonical1,829・検出未登録607・クロール済未登録595 も**7/24時点から全て不変**。※本日は7/31であり8/1判定日は未到来だが、通常ラグ(2〜3日)は既に超過 |
+| 2 | 2026/05の差分洗い出し(デプロイ履歴・sitemap提出・インデックス変化) | **未着手** |
+| 3 | ahrefs(DR/参照ドメイン・japanero.jpの向き先) | **未着手** |
+| 4 | Make.comシナリオ5615632の投稿af_id | **未着手** |
+| — | concierge検証 | **HUMAN枠へ移管**(CSO承認済み・ひでき氏が/conciergeで対話し作品カードのリンクURLを1件確認) |
+
+> 本追記は事実の転記のみ。提案・設計・評価は記載していない(指示準拠)。
