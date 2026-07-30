@@ -42,7 +42,13 @@ export function FanzaAffiliateLink({
     | "guide_first_purchase_cta" // U2: はじめてのFANZAガイド記事末尾
     | "guide_tv_signup_cta" // U2: ガイド記事内 FANZA TV/プレミアム登録CTA
     | "guide_tvplus_add_cta" // B2⑥: 既存プレミアム会員向け TV Plus 追加CTA（第2ファネル）
-    | "article_sale_cta"; // U3: セール特集テンプレート
+    | "article_sale_cta" // U3: セール特集テンプレート
+    // S1(2026-07-31 CSO承認): 一覧系 ProductCard の CTA 計装。href は不変(API 返却
+    // の af_id=990 のまま)で、計測経路のみ works 詳細と同等に載せる。面を区別する。
+    | "list_top_card_cta"
+    | "list_genres_card_cta"
+    | "list_actresses_card_cta"
+    | "list_card_cta"; // 面未指定のフォールバック
   className?: string;
   children: ReactNode;
 }) {

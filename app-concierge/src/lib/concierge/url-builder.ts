@@ -34,6 +34,11 @@ export interface BuildAffiliateURLInput {
    * 通常は省略し、環境変数から自動解決する。
    */
   affiliateIdOverride?: string;
+  /**
+   * S2: 作品のフロア（`FANZA_FLOORS.code`）。詳細 URL のパスをフロア別に
+   * 出し分けるために使う。未指定時は従来どおり av 面のパス。
+   */
+  floor?: string | null;
 }
 
 export interface AffiliateURLs {
@@ -51,8 +56,30 @@ export interface AffiliateURLs {
 }
 
 const DMM_AFFILIATE_BASE = "https://al.dmm.co.jp/";
-const FANZA_DETAIL_BASE =
-  "https://www.dmm.co.jp/digital/videoa/-/detail/=/cid=";
+/**
+ * S2(2026-07-31 CSO承認): 旧実装は全フロアで `digital/videoa/-/detail/=/cid=` 固定
+ * だったため、anime / nikkatsu の作品でも videoa のパスを出力していた（2026-07-31
+ * 実測: works 詳細 anime/nikkatsu の 004 リンクが videoa パスで配信されていた）。
+ * FANZA API が返す正規 URL のパスはフロアごとに異なるため、同じ形へ出し分ける。
+ *   videoa / amateur(=API では videoa) → video.dmm.co.jp/av/content/?id=
+ *   anime                              → video.dmm.co.jp/anime/content/?id=
+ *   nikkatsu                           → video.dmm.co.jp/cinema/content/?id=
+ * 本修正は af_id 990 の件とは独立の是正（対象は 004 リンクの着地先）。
+ */
+const FANZA_CONTENT_BASE: Record<string, string> = {
+  videoa: "https://video.dmm.co.jp/av/content/?id=",
+  amateur: "https://video.dmm.co.jp/av/content/?id=",
+  anime: "https://video.dmm.co.jp/anime/content/?id=",
+  nikkatsu: "https://video.dmm.co.jp/cinema/content/?id=",
+};
+/** フロア未指定・未知フロア時の既定（従来と同じ av 面）。 */
+const FANZA_CONTENT_DEFAULT = FANZA_CONTENT_BASE.videoa;
+
+function detailTargetFor(contentId: string, floor?: string | null): string {
+  const base =
+    (floor && FANZA_CONTENT_BASE[floor]) || FANZA_CONTENT_DEFAULT;
+  return `${base}${encodeURIComponent(contentId)}`;
+}
 const FANZA_SEARCH_BASE =
   "https://www.dmm.co.jp/digital/videoa/-/list/search/=/searchstr=";
 
@@ -110,7 +137,7 @@ export function buildAffiliateURL(
   const asp = safeAspName(input.asp ?? DEFAULT_ASP);
 
   // --- 詳細ページ + 検索一覧ページの「素の」ターゲット URL を組み立てる ---
-  const detailTarget = `${FANZA_DETAIL_BASE}${encodeURIComponent(input.contentId)}/`;
+  const detailTarget = detailTargetFor(input.contentId, input.floor);
   const searchQuery = deriveSearchQuery(input);
   const searchTarget = `${FANZA_SEARCH_BASE}${encodeURIComponent(searchQuery)}/`;
 

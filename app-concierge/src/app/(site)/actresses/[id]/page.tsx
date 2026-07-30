@@ -261,7 +261,7 @@ export default async function ActressPage({
       {page.items.length === 0 ? (
         <EmptyState title="この女優の作品はまだ表示できません" />
       ) : (
-        <ProductGrid items={page.items} />
+        <ProductGrid items={page.items} surface="actresses" />
       )}
 
       {relatedActresses.length > 0 && (
