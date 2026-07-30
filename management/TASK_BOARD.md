@@ -2575,3 +2575,22 @@
 - 判定の確定: **route handler化は再検証不着地の解決にならない=route種別仮説は否定で確定**。archiveとの残る差(生成の重さ16 API呼出/fetch層キャッシュ設定/パス特性)=未特定のまま。**停止条件3の停止状態を維持・CSO裁定待ち**
 - CTO提案(裁定材料・再掲): (i)fetch層revalidate設定の確認と上書き(builderのfetchItemList呼出にno-store系を指定=軽実装で「fetch層キャッシュ干渉」仮説を直接検証可能・manifest 5m化の説明候補でもある) (ii)不発なら(a)+(c)ハイブリッド(rev8承認設計の復活=Cronが明示的にデータ更新+revalidatePath)
 - 本番影響: 引き続きデグレなし(配信正常3,045 URL・#2収録済・ビルド時生成は機能・従来と同じ「デプロイ時のみ更新」挙動)
+
+---
+### 2026-07-30 AH不合格後の診断(13:45〜13:51 JST・読み取りのみ)【manifest 5mの原因=特定/再検証不発=未特定で打ち切り】
+- **0項記録**: AH不合格受理・**CSO「route種別仮説」も撤回**として記録。**rev5(重さ)→rev10(route種別)の2連続で仮説が外れた**ため、**以後は仮説検証の前に「差分の機械的洗い出し」を先に行う**を運用則として登録。PR#63はロールバックしない(デグレなし)。分類器停止による5時間遅延=記録のみ
+- **D1=陰性**: `app-concierge/public/`にsitemap.xmlも他のxmlも存在しない(実体=svg 5点+site.webmanifestのみ)→静的ファイルによる影は無い
+- **D2=陰性**: `vercel.json`=regions/ignoreCommand/github.silent/rewrites 2件(いずれもvodnavi.jp host条件のsite-brand転送)のみ。`next.config.ts`=redirects(vercel.aliasホスト→正規301)+headers(全パス共通のセキュリティ5種+.vercel.app宛X-Robots-Tag)のみ。**/sitemap.xmlまたは*.xmlに個別マッチするルール・Cache-Control/Content-Disposition指定は皆無**
+- **D3+差分洗い出し=原因の一部を特定**: ビルドログのルート表は**両者とも「○(prerendered as static content)」で記号が同一**(sitemap.xml=5m 1y / sitemap-archive.xml=1h 1y)=**route種別による出力差はビルド上ゼロ**。実装差分の1対1:
+  | 項目 | sitemap.xml(AH後) | sitemap-archive.xml |
+  |---|---|---|
+  | 配置 | app/sitemap.xml/route.ts | app/sitemap-archive.xml/route.ts |
+  | export const | revalidate=3600のみ | revalidate=3600のみ |
+  | 外部fetch | **DMM API×最大16(fetchItemList)** | なし(supabase-jsのみ) |
+  | fetch層cache指定 | **`next:{revalidate: options.revalidate ?? 300}`(client.ts:208)=builderは未指定→全て300** | 指定なし |
+  | データソース | DMM API+Supabase(記事slug) | Supabase単独 |
+  | manifest実効Revalidate | **5m(=300)** | 1h(=3600) |
+- **確定: 「manifest 5m」の正体=fetch層revalidate 300によるルートrevalidateのclamp**(Next.jsはルート内fetchの最小revalidate値へclamp)。宣言3600が反映されないのはmetadata route/route handlerの別ではなく**この1行が原因**=rev5/rev10両仮説の誤りの共通根
+- **未特定のまま打ち切り(指示3準拠)**: 「実効300秒を50回超過しても再検証が発火しない」ことは上記では説明できない。**逆説: archiveはTTL 3600(より長い)で着地・sitemapは300(より短い)で不発=TTL値は原因でない**→残る差分は生成の重さ(16逐次API・ビルド40秒)だがログ不在で実証不能。**打ち切り基準を適用しこれ以上の仮説検証は行わない**
+- **指示4への回答**: `no-store`不採用=了解。**`next:{revalidate:3600}`明示も推奨しない**——archiveが3600で着地している事実から**TTL値の引き上げは再検証不発を直さない**と判定でき、manifest表示の整合性のみの変更になる(3回目の設計反復に該当)。**(a)+(c)も採用しない**
+- **受容する現仕様と実務対応**: sitemapは**デプロイのたびに再生成**(実害=デプロイ間のstaleのみ・配信は正常3,045 URL・#2収録済)。**L-3検知起案に「公開後チェック第5項: sitemap生成時刻の確認(root lastmod直読)」を統合**——Canceled確認(第4項)と併せ、記事公開時に「収録は次ビルドまで保留」を台帳明記する運用で吸収
