@@ -261,3 +261,64 @@ af_id 990 / 2026/07/01-07/31 日次(17:56 JST 取得):
 ---
 
 > 本記録は事実の転記のみ。判断・評価・提案・記事案は記載していない。
+
+---
+
+# 追記: 繰越項目 (a) ahrefs / (b) Make.com / (d) GSC ステータス【2026-08-01 18:00〜18:11:32 JST】
+
+## (a) ahrefs（Motelab's workspace・ベーシック(AWT Free)・読み取りのみ）
+
+取得元: `app.ahrefs.com` → Dashboard / Site Explorer(可視ナビのみ使用)。Cookie バナーは**「Reject All」を選択**(非必須Cookieを拒否)
+
+### A-1. ホスト別の被リンク指標（Site Explorer・mode=**ドメイン**=サブドメインを含まない）
+
+| 対象 | DR | UR | 参照ドメイン(現在/全期間) | 被リンク(現在/全期間) | オーガニックKW | オーガニックトラフィック |
+|---|---|---|---|---|---|---|
+| **vodnavi.jp**(app. を含まない) | **20** | 4.5 | **393 / 488** | **413 / 911** | 0 | 0 |
+| **app.vodnavi.jp** | **20** | 0 | **2 / 2** | **93 / 100** | 6 | 5 |
+| **moterist.com** | **0** | 4.5 | **372 / 447** | **389 / 487** | 0 | 0 |
+| **motelab.xyz** | **0** | 4.5 | **376 / 447** | **466 / 560** | 0 | 0 |
+
+- app.vodnavi.jp の被リンク93本は **Followed 100% / nofollow 0%**、参照ドメインは **2ドメインのみ**(Followed 2 = 100%)。DR別分布は **UR<10 が 93本(100%)**
+- ダッシュボード側のプロジェクト定義は **`*.vodnavi.jp/*`(サブドメイン込み)** の1本のみ = **プロジェクト単位では apex と app が分離されていない**。上表は Site Explorer で mode=ドメインに切り替えて分離取得したもの
+- ダッシュボード表示(参考): Vodnavi クロール済509 / ヘルススコア98、Moterist 685 / 100、Motelab 275 / 96、Kit-planning 960 / 100
+
+### A-2. japanero.jp からの被リンクの向き先
+
+- 参照ページ: `japanero.jp/seishidouin-no-oshigoto-the-animation-ep1-review/`(JA・WORDPRESS・タイトル冒頭「【新作レビュー】『性指導員のお仕事 The Animation 1時限目』…」)
+- **リンク先ホスト = `app.vodnavi.jp` / パス = `/works/…`**(作品詳細)
+- 周辺テキスト(原文抜粋): 「…**VODNAVI作品情報ページ** 、FANZA公式販売ページ、外部検索で確認できる紹介・レビュー傾向をもとに…」
+
+### A-3. `/articles/` 配下への被リンクの有無
+
+被リンクレポート(target=`vodnavi.jp`・mode=サブドメイン・グループ化=類似をまとめる・**上位100行**・トラフィック降順)における**リンク先の内訳**:
+
+| リンク先 | 件数 |
+|---|---|
+| `vodnavi.jp/`(ルート) | 96 |
+| `www.vodnavi.jp/`(ルート) | 4 |
+| `app.vodnavi.jp/concierge` | 2 |
+| `vodnavi.jp/wordpress-sango-review` | 1 |
+| `vodnavi.jp/u-next-second-free-trial` | 1 |
+| `app.vodnavi.jp/works/…` | 1(= japanero.jp 由来) |
+
+- **`/articles/` 配下への被リンクは 0件**
+- **ただし本計数は上位100行(グループ化あり)に限る**。被リンク総数(vodnavi.jp 413 + app.vodnavi.jp 93)全件の走査ではない = **「0件」は上位100行における観測**であり、全件での不在を確認したものではない
+- 併記: リンク先に **`www.vodnavi.jp`(www 付きホスト)が4件**存在する(§3(g) Q5 の照会事項と関連する実測)
+
+## (b) Make.com シナリオ5615632 → **HUMAN枠へ振替**
+
+- `make.com` を開いた時点で**未ログイン**(ヘッダに "Sign in" 表示)。共通制約「未ログインならHUMAN枠へ振替。CTOはログイン操作を行わない」に従い**未取得**
+- 未取得項目: 生成される投稿URLの af_id / 006以外(004・990系)の混入有無 / Airtable(base `app0VKGU2B16qny6c` / table `posts`)の af_id フィールド値
+
+## (d) GSC ステータスダッシュボードの既知遅延告知 → **取得不可**
+
+- Search Console(authuser=1)を開き、ヘルプパネル(?アイコン)を展開したが、**ステータスダッシュボードへの可視リンクは発見できなかった**(表示されたのは文脈ヘルプ「Search Console の概要ページ」のみ)
+- 共通制約「URL推測は禁止。可視リンクまたはCSO明示提供のURLのみを辿る」に従い、**ステータスダッシュボードのURLを推測しての到達は行わなかった** = **取得不可**
+- CSO からダッシュボードURLの明示提供があれば次セッションで取得可能
+
+## 付随して確認した事実
+
+- **Googleアカウントの実測確認**: GSC のアカウントパネルで **authuser=1 = `moterist.com@gmail.com`(表示名「モテリスト 様」)** を目視確認。同一ブラウザに併存するのは `trendnet2026@gmail.com`(デフォルト)・`hdktchkw33@gmail.com`・`dandychan.auone@gmail.com`(ログアウト済)。**番号ではなくアカウント名で確認するという運用則の妥当性を再確認**
+
+> 本追記も事実の転記のみ。判断・評価・提案は記載していない。
