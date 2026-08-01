@@ -2630,3 +2630,18 @@
 - **archiveランタイム再検証の実証回数**: 「2回」は誤り→**1回**(7/30窓2のみ有効・7/29窓1はPR#60 ready完了が窓内+`X-Vercel-Cache: PRERENDER`のため撤回)。**「Supabaseベースなら再検証が効く」の一般化は禁止**(n=1・軽量性の寄与と未分離)
 - **用語**: 「継続課金商材」は誤り——**読者側の支払いが継続する意味**であり、当方の**報酬はすべて一回限り**。継続報酬(レベニューシェア)は存在しない。※CSO指示文では「Q3照会中」だが、**2026-07-30に公式ヘルプ記事47549で確定済み**(「月額サービスの成果は初回購入時にのみ発生。それ以降の継続課金時には成果の発生はございません」)=Q3はクローズ可・照会不要。Q4(無料体験中解約時の取消可否)のみ回答待ち継続
 - **運用則**: rev5(重さ)→rev10(route種別)と**2回続けて仮説が外れた**ため、以後は**仮説検証の前に「差分の機械的洗い出し」を先に行う**(この手順で#11の共通根=1行を特定)
+
+### 2026-08-02 ahrefs Site Audit 記録（CSO指示3・事実転記）
+- **エラー8件 = `Orphan page (has no incoming internal links)` の1項目のみ**（Vodnavi プロジェクト id 8431320）。該当8URLは全て `www.vodnavi.jp` の記事ページ・HTTP 200・内部リンク元0・`sitemap.xml` 由来
+- **4xx / 5xx / Broken redirect は 0件**（Structure explorer 実数表: app.vodnavi.jp 489 / www.vodnavi.jp 17 / vodnavi.jp 3 の全ホストで 4xx=0・5xx=0）
+- **既知5事象（404=787 / robots除外648 / 代替canonical1,829 / noindex / wwwリダイレクト）のいずれとも重複しない別事象**。wwwリダイレクトのみ「apex 3URL 全て3xx」で既知事象と一致するが、エラー8件とは別項目
+- **クロール上限到達により全域未網羅**（原文「The crawl has reached the maximum number of internal pages…」）。実クロール計509 URL
+- **ahrefs クロールは 2026-07-16〜07-25 の10日間連続 Failed、7/26 に Completed 復帰**。最終クロール 2026-08-01 16:20:45 JST・頻度は日次。**GSC の停止（従前記録では7/24）とは期間が異なる別事象**
+- ※2026-08-02 07:2x 実測では **GSC も停止していない**（vodnavi.jp / app.vodnavi.jp とも最終更新5.5時間前・データは7/30まで）。従前の「4プロパティとも7/24停止」は本日時点では成立しない
+- 詳細: `management/_metrics/2026-W31/datapull-20260802-0630-ahrefs-site-audit-errors.md`
+
+### 2026-08-02 B2①デプロイ（PR #62）→ classifier 遮断で未実施
+- プリフライトは全て合格（tsc exit 0 / 本番全7記事で `[text](/articles/slug)` パターン0件=出力不変）
+- `gh pr merge 62` が **auto-mode classifier により拒否**。制約に従い迂回せず停止。**PR #62 は OPEN のまま**
+- `internal_links` の DDL は **PR #62 の前提条件ではない**（PR は articles/[slug]/page.tsx 1ファイルのみで internal_links 未参照）。**DDL はリポジトリに存在せず**（BRIEF_126 §2 の SQL 案のみ）、supabase MCP は `--read-only` かつ切断中・`SUPABASE_*` env 未設定のため **DDL適用は HUMAN 枠**
+- 公開後チェック第4項（Canceled確認）・第5項（sitemap生成時刻）は**デプロイ未発生のため未実施**
