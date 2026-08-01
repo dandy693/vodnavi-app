@@ -52,3 +52,65 @@ TASK_BOARD内で「層B」に言及する記載(該当行の原文抜粋):
 - DMMレポート日次(990単体・31日窓)=**未着手**(affiliate.dmm.com のログイン状態も未確認)
 
 > 本ファイルは事実の転記のみ。提案・設計・評価は記載していない(指示準拠)。
+
+---
+
+# B. 計装追加の起案(実装は8/7判定後・**本フェーズは起案のみ**)【2026-08-01 16:47:45 JST】
+
+## B-0. 前提の実測(コード読み取り)= **指示の前提を1点訂正**
+
+| 対象 | 現状の計装 | href の af_id |
+|---|---|---|
+| 一覧系メインCTA(product-card「今すぐ視聴 →」) | **S1で計装済み**(`FanzaAffiliateLink`・placement=`list_*_card_cta`) | 990 |
+| **一覧系フォールバック**(product-card「◯◯の作品を探す」) | **計装なし**(素の`<a>`・onClickなし) | 004 |
+| **concierge メインCTA**(`concierge-chat.tsx` L702-727「今すぐ視聴」) | **既に計装あり**——素の`<a>`だが**onClickで`trackProductClick`(placement: **`"cta"`**)+`trackAiAffiliateClick`(link_variant: `"primary"`・**placement未指定**)を直接呼び出し** | 990 |
+| **concierge フォールバック**(同 L732-750「作品がみつからない場合はこちら（検索一覧へ）」) | **既に計装あり**——onClickで`trackAiAffiliateClick`(link_variant: **`"fallback_search"`**・**placement未指定**)のみ(`trackProductClick`は呼ばない) | 004 |
+
+- **指示文の「concierge メインCTA(990)/ concierge フォールバック(004)を FanzaAffiliateLink 化」は、"未計装を計装する"のではなく "既存の直接呼び出しを共通コンポーネントへ統一し、placement を付与/正規化する"作業**にあたる(事実の訂正)
+- **`ai_affiliate_click` に placement が付いていない**ため、conciergeのクリックはGA4のplacement別レポートで**分離できない**(既存の(not set)とは別要因=そもそもパラメータ未送出)。※4-7月の実測でplacement一覧に`cta`が現れなかったのは、`trackProductClick`側の`placement:"cta"`が`product_click`イベントに付き、`ai_affiliate_click`には付かないため
+
+## B-1. 起案(実装は8/7のボット判定完了後)
+
+### 共通の絶対条件
+- **href の値は一切変更しない**(一覧系フォールバック=004のまま/concierge メインCTA=990のまま/concierge フォールバック=004のまま)
+- 変更は**計測経路と placement 付与のみ**。S1と同じ方針
+
+### 対象と placement 命名(指示の命名案を採用)
+| # | 対象 | 現行 | 変更後の placement | 備考 |
+|---|---|---|---|---|
+| 1 | 一覧系フォールバック(トップ) | 素の`<a>` | `list_top_card_fallback` | `ProductCard` の `surface` から写像 |
+| 2 | 一覧系フォールバック(genres) | 素の`<a>` | `list_genres_card_fallback` | 同上 |
+| 3 | 一覧系フォールバック(actresses) | 素の`<a>` | `list_actresses_card_fallback` | 同上。面未指定時の既定は `list_card_fallback` を追加(S1と同型) |
+| 4 | concierge メインCTA | onClick直接呼び出し(placement=`"cta"`) | `concierge_card_cta` | `product_click` の既存値 `"cta"` からの**値変更**を伴う=**既存系列の分断に該当**(下記の分断注記) |
+| 5 | concierge フォールバック | onClick直接呼び出し(placement なし) | `concierge_card_fallback` | `ai_affiliate_click` に placement を**新規付与**=既存系列に非接触 |
+
+### 実装方針(S1と同型)
+- `fanza-affiliate-link.tsx` の placement 型に**6値を追加**(上表5値+`list_card_fallback`)
+- `product-card.tsx` のフォールバック`<a>`を `FanzaAffiliateLink` へ差し替え(`surface` から placement を写像)
+- `concierge-chat.tsx` の `WorkCardCta` 内2箇所を `FanzaAffiliateLink` へ差し替え。**`link_variant` の区別**(primary / fallback_search)は現行の呼び出しで送出されているが、`FanzaAffiliateLink` は `link_variant:"primary"` 固定のため、**fallback側の `link_variant` が変わる点は実装時の確認事項**(既存系列との整合)
+- ロールバック=単独PRのrevert
+
+### ⚠️ 系列分断の注記(実装時に必須)
+- **#4のみ**、`product_click` の placement が `"cta"` → `concierge_card_cta` へ**値変更**となる。これは既存の placement 系列を分断するため、**BRIEF_126 §9 の「値変更=分離実行条件」と同型の扱い**が必要(層B確定後の実行、または新旧値の並記期間)
+- #1〜#3・#5 は**新規付与**のため既存系列に非接触
+
+## C. 層B確定判定の入力充足確認(現時点)
+
+判定の入力は**DMM成果+GA4クリック**(項目3の転記どおり)。層B=2026-07-24〜(境界 2026-07-24 00:00:54 JST)、終期は台帳記載「層B観測(〜8月頭)」。
+
+| 入力 | 取得済み範囲 | **不足** |
+|---|---|---|
+| **DMM 004 成果・クリック(日次)** | 7/16〜7/28(2026-07-29 12:25 JST取得) | **7/29・7/30・7/31**(+層B終期を8/1とする場合は8/1も。**8/1は当日値のため確定は8/2以降**) |
+| **GA4 004クリック(placement別日次)** | 7/24〜7/28(2026-07-29 11:35 JST取得) | **7/29・7/30・7/31**(同上) |
+| DMM 990 クリック・成果 | 月次(2025/08〜2026/07)のみ | **日次(31日窓)未取得**=990のボット判定用。層B(004)判定には不要 |
+| セルフクリック控除台帳 | 7/25の004×1・7/23夜の006×1 を記録済み | 7/29以降の自クリック=**発生なし**(CTAクリック未実施のため) |
+
+### 現時点の可否
+- **不足=DMM/GA4とも7/29〜7/31の3日分**(層B終期を8/1とするなら8/1も。当日値は確定待ち)
+- **これらの取得には `moterist.com@gmail.com` のログイン(GA4)と affiliate.dmm.com のログイン(DMM)が必要**=いずれも本日時点で**未ログイン/未確認**
+- したがって**現時点では入力が揃っておらず、層B確定判定は実施不可**。GSC停止は判定をブロックしない(項目3で転記済み)が、**アカウント復帰が判定の前提条件**となる
+
+## A. ログイン復帰後の即時取得 → **待機中(未着手)**
+1. GSC 8/1判定(4プロパティ)/2. GA4計装生存確認(`list_*_card_cta`)/3. DMMレポート日次(990単体31日窓)+affiliate.dmm.comのログイン状態確認——**HUMAN完了の連絡待ち**
+
+> 本追記は事実の転記のみ。提案・設計・評価は記載していない(指示準拠)。
