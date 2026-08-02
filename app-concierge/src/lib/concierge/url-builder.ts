@@ -12,8 +12,9 @@
  *   });
  *
  * 環境変数:
- *   - DMM_AFFILIATE_ID            — サーバー側で使用（API 呼び出し時）
- *   - NEXT_PUBLIC_FANZA_AFFILIATE_ID — クライアントバンドル可（URL 直書き用）
+ *   - NEXT_PUBLIC_FANZA_AFFILIATE_ID — **人間導線 URL の af_id はこれのみ**（004 系）
+ *   - DMM_AFFILIATE_ID              — FANZA API 呼び出しの認証用（990 系）。
+ *                                     本ファイルからは参照しない（S4 追加・混線防止）
  */
 
 import { DEFAULT_ASP, safeAspName, type AspName } from "./asp";
@@ -84,21 +85,52 @@ const FANZA_SEARCH_BASE =
   "https://www.dmm.co.jp/digital/videoa/-/list/search/=/searchstr=";
 
 /**
- * Vercel / Next.js のクライアントバンドルでは `process.env.NEXT_PUBLIC_*` のみ
- * 静的に読み取れる。サーバー側 SSR 経路では `DMM_AFFILIATE_ID` を優先。
- * いずれも未定義の場合は affiliate トラッキング無しの生 URL を返す（盾の方針）。
+ * DMM API 専用 af_id（990〜999）の形。台帳（reference_dmm_affiliate_id_registry）で
+ * **人間導線（href）への使用は禁止**されている。
  */
-function resolveAffiliateId(asp: AspName, override?: string): string | null {
-  if (override && override.length > 0) return override;
-  if (asp === "fanza") {
-    return (
-      process.env.NEXT_PUBLIC_FANZA_AFFILIATE_ID ??
-      process.env.DMM_AFFILIATE_ID ??
-      null
+const API_ONLY_AF_ID = /-99\d$/;
+
+/**
+ * S4 追加(2026-08-03 CSO承認): 人間導線に出してはならない ID を実行時に弾く。
+ * 黙って 990 で発行するより、止めて気づけるほうが安全という裁定。
+ */
+function assertHumanFacingAffiliateId(id: string): string {
+  if (API_ONLY_AF_ID.test(id)) {
+    throw new Error(
+      `[af_id guard] "${id}" は DMM API 専用 ID（990〜999）であり、人間導線の URL に使用できない。` +
+        `NEXT_PUBLIC_FANZA_AFFILIATE_ID に人間 CTA 用 ID（例: …-004）を設定すること。` +
+        `API 認証用の DMM_AFFILIATE_ID とは用途が異なる別物であり、代用してはならない。`,
     );
   }
-  // dmm_tv / u_next はフェーズ 2 で実装。現状は環境変数が無いため null。
-  return null;
+  return id;
+}
+
+/**
+ * Vercel / Next.js のクライアントバンドルでは `process.env.NEXT_PUBLIC_*` のみ
+ * 静的に読み取れる。人間導線の af_id は **`NEXT_PUBLIC_FANZA_AFFILIATE_ID` のみ**
+ * を情報源とする。
+ *
+ * S4 追加(2026-08-03 CSO承認): 旧実装は未設定時に `DMM_AFFILIATE_ID` へ
+ * フォールバックしていたが、これは **API 認証用の 990 系 ID** であり、env が欠けた
+ * だけで人間 CTA が 990 で発行される潜在経路だった（2026-08-02 実装報告 §9）。
+ * フォールバックを撤去し、解決結果は `assertHumanFacingAffiliateId` で検査する。
+ * **`DMM_AFFILIATE_ID` の API 認証用途（`lib/fanza/client.ts`）は変更していない。**
+ *
+ * 未定義の場合は従来どおり affiliate トラッキング無しの生 URL を返す（盾の方針）。
+ * ＝ 誤った ID で計上されるより、計上しないほうを選ぶ。
+ */
+function resolveAffiliateId(asp: AspName, override?: string): string | null {
+  // 候補の決定と検査を分離し、**返り値の出口を 1 箇所に固定**する。
+  // 出口が複数あると検査を通らない経路が生まれるため（CI: guard-affiliate-id.mjs
+  // が「null 以外の return は必ず assertHumanFacingAffiliateId 経由」を検査する）。
+  let candidate: string | null = null;
+  if (override && override.length > 0) {
+    candidate = override;
+  } else if (asp === "fanza") {
+    candidate = process.env.NEXT_PUBLIC_FANZA_AFFILIATE_ID ?? null;
+  }
+  // dmm_tv / u_next はフェーズ 2 で実装。現状は環境変数が無いため null のまま。
+  return candidate ? assertHumanFacingAffiliateId(candidate) : null;
 }
 
 function wrapWithDmmAffiliate(targetUrl: string, affiliateId: string): string {

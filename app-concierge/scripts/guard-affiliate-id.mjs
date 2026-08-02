@@ -105,11 +105,91 @@ function runStatic() {
           `構造化データ(JSON-LD)の url に affiliateURL を置いている（c237e51 回帰）: ${line.trim()}`,
         );
       }
+
+      // (5) S4 追加: 人間導線の af_id 解決経路へ API 認証用 ID が流入しうる形。
+      //     `DMM_AFFILIATE_ID` は FANZA API 認証専用（990 系）であり、
+      //     参照してよいのは API クライアント（lib/fanza/）だけ。URL ビルダ側で
+      //     参照すると env 欠落時に人間 CTA が 990 で発行される。
+      if (
+        /process\.env\.DMM_AFFILIATE_ID/.test(line) &&
+        !rel.startsWith("src/lib/fanza/")
+      ) {
+        fail(
+          at,
+          `URL 生成経路から API 認証用 DMM_AFFILIATE_ID(990系) を参照している` +
+            `（resolveAffiliateId の戻り値が 99x になりうる経路）。` +
+            `人間導線は NEXT_PUBLIC_FANZA_AFFILIATE_ID のみを使うこと: ${line.trim()}`,
+        );
+      }
     });
+  }
+
+  // (6) S4 追加: url-builder の実行時ガード（99x を弾く検査）が撤去されていないこと。
+  //     (5) は「API 用 env の参照」を検出するが、別経路で 99x が渡された場合の
+  //     最終防御はこのガード。存在自体を検査して黙殺による回帰を防ぐ。
+  const builderRel = "src/lib/concierge/url-builder.ts";
+  const builderPath = join(SRC_ROOT, "lib/concierge/url-builder.ts");
+  let builderSrc = "";
+  try {
+    builderSrc = readFileSync(builderPath, "utf8");
+  } catch {
+    fail(builderRel, "URL ビルダが見つからない（検査を実行できない）");
+  }
+  if (builderSrc) {
+    if (!/API_ONLY_AF_ID\s*=\s*\/[^/]*99/.test(builderSrc)) {
+      fail(
+        builderRel,
+        "API 専用 ID(99x) を判定する API_ONLY_AF_ID が存在しない（実行時ガードの撤去）",
+      );
+    }
+    if (!/function\s+assertHumanFacingAffiliateId/.test(builderSrc)) {
+      fail(
+        builderRel,
+        "assertHumanFacingAffiliateId（99x で例外を投げる実行時ガード）が存在しない",
+      );
+    }
+
+    // resolveAffiliateId の本体を取り出し、**null 以外を返す return が
+    // すべて assertHumanFacingAffiliateId を経由している**ことを検査する。
+    // ＝ 「戻り値が 99x になりうる経路」の検出。
+    const bodyMatch = builderSrc.match(
+      /function\s+resolveAffiliateId[\s\S]*?\n\}/,
+    );
+    if (!bodyMatch) {
+      fail(builderRel, "resolveAffiliateId が見つからない（検査を実行できない）");
+    } else {
+      // コメント行を落としてから走査する（禁則を説明するコメント中の
+      // "return" を式として拾わないため）。
+      const body = bodyMatch[0]
+        .split(/\r?\n/)
+        .map(stripComment)
+        .join("\n");
+      const returns = [...body.matchAll(/\breturn\s+([^;]+);/g)].map((m) =>
+        m[1].replace(/\s+/g, " ").trim(),
+      );
+      if (returns.length === 0) {
+        fail(builderRel, "resolveAffiliateId に return が無い（検査不能）");
+      }
+      for (const r of returns) {
+        const guarded =
+          r === "null" ||
+          /^assertHumanFacingAffiliateId\(/.test(r) ||
+          /\?\s*assertHumanFacingAffiliateId\([^)]*\)\s*:\s*null$/.test(r);
+        if (!guarded) {
+          fail(
+            builderRel,
+            `resolveAffiliateId が未検査の値を返している（戻り値が 99x になりうる経路）: return ${r};`,
+          );
+        }
+      }
+    }
   }
 
   if (failures.length === 0) {
     notes.push("static: href への affiliateURL 直渡し 0 件 / af_id ハードコード 0 件");
+    notes.push(
+      "static: URL 生成経路からの DMM_AFFILIATE_ID 参照 0 件 / 99x 実行時ガード存在",
+    );
   }
 }
 
