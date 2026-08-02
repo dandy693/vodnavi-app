@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { ArticleGuideLinks } from "@/components/article-guide-links";
 import { EmptyState } from "@/components/empty-state";
 import { ProductGrid } from "@/components/product-grid";
 import { fetchItemList } from "@/lib/fanza/client";
@@ -257,6 +258,23 @@ export default async function ActressPage({
           <p>{editorial.editorialLead}</p>
         </section>
       )}
+
+      {/* B2②-a（2026-08-03 CSO承認）: actresses → articles の内部送客導線。
+         全女優ページ一律（コード内定数・段階導入なし＝CSO裁定）。
+         ※本面は現状クリック 0 件のため、判定ゲート指標①への寄与は期待しない
+         （`management/_metrics/GATE_20260930.md` §6 事前登録）。 */}
+      <ArticleGuideLinks
+        surface="actresses"
+        sourceId={id}
+        heading="はじめての方へ"
+        links={[
+          {
+            slug: "fanza-tv-free-trial",
+            label: `${displayName}の作品を14日間無料で見る方法`,
+          },
+        ]}
+        className="mb-8"
+      />
 
       {page.items.length === 0 ? (
         <EmptyState title="この女優の作品はまだ表示できません" />
