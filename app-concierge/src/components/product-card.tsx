@@ -48,21 +48,29 @@ export function ProductCard({
   const review = item.review;
   const isNew = isNewItem(item.date);
   const detailHref = `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`;
-  // メイン CTA は FANZA API が返す正規のアフィリエイト URL を使う（フロア横断で
-  // 最も正確。content_id から自前で URL を組むと videoa 以外で破綻するため）。
-  const affiliateHref = item.affiliateURL ?? item.URL;
 
+  // S4(2026-08-02 CSO承認): メイン CTA の href を API 返却の `item.affiliateURL`
+  // （af_id=990 / ch=api）から単一ビルダ `buildAffiliateURL` 産の 004 リンクへ置換。
+  // 990〜999 は DMM API 専用 ID で人間導線への使用は台帳で禁止されており、works
+  // 詳細だけが 004 という非対称を解消する。
+  //
+  // 【遷移先（lurl）は変更しない】現行 990 リンクの lurl と buildAffiliateURL の
+  // フロア別パス（videoa/amateur→/av/・anime→/anime/・nikkatsu→/cinema/）が一致
+  // することを 2026-08-02 23:48 JST の本番実測で 72/72 一致・不一致0 として機械確認済み。
+  // 変わるのは host（al.fanza.co.jp→al.dmm.co.jp）/ af_id（990→004）/
+  // ch（api→link_tool&ch_id=link）の 3 点のみ＝works 詳細と同一形式。
+  //
   // 404 ダブルリンク（盾④）: メイン作品 URL が配信終了で 404 化しても報酬導線を
   // 失わないよう、女優名 / 型番（無ければ content_id）で FANZA 検索結果一覧へ飛ぶ
   // フォールバックのアフィリエイト URL を併設する。af_id は buildAffiliateURL が
   // 環境変数（NEXT_PUBLIC_FANZA_AFFILIATE_ID, 盾③）から動的に解決する。
   const primaryActress = item.iteminfo?.actress?.[0]?.name ?? null;
   const skuCode = item.maker_product ?? null;
-  const { fallbackUrl } = buildAffiliateURL({
+  const { primaryUrl: affiliateHref, fallbackUrl } = buildAffiliateURL({
     asp: "fanza",
     contentId: item.content_id,
     actressOrSku: primaryActress ?? skuCode,
-    // S2: フロア別パス（fallbackUrl は検索一覧のため実質不変だが、呼び出しを統一）。
+    // S2/S4: フロア別パス。primaryUrl（メイン CTA）の lurl はここで決まるため必須。
     floor: normalizeFloorForUrl(item.floor_code),
   });
   const fallbackLabel = primaryActress
@@ -133,9 +141,10 @@ export function ProductCard({
       </Link>
 
       {/* S1(2026-07-31 CSO承認): 素の <a> から FanzaAffiliateLink へ差し替え。
-         **href の値は一切変更しない**（API 返却の af_id=990 のまま）。目的は
-         GA4 計装のみで、works 詳細と同等の product_click / ai_affiliate_click を
-         発火させ、面を placement で区別できるようにする。 */}
+         works 詳細と同等の product_click / ai_affiliate_click を発火させ、面を
+         placement で区別できるようにする。
+         S4(2026-08-02 CSO承認): href を 990（API 専用 ID）から 004（人間導線 ID）へ
+         置換済み。遷移先は不変。 */}
       <FanzaAffiliateLink
         href={affiliateHref}
         content_id={item.content_id}

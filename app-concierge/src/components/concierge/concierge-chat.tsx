@@ -32,7 +32,14 @@ export interface Work {
   actresses: string;
   genres: string;
   review_average: string | null;
-  affiliateURL: string;
+  /**
+   * S4(2026-08-02 CSO承認): 人間 CTA の href に使う 004 リンク。
+   * 旧名 `affiliateURL` は FANZA API 返却値（af_id=990 / ch=api）と同名で、
+   * API 専用 ID をそのまま href へ流す回帰を招いたため改名した。
+   * **API 返却の `item.affiliateURL` をここへ代入してはならない**
+   * （`buildAffiliateURL().primaryUrl` を使う。CI: scripts/guard-affiliate-id.mjs）。
+   */
+  ctaUrl: string;
   detailHref: string;
   image: string | null;
 }
@@ -684,14 +691,21 @@ function RecommendationCard({ work }: { work: Work }) {
  * - 直下のアウトラインリンク: STRATEGY_BRIEF_003 PHASE 2 で導入した
  *   404 フォールバック検索（女優名 / SKU で FANZA 内を検索）。
  *
- * URL は `buildAffiliateURL` 抽象を単一の真実とし、`work.affiliateURL` は
- * 既存 API から渡されるため、primary はそのまま使用、fallback のみ抽象から生成。
+ * URL は `buildAffiliateURL` 抽象を単一の真実とする。
+ *
+ * S4(2026-08-02 CSO承認): 旧 `work.affiliateURL` は FANZA API 返却値
+ * （af_id=990 / ch=api）をそのまま運んでいたが、990〜999 は DMM API 専用 ID で
+ * 人間導線への使用が台帳で禁止されている。生成元（`app/concierge/page.tsx` と
+ * `lib/concierge/tools.ts`）を `buildAffiliateURL().primaryUrl`（af_id=004 /
+ * ch=link_tool&ch_id=link）へ差し替え、フィールドも `ctaUrl` へ改名した。
+ * 遷移先（lurl）はフロア別パスで従来と同一。**この href に API 返却値を直接
+ * 渡す実装へ戻すことは回帰**（`scripts/guard-affiliate-id.mjs` が CI で検出する）。
  */
 function WorkCardCta({ work }: { work: Work }) {
   const asp: AspName = work.asp_name ?? DEFAULT_ASP;
 
-  // primary は API から既に署名 URL として届くため再構築不要。
-  // fallback だけを共通ビルダで生成し、視線設計を統一する。
+  // primary は生成元で既に 004 リンクとして組み立て済みのため再構築しない
+  // （utm_source を保つため）。fallback だけを共通ビルダで生成し、視線設計を統一する。
   const { fallbackUrl, affiliateResolved } = buildAffiliateURL({
     asp,
     contentId: work.content_id,
@@ -701,7 +715,7 @@ function WorkCardCta({ work }: { work: Work }) {
   return (
     <div className="flex flex-col">
       <a
-        href={work.affiliateURL}
+        href={work.ctaUrl}
         target="_blank"
         rel="nofollow noopener noreferrer sponsored"
         onClick={() => {
@@ -798,6 +812,6 @@ function isWork(value: unknown): value is Work {
   return (
     typeof v.content_id === "string" &&
     typeof v.title === "string" &&
-    typeof v.affiliateURL === "string"
+    typeof v.ctaUrl === "string"
   );
 }

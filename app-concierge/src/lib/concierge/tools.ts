@@ -6,6 +6,7 @@ import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { withUtm } from "@/lib/utm";
 
 import { DEFAULT_ASP, type AspName } from "./asp";
+import { buildAffiliateURL } from "./url-builder";
 
 const CONCIERGE_UTM_SOURCE = "concierge";
 
@@ -22,7 +23,11 @@ export interface ConciergeWork {
   genres: string;
   date: string | null;
   review_average: string | null;
-  affiliateURL: string;
+  /**
+   * S4: 人間 CTA 用の 004 リンク（旧名 `affiliateURL`）。API 返却の
+   * `item.affiliateURL`（af_id=990）を代入してはならない。
+   */
+  ctaUrl: string;
   detailHref: string;
   image: string | null;
 }
@@ -104,8 +109,15 @@ export function createConciergeTools(
             genres: joinNames(item.iteminfo?.genre, 4),
             date: item.date ?? null,
             review_average: item.review?.average ?? null,
-            affiliateURL: withUtm(
-              item.affiliateURL ?? item.URL,
+            // S4(2026-08-02 CSO承認): API 返却の `item.affiliateURL`（af_id=990 /
+            // ch=api）ではなく単一ビルダ産の 004 リンクを渡す。990〜999 は API 専用 ID で
+            // 人間導線への使用は台帳で禁止。遷移先（lurl）は従来と同一。
+            ctaUrl: withUtm(
+              buildAffiliateURL({
+                asp: DEFAULT_ASP,
+                contentId: item.content_id,
+                floor: normalizeFloorForUrl(item.floor_code),
+              }).primaryUrl,
               CONCIERGE_UTM_SOURCE,
             ),
             detailHref: `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`,
