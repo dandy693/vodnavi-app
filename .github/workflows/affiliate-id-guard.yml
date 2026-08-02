@@ -1,0 +1,52 @@
+name: Affiliate ID Guard (af_id 990/004 混線ブロック)
+
+# S4(2026-08-02 CSO承認) 回帰ブロック。c237e51 と同型の事故（af_id 入り URL が
+# bot に fetch されて DMM クリックが膨張 / API 専用 ID が人間導線に露出）を防ぐ。
+#
+# 台帳の不変条件:
+#   - 990〜999 = DMM API 専用 ID。人間導線（href）への使用は禁止
+#   - 004      = app.vodnavi.jp の人間 CTA
+#   - JSON-LD / 構造化データに af_id 入り URL を書かない（c237e51）
+#
+# static: ソース走査（ネットワーク不要）。push / PR で毎回失敗させる。
+# live  : 本番の描画結果を検査。デプロイ後の実態を押さえる。
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  schedule:
+    - cron: "30 */6 * * *" # 6 時間ごと（api-healthcheck とずらす）
+  workflow_dispatch:
+    inputs:
+      base:
+        description: "live 検査のベース URL"
+        required: false
+        default: "https://app.vodnavi.jp"
+
+jobs:
+  static:
+    # ソース検査。ネットワーク不要なので push / PR で常に実行する。
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: af_id ガード（ソース検査）
+        run: node app-concierge/scripts/guard-affiliate-id.mjs --static
+
+  live:
+    # 本番の描画結果検査。定期実行 / 手動実行のみ（PR では本番を叩かない）。
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: af_id ガード（本番描画検査）
+        run: >-
+          node app-concierge/scripts/guard-affiliate-id.mjs --live
+          --base "${{ github.event.inputs.base || 'https://app.vodnavi.jp' }}"

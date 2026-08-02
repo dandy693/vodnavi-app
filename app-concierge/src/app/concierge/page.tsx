@@ -8,6 +8,7 @@ import { ConciergeGate } from "@/components/concierge/concierge-gate";
 import { ConciergeSessionInit } from "@/components/concierge/session-init";
 import { DEFAULT_ASP } from "@/lib/concierge/asp";
 import { resolveConciergeSource } from "@/lib/concierge/sources";
+import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import {
   fetchItemList,
   isPlaceholderImageUrl,
@@ -113,8 +114,15 @@ async function resolveCidsToWorks(cids: string[]): Promise<Work[]> {
           actresses: joinNames(item.iteminfo?.actress, 3),
           genres: joinNames(item.iteminfo?.genre, 4),
           review_average: item.review?.average ?? null,
-          affiliateURL: withUtm(
-            item.affiliateURL ?? item.URL,
+          // S4(2026-08-02 CSO承認): API 返却の `item.affiliateURL`（af_id=990 /
+          // ch=api）ではなく単一ビルダ産の 004 リンクを渡す。990〜999 は API 専用 ID で
+          // 人間導線への使用は台帳で禁止。遷移先（lurl）はフロア別パスで従来と同一。
+          ctaUrl: withUtm(
+            buildAffiliateURL({
+              asp: DEFAULT_ASP,
+              contentId: item.content_id,
+              floor: normalizeFloorForUrl(item.floor_code),
+            }).primaryUrl,
             // 共有リンク経由の流入をアフィリエイト計測で識別するため utm_source=shared。
             "shared",
           ),
