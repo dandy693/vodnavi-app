@@ -1,6 +1,6 @@
-# 在庫枯渇の再発防止 — 案B 実施 / 前提確認 / 案A 作成（**OFF のドラフト**）
+# 在庫枯渇の再発防止 — 案B 実施 / 前提確認 / 案A 作成・**テスト検証・有効化まで完了**
 
-- 実施: **2026-08-03 01:58 〜 02:10 JST**
+- 実施: **2026-08-03 01:58 〜 02:15 JST**
 - CSO 承認: 閾値6件・木曜10:00 JST・通知先据え置き・`CLAUDE.md` への1行追加、および「案B先行 → 前提確認 → 案A」の順
 - Phase 1 で停止
 
@@ -22,14 +22,14 @@ TASK_BOARD は現在 2,671 行。**追記だけでは埋没する**ため、自�
 | ① | Conditional action group が現プランで保存できるか | **保存できる**。`get_create_automation_instructions(baseId)`（**base スコープ**の機能カタログ）に `conditionalGroup` / `cron` / `findRecords` / `length` がいずれも含まれ、実際に `create_automation` が **`isValid: true` / `errors: []`** で保存された |
 | ② | 自動化の実行回数上限 | **数値は未確認**（UI に使用量の表示を見つけられなかった）。ただし本設計は**週1回＝月約4回**であり、Airtable の最下位プランの水準でも制約にならない。**プラン名も未確認**（revision history 2週間・`Upgrade` CTA からの推定に留める） |
 
-## 3. 案A（Automation）— **作成済み・OFF（undeployed）**
+## 3. 案A（Automation）— **作成・テスト検証・有効化まで完了（deployed）**
 
 | 項目 | 値 |
 |---|---|
 | ID | **`wflfLOp2JJo89imzQ`** |
 | 名称 | 在庫アラート(X投稿・毎週木10:00 JST) |
 | URL | `https://airtable.com/app0VKGU2B16qny6c/wflfLOp2JJo89imzQ` |
-| **状態** | **`undeployed`＝OFF。有効化は Airtable UI のトグル操作**（API では有効化できない） |
+| **状態** | **`deployed`＝ON（有効）**。2026-08-03 02:1x JST に Chrome 連携で Test automation → トグル ON を実施 |
 
 ### 構成
 
@@ -71,14 +71,30 @@ TASK_BOARD は現在 2,671 行。**追記だけでは埋没する**ため、自�
 
 ---
 
-## 4. 残作業（CSO / HUMAN）
+## 4. テスト検証と有効化（Chrome 連携・CSO 指示により実施）
 
-1. **`wflfLOp2JJo89imzQ` を Airtable UI で確認し、トグルを ON にする**（現在 OFF のため何も起きない）。API では有効化できないため CTO 側では実施していない
-2. ON 後、UI の `Test automation` で発火検証を行うことを推奨（既存「エラー通知」は Run history が空＝本番発火の実績が無いため、本 base の Automation は通算で未検証）
+### 4-1. Test automation（**ライブ実行**）
+
+UI の注意書き: 「This test will run as a live automation. Any configured messages or changes to data will be done and cannot be undone.」
+本オートメーションは**データを書き込むノードを持たない**（`findRecords` + `sendEmail` のみ）ため、テストで変更されるものは無い。
+また実行時点の在庫は 6件で `6 < 6` が false になるため、**メールも送信されない**見込みで実行した。
+
+| ステップ | 結果 |
+|---|---|
+| At a scheduled time（トリガー） | **✓ 成功** |
+| Find records | **✓ 成功**。Found records に `W5-12` / `W5-09` … が表示され、MCP の検算（6件・8/7〜8/9 分）と一致 |
+| If Records length < 6 → Send an email | **スキップ（グレー表示）＝条件不成立**。**メールは送信されていない** |
+
+→ 「在庫が閾値以上のときは鳴らない」という正常系の挙動を実機で確認した。
+
+### 4-2. 有効化
+
+- UI のトグルを **OFF → ON** に変更（`Last updated by モテリスト` と表示）
+- API 側でも `deploymentStatus: "deployed"` を確認（`list_automations`）
+- **既存「エラー通知」も `deployed` のまま変化なし**
 
 ## 5. 実施していないこと
 
-- **オートメーションの有効化（ON）**
 - 既存「エラー通知」（`wflUyeGut6FflwgJu`）の編集・停止・テスト実行
 - `Undo` / `Redo` / `Snapshots` / `Clear revision history` / `Trash` の実行
 - 閾値・曜日・時刻・通知先の CSO 承認値からの変更
@@ -90,6 +106,6 @@ TASK_BOARD は現在 2,671 行。**追記だけでは埋没する**ため、自�
 | 項目 | 期限 |
 |---|---|
 | W5-01（8/3 21:00 JST）の配信確認 | **2026-08-03 中**。在庫枯渇から2日ぶりの再開のため初回確認 |
-| 8/10〜8/12 の在庫確保 | **2026-08-06(木)**。本アラートを ON にすれば当日 10:00 JST に自動通知される（0件 < 6件で発報する想定） |
+| 8/10〜8/12 の在庫確保 | **2026-08-06(木) 10:00 JST に本アラートが自動発報する想定**（その時点で「4日後=8/10 以降」の在庫は 0件 → `0 < 6` で成立）。アラートは有効化済みのため、CTO 側の手動リマインドは不要になった |
 
 > 本記録は事実の転記と、CSO 承認範囲内での実装内容。§3 の設計修正は承認値（閾値6件・木曜10:00・通知先）を変えずに、承認された意図「翌週月〜水を確保」を満たすための基準日の修正である。
