@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { cache } from "react";
 import { FanzaImage } from "@/components/fanza-image";
 import { FanzaAffiliateLink } from "@/components/fanza-affiliate-link";
+import { ArticleGuideLinks } from "@/components/article-guide-links";
 import { NewUserFvModule } from "@/components/new-user-fv-module";
 import {
   ConciergeCtaLink,
@@ -38,6 +39,19 @@ import {
 import { cn } from "@/lib/utils";
 
 export const revalidate = 300;
+
+/**
+ * B2②-a: works 詳細から articles へ送る固定リンク（全作品共通・コード内定数）。
+ * 作品ごとの出し分けは行わない＝`internal_links` テーブル（DDL 未適用・HUMAN 枠）に
+ * 依存しない。出し分け／AI 提案が必要になった時点で B2②-b としてテーブル駆動へ移す。
+ * slug は `editorial_articles` の公開 slug（2026-08-03 に本番 HTTP 200 を確認済）。
+ */
+const WORKS_GUIDE_LINKS = [
+  {
+    slug: "fanza-first-guide",
+    label: "はじめてのFANZA — 登録3分の手順と、支払い・解約の不安への答え",
+  },
+] as const;
 
 type Params = { floor: string; id: string };
 
@@ -483,6 +497,21 @@ export default async function WorkDetailPage({
           <p className="text-[10px] leading-snug text-muted-foreground/60">
             ※ FANZA 公式サイトへ移動します。視聴・購入は FANZA 上で行われます。
           </p>
+
+          {/* B2②-a（2026-08-03 CSO承認）: works → articles の内部送客導線。
+             判定ゲート指標①（articles 面のクリック実数）が目的。
+             - **金 CTA の直下に「追加」**する。既存 CTA は減らさない（指標③の毀損回避）
+             - **`<details>` の外＝常時可視**。U1（NewUserFvModule）は同じ記事への
+               リンクを折りたたみの中に持つため利用者から見えていなかった
+             - U1 は現状維持（CSO裁定 2026-08-03・撤収しない）
+             - ページ内で1回だけ描画する（mobile FV 側には置かない＝リンク重複を増やさない） */}
+          <ArticleGuideLinks
+            surface="works"
+            sourceId={item.content_id}
+            heading="はじめての方へ"
+            links={WORKS_GUIDE_LINKS}
+            className="mt-3"
+          />
 
           {/* U1: 新規ユーザー向けマイクロモジュール（lg=右カラムがFVを兼ねるため
              メインCTA直下に配置。mobile では FV ブロック側で表示済みのため隠す）
