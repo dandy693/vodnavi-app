@@ -2645,3 +2645,10 @@
 - `gh pr merge 62` が **auto-mode classifier により拒否**。制約に従い迂回せず停止。**PR #62 は OPEN のまま**
 - `internal_links` の DDL は **PR #62 の前提条件ではない**（PR は articles/[slug]/page.tsx 1ファイルのみで internal_links 未参照）。**DDL はリポジトリに存在せず**（BRIEF_126 §2 の SQL 案のみ）、supabase MCP は `--read-only` かつ切断中・`SUPABASE_*` env 未設定のため **DDL適用は HUMAN 枠**
 - 公開後チェック第4項（Canceled確認）・第5項（sitemap生成時刻）は**デプロイ未発生のため未実施**
+
+### 2026-08-02 設計原則: 破壊的DB操作は「条件不一致なら絶対にcommitされない」をDBレベルで保証する
+- **原則**: 本番DBへの破壊的操作（UPDATE/DELETE）は、**検算を人間の目視判断に委ねない**。UPDATE と検算を**単一の `DO $$ ... $$` ブロック**に入れ、期待値と不一致なら `raise exception` で**自動ロールバック**させる
+- **根拠(実測)**: Supabase SQL Editor は「Run」ごとに独立したリクエストで実行されるため、`begin;` だけを実行しても次の Run までトランザクションは維持されない。`begin;` → 別Runで検算 → 別Runで `commit;` の3分割は、**検算前に UPDATE が確定する**危険がある
+- **実装要件**: ①事前検証(冪等性ガード＝二重適用の防止) ②UPDATE ③事後検算(**記事別内訳と合計の両方**) ④不一致時 `raise exception` ⑤外側の `begin;`/`commit;` は多重防御(DO が例外を投げれば aborted 状態となり commit は ROLLBACK として作用)
+- **適用第1号**: `management/_metrics/2026-W31/backup-20260802-b21/APPLY_b21_links.sql`(rev2・B2①投入)。CSO承認 2026-08-02
+- **人的判断の余地を残さない**ことが目的であり、実行者の熟練度に依存しない安全性を確保する
