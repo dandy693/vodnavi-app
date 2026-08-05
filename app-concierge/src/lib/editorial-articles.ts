@@ -24,6 +24,13 @@ export interface EditorialArticleProduct {
   content_id: string;
   asp_name: string;
   display_order: number;
+  /**
+   * 表示用の作品タイトル（2026-08-05 CSO承認で追加した nullable 列）。
+   * NULL の場合はレンダラが `content_id` へフォールバックする＝列を足しただけの
+   * 段階では従前と完全に同じ出力になる（フェイルセーフ）。
+   * FANZA API から都度取得すると作品数だけ呼び出しが増えるため、保存値を使う。
+   */
+  title: string | null;
 }
 
 export interface EditorialArticle {
@@ -57,7 +64,7 @@ export async function getPublishedArticleBySlug(
 
   const { data: products } = await supabase
     .from("article_products")
-    .select("content_id, asp_name, display_order")
+    .select("content_id, asp_name, display_order, title")
     .eq("article_id", a.id)
     .order("display_order", { ascending: true });
 
