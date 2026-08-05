@@ -286,7 +286,13 @@ export default async function ArticlePage({
                     placement="article_product_cta"
                     className="inline-flex items-center rounded-full border border-amber-400/30 bg-amber-400/[0.06] px-4 py-2 text-sm font-medium text-amber-300 transition-colors hover:border-amber-400/60 hover:bg-amber-400/10"
                   >
-                    FANZA で視聴する（{product.content_id}）
+                    {/* 2026-08-05 CSO承認: 文言は「視聴する」ではなく
+                        「作品ページを見る」。FANZA API の返却に見放題対象かを示す
+                        フィールドが存在しない（2026-08-05 実呼び出しで確定）ため、
+                        単品購入か見放題かを断定しない表現にする。
+                        title が NULL のときは従前どおり content_id を表示する
+                        （フェイルセーフ＝列追加のみの段階では出力が変わらない）。 */}
+                    FANZA で作品ページを見る（{product.title ?? product.content_id}）
                   </FanzaAffiliateLink>
                 </li>
               );
