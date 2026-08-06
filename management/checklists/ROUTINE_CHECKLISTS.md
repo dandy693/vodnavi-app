@@ -18,6 +18,7 @@
 
 ### 📌 DB更新監視
 - [ ] **API生存確認**: FANZA商品情報APIの同期ログを確認。エラーによる作品データの欠損や、Vercelのビルドエラー（インクリメンタル生成失敗）が起きていないか。
+- [ ] **VODNAVI_SILENT_DEATH_GUARD の発生確認**: Vercel Runtime Errors（`get_runtime_errors` / projectId `prj_42GkXv2njAJTxYbmDoLdP8JoZbkx`・teamId `team_xZz5NtMS95tDQ2Vde65faOzc`・`since: "7d"`）で `VODNAVI_SILENT_DEATH_GUARD` グループの件数を確認。**報告するのは「1日1,000件を超えるバーストが再発した場合」のみ**。それ未満はスパイク型の既知事象として記録・報告とも不要（`FACT_GOVERNANCE.md` §7）。**`users` は実ユーザー数ではない**（§6）。
 
 ---
 

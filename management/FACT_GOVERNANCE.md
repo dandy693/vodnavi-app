@@ -31,3 +31,18 @@
 - **1,078円と2,200円は矛盾しない**: **1,078円=読者の支払額** / **2,200円=TV Plus 初回登録の成果報酬**（`TASK_BOARD.md` L1771 報酬料率）。**別項目**であり「併存＝未確定」ではない。
 - **TV Plus の未確認事項は「追加手続きの実画面URL」のみ**（`url-builder.ts` の `TVPLUS_ADD_TARGET` 禁則解除に必要）。料金の矛盾は台帳照合で解決済み。
 - **`premium.dmm.co.jp` は遮断ドメイン**（2026-08-06 権限モード変更後の再確認でも `This site is not allowed due to safety restrictions.`）＝実画面URLの確認は **HUMAN 実査枠**。
+
+## 6. トラフィック指標の情報源（運用則・CSO確定 2026-08-07）
+- **サーバサイドのリクエスト数を実ユーザー指標として使用しない**。対象＝Vercel Runtime Logs のリクエスト件数 / Firewall の Allowed 件数・Top Request Paths / Runtime Errors の `users`。
+- 根拠（2026-08-06 実測・24時間）: `/concierge` 16,017件のうち **Bot Category 付与＝15,843件＝98.9%**（ai_crawler 6.3K / search_engine_optimization 4.6K / browser_impersonation 4.3K / search_engine_crawler 650）。ボット分類なし（`not set`）は **174件＝1.09%** のみ。**Bot Protection は Inactive**（＝ボットは遮断されずすべて計上される）。
+- **人間のトラフィック指標は GA4 のみを正とする**（GA4 は JS 実行が前提のためボットを計上しない）。乖離の実測: Vercel 24h ÷ GA4 単日 は `/concierge` ≈3,998倍 / actresses ≈858倍 / genres ≈380倍 / works ≈165倍 / トップ ≈157倍。**乖離は全面に存在する**。
+- 帰結: 「Vercel のログにリクエストが多い＝読者が多い / 障害の影響ユーザーが多い」と読まないこと。障害の**人的**影響を見積もるときは GA4 の同期間アクティブユーザーと突き合わせる。
+- 例外: **検証用 Chrome は `/g/collect` を送信しない**ため、CTO の実操作分は GA4 に計上されない（別途 `dataLayer` で確認する）。
+
+## 7. VODNAVI_SILENT_DEATH_GUARD（FANZA API 400）の扱い（CSO確定 2026-08-07・**対処不要／監視のみ**）
+- **スパイク型の事象**。直近7日 2,684件のうち **2,172件（81%）が 2026-08-05（UTC）の1日に集中**。最終発生 **2026-08-05T19:01:27Z＝2026-08-06 04:01 JST**、以後26時間以上ゼロ。恒常的な障害ではない。
+- **読者影響は限定的**: `fetchItemList` は stale-serve ラッパ（`0667855` 2026-07-14）で、鮮度上限内（**一覧48h / cid単品7日**）のキャッシュがあれば throw せず**通常どおり描画**する。**CTA が消えるのは works 詳細の `getWork()` が失敗して `notFound()`＝404 になった場合のみ**（関連作品の取得失敗は `[]` を返すだけで CTA は残る）。発生率は works リクエストに対し **約1.1%**。
+- **`users` を実ユーザー数として読まない**（§6）。7日 `users` 1,321 に対し GA4 の同日サイト全体アクティブユーザーは **56**（約20倍）＝大半がボット由来と**推定**（直接判別する手段は無い）。
+- **記録すべき符合（因果は断定しない）**: ①初回発火 2026-06-21T13:36:09Z は **`23669e9`（6/21 19:22 JST・actresses/genres へ JSON-LD 注入 + robots.ts で AI クローラー明示 allow）の3時間14分後** ②この JSON-LD 注入箇所は **`c237e51` が「af_id 露出→bot fetch」経路として是正したのと同じ場所** ③2026-08-06 実測のボット内訳で **ai_crawler 39.3%**（amazonbot 5.2K / claudebot 919）。**時系列の一致と場所の一致のみを記録し、因果は未確定**。
+- **監視方法**: Vercel Runtime Errors で GUARD の発生を**週次確認**。**1日1,000件を超えるバーストが再発した場合のみ報告**する（それ未満は記録も報告も不要）。
+- 調査全文 → `management/_metrics/2026-W32/datapull-20260807-0630-silent-death-guard.md`
