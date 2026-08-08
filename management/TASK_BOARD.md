@@ -2876,3 +2876,39 @@
   7/08〜8/06 に分布) ④検出-未登録も減りうるが対象は amateur 234件のみ(actresses 138・他works 121・genres 7 は対象外)
 - **観測設計**: 基準線=代替canonical 2,000 / amateur構成比 91.2%。中間 +2週間(記録のみ) / 判定 +4週間。
   ロールバックは1コミット revert + デプロイ(route handler `revalidate=3600` のため最大1時間で復帰)
+
+### T-20260813-R2-EXEC — R2(sitemap から `/works/amateur/` 400 除外) 実施【CSO承認 2026-08-08・**着手は8/13の判定完了後**】
+- 起案書: `management/_metrics/2026-W32/proposal-20260808-2320-r2-sitemap-amateur-exclusion.md`
+- **承認: 案A(works の出力だけスキップ)**。根拠=削減効果は案Bと同一・**将来前提に依存しない**
+- **着手条件(両方の完了を確認してから)**:
+  1. `article_product_cta` の7日観測(〜8/13)の判定完了 → `T-20260808-APCTA-INTERIM` / GATE 分子
+  2. 在庫アラート実地検証(8/13 10:00) → `T-20260813-ALERT-LIVE-TEST`
+  ※ **観測期間中の交絡回避のため、上記2件の完了前に着手しない**
+- **実施手順**:
+  1. 実装(`app-concierge/src/lib/sitemap-builder.ts`・約4行。`isMirrorFloor` 判定で `works.push` のみ抑止。
+     `archiveEntries` / `genreMap` / `actressMap` / FANZA API 呼び出しは**変更しない**)
+  2. `tsc --noEmit` / `eslint` / **af_id 静的ガード**(`node scripts/guard-affiliate-id.mjs`)
+  3. **デプロイ前に CSO へ差分報告**
+  4. デプロイ後の検証(下表)
+  5. **公開後チェック第4項**(Canceled 確認＝コード変更を含むため **READY** が期待値)・
+     **第5項**(sitemap 生成時刻＝root lastmod がデプロイ時刻付近へ更新)
+- **デプロイ後の検証項目**:
+
+  | # | 項目 | 期待値 |
+  |---|---|---|
+  | 1 | `sitemap.xml` の loc | **実装直前の実測値 −400**(2026-08-08 23:16 実測では 2,963 → 2,563) |
+  | 2 | works 合計 / amateur | **実装直前の works −400** / **amateur = 0**(同 1,600 → 1,200) |
+  | 3 | `sitemap-archive.xml` | **不変**(同 2,146) |
+  | 4 | `/works/amateur/{cid}` | **HTTP 200 のまま**(404 化しない) |
+  | 5 | 同上の canonical | **`/works/videoa/{cid}` を指したまま** |
+  | 6 | 他3フロア | videoa / anime / nikkatsu が**各400のまま** |
+
+- **【検証時の注意・CTO 併記】** 上表 #1/#2/#3 の絶対値(2,963 / 1,600 / 2,146)は **2026-08-08 23:16:27 時点の実測値**。
+  sitemap は `sort:"date"` の回転収録で **actresses(1,148・uncap) と genres(200上限) は新作の公開に伴って日々変動**し、
+  archive も累積で増える。したがって**判定は絶対値ではなく「実装直前に再取得した値からの差分 −400」と
+  「amateur = 0」で行う**こと。絶対値が 2,563 に一致しないことをもって不合格としない
+- **観測計画(登録済み)**: 基準線=代替canonical **2,000** / amateur構成比 **91.2%** →
+  中間 **+2週間**(記録のみ・判定しない) / 判定 **+4週間**
+- **ロールバック**: 1コミット revert + デプロイ(route handler `revalidate=3600` のため**最大1時間で復帰**)。
+  DB・外部設定の変更を伴わないため副作用なし
+- 状態: **未着手**(本日 2026-08-08 時点で実装・デプロイとも実施していない)
