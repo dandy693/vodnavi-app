@@ -2842,3 +2842,37 @@
 - **優先度は最低。8/13 の判定後に着手する**(観測期間中の新規施策は交絡を生むため)
 - 実装時の要対応(既記録): `guard-affiliate-id.mjs` の **live 検査対象面は5面固定**のため
   **F-1 のページを検査面へ追加すること**
+
+### T-20260808-Q-FINAL — Q 評価の確定【CSO確定 2026-08-08】
+- **判定: §6予測「代替canonicalは減少する」= 不支持**
+- **ただし Q の実装は archive 側で意図どおり機能している**: 配信中 `sitemap-archive.xml` の amateur は
+  **887行 → 0件**(2026-08-08 実測。works フロアは videoa 1,256 / nikkatsu 471 / anime 419)
+- **予測が外れた原因: 本体 sitemap の amateur 400 の寄与を過小評価した**
+- **Q を失敗と判定しない。予測の設計が不完全だった**
+- 帰結: **R2(sitemap から amateur 400 除外)が代替canonical減少の実質的な打ち手**であることが実測で裏付けられた
+- 引き継ぎ第5節「**Q-2 判定で R2 は独立に必要と確定済み**」を再確認(`STRATEGY_BRIEF_128` Q-2 原文と一致)
+- **運用則を追加**(`FACT_GOVERNANCE.md` §4 に記載): 予測を立てる際、既知の残存要因(本体400・自然減衰542)を
+  **定量的に織り込む**こと。「ゼロにはならない」という定性的な但し書きだけでは増減の方向を誤る
+
+### T-20260808-R2-PROPOSAL — R2(sitemap から `/works/amateur/` 400 除外) 起案【CTO 2026-08-08・実装未着手】
+- 起案書: `management/_metrics/2026-W32/proposal-20260808-2320-r2-sitemap-amateur-exclusion.md`
+- **【重要】8/13 の判定まで実装しない**(観測期間の交絡回避)。実装は CSO 承認後
+- **実装確認**: 出力は `sitemap-builder.ts:98` の `` `/works/${floor.code}/${item.content_id}` ``。
+  `seenWorks` の重複判定は**パス単位**でループ順は videoa→amateur のため両方出力される。
+  **`injectKeyword` は `(site)/page.tsx` のみで使用され sitemap-builder では未使用(grep 0件)**
+  ＝amateur の API 呼び出しは videoa と**完全に同一のリクエスト**
+- **実測(2026-08-08 23:16:27・本番)**: amateur cid 400(uniq 400) / **videoa に無い cid は 0件** /
+  amateur∩anime 0 / amateur∩nikkatsu 0 ＝ **完全な鏡像**
+- **2案**: 案A=works の**出力だけ**スキップ(1ファイル約4行・API呼び出し不変・archive/genre/actress 完全不変) /
+  案B=鏡像フロアのループごと `continue`(約2行・API 16→12回)。**推奨は案A**(案Bは「amateurとvideoaのitemsが
+  常に一致」という将来前提に依存するため)
+- **除外対象外**: `/?floor=amateur`(injectKeyword="素人" で別集合を出す実体あるページ) と
+  `/works/[floor]/[id]` ルート自体(既存 amateur URL は 200・canonical=videoa のまま維持)
+- **除外後**: loc **2,963 → 2,563**(−400) / works 1,600→1,200 / archive 2,146 は不変。
+  クロール全周は 317/日 で **9.3日 → 8.1日(約−1.3日)**。**コンテンツの喪失なし**(cid が videoa と一致)
+- **§6事前登録(定量)**: ①減少するが**ゼロにはならない** — 代替canonical 上位500件の内訳は amateur 456(91.2%)/
+  **concierge クエリURL 44(8.8%)** で後者は sitemap 非収録のため**本施策では減らない**
+  ②**除外直後には起きない**(GSC反映ラグ 現状5日) ③既提出分の自然減衰に数週間(上位500件の前回クロール日は
+  7/08〜8/06 に分布) ④検出-未登録も減りうるが対象は amateur 234件のみ(actresses 138・他works 121・genres 7 は対象外)
+- **観測設計**: 基準線=代替canonical 2,000 / amateur構成比 91.2%。中間 +2週間(記録のみ) / 判定 +4週間。
+  ロールバックは1コミット revert + デプロイ(route handler `revalidate=3600` のため最大1時間で復帰)
