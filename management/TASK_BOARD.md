@@ -3096,3 +3096,33 @@
 - **公開前チェック5項目はすべて実施可能**(curl二点法 / grep4カテゴリ / Canceled確認 / sitemap生成時刻)。
   **HUMAN実クリック検証は CSO/HUMAN 枠**(検証用Chromeは /g/collect 不送信・遷移先が遮断ドメインなら CTO は踏めない)。
   記事publishは Supabase 直接UPDATEでデプロイを伴わないため **Canceled が正常**・sitemap収録は次ビルドまで保留
+
+### T-20260811-ARTICLE-A-PRECHECK-OK — 記事A改訂版は機械照合クリア・投入は Chrome 応答不能で中断【CTO 2026-08-11 07:0x JST】
+- 記録: `management/_metrics/2026-W33/datapull-20260811-0700-article-a-precheck-passed-insert-halted.md`
+- 本文原文の保全: `management/_metrics/2026-W33/article-a-body-v2-verified.md`(3,458文字・次便の投入元)
+- **【重要】DBへの書き込みは一切発生していない**。入力を試みたのは **STEP0 の SELECT のみ**で
+  **Run は一度も押していない**。INSERT/UPDATE/DELETE は入力すらしていない
+- **前便で報告した6件はすべて解消を確認**(指標ラベル / CTAマーカー / 末尾固定との整合 / 全角記法 /
+  編集メモ / 未対応markdown)
+- **機械照合の結果(全項目クリア)**:
+  - `## ` 見出し **10本** / `[[CTA:tv_signup]]` は**段落として完全一致1件** /
+    内部リンク2本(`fanza-tv-free-trial` `fanza-kaiyaku`・**両slug公開済でホワイトリストを通る**)
+  - 未対応記法の残存: テーブル/強調/H3/箇条書き/引用/水平線/番号付き **すべて0**
+  - 禁止事項: af_id 990-994 **0** / クーポン具体額 **0**(「クーポン適用前の金額」の1箇所のみ) /
+    半角アポストロフィ **0**(SQLエスケープ不要)
+  - 数値照合: 2,180 / **2,000円台58.3%(ラベル修正済)** / 2,287 / 103,670 / 1,628 / 1,078 / 550 / 300 /
+    **12,936(=1,078×12 検算済)** / 約4ヶ月分(2,180÷550=3.96) / 約1.3ヶ月分(2,180÷1,628=1.34) **すべて一致**
+- **中断理由**: Supabase MCP が Unauthorized のため経路は Chrome→SQL Editor のみ。
+  エディタのフォーカスは実測確認できた(`activeElement` = Monaco `inputarea`)が、
+  **`Input.dispatchKeyEvent` が30秒でタイムアウト**し、以降**スクリーンショットが3回連続で
+  `Script injection timed out`** → **迂回せず中断**
+- **未解決(publishのゲート)**: 本文の「**FANZA TV側で確認したところ見放題の対象外だった作品です**」は
+  **CTOでは検証できない**(tv.dmm.co.jp はツール層遮断)。対象3本も **CSO未確定**。
+  → **`article_products` の3行は投入しない**。**本文のみ draft 投入**する設計とする
+- 観測(申告): タブ一覧に `tv.dmm.co.jp/list/?keyword=dass00333` が開かれており HUMAN 側で判定が進行中と見られる。
+  **当該タブには一切アクセスしていない**(遮断ドメイン)。結果も確認しておらず判定材料に用いていない
+- **次便の手順(確定)**: ①エディタ内容を目視→Ctrl+A→STEP0(SELECT)入力 ②**「Click Run to execute your query」
+  で未実行状態を確認してから** Run ③列構成/pillar値/slug衝突/件数を確認 ④単一Runの DO ブロックで
+  **body のみ**を `publish_status='draft'` で INSERT+事後検算+不一致なら自動ロールバック ⑤article_products は投入しない
+- 投入予定値: slug=`fanza-subscription-vs-single-purchase` / title=第5便のH1 / publish_status=**draft** /
+  description=**NULL**(CSO未提供のため創作しない) / pillar=**STEP0で既存値を確認してから決定**
