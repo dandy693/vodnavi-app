@@ -3126,3 +3126,37 @@
   **body のみ**を `publish_status='draft'` で INSERT+事後検算+不一致なら自動ロールバック ⑤article_products は投入しない
 - 投入予定値: slug=`fanza-subscription-vs-single-purchase` / title=第5便のH1 / publish_status=**draft** /
   description=**NULL**(CSO未提供のため創作しない) / pillar=**STEP0で既存値を確認してから決定**
+
+### T-20260811-ARTICLE-A-DRAFT — 記事A を draft 投入 + article_products 3行 + 公開前チェック【CTO 2026-08-11 07:40〜07:49 JST】
+- 記録: `management/_metrics/2026-W33/deploy-20260811-0745-article-a-draft-inserted.md`
+- **publish は実施していない**(`publish_status='draft'`・公開面は **HTTP 404 を実測確認**)
+- **タスクA(台帳化)完了**: `FACT_GOVERNANCE.md` **§5-2-1**(再現可能な判定手順)と **§5-2-2**(3本の判定結果)を追記。
+  `ebwh00155` / `miab00373` / `dass00333` はいずれも **「該当する見放題作品が見つかりませんでした」= 見放題対象外**
+  (CSO/HUMAN 実査 2026-08-11・実画面スクリーンショット)。**本文記述は事実と一致=publishゲート解除**
+- **タスクB(draft投入)完了**: `Success. No rows returned` = **6項目の事後検算すべて通過**
+  (body_len 3457 / CTA 1 / 内部リンク 2 / published 7 不変 / 全件 18 / draft行 1)
+  - **pillar = `newuser-funnel` を選定**。理由=**公開7記事すべてが newuser-funnel**、`emotion-navi` は
+    PoCモック10件(全draft・body_len 40)のみ。記事Aは新規会員導線で既存7記事と同系統
+  - description は **NULL**(CSO未提供のため創作せず。レンダラのフェイルセーフに委ねる)
+  - **打鍵事故の回避**: クリップボード経由(`Set-Clipboard`→`Ctrl+V`)+ 本文改行を `\n` エスケープ化して
+    **SQL全体を1行**にし Enter を一度も押さない → Monaco の自動インデントによる本文汚染を構造的に排除。
+    貼付後に **Monaco モデル実測(4,882字・改行0)** と **Results が前クエリのまま=未実行**を確認してから Run
+- **タスクC(article_products)完了**: `Success. No rows returned` = 5項目の事後検算すべて通過
+  - 投入直前の再実測(07:40:01): 3本とも **HTTP 200 / 自己canonical OK / 990系 0**
+  - 3行= ord1 `ebwh00155` / ord2 `miab00373` / ord3 `dass00333`(asp_name=fanza・title は FANZA API 実取得値)
+  - **af_id は保存しない設計**(描画時に `buildAffiliateURL` が env から 004 を生成)
+  - **`fanza-first-guide` の3行が不変であることを検算に含めた**。**グローバル総件数は条件に入れていない**
+    (2026-08-05 の「テーブル全体=3」誤条件による自動ロールバック事故の再発防止)
+  - **比較可能性**: 両記事とも article_products **3行**で揃った
+- **投入後DB実測**: slug=fanza-subscription-vs-single-purchase / newuser-funnel / **draft** /
+  desc NULL / body_len **3457** / CTA **1** / 内部リンク **2** / products **3**
+- **タスクD(公開前チェック)**:
+  - (1)curl二点法= 点1 記事URL **404**(draftのため正常・公開面へ漏れていない) / 点2 対照 fanza-first-guide **200**・CTA3本。
+    **公開面HTMLのレンダリング検証は publish 後にしか実施できない**
+  - (2)grep4カテゴリ= 生マーカー残り**0** / af_id 990系**0**・直書き**0** / 禁止語**0**(90%OFF・クーポン金額・見放題の断定) /
+    広告表記は共通レイアウト2箇所で担保(対照記事で確認) → **全合格**
+  - (3)Canceled確認= **draft投入によるデプロイは発生していない**(Supabase直接INSERTでgit pushを伴わない)。
+    直近3件のCANCELEDは `ignoreCommand` による意図された最適化 → **異常なし**
+  - (4)sitemap= loc **2,963**(不変) / **articles 7本のまま** / **新slugの収録 0件**(draftは非収録=正常) /
+    root lastmod 2026-08-11 05:23:41 JST。**publish時は「収録は次ビルドまで保留」を明記し公開後チェックで吸収**
+- **タスクE**: publish は **CSO の実クリック検証と最終承認の後、別便**
