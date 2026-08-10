@@ -2922,6 +2922,20 @@
   ※ CSO指示の原文は「表示回数が0すなわち分母0」だったが、**8/9〜8/11 に 2表示/1ユーザー
   (平均エンゲージメント1分32秒)が発生している**ため、実測値に置き換えて記録した
   (`FACT_GOVERNANCE.md` §4 捏造禁止)。**指示の趣旨は変更していない**
+- **【R2の事前予測・CSO確定 2026-08-11】**
+  「**検出-未登録 1,057 の最大セグメントは videoa(537件以上)であり amateur ではない。**
+   R2 は**提出URL 400件の整理**であって**未登録の主因への対処ではない**。
+   R2 実行後に未登録総数が大きく減少しないことは**想定内**であり、
+   『**R2 が効かなかった**』と解釈してはならない。
+   **R2 の成功基準は sitemap からの amateur 400件の消失(delta −400)に限定する。**」
+- **【delta −400 検証手順の確定・2026-08-11】**
+  - 測定①(基準)= **マージ直前**に `sitemap.xml` / `sitemap-archive.xml` の loc 総数・works フロア別・
+    actresses/genres/articles を記録
+  - 測定②(検証)= **デプロイ READY かつ sitemap 再生成が着地した後**(route handler は `revalidate=3600` のため
+    **公開後チェック第5項で root の lastmod がデプロイ時刻付近へ更新済みであることを確認してから測る**)
+  - 合格条件: (a)loc 総数 = **①−400** (b)works の **amateur = 0** (c)videoa/anime/nikkatsu **各400のまま**
+    (d)archive の amateur = 0 のまま (e)`/works/amateur/{cid}` は **200・canonical=videoa のまま**
+  - **絶対値では判定しない**(actresses 1,148 uncap・genres・archive は日々変動するため**①からの差分で判定**)
 
 ### T-20260811-ARTICLE-A-PREP — 軸記事A 着手前データ整備(6タスク)【CTO 2026-08-11 01:00〜01:10 JST・読み取りのみ】
 - 記録: `management/_metrics/2026-W33/datapull-20260811-0100-article-a-data-prep.md`
@@ -2991,3 +3005,47 @@
 - **前回記録の「因果は未確定」は維持する**(`T-20260811-ARTICLE-A-PREP`: 同一コホートの追跡はしておらず
   観測事実としての位置移動のみを記録した)。本エントリはその上に**採否判定**を追記するものであり、
   前回記録を書き換えるものではない
+
+### T-20260811-Q-FORECAST-MISS — 引き継ぎ§6 予測の外れ(記録)【CSO確定 2026-08-11】
+- 「引き継ぎ§6の予測『**Q適用で887件の提出が止まり代替canonicalは減少する。1,300前後で下げ止まり**』は外れた。
+  実測は **1,829 → 2,009(+180)**。
+  **Qは実施済み**(archive amateur = 0 を実測確認)であり、**887件の提出停止は発生している**。
+  にもかかわらず総数が増加したことから、**887件を上回る別要因の増加が発生した**と判定する。
+  **検出-未登録の最大セグメントが videoa(537件以上)である実測と整合**。
+  すなわち代替canonicalは **amateur由来の現象から videoa由来の現象へ入れ替わった**。
+  **総数が同水準でも内訳は別物**であり、Qの効果測定として『**減少しなかった＝効かなかった**』と読んではならない。」
+- 関連: `T-20260808-Q-FINAL`(Qを失敗と判定しない) / `T-20260811-GA4GSC-RECOVERY`(内訳の実測) /
+  `FACT_GOVERNANCE.md` §4(予測は残存要因を定量的に織り込む)
+
+### T-20260811-B2-STATUS — B2①/B2② のステータス + concierge パラメータURL + 転送可能量【CTO 2026-08-11 05:12 JST・読み取りのみ】
+- 記録: `management/_metrics/2026-W33/datapull-20260811-0510-b2-status-concierge-params-transfer.md`
+- **タスクA判定: B2①(PR #62)は未デプロイではない。マージ済み・デプロイ済みで稼働中**
+  - `98b6389`(8/2 22:17)が main に含まれる(`merge-base --is-ancestor` = YES)・デプロイ 8/2 22:18:52・
+    公開後チェック `1673191`(22:26)「全項目合格」
+  - **本番実画面に `/articles/` アンカーが計13本**(kaiyaku 4 / tv-free-trial 3 / tv-review 3 /
+    payment-methods 2 / tv-guide 1、first-guide と payment-statement は被リンク先で0)。**生md記法の残りは0件**
+  - `internal_links` DDL は **未適用(HUMAN枠)**。ただし **B2① はこのテーブルに依存しない**
+    (公開済slugのホワイトリスト照合で描画)。適用確認は Supabase MCP が Unauthorized で未実施
+  - **B2②-a はデプロイ済み**(works詳細に3アンカー/uniq=fanza-first-guide、actresses詳細に1アンカー/
+    tv-free-trial、genres・トップは0=設計どおり)。**B2②-b は DDL 未適用のため未着手**
+  - **層B確定判定は未実施。判定材料も揃っていない**(articles面クリック0 / articles PV 2 / article_guide_click 0)
+  - **→ ゲート①のブロッカーは B2① 側になく、articles面への流入が発生していないこと**
+- **タスクB: concierge パラメータURLは全842件中 59件(7.0%)**(前回の32件は上位500件のみの値)
+  - 発生源= `works/[floor]/[id]/page.tsx` の **L539 / L718(ConciergeCtaLink・source=app_direct・intent=actress・
+    2アンカーだが同一URL)** と **L625(ConciergeCtaPanel・既定 source=app_detail・intent=re_recommend)**
+  - **組み合わせ上限 = 掲出中 works URL の和集合 2,646 × 2種 = 5,292 URL**(+ ?source=brand / moterist の2件)
+  - robots.txt は **/concierge を Disallow していない**。canonical は **/concierge へ正しく集約**・
+    robots meta は `index, follow`・noindex 0。**sitemap には0件収録(提出はしていない)**
+  - **判定: 有限だが works 掲出数に比例して単調増加**(archive は累積設計のため上限自体が増える)。
+    **インデックス汚染はしていない**(canonical集約済)が**クロール予算は消費し続ける**
+  - (e) `?sort=`系 **8** / favicon **4** / opengraph-image **2** / twitter-image **2** / site.webmanifest **1**
+  - **分析のみ。修正・robots変更・canonical追加はいずれも実行していない**
+- **タスクC: works→articles の転送可能量(GA4 8/6-8/11)**
+  - works 表示回数 **600**(サイト全体744の80.65%) / アクティブユーザー **252**(全体276の91.3%) / 208ページ
+    ※**セッション数はGA4のページレポートに指標が無く取得不可**(参考: 同期間 session_start 285)
+  - articles 表示回数 **2**(fanza-first-guide のみ・1ユーザー・1分32秒)。他6記事は0
+  - works→articles のリンクは **存在する**(3アンカー)。**クリック率は 0/600 = 0.00%**
+    (`article_guide_click` 0件 / `works_to_articles_cta` 0件)
+  - **上限の概算**: works 月換算 約3,000表示 × 参考CTR 0.17%(同ページ内の別導線 concierge_entry_click の
+    実測 1/600)= **月 約5件**。※実測CTRは0.00%であり0.17%は**別イベントの値を代入した参考値**
+  - **ゲート①(月30件)に対し、works→articles の転送のみでは CTR か works流入量が桁で変わる必要がある**
