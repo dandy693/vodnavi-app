@@ -33,6 +33,15 @@
 - **TV Plus の未確認事項は「追加手続きの実画面URL」のみ**（`url-builder.ts` の `TVPLUS_ADD_TARGET` 禁則解除に必要）。料金の矛盾は台帳照合で解決済み。
 - **`premium.dmm.co.jp` は遮断ドメイン**（2026-08-06 権限モード変更後の再確認でも `This site is not allowed due to safety restrictions.`）＝実画面URLの確認は **HUMAN 実査枠**。
 
+### 5-2. 見放題作品数と判別方法（**CSO/HUMAN 実査確定 2026-08-11**・実画面スクリーンショット）
+- **実確認日 2026-08-11 / 実施者 CSO（HUMAN）/ 根拠＝`tv.dmm.co.jp` および `video.dmm.co.jp` の実画面**
+- **作品数（確定値）**: FANZA TV（DMMプレミアム 550円）＝**2,287作品** / Plus限定＝**101,383作品** / **合計 103,670作品**。LP表記は「2,300作品以上」「毎月120〜150作品更新」
+- 台帳の従来記述「TV Plus 2,200作品以上→合計10万作品以上」は **「2,200＝基本プラン側 / 10万＝Plus込み合計」の読みで正しかった**ことが確定（§5 の解釈を追認）
+- **見分け方**: `tv.dmm.co.jp` の一覧で **赤い「Plus」バッジあり＝TV Plus（+1,078円）が必要** / **バッジなし＝550円プランで見放題**。左サイドバー「サービス」で `FANZA TV` / `Plus限定` の絞り込みも可能
+- **【最重要・構造的制約】`video.dmm.co.jp` の作品ページには見放題対象か否かの表示が存在しない**。実証＝同一作品 **MIFD-173** の二面比較: `video.dmm.co.jp` 側は単品購入のみ（DL980円 / DL+ST680円 / ST300円）で見放題表示なし、`tv.dmm.co.jp` 側は「プレミアム会員なら2,300作品以上見放題」＝550円対象
+- **帰結: FANZA API に見放題フラグが存在しない（2026-08-05 実呼び出しで確定）ことと表裏。VODNAVI の works 詳細は `video.dmm.co.jp` 側データで構成されるため、サイト上に見放題情報を持てない構造である。** works 詳細の CTA 文言が「作品ページを見る」（＝単品/見放題を断定しない）である理由もこれ
+- **`tv.dmm.co.jp` / `video.dmm.co.jp` はツール層遮断＝Chrome 連携でも到達を試みない（恒久ルール）。作品数の更新は四半期ごとの HUMAN 実査枠**
+
 ## 6. トラフィック指標の情報源（運用則・CSO確定 2026-08-07）
 - **サーバサイドのリクエスト数を実ユーザー指標として使用しない**。対象＝Vercel Runtime Logs のリクエスト件数 / Firewall の Allowed 件数・Top Request Paths / Runtime Errors の `users`。
 - 根拠（2026-08-06 実測・24時間）: `/concierge` 16,017件のうち **Bot Category 付与＝15,843件＝98.9%**（ai_crawler 6.3K / search_engine_optimization 4.6K / browser_impersonation 4.3K / search_engine_crawler 650）。ボット分類なし（`not set`）は **174件＝1.09%** のみ。**Bot Protection は Inactive**（＝ボットは遮断されずすべて計上される）。
