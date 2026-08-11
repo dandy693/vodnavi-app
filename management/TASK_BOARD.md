@@ -3287,3 +3287,27 @@
 - **(1) の扱い**: 観測窓の**結果を実測**するが、**CTA 有効性は判定しない**。「**分母が小さく CTA 有効性を判定できる標本規模ではない／満了は R2 実行の手続的ゲートとしてのみ扱う／『CTA不発』『CTAが機能しない』と解釈してはならない**」旨は **L2918-2924 に記録済み**であることを実測確認した。
 - **(2) の扱い**: 項目1〜4 は CTO が Airtable MCP で読み取る。**項目5 は判定条件から除外**し、**項目4=実行済かつ受信0件の場合に「宛先設定の問題」と切り分ける診断用途**として確認のみ。**`Run automation` は押さない**(ライブ実行で実測が汚染される)。
 - **確認期限 = 2026-08-27**(Airtable Run history の保持は**2週間**)。期限超過で実行記録が消え検証不能になる。
+
+### T-20260811-MCP-RECOVERY 追記 — Supabase MCP 復旧【2026-08-11 18:28 JST・**疎通確認 完了**】
+- **(1) Management API `GET /v1/projects` = HTTP 200**(第9・10便は 401)。`vodnavi-production`(ref=`xflqxxyvphqqmnzscpxr`)=**ACTIVE_HEALTHY** を含む10プロジェクトを取得。
+- **(2) トークンの同一性**: 長さ44・先頭`sbp_` は前回と同じだが**これは PAT の書式であり判別に使えない**。**判別は API 応答で行った**＝同一トークンなら 401 のままのはずが **200 に変化**したことをもって**差し替え反映済み**と判定。User/Process 両スコープの値も一致。
+- **(3) MCP 経由の `editorial_articles` SELECT = 成功**。→ **以降の DB 読み取りは Chrome を経由しない**。
+- **【重要な制約】MCP は読み取り専用**: 実測 `current_setting('transaction_read_only')` = **`on`**(`.mcp.json` の `--read-only`)。**MCP からは UPDATE/INSERT を実行できない**。→ **読み取りは MCP・書き込みは Chrome という分担**。単一障害点は**読み取り側では解消、書き込み側では未解消**。
+
+### T-20260811-ARTICLE-A-PUBLISH — 記事A の publish + 公開後チェック全5項目 + PART2描画確認【2026-08-11 18:35 JST・完了】
+- **`fanza-subscription-vs-single-purchase` を draft → published**。公開面 **HTTP 200**(18:32:36・**待機なしで取得**)。
+- **実行方法**: MCP が read-only のため **Chrome → SQL Editor** で単一 Run の `DO` ブロック(1,482字・改行0・`raise exception` **7箇所**)。**事後検算7項目すべて通過** → `Success. No rows returned`。検算＝事前draft=1 / 事後published=1 / **body_len 3457** / CTA 1 / 内部リンク 2 / products 3 / **published総数 8**。
+- **【運用則§10 が実際に2回機能した】** ①`Ctrl+V` が成功を返したが **Monaco モデルは 200字のまま**(貼付不着)→ 回避手順1(値の読み戻し)で検知し再試行 ②`Ctrl+Enter` が成功を返したが **DB は draft のまま**→ MCP で独立に読み戻して検知、回避手順4に従い画面確認すると Results は **`Click Run to execute your query`＝未実行**(部分適用なし)→ **Run ボタンを直接クリック**して実行。**戻り値を信じていれば「壊れた SQL の実行」か「未実行を実行済みと誤報告」のどちらかが起きていた**。
+- **公開後チェック(1) curl二点法**: 記事A **200**/`article_product_cta` 3本/`moterist-99[0-9]` **0**、対照 `fanza-first-guide` **200**/3本/**0**。
+- **(2) grep 4カテゴリ = 全合格**(公開面の実HTML): ①生マーカー 可視テキストの `[[CTA:` **0**・`](/articles/` **0** ②**af_id `moterist-99[0-9]` = 0**(995〜999 も 0) ③禁止語 `%OFF` 全般 **0**・「全作品見放題」型断定 **0** ④広告表記 「アフィリエイト広告」4・PR 4。
+- **(3) 第4項 Canceled**: **デプロイ自体が発生していない**(publish は Supabase 直接 UPDATE で git push を伴わない)＝異常なし。
+- **(4) 第5項 sitemap = 構造的ズレを実測**: loc **2,963**(不変) / **`/articles/` 7本(8本でない)** / **新slug 収録 0件** / root lastmod **2026-08-11 05:23:41 JST**(publish 18:31 より前)。**記事 publish は即時反映だが sitemap は次ビルドまで保留**(`sitemap.xml` は `revalidate=3600`・収録元は `getPublishedArticleSlugs()`)。**8/13 の R2 デプロイ後に `/articles/` が 8本・新slug 1件になることを R2 の公開後チェック第5項で確認する**。
+- **(5) 公開面 HTTP = 200** / HTML 96,694 bytes。
+- **PART 2 描画確認 = 全項目クリア**: `<h2>` **11本**(本文の `## ` 10本 + 末尾固定セクション1本・`##` の記号は可視テキストに0) / 生マーカー残存 **0**・`guide_tv_signup_cta` **1** / 内部リンク `href="/articles/fanza-tv-free-trial"` **1** ・`href="/articles/fanza-kaiyaku"` **1** / 未対応記法(テーブル・強調・H3・箇条書き・引用・水平線・番号リスト)**すべて 0** / `article_product_cta` **3** ・3作品の CTA が **display_order 1→2→3 の順**で末尾セクションに描画 / `<p>` 53 / **自己canonical** / **meta description は title から生成**(NULL 時のフェイルセーフが想定どおり動作＝創作していない) / `noindex` **0**。
+- **【計数の注意】HTML 全体の grep は Next.js の RSC flight payload(`self.__next_f`・19ブロック・61,936 bytes)により2倍に見える**。SSR 実体のみの計数＝「この記事で紹介した作品」**1** / `moterist-004` **4**(tv_signup 1 + 作品3) / premium 宛リンク **1** / `<h2>` **11**。**すべて期待値と一致**。`article_product_cta` はクライアントコンポーネントの props のため RSC 側にのみ 3 件出る。
+- 記録: `management/_metrics/2026-W33/deploy-20260811-1835-article-a-published.md`
+
+### T-20260811-ARTICLE-A-OBSERVE — 記事A の観測窓【CSO確定 2026-08-11・**公開当日に事前登録**】
+- 「**記事A(`fanza-subscription-vs-single-purchase`)公開 2026-08-11。観測はゲート①の補助指標 ①-b(articles 表示回数)に統合する。本記事は 9/30 ゲート①(articles 面クリック30件)には間に合わないと事前に判定済み(新規記事の検索流入立ち上がりに通常2〜3ヶ月、DR20 ではさらに遅い)。12月目標に向けた仕込みであり、9月末時点で流入が立たなくても §6 の既定に従い『観測期間不足・継続観測』と記録すること。**」
+- **本判定は公開当日(2026-08-11)に事前登録したものであり、9月末に数値を見てからの解釈変更ではない**(§6 遵守)。
+- **ゲート①の目標値 30件は変更していない**(L42 の再変更禁止を遵守)。①-b は補助指標＝合否判定には用いない。
