@@ -3414,3 +3414,29 @@
 - **初回記録の所見を登録**: **分類C が 0件＝現時点の HUMAN 介在はすべて「作業」であり「承認」ではない。「AI が提案し人間が承認する」形にまだ一度もなっていない**。**分類A 3種15件が自動運用の上限を規定する**。
 - **収益ゲートと自動化ゲートは別軸として併存**(ゲート①の目標値には影響しない・L42 の再変更禁止は引き続き有効)。
 - **前便の CSO 日付確認の欠落を `HUMAN_INTERVENTION_LOG` に記録**(種別=**指示発行前の状態確認** / 分類=**B** / 所要時間=未計測)。**CTO 所見: 分類B のうち最も自動化しやすい**。観測窓の満了時刻と着手条件は**すべて台帳に構造化済**で、**発行前に「現在時刻 vs 着手条件」を機械照合すれば検知できる**。現状の担保は**CTO 側の受領時チェックのみ**(第14便で実際に機能)。**発行側にも同じ照合を置けば二重化できる**。→ 集計は **B 4種 → 5種**(A・C は不変)。
+
+### T-20260811-B2-2B-IMPL — B2②-b の RLS / トリガ / ガードレール実装【CSO裁定受領・2026-08-11 23:20 JST・**14項目の動作確認すべて期待どおり**】
+- **経路 = Supabase Management API**(Chrome 非経由)。**適用順 = 列/制約 → トリガ → ロール/GRANT/RLS**(権限を絞ってから機能を足す)。**各適用後に読み戻して確認**(§10)。
+- **ロールと権限(ACL 直読の実測)**: **`ai_proposer` = テーブル INSERT のみ**(nologin / bypassrls=false) / **`link_approver` = SELECT + 列単位 UPDATE(`status`,`approved_at`,`approved_by`) のみ**。※`information_schema.table_privileges` には出ないため `pg_class.relacl`/`pg_attribute.attacl` を `aclexplode` で読んだ。
+- **ガードレール6件は全て DB 側に実装**(`propose-internal-links.ts` は禁止のため)。**バッチに欠陥があってもガードが効く**。①公開slugホワイトリスト=トリガ ②af_id/DMM/外部URL(**`moterist-99[0-9]` 含む**)=CHECK `chk_no_external_or_affiliate` ③1記事上限3=トリガ ④(source,target)重複禁止=部分UNIQUE索引(`where status<>'retired'`) ⑤アンカー自然文(「こちら」等禁止・4〜80字)=CHECK ⑥status=proposed 強制=トリガ+RLS の**二重**。
+- **【重要】初回テストで欠陥2件を検出し修正した**:
+  - **欠陥1(重大)**: **ホワイトリスト照合が `ai_proposer` から常に失敗**。原因=`guard_ai_proposal()` が SECURITY INVOKER のため `editorial_articles`(RLS有効・ポリシー2件)の SELECT が `ai_proposer` 権限で 0行を返し「公開済みでない」と誤判定。→ **`security definer` + `set search_path=public,pg_temp` に変更**。**修正しなければ AI 提案バッチは1件も INSERT できず B2②-b は起動しなかった**。**動作確認を指示されていなければ本番で気づけなかった**。
+  - **欠陥2**: `retired` からの UPDATE が **RLS `using(status<>'retired')` により「沈黙の0行」**になっていた(状態は変わらず安全だが**エラーが出ないため運用者が誤認しうる**＝§10 と同型)。→ ポリシーを `using(true)` にし、**終端の強制をトリガに一本化して明示的な `GUARD_TERMINAL` 例外が出る**ようにした。
+- **動作確認14項目=全て期待どおり**(修正後・各ケースで**実際の status を読み戻して併記**): #1 ai_proposer で approved INSERT=**拒否(GUARD_AI_PROPOSAL)** / #2 同 live INSERT=**拒否** / #3 同 origin=rule INSERT=**拒否(RLS policy)＝RLS層の実証** / #4 同 正常な提案=**成功** / #5 同 UPDATE=**拒否(permission denied)＝GRANT層** / #6 proposed→live 直行=**拒否(GUARD_TRANSITION)・status は proposed のまま** / #7 proposed→approved=**成功** / #8 approved→live=**成功** / #9 retired からの UPDATE=**拒否(GUARD_TERMINAL)・status は retired のまま** / #10 未公開slug=**拒否** / #11 `af_id=moterist-995` を含むアンカー=**拒否** / #12 「こちら」単独=**拒否** / #13 重複=**拒否** / #14 4本目=**拒否(GUARD_MAX3)**。**後片付け=テスト行全削除(残存0行)・テスト関数も削除**。
+- 正典化: `FACT_GOVERNANCE.md` **§12** を新設(status 定義と遷移規則 / **`approved_by` の用途限定=監査証跡であり「AIが承認していないことの証拠」ではない** / **DB が保証できること・できないことの切り分け** / ロール実測値 / **トリガ内から RLS 有効テーブルを参照する罠**)。
+- 記録: `management/_metrics/2026-W33/impl-20260811-2315-b2-2b-rls-triggers.md`
+
+### T-20260811-AIRTABLE-APPROVAL — Airtable 承認テーブルの作成と同期設計【2026-08-11・テーブル作成完了/同期実装は次便】
+- **作成完了**: base `app0VKGU2B16qny6c` / **table `tblf18Iwgtb7FJi0Y`**(`internal_link_proposals`) / 主フィールド **`内部ID`**(uuid・突合キー) / 11列。**各列の description に運用注記を埋め込んだ**(「★人間の入力点はここだけ」「手入力しないこと」「**監査証跡であり『AIが承認していないことの証拠』ではない**」)。
+- **`posts` テーブルには一切変更を加えていない**(新規テーブル作成のみ)。**scenario 5615632 にはアクセスしていない**。
+- **同期方式 = 一方向2本**。**S→A = `ステータス` 以外の全列**(AI 提案バッチの直後・`ステータス` は新規作成時に「提案中」を書くのみで以後書かない) / **A→S = `ステータス` のみ**(**週次・木曜**)。
+- **`掲出中`(live)への遷移はバッチで行わない**。**観測計画に従い CTO が明示的に UPDATE し、掲出時刻を JST 秒で台帳記録**する(S4/B2①/B2②-a と同じ運用)。
+- **週次サイクルへの組み込み**: 木曜のチェックリストに**1項目だけ追加**(X投稿在庫の確認 → 承認済の同期 → 結果を台帳記録)。**新しい運用リズムを増やさない**。
+- **同期失敗時の挙動 = どちらの方向も冪等で再実行すれば収束する**。S→A 失敗=Supabase は proposed で確定済みで公開面に影響なし・次回再試行(`内部ID` で冪等) / A→S 失敗=Airtable は「承認済」のまま残り次回再試行(`proposed` の行のみ対象で冪等) / **行単位で独立させトランザクションで束ねない**(束ねると1件の制約違反で全件が消える) / 同期後に**件数を突合して差分を台帳記録**。
+
+### T-20260811-PR2-ESTIMATE — BRIEF_126 PR-2(レンダラ改修)の規模見積り【**見積りのみ・実装していない**】
+- **(1) 概算 +115〜150行 / 変更ファイル 3〜4**: `src/lib/internal-links.ts`(**新規 +60〜80行**・`editorial-articles.ts` 93行と同型) / `works/[floor]/[id]/page.tsx`(832行・定数を DB 読取に差し替え **±20〜30行**) / `actresses/[id]/page.tsx`(306行・**±15〜20行**) / **`components/article-guide-links.tsx` は変更不要**(`{slug,label}[]` の形が同じ)。
+- **(2) 既存レンダラ制約との干渉 = なし**。`## ` 見出し / `[[CTA:*]]` マーカー / `[text](/articles/slug)`(B2①) はいずれも**記事本文の解析ロジック**であり、`ArticleGuideLinks` は**本文の外のコンポーネント**。**PR-2 は `links` の供給元を定数から DB に替えるだけで解析ロジックに触れない**。
+- **(3)【重要な実測】works 詳細ページは現在 Supabase クエリを1本も持っていない**(データ取得は FANZA API のみ)。**PR-2 は works 詳細に「初めての Supabase 往復」を追加する**(works は 2,646 URL でサイト最大の面)。**緩和策**: `select … where status='live'` を**1本だけ発行しメモリで索引化**(ページ毎に `where source_id=?` を撃たない) / **`revalidate=300` によりコストは再生成毎**(リクエスト毎ではない) / 行数の上限は**承認可能量**(§11)で初期最大24行 / **取得失敗時は空配列を返し金CTAを壊さない**(`VODNAVI_SILENT_DEATH_GUARD` と同型の懸念があるため try/catch 必須)。
+- **(4) 工数 = 小〜中・1コミット1デプロイで収まる規模**。
+- **B2②-b 全6工程の進捗**: ①DDL **完了** ②RLS **完了** ③トリガ **完了** ④ガードレール **完了** ⑤PR-2 **未着手(小〜中)** ⑥提案バッチ **未着手**。→ **最も重いと想定された PR-2 が小〜中規模であり、工数はボトルネックではない**。**律速は ①観測窓(R2 +4週 / β・α 〜9/30)との交錯 と ②承認可能量(§11)**。

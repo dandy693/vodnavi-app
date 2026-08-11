@@ -121,3 +121,18 @@
 - **HUMAN 介在の3分類**（`management/_metrics/HUMAN_INTERVENTION_LOG.md`・週次集計）: **A 構造的に自動化不能**（ツール層遮断のドメイン実査等・減らせない）/ **B 現時点で自動化未実装**（削減対象＝自動運用の主戦場）/ **C 承認行為**（自動化してはならない・減らさない）。**判定は総件数の減少ではなく「B が減り C の比率が上がること」で行う。**
 - **初回記録の所見（2026-08-11）**: **分類C（承認行為）が 0件**。すなわち現時点の HUMAN 介在はすべて「作業」であり「承認」ではない。**「AI が提案し人間が承認する」形にまだ一度もなっていない**ことを示す。**分類A（構造的に自動化不能）は3種15件で、これが自動運用の上限を規定する。**
 - **収益ゲートと自動化ゲートは別軸として併存させる**。9/30 判定ゲート（指標①〜③）の目標値には一切影響しない（`GATE_20260930.md` L42 の再変更禁止は引き続き有効）。
+
+## 12. `internal_links` の状態遷移と権限保証（B2②-b・CSO裁定 2026-08-11 / 実装・実測 2026-08-11）
+- **`status` は4段階。レンダラの抽出条件は `status='live'` のみ**（BRIEF_126 §3「approved 一括で描画」/ §5「status=live へ UPDATE」の表記揺れは本項で `live` に確定）。
+  - **`proposed`** … AI が提案した直後。**`ai_proposer` が INSERT できる唯一の値**
+  - **`approved`** … **人間が内容を承認したが掲出タイミング未決**。公開面には出ない。**この段階を残す理由は「承認済だが観測窓が閉じるまで掲出しない」状態が実際に必要だから**（R2 +4週 / β・α 〜9/30 / APCTA が同時進行）
+  - **`live`** … 掲出中。**`approved_at` と `approved_by` の両方が必須**
+  - **`retired`** … 撤去済み。**終端**（他の状態へ遷移できない）。**再掲出は新規行を `proposed` から作り直す**（同一行が live↔retired を往復すると「いつ・なぜ掲出されていたか」が行の現在値から読めなくなるため）
+- **遷移規則（トリガで強制・実測済）**: `proposed → approved|retired` / `approved → live|retired` / `live → retired` / `retired → （不可）`。**`proposed → live` の直行は禁止**。
+- **`approved_by` 列の用途は「承認の主体を後から追える記録」＝監査証跡に限定する。【厳守】この列を「AI が承認していないことの証拠」として扱わないこと。** AI が `live` に到達できないことを保証するのは **GRANT を出さないこと / RLS `with check` / トリガ3種** の3点であり、`approved_by` 列ではない。**誤解が固定されると、後に危険な判断の根拠となる。**
+- **DB が保証できること／できないことの切り分け**:
+  - **DB が保証するのは、AI 提案バッチのプロセスが `live` に到達する経路が存在しないことである**（`ai_proposer` に UPDATE/DELETE の GRANT を出さない / RLS `with check (origin='ai' and status='proposed' and approved_at is null and approved_by is null)` / トリガ3種）。
+  - **DB は「人間が実際に承認したこと」を検証できない。** その担保は**運用構造**による——**提案バッチのプロセスに `link_approver` の鍵を渡さないこと**、および **LLM は資格情報を持たず「JSON を返す関数」であって DB のアクターではないこと**（**LLM 出力が SQL になることはなく、スクリプトが検証してから `ai_proposer` で INSERT する**）。
+- **ロールと権限（2026-08-11 実測）**: `ai_proposer` = テーブル **INSERT のみ**（nologin・bypassrls=false）/ `link_approver` = **SELECT** + **列単位 UPDATE (`status`, `approved_at`, `approved_by`) のみ**。両ロールの鍵は **`app-concierge/.env.local`**（`.gitignore` の `.env*.local` で git 管理外）。**Vercel env への投入は不要**（ランタイムで使用しないため）。
+- **`guard_ai_proposal()` は `security definer`**（`set search_path = public, pg_temp`）。理由＝**公開 slug のホワイトリスト照合が `editorial_articles` の RLS に阻まれ、`ai_proposer` からは常に「公開済みでない」と誤判定された**（2026-08-11 実測で検出し修正）。**トリガ内から RLS 有効テーブルを参照する場合はこの罠に注意する。**
+- 実装・動作確認の全文 → `management/_metrics/2026-W33/impl-20260811-2315-b2-2b-rls-triggers.md`
