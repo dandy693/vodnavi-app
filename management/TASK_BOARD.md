@@ -3213,3 +3213,21 @@
 - **本文の同一性を機械証明**: 保全ファイル 3,458字 − 末尾改行1 = **3,457** ＝ DB `body_len` と完全一致（**本文の書き換えは発生していない**）。
 - **公開前チェック 4カテゴリ = 全合格**: ①生マーカー（`[[CTA:tv_signup]]` 段落完全一致1 / 未変換残り0 / 未対応 `[[...]]` 0 / 内部リンク2＝公開済 slug のみ）②**af_id（`moterist-99[0-9]` = 0・うち 995〜999 も 0・`af_id=` 直書き0・`al.dmm.co.jp` 直書き0・`src` 配下ハードコード0）** ③禁止語（`90%OFF` 0 / `%OFF` 全般 0 / クーポン＋金額 0 / セール＋金額 0 / 「全作品見放題」型断定 0。クーポンの出現は「セールやクーポン適用前の金額になります」の1箇所で**金額を伴わない**）④未対応記法（テーブル/強調/H3/箇条書き/引用/水平線/番号リスト すべて 0・`## ` 見出し10）。
 - **publish は実施していない**。CSO の最終承認後、別便とする。
+
+### T-20260811-PREVIEW-PATH — draft 記事のプレビュー経路の確認【2026-08-11 11:35 JST・結論=経路なし】
+- **draft を表示する経路は実装上存在しない**（4系統すべて実測）: ①`editorial-articles.ts:59` `.eq("publish_status","published")` がハードコード（引数でも env でも外せない）②`draftMode` / `next/headers` = **grep 0件** ③`articles/[slug]/page.tsx` に `searchParams` = **0件** ④`editorial_articles` を読む API ルート = **0件**。Vercel Preview デプロイでも解決しない（フィルタはコード側・Preview も同じ本番 Supabase を読む）。
+- **【重要】CTA 4本は publish なしで今日検証できる**: 記事A の CTA は公開中ページと**同一の URL ビルダを同一引数で**呼ぶ（`page.tsx:274` は `buildAffiliateURL({contentId})` を contentId のみで呼び、works 詳細と一致）。実測（08-11 11:24 JST・自サイト HTML から抽出、`al.dmm.co.jp` は踏んでいない）: tv_signup=`/articles/fanza-first-guide`（`guide_tv_signup_cta`×1・`af_id=moterist-004`）/ works 3本=`/works/videoa/{ebwh00155,miab00373,dass00333}` すべて **200・moterist-004 あり・`moterist-99[0-9]` = 0**。**publish が必要なのは記事A本体の描画確認のみ**。
+- **キャッシュ実測（一時 publish の露出時間の根拠）**: 記事ページ `revalidate=300`（5分）/ `sitemap.xml` `revalidate=3600`（**1時間**）/ robots は articles を**クロール許可**。→ 一時 publish は **DB 即時・公開面に最大5分の尾**、かつ**露出中に sitemap 再生成が当たると当該 slug が最大1時間 sitemap に残る**。実務上の最短露出 約15〜20分。
+- **選択肢（提示のみ・実行していない）**: 案1=検証を分割（CTA は今日 / 描画は本 publish 後の公開後チェックへ統合・**露出ゼロ**・CTO 推奨）/ 案2=一時 publish→検証→draft 復帰 / 案3=プレビュー経路を実装（新規経路の追加）/ 案4=別 slug の複製行（**非推奨**）。**選択は CSO**。
+- 記録: `management/_metrics/2026-W33/governance-20260811-1130-preview-path-and-click-checklist.md`
+
+### T-20260811-CLICK-CHECKLIST — 記事A 実クリック検証チェックリストの作成【2026-08-11 11:35 JST・完了】
+- 手順書: **`management/checklists/ARTICLE_A_CLICK_VERIFICATION.md`**（実施者=CSO / HUMAN）
+- 構成: **0.事前準備**（検証用 Chrome は `/g/collect` 不送信＝**GA4 のクリック実測値を汚染しない**／**⚠ ただし `al.dmm.co.jp` を実際に踏むため DMM レポートのクリック数には計上される**／af_id は**遷移前に**右クリックでリンクアドレスを取得して読む）/ **PART 1**（CTA 4本・**publish 不要**・期待 URL を明記）/ **PART 2**（記事A本体の描画10項目・**publish 必要**）/ **3.判定**（NG は即 CTO 差し戻し・一時 publish 中なら先に draft へ戻す）
+- works CTA の判定基準に「**着地先の品番が該当 content_id と一致すること**」を明記。内部リンク先2本は CTO が実測（`/articles/fanza-tv-free-trial` **200** / `/articles/fanza-kaiyaku` **200**）＝ホワイトリスト照合を通る。
+- **publish は実施していない**（一時 publish を含む）。CSO の選択と承認を待つ。
+
+### T-20260811-0813-PREP — 8/13 実行の準備状況 再確認【2026-08-11 11:25 JST】
+- **(1) 観測窓の満了予定に変更なし**: APCTA 7日観測 開始 **2026-08-06 00:31:05** → 満了 **2026-08-13 00:31:05 JST**。現在 経過 **5.45日 / 残り 1.55日**。8/13 10:00 の発報時刻まで **46.6時間**。→ `T-20260813-R2-EXEC` の着手条件2件はいずれも未充足＝**R2 は引き続き実行不可**。
+- **(2) アラート実地検証 項目1〜4 の手順**（automation `wflfLOp2JJo89imzQ` / 8/13 10:00 JST 以降）: ①Automations → Run history タブで 8/13 前後のエントリ存在を確認（期待=1件）②同エントリの `Find records` 出力件数（期待=**0件**）③Conditional action group が実行済（skipped でない）④`Send an email` が **Success**。**`Test automation` の `Run automation` は押さない**（ライブ実行＝実メール送信で 8/13 の実測を汚染）。Run history 保持は**2週間**＝8/27 が確認期限。項目1〜4 は **CTO が Airtable MCP で読み取り可能**。
+- **(3) 項目5 の扱い = 「事前確認済み」で問題ない。ただし覆う範囲は限定的**。7/11 の実受信が証明するのは **Airtable Automations → moterist.com@gmail.com の配信経路が生きていること**のみで、**本オートメーションの `Send an email` 宛先設定の正しさ**（7/11 の受信は別オートメーション由来）と**8/13 に条件分岐を通過するか**は証明していない。→ **項目4=実行済なのに受信0件なら「宛先設定の問題」と切り分けられる**という診断価値があるため、判定条件からは外してよいが**確認自体は残すことを推奨**。
