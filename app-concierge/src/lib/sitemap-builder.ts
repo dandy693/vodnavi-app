@@ -72,6 +72,16 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
     // UI 上の擬似 floor を本物の `videoa` へ吸い上げるブリッジ）。これを尊重しないと
     // FANZA は不明 floor として **関係ない items** を返すか、エラーを返す。
     const apiFloorParam = floor.apiFloor ?? floor.code;
+    // R2（CSO承認・案A / 2026-08-13）: 鏡像フロア（`apiFloor` が `code` と異なる＝
+    // 別フロアの API 結果を UI 上の擬似フロアとして再掲するもの。現行は `amateur` のみ）
+    // は **sitemap の works に出力しない**。同一作品が /works/videoa/{cid} と
+    // /works/amateur/{cid} の 2 URL で提出され、GSC が後者を「代替 canonical」に
+    // 分類していたため（本体 400 URL）。
+    // **出力だけをスキップする**：API 呼び出し・`seenWorks`・`archiveEntries`・
+    // `genreMap`・`actressMap` はいずれも変更しない。詳細ページ /works/amateur/{cid}
+    // は 200 のままで canonical も従前どおり /works/videoa/{cid} を指す（404 化しない）。
+    const isMirrorFloor =
+      floor.apiFloor !== undefined && floor.apiFloor !== floor.code;
     for (let page = 0; page < PAGES_PER_FLOOR; page++) {
       try {
         const data = await fetchItemList(
@@ -102,12 +112,14 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
           const itemDate = item.date
             ? new Date(item.date.replace(" ", "T"))
             : now;
-          works.push({
-            url: absoluteUrl(path),
-            lastModified: itemDate,
-            changeFrequency: "weekly",
-            priority: 0.8,
-          });
+          if (!isMirrorFloor) {
+            works.push({
+              url: absoluteUrl(path),
+              lastModified: itemDate,
+              changeFrequency: "weekly",
+              priority: 0.8,
+            });
+          }
           archiveEntries.push({
             content_id: item.content_id,
             // Q(rev7): canonicalWorkPath と同一の apiFloor 解決で記録する。
