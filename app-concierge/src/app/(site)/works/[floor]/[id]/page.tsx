@@ -46,12 +46,25 @@ export const revalidate = 300;
  * 依存しない。出し分け／AI 提案が必要になった時点で B2②-b としてテーブル駆動へ移す。
  * slug は `editorial_articles` の公開 slug（2026-08-03 に本番 HTTP 200 を確認済）。
  */
+// β（CSO裁定 2026-08-13）: リンク先を1本→2本へ。**順序固定**（出し分けはしない＝
+// 作品ごとの選定は B2②-b `internal_links` の領分）。記事Aを追加した理由は構造的で、
+// `FACT_GOVERNANCE.md` §5-2 のとおり video.dmm.co.jp の作品ページにも FANZA API にも
+// 見放題フラグが存在せず、**works 詳細は「この作品は見放題か」に構造的に答えられない**。
+// 記事Aはその空白を埋める唯一の記事（§5-2-1 の判定手順を含む）。
 const WORKS_GUIDE_LINKS = [
   {
     slug: "fanza-first-guide",
-    label: "はじめてのFANZA — 登録3分の手順と、支払い・解約の不安への答え",
+    label: "FANZAで初めて購入する方へ",
+  },
+  {
+    slug: "fanza-subscription-vs-single-purchase",
+    label: "この作品、見放題プランに入っているかもしれません",
   },
 ] as const;
+
+// 見出しは β に伴い「はじめての方へ」から変更した。記事Aは初心者向けではなく、
+// 旧見出しでは2本目を包摂できないため。
+const WORKS_GUIDE_HEADING = "この作品について知っておくこと";
 
 type Params = { floor: string; id: string };
 
@@ -351,6 +364,19 @@ export default async function WorkDetailPage({
               />
             )}
 
+            {/* α（CSO裁定 2026-08-13）: mobile FV ブロックへの複製昇格。
+               単一カラム（mobile / tablet）では 3:4 画像 + H1 + FV ブロックの後に
+               メタデータを挟むため、下段の ArticleGuideLinks は fold の外に落ちる。
+               金 CTA（detail_fv_cta）と同じ枠内へ複製し、ファーストビューで視認させる。
+               `lg:hidden` の親 div 内にあるため lg 以上では描画されず、
+               下段の1本と重複しない。 */}
+            <ArticleGuideLinks
+              surface="works"
+              sourceId={item.content_id}
+              heading={WORKS_GUIDE_HEADING}
+              links={WORKS_GUIDE_LINKS}
+            />
+
             {(actresses.length > 0 || genres.length > 0) && (
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1.5 text-[11px]">
                 {actresses.slice(0, 3).map((p) => (
@@ -504,11 +530,16 @@ export default async function WorkDetailPage({
              - **`<details>` の外＝常時可視**。U1（NewUserFvModule）は同じ記事への
                リンクを折りたたみの中に持つため利用者から見えていなかった
              - U1 は現状維持（CSO裁定 2026-08-03・撤収しない）
-             - ページ内で1回だけ描画する（mobile FV 側には置かない＝リンク重複を増やさない） */}
+             - **α（CSO裁定 2026-08-13）でこの方針を変更した**。旧方針は「ページ内で
+               1回だけ描画する（mobile FV 側には置かない＝リンク重複を増やさない）」
+               だったが、実測で本ブロックは**デスクトップで 786px＝fold(906px) の 86%
+               地点**、**モバイル FV ブロックには不在**であり、作品詳細の平均滞在は
+               1〜6秒 / scroll 90% 到達は 4.6%（GA4）。**見られていない可能性を潰す**
+               ため、金 CTA と同じ「3秒の視界ハック」に倣って mobile FV へ複製昇格した。 */}
           <ArticleGuideLinks
             surface="works"
             sourceId={item.content_id}
-            heading="はじめての方へ"
+            heading={WORKS_GUIDE_HEADING}
             links={WORKS_GUIDE_LINKS}
             className="mt-3"
           />
