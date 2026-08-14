@@ -133,6 +133,29 @@ export function p2_expired_deadline(p) {
 
 export const EXTRA_CHECKS = { p1_postid_missing, p2_expired_deadline };
 
+/**
+ * p3: リンク先が実在するか（**ネットワークアクセスを伴うため `--check-links` 指定時のみ**）。
+ *
+ * 【なぜ行のデータだけでは足りないか】`ebwh00359` は **16ガードすべてを通過**して
+ * `承認済`・配信予定まで到達したが、本番は **HTTP 404**（FANZA API が `result_count=0`）だった。
+ * **走査が行の値しか見ないなら、この失敗モードは永久に検出されない。**
+ *
+ * **未配信を優先して検査する**（配信済みのリンク切れは遡及修正しないため、
+ * 検出しても行動できない。ただし記録の価値はあるので `--check-links=all` で全件も可）。
+ */
+export async function checkLinks(posts, { all = false } = {}) {
+  const { checkLinkReachable } = await import("./x-post-generator.mjs");
+  const target = all ? posts : posts.filter((p) => p.status !== "投稿済");
+  const out = [];
+  for (const p of target) {
+    if (!p.linkUrl) continue;
+    const r = await checkLinkReachable(p.linkUrl);
+    if (!r.ok) out.push({ post: p, guard: "p3_link_reachable", ng: r.ng });
+    await new Promise((res) => setTimeout(res, 250)); // 連続アクセスを抑える
+  }
+  return { checked: target.filter((p) => p.linkUrl).length, violations: out };
+}
+
 export function audit(records) {
   assertKnownTypes(records);
   const posts = records.map(toPost);
@@ -188,6 +211,8 @@ export function report(res) {
   w();
   for (const [id, why] of Object.entries(EXCLUDED_GUARDS)) w(`- **${id}** … ${why}`);
   w(`- **g9_utc_iso** … **Z 終端の検査のみに縮退**。\`intendedJst\` が行に保存されていないため、JST 換算の意図一致は事後検査できない`);
+  if (res.linkCheck) w(`- **p3_link_reachable** … **実行済み**（${res.linkCheck.all ? "全件" : "未配信のみ"}・${res.linkCheck.checked} 件を実 HTTP 検査）`);
+  else w("- **p3_link_reachable** … **未実行**。`--check-links` を付けるとリンク先の実在を検査する（既定は行のデータのみ）");
   if (skipped.length) {
     w(`- **予約日時が未設定のため判定不能**: ${skipped.length} 件`);
     for (const s of skipped) w(`  - ${s.post.name} / ${s.guard}`);
@@ -256,6 +281,14 @@ if (import.meta.url === `file:///${process.argv[1].replace(/\\/g, "/")}`) {
     ? await fetchAll()
     : JSON.parse(readFileSync(arg("--input"), "utf8")).records;
   const res = audit(records);
+  // p3 は既定で実行しない（ネットワークアクセスを伴うため）。--check-links / --check-links=all で有効化。
+  const linkMode = argv.find((a) => a.startsWith("--check-links"));
+  if (linkMode) {
+    const all = linkMode.endsWith("=all");
+    const lk = await checkLinks(res.posts, { all });
+    res.linkCheck = { ...lk, all };
+    res.violations.push(...lk.violations);
+  }
   const md = report(res);
   console.log(md);
   const out = arg("--out");

@@ -540,6 +540,63 @@ export function jstToUtcIso(jst) {
 }
 
 /** 全ガードを実行。**1件でも NG なら全体を中断**する。 */
+/**
+ * 【2026-08-14 新設・g17】リンク先が実在することを検査する。
+ *
+ * 【なぜ必要か】`g3` は **URL のパス形式しか検査していなかった**。そのため
+ * `works/videoa/ebwh00359`（**FANZA API が `result_count=0` を返す＝作品が取得できない**）が
+ * **16ガードすべてを通過し、`承認済`・8/17 21:00 配信予定まで到達した**（第30便で本番 HTTP 404 を実測）。
+ * **行のデータだけを見る検査では、リンク先の実在は分からない。**
+ *
+ * 【判定】
+ * - **自サイト（app.vodnavi.jp）はリダイレクトを追って最終 200 を要求する。** works 詳細は
+ *   `getWork()` 失敗時に `notFound()`＝404 を返すため、404 はここで確実に捕まる。
+ * - **アフィリエイト直リンクは 2xx / 3xx を許容する**（`al.fanza.co.jp` / `al.dmm.co.jp` は
+ *   正常時に **302** を返すことを実測済み。追跡すると遮断ドメインへ到達しうるため追わない）。
+ */
+export const OWN_HOST = "app.vodnavi.jp";
+
+export async function checkLinkReachable(linkUrl, fetchImpl = fetch) {
+  if (!linkUrl) return { ok: true, ng: null, status: null }; // リンクなし種別は対象外
+  let u;
+  try { u = new URL(linkUrl); } catch { return { ok: false, ng: `URL として解析できない: ${linkUrl}`, status: null }; }
+  const own = u.host === OWN_HOST;
+  try {
+    const r = await fetchImpl(linkUrl, { redirect: own ? "follow" : "manual" });
+    const s = r.status;
+    if (own) {
+      return s === 200
+        ? { ok: true, ng: null, status: s }
+        : { ok: false, ng: `自サイトのリンク先が HTTP ${s}（200 でない）: ${u.pathname}`, status: s };
+    }
+    return s < 400
+      ? { ok: true, ng: null, status: s }
+      : { ok: false, ng: `外部リンク先が HTTP ${s}: ${u.host}`, status: s };
+  } catch (e) {
+    return { ok: false, ng: `取得に失敗: ${String(e).slice(0, 80)}`, status: null };
+  }
+}
+
+/** 非同期の検査。`GUARDS` は同期関数の集合という契約を壊さないため別立てにしている。 */
+export const ASYNC_CHECKS = { g17_link_reachable: (p) => checkLinkReachable(p.linkUrl) };
+
+/**
+ * **書き込み前と、承認・予約日時の設定前の両方で呼ぶこと。**
+ * 書き込みから配信までに時間が空くため、**その間にリンク先が失われうる**
+ * （B8 は 7/19 作成 → 8/17 配信予定で、その間に FANZA 側から取得できなくなった）。
+ */
+export async function runGuardsAsync(posts, existing = []) {
+  const sync = runGuards(posts, existing);
+  const failures = [...sync.failures];
+  for (const p of posts) {
+    for (const [id, fn] of Object.entries(ASYNC_CHECKS)) {
+      const r = await fn(p);
+      if (!r.ok) failures.push({ post: p.name ?? p.contentId, guard: id, ng: r.ng });
+    }
+  }
+  return { pass: failures.length === 0, failures };
+}
+
 export function runGuards(posts, existing = []) {
   const affiliateCountByJstDate = {};
   const workIntroCountByJstDate = {};
