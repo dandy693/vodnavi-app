@@ -30,6 +30,7 @@
 | **第34便** | 08-15 | `affiliate.dmm.com` | ①`computer left_click`（option 要素の ref 指定）→ `Clicked on element ref_539` を返すが **select の選択値が変わらない** ②combobox にフォーカスして `key Down`×4 → **同じく選択値が変わらない**（`read_page` で `option "すべて" (selected)` のまま） | **2回で中断（3回目は試さず）。**ID フィルタは未適用のまま。**過去にも `239a13c`（07-26）に「IDフィルタはヘッダ確認を手順化」の記録あり** |
 | **第36便** | 08-15 | `affiliate.dmm.com` | `computer left_click` → **`CDP sendCommand "Input.dispatchMouseEvent" timed out after 30000ms on tab ... The renderer may be frozen or unresponsive.`** | **クリック自体は着地していた**（直後の `get_page_text` が `The previous action may have triggered navigation` を返した）。**§10「タイムアウト＝未実行と決めつけない」が機能** |
 | **第38便** | 08-15 | `search.google.com` | `navigate` → **`Browser extension is not connected. Please ensure the Claude browser extension is installed and running ...`** | **誤報。ナビゲーションは着地していた**（直後の `tabs_context_mcp` でタブが「クロールの統計情報」に遷移済みと確認）。**エラーメッセージを信じて中断していたら、取得できたはずのデータを落としていた** |
+| **第40便** | 08-15 | `search.google.com`（URL 検査ツール） | `get_page_text` ×2 → `read_page` ×1 がいずれも **`Page still loading (executeScript waited 45000ms for document_idle)`** | **3回連続で中断（§10 回避手順5）。**articles のインデックス状況は CSO 枠へ |
 
 ---
 

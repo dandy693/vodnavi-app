@@ -1075,3 +1075,116 @@ GA4 のイベントレポートを 8/01〜8/14 で開いたが、**`読み込み
 | articles 個別のクロール頻度 | **GSC の URL 検査ツール**（1 URL ずつ「クロール済み」日時が出る） | **Chrome で 8 URL 分を個別に確認すれば取れる（未実施）** |
 
 **→ タスクB(2)「articles 8本のクロール頻度」は、GSC の URL 検査ツールで 1本ずつ確認する経路が残っている。** **本便では未実施（コンテキストの都合。次便で実施可能）。**
+
+---
+
+# 21. 【第40便タスクA】404 の実態 — **32% が `null` を含むパス**
+
+**取得元**: Vercel Runtime Logs（production・`statusCode=404`）。**7日窓は `Aggregate query failed: timed out` で取得できず、24時間窓で取得した。**
+
+## 21-1. (1) route 別（直近24時間）
+
+| route | 404件数 | 比率 |
+|---|---|---|
+| **`/works/[floor]/[id]`** | **77** | 74.8% |
+| **`/actresses/[id]`** | **25** | 24.3% |
+| **`/articles/[slug]`** | **1** | 1.0% |
+| **合計** | **103** | 100% |
+
+**→ §7 の「CTA が消えるのは works 詳細の `getWork()` が失敗した場合のみ」は明確に不正確。** **actresses が 25件（24.3%）、articles も 1件**発生している。
+
+## 21-2. requestPath 別（直近24時間・上位25 / 全59 distinct）
+
+| パス | 件数 |
+|---|---|
+| **`/works/anime/null`** | **17** |
+| **`/works/videoa/null`** | **11** |
+| **`/works/videoa/ebwh00359`** | **9** |
+| **`/actresses/null`** | **3** |
+| `/actresses/1088691` | 3 |
+| **`/works/nikkatsu/null`** | **2** |
+| `/works/videoa/jusd00845` / `kdmi00009` / `myba00041` ほか | 各1〜2 |
+| `/works/videoc/zarj070` | 1 |
+
+### 【最重要】`null` を含むパスが 33件＝全404の 32%
+
+**`/works/anime/null` 17 + `/works/videoa/null` 11 + `/actresses/null` 3 + `/works/nikkatsu/null` 2 = 33件。**
+
+**href 生成箇所（コード）**: `/works/${normalizeFloorForUrl(item.floor_code)}/${item.content_id}`（`page.tsx:219` / `genres/[id]/page.tsx:180` / `actresses/[id]/page.tsx:180` / `concierge/page.tsx:129`）、`/actresses/${p.id}`（`works/[floor]/[id]/page.tsx:385,439`）、`/actresses/${a.id}`（`actresses/[id]/page.tsx:294`）。
+**いずれも値をそのままテンプレートに埋めており、`null`/`undefined` が来ればパスに `null` が入る。**
+
+## 21-3. (2) 実ユーザーが到達しうるか
+
+**本番HTMLの実測（2026-08-15・5面）**:
+
+| 面 | `/null` を含む href |
+|---|---|
+| `/` | **なし** |
+| `/genres/1034` | **なし** |
+| `/actresses/1097822` | **なし** |
+| `/works/videoa/snos00321` | **なし** |
+| `/articles/fanza-tv-review` | **なし** |
+
+**→ 現時点の本番には `/null` へのリンクが存在しない。ユーザーがクリックで到達する経路は、確認した5面には無い。**
+**ただし全ページを網羅していない**（works 1,200・genres 200・actresses 1,139 のうち各1〜2面のみ）。**「無い」ではなく「確認した範囲には無い」。**
+
+### `ebwh00359` — 対処済みだがアクセスは続いている
+
+**第31便で 404 を検出し、X 投稿（B8）のリンクを差し替えた作品。** **それでも直近24時間で 9件のアクセスがある。**
+**sitemap には main / archive とも不在**（第30便実測）。**内部リンクからも外れているはずだが、外部からの参照または再クロールが続いている。**
+
+## 21-4. (3) FANZA API 400 由来との分離 — **`null` の404 は GUARD とは独立**
+
+| 窓 | `VODNAVI_SILENT_DEATH_GUARD` | 404 |
+|---|---|---|
+| **直近24時間** | **0件** | **103件（うち null 33件）** |
+
+**→ 直近24時間は GUARD が1件も出ていないのに 404 が103件発生している。** **したがって `null` を含む404 は FANZA API の 400 Bad Request が原因ではない。**
+
+**GUARD 由来の404 は別に存在する**（第39便で `/actresses/1035683` の実例を確認。GUARD が同一リクエストで6行出ていた）。**両者は別の事象である。**
+
+## 21-5. (4) ユーザーが 404 に当たっている規模 — **未測定**
+
+**GA4 との突合は未実施。** GA4 は第38便以降 `読み込み中...` のまま描画されない事象が続いており、本便でも GSC の URL 検査ツールが3回連続で応答不能となったため着手していない。
+
+**Vercel の 404 は 1日103件だが、§6 のとおり `/concierge` の 98.9% がボットであり、404 についてもボット比率は不明である。** **「ユーザーが1日103回 404 に当たっている」とは読めない。**
+
+## 21-6. (5) §7 の訂正
+
+**第39便で「404 は works 詳細だけではない（`/actresses/1035683`）」を追記済み。** **本便でさらに `articles` でも 404 が発生していることが判明したため、訂正内容は「works / actresses / articles のいずれでも 404 になる」となる。**
+
+---
+
+# 22. 【第40便タスクB】articles のインデックス状況 — **3回失敗で中断（CSO 枠）**
+
+**GSC の URL 検査ツールに記事A（`fanza-subscription-vs-single-purchase`）で遷移したが、`get_page_text` ×2 と `read_page` ×1 がいずれも `Page still loading (executeScript waited 45000ms for document_idle)` を返した。** **§10 回避手順5 に従い中断。迂回していない。**
+
+## 22-1. CSO が画面を目視する手順
+
+1. `https://search.google.com/search-console/inspect?resource_id=sc-domain%3Aapp.vodnavi.jp&id=<URL>&authuser=1` を開く（`<URL>` は URL エンコードした記事URL）
+2. **または** GSC の検索窓（画面上部「すべての URL を検査」）に記事URLを貼る
+3. 表示される以下を読む:
+   - **「URL は Google に登録されています」/「URL が Google に登録されていません」**
+   - **「前回のクロール」の日時**
+   - **「検出方法」**（sitemap / 参照ページ）
+   - **「ユーザーが指定した正規 URL」と「Google が選択した正規 URL」**
+   - **「拡張」欄の構造化データ検出状況**（articles は JSON-LD ゼロのため**何も検出されないはず**＝第30便の実測と突合できる）
+
+**対象8本**:
+`fanza-first-guide` / `fanza-kaiyaku` / `fanza-tv-free-trial` / `fanza-tv-guide` / `fanza-tv-review` / `fanza-payment-methods` / `fanza-payment-statement` / **`fanza-subscription-vs-single-purchase`（記事A・8/11公開）**
+
+**とくに記事Aは、第30便の実測で GSC の articles 一覧に1行も現れない（表示0）ため、クロールされているかどうかが最も重要な確認点である。**
+
+---
+
+# 23. 【第40便】未実施の項目
+
+| タスク | 状態 | 理由 |
+|---|---|---|
+| **A(4)** ユーザーが404に当たる規模（GA4 突合） | **未実施** | GA4 が描画されず。Chrome が本便で3回連続中断 |
+| **B** articles 8本のインデックス状況 | **中断（CSO 枠）** | GSC URL 検査が3回連続で応答不能 |
+| **C** Vercel Firewall ダッシュボード | **未実施** | 上記の Chrome 不調により着手せず |
+| **D** 990 の成果9件の内訳 | **未実施** | 同上 |
+| **E** 調査2 未登録URL | **未実施** | タスクA・B の完了を前提としていたため |
+
+**本便で完了したのは タスクA(1)(2)(3)(5) のみである。**
