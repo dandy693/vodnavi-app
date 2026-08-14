@@ -1399,3 +1399,66 @@ fanza-first-guide / fanza-kaiyaku / fanza-payment-methods / fanza-payment-statem
 ## 27-4. 修正は行っていない
 
 **禁止事項に従い、`null` パスの修正は一切行っていない。**
+
+---
+
+# 28. 【第44便タスクA】null パスの発生源 — **現在の本番には存在しない**
+
+## 28-1. (2) データ側・型側からは `null` は出ない（実測）
+
+| 検査 | 結果 |
+|---|---|
+| **Supabase の `content_id` 列** | **`article_products` / `sitemap_works_archive` とも `is_nullable: NO`** |
+| **TypeScript の型定義** | `lib/fanza/types.ts:97` は **`content_id: string`（非 nullable）**。**optional（`content_id?`）や `\| null` の定義は 0箇所** |
+| `normalizeFloorForUrl` | **防御あり**（falsy なら `FANZA_FLOORS[0].code` を返す）→ **floor 側は決して `null` にならない** |
+
+**→ DB からも型からも `null` は出ない。残る候補は FANZA API のレスポンス（実行時）のみ。**
+
+## 28-2. (1) 実HTML 23面を検査 — **`/null` の href は1件も無い**
+
+| 対象 | 面数 | anime 作品へのリンク | **`/null` の href** |
+|---|---|---|---|
+| トップ | 1 | **0** | **0** |
+| genres（sitemap 先頭10件） | 10 | **0** | **0** |
+| actresses（sitemap 先頭6件） | 6 | **0** | **0** |
+| **anime 作品ページ（sitemap から6件）** | 6 | **各12本** | **0** |
+| **合計** | **23** | — | **0** |
+
+**【重要な副次発見】トップ・genres・actresses のいずれも anime 作品を1件もリンクしていない。** **sitemap には anime 400 URL があるのに、一覧面からの導線が無い。**
+**anime 作品ページ同士は互いにリンクしている**（各12本・関連作品セクション）。
+
+**→ `/works/anime/null` は一覧面由来ではない。**
+
+## 28-3. (3) 404 の日別推移 — **`null` は常時発生していない**
+
+| 窓 | `null` を含むパス |
+|---|---|
+| **0〜1日前（第40便で実測）** | **33件**（anime 17 / videoa 11 / actresses 3 / nikkatsu 2） |
+| **1〜2日前** | **0件**（上位25に無し。全290 distinct） |
+| **3〜4日前** | **0件**（上位25に無し。全109 distinct） |
+
+**→ `null` パスは常時ではなく、直近24時間に集中している。** **発生の開始時期は未特定**（0〜1日前と1〜2日前の境界より細かくは見ていない）。
+
+**【厳守】原因は推測しない。** 現在の本番23面に `/null` の href が無く、DB・型からも出ないことは実測で確定したが、**では何が `/works/anime/null` を要求しているのかは特定できていない。**
+
+## 28-4. 【副次発見・重要】記事A 自身が 404 を返していた
+
+**3〜4日前の窓（8/11〜8/12 頃）に `/articles/fanza-subscription-vs-single-purchase` が 404 を3件記録している。**
+
+- **記事Aの公開は 8/11。** **公開直後に 404 を返していたことになる。**
+- **第39便で実測した `VODNAVI_SILENT_DEATH_GUARD` の集中も 8/11〜8/12（4〜7日前の43,216行）で、時期が重なる。**
+- **【厳守】因果は断定しない。** 記事ページが FANZA API に依存するか（`article_products` 経由で works を引く経路の有無）は本便で確認していない。
+- **GSC は記事Aを「一度もクロールしていない」と報告しているため、Google がこの 404 を見た証拠は無い。**
+
+## 28-5. その他の 404 パターン（実測・記録のみ）
+
+| パターン | 実例 | 件数 |
+|---|---|---|
+| **クエリ断片が混入した URL** | `/works/videoa/dass00999&size=256` | **12**（1〜2日前） |
+| **`videoc` フロア** | `/works/videoc/spay761` / `smjx197` / `iat043` ほか | 3〜4日前の窓に**多数** |
+
+**`videoc` は sitemap に収録されていない**（第30便の実測: works は anime/nikkatsu/videoa の3フロアのみ各400）。**メモリの記録「404=旧WP残骸でなく app 自身の genres/videoc（5/17以降）」と整合する。**
+
+## 28-6. 修正は行っていない
+
+**禁止事項に従い、`null` パスの修正は一切行っていない。**
