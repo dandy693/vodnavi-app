@@ -47,3 +47,7 @@ next-env.d.ts
 
 .vercel
 .env*.local
+
+# 資格情報（GA4 Data API のサービスアカウント鍵）
+# CSO が発行して配置する。中身は git に載せない（CSO裁定 2026-08-15・第38便）
+ga4-service-account.json

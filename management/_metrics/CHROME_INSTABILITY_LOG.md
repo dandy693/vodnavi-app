@@ -28,6 +28,8 @@
 | **第32便** | 08-14 | `analytics.google.com` | ①`get_page_text` → `No text content found. Page may contain only images, videos, or canvas-based content.`（**権限拒否ではない**） | **②`read_page` で成功。③`get_page_text` でも成功**。以後の連続取得も成功 |
 | **第33便** | 08-14 | `affiliate.dmm.com` | ①`computer left_click`（ref 指定）が **`Clicked on element ref_31` を返しつつ画面状態が変わらない** ②`zoom` → `CDP sendCommand "Page.captureScreenshot" timed out after 30000ms on tab ... The renderer may be frozen or unresponsive.` ③以後 **`screenshot` が 240x50 を返し続け、`read_page` の `Viewport: 240x50`** ＝**`zoom` の領域指定が viewport に残留した状態異常** | **3回連続の異常のため §10 回避手順5 に従い中断。**決定的なデータは取得済みだったため成果は失っていない |
 | **第34便** | 08-15 | `affiliate.dmm.com` | ①`computer left_click`（option 要素の ref 指定）→ `Clicked on element ref_539` を返すが **select の選択値が変わらない** ②combobox にフォーカスして `key Down`×4 → **同じく選択値が変わらない**（`read_page` で `option "すべて" (selected)` のまま） | **2回で中断（3回目は試さず）。**ID フィルタは未適用のまま。**過去にも `239a13c`（07-26）に「IDフィルタはヘッダ確認を手順化」の記録あり** |
+| **第36便** | 08-15 | `affiliate.dmm.com` | `computer left_click` → **`CDP sendCommand "Input.dispatchMouseEvent" timed out after 30000ms on tab ... The renderer may be frozen or unresponsive.`** | **クリック自体は着地していた**（直後の `get_page_text` が `The previous action may have triggered navigation` を返した）。**§10「タイムアウト＝未実行と決めつけない」が機能** |
+| **第38便** | 08-15 | `search.google.com` | `navigate` → **`Browser extension is not connected. Please ensure the Claude browser extension is installed and running ...`** | **誤報。ナビゲーションは着地していた**（直後の `tabs_context_mcp` でタブが「クロールの統計情報」に遷移済みと確認）。**エラーメッセージを信じて中断していたら、取得できたはずのデータを落としていた** |
 
 ---
 
@@ -35,10 +37,14 @@
 
 1. **症状は毎回異なる。** タイムアウト / 権限拒否 / フレーム消失 / 成功を返しつつ未着地 / テキスト無し —— **同一の症状が再現した例が無い。**
 2. **対象ドメインは一定でない。** 自サイト・Supabase・Airtable・Google Analytics のいずれでも発生している。
-3. **「成功の戻り値」と「実際の状態」が食い違う症例が2件ある**（第9便の `computer type`、第13便の `resize_window`）。**これが §10「書き込み系ツールの戻り値は着地の証拠にならない」の実証的な根拠である。**
+3. **「成功の戻り値」と「実際の状態」が食い違う症例が2件ある**（下記4も参照）（第9便の `computer type`、第13便の `resize_window`）。**これが §10「書き込み系ツールの戻り値は着地の証拠にならない」の実証的な根拠である。**
 4. **第31便の `Permission denied` は、第32便で Chrome を完全再起動した後に発生しなくなった。**
    - **【厳守】これを「再起動が原因を解消した」と読まない。** 再起動と回復の間に**時間的な前後関係があるだけ**であり、因果は確認していない。**第31便と第32便の間には、再起動以外にも「時間の経過」「セッションの更新」など複数の差分が同時に存在する。**
    - §10 に既に記録されているとおり、**「401 を見たら反射的に再起動」しないこと**と同じ姿勢を取る。
+
+5. **【逆方向の食い違い】「失敗の戻り値」を返しつつ実際には着地していた症例が2件ある**（第36便の `Input.dispatchMouseEvent` タイムアウト、第38便の `Browser extension is not connected`）。
+   - **§10 は「成功を信じるな」だけでなく「失敗も信じるな」を意味する。** **エラーが返っても、必ず対象側の状態を確認してから次の判断をすること。**
+   - **第38便では、エラーメッセージを信じて中断していたら、実際には取得できたクロール統計を落としていた。**
 
 ## 【回復手段が判明】viewport 240x50 固定（第33便）
 
