@@ -26,6 +26,7 @@
 | **第27便** | 08-13 | Airtable | `read_page` が `document_idle` 45000ms 待機でタイムアウト ×2 → 3回目 `Frame with ID 0 was removed.` | **3回連続で応答不能 → §10 回避手順5 に従い中断。**API 読み戻しで代替 |
 | **第31便** | 08-14 | **`analytics.google.com`** | ①`get_page_text` → **`Permission denied for reading page content on this domain`** ②`read_page` → 応答なし ③`get_page_text` → `Page still loading (executeScript waited 45000ms for document_idle)` | **3回連続で中断。**→ **第32便で Chrome 完全再起動後に成功** |
 | **第32便** | 08-14 | `analytics.google.com` | ①`get_page_text` → `No text content found. Page may contain only images, videos, or canvas-based content.`（**権限拒否ではない**） | **②`read_page` で成功。③`get_page_text` でも成功**。以後の連続取得も成功 |
+| **第33便** | 08-14 | `affiliate.dmm.com` | ①`computer left_click`（ref 指定）が **`Clicked on element ref_31` を返しつつ画面状態が変わらない** ②`zoom` → `CDP sendCommand "Page.captureScreenshot" timed out after 30000ms on tab ... The renderer may be frozen or unresponsive.` ③以後 **`screenshot` が 240x50 を返し続け、`read_page` の `Viewport: 240x50`** ＝**`zoom` の領域指定が viewport に残留した状態異常** | **3回連続の異常のため §10 回避手順5 に従い中断。**決定的なデータは取得済みだったため成果は失っていない |
 
 ---
 
