@@ -31,6 +31,7 @@
 | **第36便** | 08-15 | `affiliate.dmm.com` | `computer left_click` → **`CDP sendCommand "Input.dispatchMouseEvent" timed out after 30000ms on tab ... The renderer may be frozen or unresponsive.`** | **クリック自体は着地していた**（直後の `get_page_text` が `The previous action may have triggered navigation` を返した）。**§10「タイムアウト＝未実行と決めつけない」が機能** |
 | **第38便** | 08-15 | `search.google.com` | `navigate` → **`Browser extension is not connected. Please ensure the Claude browser extension is installed and running ...`** | **誤報。ナビゲーションは着地していた**（直後の `tabs_context_mcp` でタブが「クロールの統計情報」に遷移済みと確認）。**エラーメッセージを信じて中断していたら、取得できたはずのデータを落としていた** |
 | **第40便** | 08-15 | `search.google.com`（URL 検査ツール） | `get_page_text` ×2 → `read_page` ×1 がいずれも **`Page still loading (executeScript waited 45000ms for document_idle)`** | **3回連続で中断（§10 回避手順5）。**articles のインデックス状況は CSO 枠へ |
+| **第41便** | 08-15 | `search.google.com` | **第40便の「3回失敗」は Chrome の不調ではなかった。** タブのタイトルを読むと **`Error 404 (見つかりませんでした)!!1`**＝**CTO が組み立てた URL 検査の直リンクが 404 を返していた**。UI の検査ボックス経由に切り替えたら**一度で成功**した | **症状の帰属が誤りだった例。**`Page still loading` を Chrome の不調と読んだが、実際は**存在しない URL を開いていた**。**§10 拡張の逆方向の適用**（エラーの原因を安易にツールへ帰属させない） |
 
 ---
 
@@ -43,7 +44,8 @@
    - **【厳守】これを「再起動が原因を解消した」と読まない。** 再起動と回復の間に**時間的な前後関係があるだけ**であり、因果は確認していない。**第31便と第32便の間には、再起動以外にも「時間の経過」「セッションの更新」など複数の差分が同時に存在する。**
    - §10 に既に記録されているとおり、**「401 を見たら反射的に再起動」しないこと**と同じ姿勢を取る。
 
-5. **【逆方向の食い違い】「失敗の戻り値」を返しつつ実際には着地していた症例が2件ある**（第36便の `Input.dispatchMouseEvent` タイムアウト、第38便の `Browser extension is not connected`）。
+5. **【症状の帰属を誤った例】第40便の「3回連続 `Page still loading`」は Chrome の不調ではなく、CTO が組み立てた URL が 404 だったことによる**（第41便で判明）。**本ログに記録する前に、対象側の状態（タブのタイトル・URL）を読むこと。** そうしなければ**このログ自体が誤った症例で汚染される**。
+6. **【逆方向の食い違い】「失敗の戻り値」を返しつつ実際には着地していた症例が2件ある**（第36便の `Input.dispatchMouseEvent` タイムアウト、第38便の `Browser extension is not connected`）。
    - **§10 は「成功を信じるな」だけでなく「失敗も信じるな」を意味する。** **エラーが返っても、必ず対象側の状態を確認してから次の判断をすること。**
    - **第38便では、エラーメッセージを信じて中断していたら、実際には取得できたクロール統計を落としていた。**
 
