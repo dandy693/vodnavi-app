@@ -27,6 +27,7 @@
 | **第31便** | 08-14 | **`analytics.google.com`** | ①`get_page_text` → **`Permission denied for reading page content on this domain`** ②`read_page` → 応答なし ③`get_page_text` → `Page still loading (executeScript waited 45000ms for document_idle)` | **3回連続で中断。**→ **第32便で Chrome 完全再起動後に成功** |
 | **第32便** | 08-14 | `analytics.google.com` | ①`get_page_text` → `No text content found. Page may contain only images, videos, or canvas-based content.`（**権限拒否ではない**） | **②`read_page` で成功。③`get_page_text` でも成功**。以後の連続取得も成功 |
 | **第33便** | 08-14 | `affiliate.dmm.com` | ①`computer left_click`（ref 指定）が **`Clicked on element ref_31` を返しつつ画面状態が変わらない** ②`zoom` → `CDP sendCommand "Page.captureScreenshot" timed out after 30000ms on tab ... The renderer may be frozen or unresponsive.` ③以後 **`screenshot` が 240x50 を返し続け、`read_page` の `Viewport: 240x50`** ＝**`zoom` の領域指定が viewport に残留した状態異常** | **3回連続の異常のため §10 回避手順5 に従い中断。**決定的なデータは取得済みだったため成果は失っていない |
+| **第34便** | 08-15 | `affiliate.dmm.com` | ①`computer left_click`（option 要素の ref 指定）→ `Clicked on element ref_539` を返すが **select の選択値が変わらない** ②combobox にフォーカスして `key Down`×4 → **同じく選択値が変わらない**（`read_page` で `option "すべて" (selected)` のまま） | **2回で中断（3回目は試さず）。**ID フィルタは未適用のまま。**過去にも `239a13c`（07-26）に「IDフィルタはヘッダ確認を手順化」の記録あり** |
 
 ---
 
@@ -38,6 +39,19 @@
 4. **第31便の `Permission denied` は、第32便で Chrome を完全再起動した後に発生しなくなった。**
    - **【厳守】これを「再起動が原因を解消した」と読まない。** 再起動と回復の間に**時間的な前後関係があるだけ**であり、因果は確認していない。**第31便と第32便の間には、再起動以外にも「時間の経過」「セッションの更新」など複数の差分が同時に存在する。**
    - §10 に既に記録されているとおり、**「401 を見たら反射的に再起動」しないこと**と同じ姿勢を取る。
+
+## 【回復手段が判明】viewport 240x50 固定（第33便）
+
+**新規タブを開けば viewport は正常（1455x671）に戻る**（第34便で実測）。**Chrome の再起動は不要。**
+
+- **異常はタブ単位で残留する**。第33便で異常になったタブ `290635984` は、**第34便の時点でも `Viewport: 240x50` のまま**だった。同時刻に新規作成したタブは `1455x671` で正常。
+- **原因は推測しない。**「`zoom` の直後から発生した」という**時間的な前後関係のみ**が観測事実である。
+
+### 回避手順（第34便で追加）
+
+1. **`zoom` を使わない。** 小領域の確認が必要なときも **`screenshot`（全画面）で代替する**。第33便で必要だった確認（入力欄の値）は、**`read_page` の要素値**でも取れた。
+2. **viewport が異常になったタブは復旧を試みず、新規タブを開く。**
+3. **`screenshot` の返り値のサイズを見る。** `1455x671` 以外が返ったら viewport 異常を疑い、**その状態で座標クリックを続けない**（座標系がずれるため）。
 
 ## 棄却済みの仮説（§10 より・再掲）
 
