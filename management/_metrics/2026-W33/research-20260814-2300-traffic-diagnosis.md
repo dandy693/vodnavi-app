@@ -1462,3 +1462,106 @@ fanza-first-guide / fanza-kaiyaku / fanza-payment-methods / fanza-payment-statem
 ## 28-6. 修正は行っていない
 
 **禁止事項に従い、`null` パスの修正は一切行っていない。**
+
+---
+
+# 29. 【第45便】404 には少なくとも4つの原因がある — **第3の原因を新発見**
+
+## 29-1. 【新発見】`fanza-filter` が全件ドロップして 404 になっている
+
+**実ログ（原文・2026-08-14 19:45:29 / 18:37:01 JST）**:
+
+```
+### 19:45:29 GET /actresses/1092612 404 [info/serverless]
+    [fanza-filter] in=1 no_url=0 dropped_by_pattern=0 dropped_by_size=1 head_fail=0 out=0 took_ms=19 threshold=15000
+    [fanza-filter] dropped_by_size_samples=[{"url":"https://pics.dmm.co.jp/digital/video/5342gp14852/5342gp14852pt.jpg","len":4385}]
+
+### 18:37:01 GET /actresses/1113668 404 [info/serverless]
+    [fanza-filter] in=1 no_url=0 dropped_by_pattern=0 dropped_by_size=0 head_fail=1 out=0 took_ms=118 threshold=15000
+```
+
+**読み取れる事実**:
+- **`in=1`＝FANZA API からは1件取得できている。** **作品が存在しないのではない。**
+- **`out=0`＝フィルタが全件を落とした結果 0件になり、`items.length === 0` から `notFound()`＝404 になっている。**
+- **落とした理由は2種類**:
+  - **`dropped_by_size=1`**: 画像が `len:4385`（4,385バイト）で **`threshold=15000` 未満**のため除外
+  - **`head_fail=1`**: 画像への HEAD リクエストが失敗したため除外
+- **ログレベルは `[info/serverless]`** で、GUARD の `[error/serverless]` とは**別系統**。
+
+**→ 「画像が小さい」「画像の HEAD が失敗した」というだけで、女優ページが 404 になっている。**
+
+**【厳守】これが妥当な挙動かどうかは判断しない。** **修正も行わない。** 実測の記録に留める。
+
+## 29-2. 404 の原因は少なくとも4種類（本便までの実測の整理）
+
+| # | 原因 | 実例 | 出典 |
+|---|---|---|---|
+| 1 | **FANZA API の 400 Bad Request → GUARD → `notFound()`** | `/actresses/1035683`（GUARD 6行が同一リクエストに） | 第39便 |
+| 2 | **`fanza-filter` が全件ドロップ → 0件 → `notFound()`** | `/actresses/1092612`（`dropped_by_size`）/ `/actresses/1113668`（`head_fail`） | **本便（新発見）** |
+| 3 | **`null` を含むパス** | `/works/anime/null` 17 ほか計33件（直近24時間のみ） | 第40・44便 |
+| 4 | **存在しない URL** | `videoc` フロア多数 / `dass00999&size=256`（クエリ断片混入） | 第44便 |
+
+**→ 「404 が10%」（第38便・GSC クロール統計）は単一の事象ではない。** **原因別に分解しなければ対処の優先順位はつけられない。**
+
+## 29-3. (1)(2) User-Agent / Referer / IP — **Runtime Logs では取得不可**
+
+**取得した実ログに User-Agent・Referer・IP のいずれも含まれていない。** ログ行は `### 時刻 GET パス ステータス [level/source]` と `dep=... branch=... cache=...` と、アプリが `console.log` で出した JSON のみ。
+
+**→ タスクA(1) の UA / Referer / IP、および (2) のボット判別は、Runtime Logs からは取得できない。**
+**§6 の Bot Category 別内訳は Vercel Firewall ダッシュボード由来であり、MCP には手段が無い**（第38便で確定済み）。
+
+**→ 「ボットか実ユーザーか」は「未特定」と記録する。**
+
+## 29-4. 【取得上の制約】Runtime Logs の実ログ取得はタイムアウトしやすい
+
+| 窓 | 結果 |
+|---|---|
+| 24時間 + `query` | **`Query did not finish within the time budget`** |
+| 6時間 | **同上** |
+| **90分** | **成功（4件取得）** |
+
+**→ 実ログ行の取得は 90分窓が実用的な上限。`group_by` の集計は24時間窓でも通る。**
+**→ (3) 「開始時刻の特定」は、90分窓を繰り返す必要があり本便では未実施。**
+
+---
+
+# 30. 【第45便タスクD(3)】anime 導線が0本である実装上の理由 — **意図的な除外ではなく副作用**
+
+## 30-1. 実装（原文）
+
+```js
+// genres/[id]/page.tsx:33 / actresses/[id]/page.tsx:33
+const GENRE_FLOORS  = Array.from(new Set(FANZA_FLOORS.map((f) => f.apiFloor ?? f.code)));
+const ACTRESS_FLOORS = Array.from(new Set(FANZA_FLOORS.map((f) => f.apiFloor ?? f.code)));
+
+// genres/[id]/page.tsx:47-71
+for (const floor of GENRE_FLOORS) {
+  ...
+  } catch {
+    // このフロアでの取得失敗は致命ではない。次フロアを試す。
+    continue;
+  }
+  if (items.length === 0) continue;
+  ...
+  return { items, totalCount, genreName, floor };   // ★ 最初にヒットしたフロアで return
+}
+```
+
+**`FANZA_FLOORS` の順は `videoa` → `amateur` → `anime` → `nikkatsu`。**
+
+## 30-2. 帰結（実装から読み取れる事実）
+
+**floor-walk は「最初にヒットしたフロアで `return` する」構造である。**
+**したがって、あるジャンル／女優が videoa で1件でもヒットすれば、そこで打ち切られ anime は照会されない。**
+
+**→ 「一覧面から anime 作品への導線が0本」（第44便の実測・23面）は、この早期 return の帰結である。**
+
+**(3) の問い「意図的な除外か、抽出条件の副作用か」への答え**: **副作用である。**
+**根拠**: コード内のコメントが **「このフロアでの取得失敗は致命ではない。次フロアを試す」** と書かれており、**floor-walk は「フォールバック」として設計されている**。**「anime を除外する」意図を示す記述は無い。**
+
+**【厳守】修正・施策の実行は行っていない。**
+
+## 30-3. (1)(2) 未実施
+
+- **(1) anime 400 URL の内部リンク到達可能性**: **anime 作品ページ同士が各12本リンクし合っていることは第44便で実測済み。** **しかし一覧面からの入口が無いため、「anime クラスタ全体への入口がどこにあるか」は未特定。** sitemap 経由でのみ Google に提示されている状態。
+- **(2) anime 作品のインデックス状況（GSC のフロア別分解）**: **未実施。**
