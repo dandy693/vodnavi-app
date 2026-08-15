@@ -148,6 +148,10 @@
 - **DB が保証できること／できないことの切り分け**:
   - **DB が保証するのは、AI 提案バッチのプロセスが `live` に到達する経路が存在しないことである**（`ai_proposer` に UPDATE/DELETE の GRANT を出さない / RLS `with check (origin='ai' and status='proposed' and approved_at is null and approved_by is null)` / トリガ3種）。
   - **DB は「人間が実際に承認したこと」を検証できない。** その担保は**運用構造**による——**提案バッチのプロセスに `link_approver` の鍵を渡さないこと**、および **LLM は資格情報を持たず「JSON を返す関数」であって DB のアクターではないこと**（**LLM 出力が SQL になることはなく、スクリプトが検証してから `ai_proposer` で INSERT する**）。
+  - **【2026-08-15 追記・過大主張の抑止】三層が守る対象は「AI 提案バッチのプロセス」であって「service role」ではない。** **Supabase の service role は RLS を迂回する**ため、**service role キーを持つ主体は `status='live'` を直接書ける**。
+    - **現時点ではこの経路は使われていない**（実測 2026-08-15: `internal_links` は RLS 有効・policy 3・トリガ3・**行数 0**。**レンダラは実装されておらず、ランタイムから読まれていない**）。
+    - **ただしレンダラを実装した時点で、読み取りは既存の `getServiceRoleClient()` を通ることになり、同じ限界が生じる**（他テーブルと同じ構造）。**「三層があるから誰も `live` を書けない」とは書かないこと。**
+    - **同型の限界は `sitemap_cohort`（BRIEF_128 コホート1・設計のみ）にも存在する。** そちらは**配信そのものがランタイムの service role 読み取りに依存する**ため、実装と同時にこの経路が有効になる。
 - **ロールと権限（2026-08-11 実測）**: `ai_proposer` = テーブル **INSERT のみ**（nologin・bypassrls=false）/ `link_approver` = **SELECT** + **列単位 UPDATE (`status`, `approved_at`, `approved_by`) のみ**。両ロールの鍵は **`app-concierge/.env.local`**（`.gitignore` の `.env*.local` で git 管理外）。**Vercel env への投入は不要**（ランタイムで使用しないため）。
 - **`guard_ai_proposal()` は `security definer`**（`set search_path = public, pg_temp`）。理由＝**公開 slug のホワイトリスト照合が `editorial_articles` の RLS に阻まれ、`ai_proposer` からは常に「公開済みでない」と誤判定された**（2026-08-11 実測で検出し修正）。**トリガ内から RLS 有効テーブルを参照する場合はこの罠に注意する。**
 - 実装・動作確認の全文 → `management/_metrics/2026-W33/impl-20260811-2315-b2-2b-rls-triggers.md`
