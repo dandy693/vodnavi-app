@@ -237,11 +237,33 @@ async function fetchItemListUpstream(
     throw err;
   }
 
+  // `content_id` 欠落の除外（CSO裁定 2026-08-15・第59便／`null` ガード案②）。
+  //
+  // 404 の 32.0%（直近24時間で 33件）が `/works/anime/null` 等の `null` を含む
+  // パスだった（第40便）。href の生成箇所は6つあり、いずれも値をそのまま
+  // テンプレートへ埋めている。**発生源は特定できていない**（本番63面を走査して
+  // `/null` の href は0件・`FACT_GOVERNANCE.md` §17 で「未特定のまま受容」）が、
+  // **対処は発生源の特定を前提としない**。生成箇所6つに個別のガードを置くと
+  // 将来の追加箇所で漏れるため、**全経路が通る本関数の1箇所**で除外する。
+  //
+  // 画像フィルタ（`shouldFilterItems`）とは独立に、**常に**適用する。
+  // 単体取得（cid 指定）は画像フィルタをスキップするが、本ガードは通す。
+  const rawItems = data.result?.items ?? [];
+  const itemsWithId = rawItems.filter((item) => !!item.content_id);
+  const droppedNoContentId = rawItems.length - itemsWithId.length;
+  if (droppedNoContentId > 0) {
+    // 実測では 1件も観測されていない（第44便: DB・型からも出ない）。
+    // 出力されること自体が「実行時に null が来ている」ことの物証になる。
+    console.info(
+      `[fanza-filter] no_content_id=${droppedNoContentId} in=${rawItems.length} floor=${params.floor ?? "-"} article=${params.article ?? "-"}`,
+    );
+  }
+
   // 画像の生存確認フィルタ（判定基準は shouldFilterItems に集約）。
   const shouldFilter = shouldFilterItems(params, options);
 
-  if (shouldFilter && data.result?.items?.length) {
-    const filtered = await filterItemsByImage(data.result.items, {
+  if (shouldFilter && itemsWithId.length) {
+    const filtered = await filterItemsByImage(itemsWithId, {
       timeoutMs: options.imageValidationTimeoutMs,
     });
     return {
@@ -250,6 +272,17 @@ async function fetchItemListUpstream(
         ...data.result,
         items: filtered,
         result_count: filtered.length,
+      },
+    };
+  }
+
+  if (droppedNoContentId > 0) {
+    return {
+      ...data,
+      result: {
+        ...data.result,
+        items: itemsWithId,
+        result_count: itemsWithId.length,
       },
     };
   }
