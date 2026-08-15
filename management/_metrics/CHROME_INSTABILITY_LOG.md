@@ -35,6 +35,7 @@
 | **第52便** | 08-15 | `search.google.com` | ①`screenshot` → **`CDP sendCommand "Page.captureScreenshot" timed out after 30000ms ... The renderer may be frozen or unresponsive.`（3回）** ②`read_page` → `Page still loading (executeScript waited 45000ms for document_idle)`（1回）③`screenshot` → `Script injection timed out after 5000ms — the page is busy or mid-navigation`（2回） | **6回とも誤報。**直後の `get_page_text` / `read_page` / 別の `screenshot` はいずれも成功し、**ページは生きていた**。**③の2回は文面どおり「検査の実行中」であり、待てば結果が取れた。** **§10「失敗も信じるな」が6回連続で機能した例** |
 | **第52便** | 08-15 | `search.google.com` | **`computer key ctrl+a` が「全選択」ではなく文字 `a` の入力として着地した。** 入力欄は `ahttps://app.vodnavi.jp/...` となり GSC が **「不適切な形式の URL」** を表示 | **§10 の読み戻しで検出。**入力後に screenshot で値を確認していたため、`Return` を押す前に気づけた。**回避＝入力欄のクリアは `ctrl+a` ではなく ✕（検索をクリア）ボタンを使う** |
 | **第52便** | 08-15 | `search.google.com` | **URL 検査の実行後、結果のオーバーレイが自動的に閉じてサマリー画面に戻る**（2回） | **回復済み。**閉じても**タブの URL に新しい `id` が入っている**ため、その URL へ navigate し直せば結果を読める（2回とも回収成功）。**「取得できなかった」ではない** |
+| **第53便** | 08-15 | `search.google.com` | ①`computer left_click` → **`CDP sendCommand "Input.dispatchMouseEvent" timed out after 30000ms`** ②直後の `screenshot` ×2 → **`Script injection timed out after 5000ms`** | **2件とも誤報。**`read_page` を呼ぶと**検索オーバーレイは開いており、クリックは着地していた**（「検索をクリア」「検索を終了」が DOM に存在）。**§10 回避手順5 の「3回連続」をエラー文字列の回数で数えず、別手段で状態を読むという運用が機能した** |
 
 ---
 
@@ -48,7 +49,8 @@
    - §10 に既に記録されているとおり、**「401 を見たら反射的に再起動」しないこと**と同じ姿勢を取る。
 
 5. **【症状の帰属を誤った例】第40便の「3回連続 `Page still loading`」は Chrome の不調ではなく、CTO が組み立てた URL が 404 だったことによる**（第41便で判明）。**本ログに記録する前に、対象側の状態（タブのタイトル・URL）を読むこと。** そうしなければ**このログ自体が誤った症例で汚染される**。
-6. **【逆方向の食い違い】「失敗の戻り値」を返しつつ実際には着地していた症例が 2件 → 8件になった**（第36便の `Input.dispatchMouseEvent` タイムアウト、第38便の `Browser extension is not connected`、**第52便の6件**＝`Page.captureScreenshot` タイムアウト3回 / `Page still loading` 1回 / `Script injection timed out` 2回）。
+6. **【逆方向の食い違い】「失敗の戻り値」を返しつつ実際には着地していた症例が 2件 → 10件になった**（第36便の `Input.dispatchMouseEvent` タイムアウト、第38便の `Browser extension is not connected`、**第52便の6件**＝`Page.captureScreenshot` タイムアウト3回 / `Page still loading` 1回 / `Script injection timed out` 2回、**第53便の2件**＝`Input.dispatchMouseEvent` タイムアウト1回 / `Script injection timed out` 1回）。
+   - **【第42便タスクD の再検証は第52・53便で完了した】** **本ログに記録した「失敗」系の症状は、対象側の状態を読むと 10件中 10件が着地していた。** **すなわち本ログの「失敗」列は、Chrome の不調ではなく戻り値の信頼性の問題を記録したものだと確定した。** **「成功を返しつつ未着地」の2件（第9便・第13便）とは方向が逆であり、両者を同じ「不調」として扱わない。**
    - **第52便では6回すべてが誤報だった。** **直後に別の読み取り手段（`get_page_text` / `read_page` / 再度の `screenshot`）を呼べばページは生きていた。**
    - **「エラーが返ったら、まず別の手段で対象側の状態を読む」を先に行うこと。** **エラー回数を数えて中断判定に使う前に、この確認を挟む。**（§10 回避手順5 の「3回連続で応答不能」は**応答不能の実測**を指すのであって、**エラー文字列の回数ではない**。）
    - **§10 は「成功を信じるな」だけでなく「失敗も信じるな」を意味する。** **エラーが返っても、必ず対象側の状態を確認してから次の判断をすること。**
