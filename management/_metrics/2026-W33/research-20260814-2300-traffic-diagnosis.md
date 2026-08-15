@@ -3983,3 +3983,248 @@ create index on public.sitemap_cohort (cohort_no, status);
 # 72. 【第58便タスクE】繰り越し
 
 **`fanza-tv-free-trial` / `fanza-payment-statement` の URL 検査は本便でも未実施。** 本便は画像サイズ実測（300作品 × 最大3 URL = 約870 HEAD）・コホート1の実装設計・実装順序の整理・デプロイと公開後チェックに工数を使った。**検査済みは6本のまま。**
+
+---
+
+# 73. 【第59便タスクA】`ignoreCommand` — **既に存在し、正しく動作していた。第58便の報告を訂正する**
+
+## 73-1. 【自己訂正】第58便の「課金とビルド時間を消費している」は誤りだった
+
+**第58便で CTO は次のように報告した**:
+
+> **管理ドキュメントのみのコミットでも production ビルドが起動し、直後の push で CANCELED になっていた。** **課金・ビルド時間を消費するが、公開面への影響は無い。`.vercelignore` や `ignoreCommand` で `management/` のみの変更をスキップする設定は現在存在しない。**
+
+**この報告は誤りである。**
+
+**(1) `ignoreCommand` は既に存在する**（`app-concierge/vercel.json`・原文）:
+
+```
+"ignoreCommand": "if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi"
+```
+
+**(2) 台帳に導入と検証の記録がある**（`TASK_BOARD.md` L1692 / L1699・原文）:
+
+> **適用コミット a5bae39(単独)**: `app-concierge/vercel.json` に `"ignoreCommand": "git diff --quiet HEAD^ HEAD -- ."`(Root Directory=app-concierge内で実行・**配下無変更=exit 0=スキップ**/変更あり=exit 1=ビルド…)
+> **検証フェーズ2(docsのみpush→スキップ): 成立** — b857ffb(docs-only)のpushで dpl_… が **CANCELED（Ignored Build Step発動・ビルド未実行）**。
+
+**→ `CANCELED` は「起動したビルドが後続 push で取り消された」のではなく、「Ignored Build Step によりビルドが実行されなかった」状態である。** **ビルド時間は消費していない。**
+
+**(3) ローカルでの再現（本便実測）**:
+
+| コミット | 変更ファイル | `git diff --quiet <prev> <sha> -- app-concierge` | 判定 |
+|---|---|---|---|
+| `7190610` | `management/` のみ | **exit 0** | **スキップ** |
+| `0dd7ef0` | `management/` のみ | **exit 0** | **スキップ** |
+| **`20c03ea`** | **`app-concierge/src/lib/fanza/sitemap-archive.ts`** | **exit 1** | **ビルド** |
+| `7229ac1` | `management/` のみ | **exit 0** | **スキップ** |
+
+**(4) 本便での実地確認**（Vercel API 実測）: **`7229ac1`（`management/` のみ）＝ CANCELED**、**`c628485`（`app-concierge/` のコード変更）＝ BUILDING → READY**。**タスクA(4) が求める「management のみでスキップ・コード変更でビルド」は、変更を加えることなく既に成立している。**
+
+## 73-2. (2)(3) 変更は不要 — **誤ってスキップされないことの確認**
+
+**現行の条件は「`app-concierge/` 配下（Root Directory）に差分があるか」であり、指示 (3) が挙げた3点はいずれも `app-concierge/` 配下にある**:
+
+| 対象 | パス | スキップされるか |
+|---|---|---|
+| `app-concierge/` 配下の変更 | — | **されない**（差分ありで exit 1） |
+| **`vercel.json` 自体** | **`app-concierge/vercel.json`** | **されない**（`app-concierge/` 配下） |
+| **`package.json` / 依存関係** | **`app-concierge/package.json` / `package-lock.json`** | **されない**（同上） |
+
+**ルート直下に `vercel.json` は存在しない**（`ls` で確認）。**`.vercelignore` も存在しない。**
+
+**→ 追加・変更は行わない。**
+
+## 73-3. 【§15-1 の3度目の違反】
+
+**第58便で CTO は「CANCELED が8件並んでいる」という予期しない観測をしながら、既存記録を検索せずに「設定は存在しない」と報告した。** **`grep -rn "CANCELED" management/TASK_BOARD.md` の1回で L1699 に到達できた（本便では実際にそうした）。**
+
+**§15-1 の違反はこれで3度目**（1度目＝2026-08-14「原因未特定」/ 2度目＝2026-08-15「矛盾」/ **3度目＝本件「設定は存在しない」**）。**共通するのは、いずれも「無い」「不明」と断定する前に検索していないことである。**
+
+**【CSO 裁定(4) の前提について】** **裁定(4) は CTO の誤報告を前提に出されている。** **「課金とビルド時間を消費している」という事実は存在せず、対処すべき問題も存在しない。** **HUMAN_INTERVENTION_LOG には「CSO が発生させた問題」ではなく「CTO の誤報告に基づく裁定」として記録する。**
+
+---
+
+# 74. 【第59便タスクB】fanza-filter の実装 — **C-③ + 案B（list 閾値 3,000）**
+
+## 74-1. (1)(2)(3) 実装内容（`c628485`）
+
+| # | 変更 | 内容 |
+|---|---|---|
+| 1 | **`PLACEHOLDER_SIZE_THRESHOLD` → `PLACEHOLDER_SIZE_THRESHOLD_BY_KIND`** | `large: 15_000` / **`list: 3_000`** / **`small: null`（サイズ判定を行わない）** |
+| 2 | **`FanzaImageKind` 型と `pickImageKind()` を新設** | **`pickImage` は6箇所の UI が使うため変更していない。** 選択順が同一でなければならない旨をコメントに明記 |
+| 3 | **C-③: `probeImageUrls` にリダイレクト先の名前判定** | **`res.url`（追跡後の最終 URL）に `isPlaceholderImageUrl` を適用。`!res.ok` の判定より前に置く** |
+| 4 | **新カウンタ `droppedByPlaceholderRedirect`** | ログに `redirect_placeholder=` を追加し **`head_fail` と分離** |
+| 5 | **コメントを実測に合わせて修正** | 「NOW PRINTING は通常10KB未満」は **pics 側（2,732）にのみ当てはまり、302 の行き先である imgsrc 側は 19,378 で 10KB を大きく超える**旨と、各種別の実測レンジ（n）を明記 |
+
+**差分**: 1ファイル・**103 insertions / 16 deletions**。**`npx tsc --noEmit` exit=0**（`--listFilesOnly` で src 138ファイルの読み込みを確認）。
+
+## 74-2. (4) 回帰テスト — **事前登録どおり 15/15 一致**
+
+**デプロイ前のシミュレーション**（本番 FANZA API に対し新ロジックを再現）と**デプロイ後の本番 curl** の両方で、**第57便に事前登録した期待値と完全に一致した。**
+
+| 群 | URL | **修正前** | **期待値（第57便で事前固定）** | **デプロイ前シミュレーション** | **デプロイ後の実測** |
+|---|---|---|---|---|---|
+| **A群 11件** | `1014048` `1014392` `1096729` `1096732` `1096731` `1096728` `19204` `1093894` `1053606` `1092617` `14953` | 404 | **200 へ変化** | out>0 → 200 予測（11/11） | **200（11/11）** |
+| **B群 1件** | `1113769` | 404 | **404 のまま** | out=0 → 404 予測・除外理由 `redirect_placeholder` | **404** |
+| **C群 3件** | `1078618` `1069702` `1097822` | 200 | **200 のまま** | out=27〜28 → 200 予測 | **200（3/3）** |
+
+**【C-③ が発火していることの証拠】** シミュレーションで **C群3件それぞれに `large:redirect_placeholder` が 2〜3件ずつ**発生した。**すなわち未発売作品のプレースホルダが、従来は `head_fail` として区別できないまま除外されていたのが、名前で識別されるようになった。** **表示件数への影響はない（どちらでも除外される）が、ログで判別できるようになった。**
+
+## 74-3. (5) 公開後チェック
+
+| URL | HTTP | サイズ | 応答 | 修正前 |
+|---|---|---|---|---|
+| `/` | 200 | **321,606B** | 0.60s | 305,226B（**+16,380B**） |
+| `/works/videoa/lulu00423` | 200 | 181,198B | 0.35s | 181,198B（**不変**） |
+| `/articles/fanza-tv-review` | 200 | 101,226B | 0.34s | 101,226B（**不変**） |
+| `/genres/1029` | 200 | 344,425B | 0.68s | 344,395B（+30B） |
+| `/sitemap.xml` | 200 | 425,108B | 0.74s | 425,108B（**不変**） |
+
+**トップの +16,380B は、従来ドロップされていた作品が一覧に載るようになったことと整合する**（`list` 閾値 15,000→3,000 の効果）。**works 詳細と articles は画像フィルタを通らないため不変**（§48-1）。**sitemap も不変。**
+
+**デプロイ**: `dpl_9WcjQUEzPrmfFXVk8LRkPA3bvqQ4`（`c628485`）。**反映の確認は `/actresses/1096729` を20秒間隔でポーリングし、3回目（約60秒）まで404・4回目で200 を実測。**
+
+## 74-4. (6) 復旧件数の実測 — **第55便と同一の200件を再測した**
+
+| | 修正前（第55便） | **修正後（本便）** | 差 |
+|---|---|---|---|
+| **404** | **12 / 200（6.0%）** | **1 / 200（0.5%）** | **−11件** |
+| 200 | 188 | **199** | +11 |
+| 95%信頼区間（Wilson） | 3.47〜10.19% | **0.09〜2.78%** | — |
+| **母数 1,093 への外挿** | 点推定 **66件**（38〜111） | **点推定 5件（1〜30）** | — |
+
+**復旧した11件は、A群11件と完全に一致した。** **予測していなかった変化（200 → 404）は 0件。**
+
+| 復旧率 | 値 |
+|---|---|
+| **11 / 200 = 5.5%** | 95%CI **3.10〜9.58%** → **母数1,093 で 点推定 60件（区間 34〜105件）** |
+
+**第57便の事前見積り「案A/B で点推定60件（区間34〜105件）」と実測が一致した。**
+
+**残る1件は `/actresses/1113769`（HEAD 405 → `redirect_placeholder`）で、これは設計どおり復旧しない**（唯一の作品 `tcd00349` が未発売でプレースホルダ画像のため、除外は正しい挙動）。**第57便で「C-③ の直接的な復旧件数は現時点で 0件と見積もる」と記録したとおりになった。**
+
+**【厳守・母数の限定】この 5.5% は「main sitemap に収録されている actresses 1,093件」に対する率である。** **sitemap 非収録の actresses（`/actresses/1092612` `1113668` 等）は母数に含まれないため、サイト全体で復旧した件数はこれより多い。**
+
+---
+
+# 75. 【第59便タスクC】`null` ガードの実装（案②）
+
+## 75-1. (1)(2) 実装内容（`3b40134`）
+
+**`fetchItemList` に `content_id` 欠落の除外を追加した**（`client.ts:240-262`）。
+
+```
+const rawItems = data.result?.items ?? [];
+const itemsWithId = rawItems.filter((item) => !!item.content_id);
+const droppedNoContentId = rawItems.length - itemsWithId.length;
+if (droppedNoContentId > 0) {
+  console.info(`[fanza-filter] no_content_id=${droppedNoContentId} in=${rawItems.length} floor=… article=…`);
+}
+```
+
+**設計上の要点**:
+- **画像フィルタ（`shouldFilterItems`）とは独立に、常に適用する。** **単体取得（cid 指定）は画像フィルタをスキップするが、本ガードは通る。**
+- **除外が発生した場合のみログを出す。** **実測では1件も観測されていない**（第44便: DB・型からも出ない）ため、**出力されること自体が「実行時に `null` が来ている」ことの物証になる。**
+- **`data` は `const` のため再代入せず、`itemsWithId` を下流へ渡す形にした**（初回実装で `TS2588: Cannot assign to 'data' because it is a constant.` が出たため修正）。
+
+**差分**: 1ファイル・**35 insertions / 2 deletions**。**`npx tsc --noEmit` exit=0**。
+
+## 75-2. (3)(4) 公開後チェックと 404 の推移 — **観測はこれから**
+
+**デプロイ**: `3b40134`（push 済み）。
+
+**【厳守】`null` パス33件/24時間 が減るかの観測は、デプロイ直後には判定できない。** **本便では判定しない。**
+
+**判定の事前登録**:
+
+| 項目 | ベースライン（第40便・2026-08-15 の直近24時間） | 判定時期 | 判定基準 |
+|---|---|---|---|
+| **`null` を含むパスの 404** | **33件/24時間**（`/works/anime/null` 17 / `/works/videoa/null` 11 / `/actresses/null` 3 / `/works/nikkatsu/null` 2） | **デプロイの24時間後以降** | **減少するか。ゼロになるか** |
+| **`no_content_id=` のログ出力** | **0件（本ガードは本便で新設）** | 同上 | **出力されれば「FANZA API が実行時に `content_id` 欠落を返している」ことの物証。出力されなければ、発生源はアプリ外にある** |
+
+**【厳守】どちらの結果でも、§17 の「発生源未特定のまま受容」は変えない。** **本ガードは対処であって発生源の特定ではない。**
+
+**【重要な限界】`/actresses/null` 3件は本ガードでは防げない。** **actresses への href は `item.iteminfo.actress` の `id` から作られており、`content_id` ではない**（`works/[floor]/[id]/page.tsx:385,439` / `actresses/[id]/page.tsx:294`）。**本便の裁定は「`content_id` falsy を除外」であり、actress id は対象外である。** **必要なら別途の裁定を要する。**
+
+---
+
+# 76. 【第59便タスクD】コホート台帳の三層分離の設計（**8/21 より前に実装・投入しない**）
+
+**CSO 裁定(2)**: 「Supabase に技術的制約はない。制約がないのに保証を下げる理由はない。」→ **§12（`internal_links`）と同型の三層で設計する。**
+
+## 76-1. 設計（DDL 案・**適用しない**）
+
+```sql
+-- 1) テーブル（第58便 §69-2 の案に status の制約を追加）
+create table public.sitemap_cohort (
+  content_id    text primary key,
+  cohort_no     smallint    not null,
+  floor_code    text        not null,
+  released_at   timestamptz,
+  price_band    text        not null check (price_band in ('0-399','400-999','1000-1999','2000-2999','3000+')),
+  price         integer,
+  has_large     boolean,
+  status        text        not null default 'staged'
+                check (status in ('staged','live','retired')),
+  first_seen_at timestamptz not null default now(),
+  published_at  timestamptz,
+  published_by  text,
+  retired_at    timestamptz
+);
+
+-- 2) ロール分離（GRANT）
+create role cohort_writer    nologin;   -- 抽出バッチ用
+create role cohort_publisher nologin;   -- 掲出承認用
+grant insert on public.sitemap_cohort to cohort_writer;                      -- INSERT のみ
+grant select on public.sitemap_cohort to cohort_publisher;
+grant update (status, published_at, published_by, retired_at)
+  on public.sitemap_cohort to cohort_publisher;                              -- 列単位 UPDATE のみ
+-- cohort_writer には UPDATE / DELETE を一切与えない
+
+-- 3) RLS
+alter table public.sitemap_cohort enable row level security;
+create policy cohort_writer_insert on public.sitemap_cohort
+  for insert to cohort_writer
+  with check (status = 'staged' and published_at is null and published_by is null and retired_at is null);
+create policy cohort_publisher_select on public.sitemap_cohort
+  for select to cohort_publisher using (true);
+create policy cohort_publisher_update on public.sitemap_cohort
+  for update to cohort_publisher using (true) with check (true);  -- 遷移規則はトリガで強制
+
+-- 4) トリガ3種
+--   T1: 遷移規則の強制  staged → live|retired / live → retired / retired → （不可）
+--   T2: live には published_at と published_by の両方が必須
+--   T3: INSERT 時に status='staged' 以外を拒否（RLS を通れない経路への二重防御）
+```
+
+**T1 の遷移表**（§12 と同型）:
+
+| 現在 | 許可される遷移 |
+|---|---|
+| `staged` | `live` / `retired` |
+| `live` | `retired` |
+| **`retired`** | **なし（終端）** |
+
+**`staged → live` は許可する**（§12 の `internal_links` は `proposed → live` の直行を禁じ `approved` を挟むが、**コホートには「承認済だが掲出タイミング未決」という中間状態が不要である**——投入は一括であり、`staged` がそのまま「承認待ち」を兼ねる）。**この差分は意図的であり、§12 の設計をそのまま写していないことを明記する。**
+
+## 76-2. 【厳守】DB が保証すること／しないこと（§12 と同じ切り分け）
+
+- **DB が保証するのは、抽出バッチのプロセス（`cohort_writer`）が `live` に到達する経路が存在しないことである。** UPDATE の GRANT を出さない / RLS `with check` で `status='staged'` を強制 / トリガで遷移と必須列を強制。
+- **DB は「人間が実際に掲出を承認したこと」を検証できない。** 担保は運用構造——**抽出バッチのプロセスに `cohort_publisher` の鍵を渡さないこと。**
+- **【§12 に無い論点・本設計で新たに生じるもの】`sitemap-cohort-1.xml` の配信はランタイムが Supabase を読む。** **読み取りは既存の `getServiceRoleClient()`＝service role で行われ、service role は RLS を迂回する。** **したがって「Vercel のランタイム env にある service role キーを持つ者は `live` を書ける」。** **これは `internal_links` のレンダラと同じ構造であり、本設計で新たに生じる穴ではないが、三層が守る対象は『抽出バッチ』であって『service role』ではないことを明記する。**
+
+## 76-3. 【厳守】8/21 より前に実装・投入しない
+
+**本便では DDL を1文も実行していない。** **`sitemap_cohort` テーブルは存在しない**（作成していない）。**実装順序の裁定(3) により、コホート1の投入は 8/21 以降である。**
+
+---
+
+# 77. 【第59便タスクE】`tsc --noEmit` のタイムアウト — **原因を特定した**
+
+**第58便では 2分でタイムアウトした。本便では 10.3秒で完走した（exit 0）。**
+
+**(1) 原因**: **第58便のコマンドは、`git diff | grep | wc -l` の連鎖のあとに `cd app-concierge && npx tsc --noEmit` を `;` で繋いだ複合コマンドだった。** **本便で単独実行したところ 10.3秒で完了した。** **`--listFilesOnly` で src 138ファイルを読んでいることも確認済みで、tsconfig は正しく解決されている。**
+
+**【正直に記録】複合コマンドのどの部分が2分を占めたかは特定していない。** **言えるのは「`npx tsc --noEmit` 単独では 10.3秒で完走する」ことだけである。**
+
+**(2) 型チェックの手段**: **`app-concierge` を作業ディレクトリとして `npx tsc --noEmit` を単独のコマンドとして実行する。** **本便のタスクB・C ではこの手順で実施し、いずれも exit 0 を確認した**（タスクC では初回に `TS2588` を検出し、修正後に exit 0 になった＝**型チェックが実際に機能していることの証拠**）。

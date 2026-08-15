@@ -4326,3 +4326,39 @@
 
 ### T-20260815-CARRYOVER-58 — 繰り越し【CTO 2026-08-15】
 - **articles 2本（`fanza-tv-free-trial` / `fanza-payment-statement`）の URL 検査は本便でも未実施。** 検査済みは6本のまま。本便は画像サイズ実測（300作品×最大3URL＝約870 HEAD）・コホート1の実装設計・実装順序の整理・デプロイと公開後チェックに工数を使った。
+
+### T-20260815-IGNORECOMMAND — `ignoreCommand`【CTO 2026-08-15・**第58便の報告を訂正。変更不要**】
+- **【自己訂正】第58便の「`ignoreCommand` の設定は存在しない」「課金とビルド時間を消費している」は誤り。** **`app-concierge/vercel.json` に既に存在し、正しく動作していた。**
+  - 原文: `"ignoreCommand": "if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi"`
+  - **台帳 L1692/L1699 に導入（`a5bae39`）と検証の記録がある**: 「**検証フェーズ2(docsのみpush→スキップ): 成立** — dpl_… が **CANCELED（Ignored Build Step発動・ビルド未実行）**」。**CANCELED はビルド未実行であり、ビルド時間を消費していない。**
+- **ローカル再現**: `7190610` `0dd7ef0` `7229ac1`（`management/` のみ）= **exit 0＝スキップ** / `20c03ea`（`app-concierge/`）= **exit 1＝ビルド**。**本便の実地でも `7229ac1`＝CANCELED、`c628485`＝BUILDING→READY を確認。**
+- **(3) 誤ってスキップされないことの確認**: **`app-concierge/vercel.json` も `app-concierge/package.json` も Root Directory 配下**のため対象外にならない。**ルート直下に `vercel.json` / `.vercelignore` は存在しない。** **→ 変更は行わない。**
+- **【§15-1 の3度目の違反】** 1度目「原因未特定」(08-14) / 2度目「矛盾」(08-15) / **3度目「設定は存在しない」(08-15)**。**共通するのは「無い」「不明」と断定する前に検索していないこと。** **`grep -rn "CANCELED" management/TASK_BOARD.md` の1回で到達できた。**
+- **【裁定(4) の前提】CTO の誤報告に基づく裁定であり、対処すべき問題は存在しない。**
+
+### T-20260815-FILTER-IMPL — fanza-filter の実装【CSO裁定 2026-08-15・**デプロイ済 `c628485`**】
+- **C-③**: `probeImageUrls` で **`res.url`（追跡後の最終 URL）に `isPlaceholderImageUrl` を適用**。**`!res.ok` より前に配置**（後ろだと `head_fail` に吸われて判別不能）。**新カウンタ `redirect_placeholder` をログに追加し `head_fail` と分離。**
+- **案B**: **`large=15,000`（現行維持）/ `list=3,000` / `small=null`（サイズ判定なし・原理的に分離不能）。** `pickImage` は6箇所の UI が使うため**変更せず `pickImageKind()` を新設**。
+- **コメントを実測に合わせて修正**: 「NOW PRINTING は通常10KB未満」は **pics 側 2,732 にのみ当てはまり、302 の行き先の imgsrc 側は 19,378**。各種別の実測レンジ（n）も明記。
+- **差分 103 insertions / 16 deletions・`tsc --noEmit` exit=0**（`--listFilesOnly` で src 138ファイル読込を確認）。
+- **(4) 回帰テスト 15/15 一致**（デプロイ前シミュレーションと本番実測の両方）: **A群11件 404→200 / B群1件 404のまま / C群3件 200のまま。** **C群では `large:redirect_placeholder` が 2〜3件ずつ発火＝C-③ が実際に働いている証拠**（表示件数への影響はない）。
+- **(5) 公開後チェック**: `/` **305,226→321,606B（+16,380B）**＝従来ドロップされていた作品が一覧に載るようになったことと整合。**works 詳細・articles・sitemap は不変**（フィルタを通らない）。
+- **(6) 復旧件数の実測（第55便と同一の200件を再測）**: **404 が 12/200(6.0%) → 1/200(0.5%)。復旧11件。** **復旧率 5.5%（95%CI 3.10〜9.58%）→ 母数1,093 で 点推定60件（区間34〜105件）** ＝ **第57便の事前見積り（案A/B で点推定60件・区間34〜105件）と一致。** **予測外の変化（200→404）は0件。**
+- **残る1件 `/actresses/1113769` は設計どおり復旧しない**（唯一の作品が未発売でプレースホルダ画像＝除外が正しい挙動）。**第57便の「C-③ の直接的な復旧件数は0件」という見積りどおり。**
+
+### T-20260815-NULLGUARD-IMPL — `null` ガードの実装【CSO裁定 2026-08-15・**デプロイ済 `3b40134`**】
+- **`fetchItemList` に `content_id` 欠落の除外を追加**（案②）。**画像フィルタとは独立に常に適用**＝単体取得（cid 指定）も通る。**除外が発生した場合のみ `[fanza-filter] no_content_id=` を出力。**
+- **差分 35 insertions / 2 deletions・`tsc --noEmit` exit=0**（初回実装で `TS2588: Cannot assign to 'data'` を検出し修正＝**型チェックが機能していることの証拠**）。
+- **(4) 404 の推移は本便では判定しない。事前登録**: ベースライン **`null` パス 33件/24時間**（第40便）→ **デプロイの24時間後以降**に判定。**`no_content_id=` が出力されれば「FANZA API が実行時に `content_id` 欠落を返している」物証、出力されなければ発生源はアプリ外。** **どちらでも §17 の「発生源未特定のまま受容」は変えない。**
+- **【重要な限界】`/actresses/null` 3件は本ガードでは防げない。** actresses への href は `item.iteminfo.actress` の `id` 由来で `content_id` ではない。**本裁定は `content_id` falsy の除外であり actress id は対象外。別途の裁定を要する。**
+
+### T-20260815-COHORT-3LAYER — コホート台帳の三層分離の設計【CSO裁定 2026-08-15・**8/21 より前に実装しない**】
+- **§12（`internal_links`）と同型で設計**: ①**GRANT**（`cohort_writer`＝INSERT のみ / `cohort_publisher`＝SELECT + 列単位 UPDATE(`status`,`published_at`,`published_by`,`retired_at`) のみ）②**RLS `with check (status='staged' and published_at is null and published_by is null and retired_at is null)`** ③**トリガ3種**（遷移強制 / `live` に `published_at`+`published_by` 必須 / INSERT 時の status 強制）。
+- **遷移**: `staged → live|retired` / `live → retired` / **`retired` は終端**。**§12 と異なり `approved` 中間状態は置かない**——コホートは一括投入で「承認済だが掲出タイミング未決」が不要なため。**この差分は意図的であり、§12 を写していないことを明記する。**
+- **【§12 に無い論点】`sitemap-cohort-1.xml` の配信はランタイムが service role で読む。service role は RLS を迂回するため「Vercel env の service role キーを持つ者は `live` を書ける」。** **これは `internal_links` のレンダラと同じ構造で本設計で新たに生じる穴ではないが、三層が守る対象は『抽出バッチ』であって『service role』ではないことを明記する。**
+- **【厳守】本便では DDL を1文も実行していない。`sitemap_cohort` テーブルは存在しない。投入は 8/21 以降。**
+
+### T-20260815-TSC-TIMEOUT — `tsc --noEmit` のタイムアウト【CTO 2026-08-15・**解消**】
+- **第58便は複合コマンド（`git diff | grep | wc -l` の連鎖 + `cd app-concierge && npx tsc`）で2分タイムアウトした。本便で単独実行したところ 10.3秒で完走（exit 0）。** **`--listFilesOnly` で src 138ファイルの読み込みを確認＝tsconfig は正しく解決されている。**
+- **【正直に記録】複合コマンドのどの部分が2分を占めたかは特定していない。** 言えるのは「`npx tsc --noEmit` 単独では 10.3秒」だけ。
+- **手段の確保**: **`app-concierge` を作業ディレクトリとして単独コマンドで実行する。** 本便のタスクB・C で実施し、**タスクC では初回に型エラーを検出**した。
