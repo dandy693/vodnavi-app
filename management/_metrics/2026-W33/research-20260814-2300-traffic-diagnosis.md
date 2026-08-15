@@ -4787,3 +4787,118 @@ for (const item of data.result.items ?? []) {
 - **GA4 Data API は「初回6手順のうち4手順が CSO 必須」だが、以後の CSO 作業はゼロになる。** **Looker Studio は初回の作業が小さい代わりに、取得のたびに Chrome を使う。**
 
 **【厳守】どの経路を採るかは CSO が裁定する。** **本便は経路の列挙と、各経路で確認できていない事項の明示に留める。**
+
+---
+
+# 90. 【第61便 補遺2】GA4 Data API の採用 — **鍵は未着。待機中**
+
+## 90-1. タスクA(1) — **CSO の作業はまだ完了していない**
+
+**実測（2026-08-16 06:2x JST・`~/Downloads` の一覧のみ取得。ファイルは1つも開いていない）**:
+
+| 項目 | 値 |
+|---|---|
+| Downloads の総ファイル数 | **111**（補遺1 の時点と同数＝**増えていない**） |
+| **`.json` ファイル** | **1件のみ**＝`kit-net-5f0277ac68f0.json`（**更新日時 2026-07-26 22:33**・本件とは無関係） |
+| **新規の鍵ファイル** | **存在しない** |
+| **CSO からのファイル名の伝達** | **無い** |
+
+**→ タスクA(2)(3) は実施できない。** **ファイル名の伝達を待つ。**
+
+**【厳守】伝達があるまで、`~/Downloads` の他のファイルには一切触れない。** **`kit-net-5f0277ac68f0.json` は本件の対象ではない**（更新日時が 7/26 で、本裁定より3週間前）。
+
+## 90-2. タスクA(4) — **`.gitignore` の事前検査で、重要な穴を1つ発見した**
+
+**現行の資格情報パターン**（`app-concierge/.gitignore`）:
+
+| 行 | パターン |
+|---|---|
+| 34 | `.env*` |
+| 49 | `.env*.local` |
+| 53 | `ga4-service-account.json` |
+| 57 | `*.key` |
+| 58 | `*credentials*.json` |
+| 59 | `*service-account*.json` |
+
+**【発見】GCP がダウンロードするサービスアカウント鍵の既定ファイル名は `<プロジェクトID>-<ハッシュ>.json` 形式である。** **実例＝`kit-net-5f0277ac68f0.json`（Downloads に現存）。**
+
+**この形式は、上記3つの JSON パターン（`ga4-service-account.json` / `*credentials*.json` / `*service-account*.json`）のいずれにも一致しない。**
+
+**→ ダウンロードしたファイルを改名せずに `app-concierge/` 配下へ置くと、`.gitignore` に一致せず git の追跡対象になる。**
+
+**対処（`.gitignore` の追加は不要）**: **CTO が `mv` する際、宛先ファイル名を `ga4-service-account.json` に固定する。** **その時点で `.gitignore:53` に一致する。** **`GA4_DATA_API_SETUP.md` 手順6-1 も「ファイルの名前を `ga4-service-account.json` に変える」と既に定めており、本対処はその手順を CTO 側で担保するものである。**
+
+**【報告事項】したがって「CSO が伝えたファイル名が `.gitignore` のパターンに一致するか」への答えは、`<プロジェクトID>-<ハッシュ>.json` 形式であれば「一致しない」である。** **ただし改名して配置するため `.gitignore` への追加は不要。** **CSO が別の名前で伝えてきた場合は、その時点で再判定する。**
+
+## 90-3. 配置先の解釈
+
+**指示は「`app-concierge/.env.local` 側へ配置」だが、`.env.local` はファイルでありディレクトリではない。** **`GA4_DATA_API_SETUP.md` 手順6-2 の「`C:\Users\Tachi\projects\VODNAVI-GROUP\app-concierge\` の直下に置く」に従い、`app-concierge/ga4-service-account.json` として配置する**と解釈した。**解釈が異なる場合は指摘されたい。**
+
+**実行するコマンド（中身を読まない）**:
+
+```
+mv "/c/Users/Tachi/Downloads/<CSO が伝えたファイル名>" \
+   "/c/Users/Tachi/projects/VODNAVI-GROUP/app-concierge/ga4-service-account.json"
+```
+
+**`mv` はファイル内容を読み出さない。** **配置後、`git status` で追跡対象に入っていないことを確認する。**
+
+## 90-4. タスクB の事前準備 — **取得スクリプトを作成した（未実行）**
+
+**`management/_metrics/2026-W33/ga4-prepared/ga4-pull.mjs`**（依存ゼロ・`node:crypto` のみ）。**鍵の到着後すぐ疎通確認できるよう先に用意した。**
+
+| 取得項目 | 実装 |
+|---|---|
+| **(1) 日別 `product_click`** | `dimensions: [date]` / `metrics: [eventCount]` / `dimensionFilter: eventName=product_click` / 2026-05-13〜today |
+| **(2) `placement` 別の内訳** | `dimensions: [customEvent:placement]` / 同フィルタ |
+| **(3) 補助指標 ①-a** | **`dimensionFilter: eventName=article_guide_click`** / `dimensions: [customEvent:placement, date]` |
+| 検算（§10） | **日別の合計と placement 別の合計が一致するかを検査し、一致しなければ「一致しない」と出力する** |
+| 割当の実測 | **レスポンスヘッダの残り割当を記録**（`GA4_DATA_API_SETUP.md` §4 の「初回実行で記録する」） |
+
+**【鍵の取り扱い】スクリプトは鍵を読み込むが、内容を一切出力しない。** **例外も握り直し、`private_key` / `client_email` が混ざらないようにした**（`catch` で元の例外を再送出せず、独自メッセージに置換）。
+
+**【配置】`app-concierge/scripts/` ではなく `management/` に置いた。** **理由は `ignoreCommand` が production ビルドを起こすためで、本日は `null` ガードの効果測定窓（8/15 23:31 〜 8/16 23:31）の内側である。** **実行時に `app-concierge/scripts/ga4-pull.mjs` へ移す。**
+
+## 90-5. 【補助指標 ①-a について・第37便の記述を更新する】計装は既に存在する
+
+**第37便および §37 の事前登録では、補助指標 ①-a を「未取得（placement 別の分解が必要・GA4 Data API 待ち）」としていた。** **本便のコード実測により、計装が既に存在することを確認した。**
+
+**`src/components/article-guide-links.tsx`（原文）**:
+
+```
+GA4: イベント名 `article_guide_click`。`placement` は面ごとに分ける。
+**これは articles 面でのアフィリエイトクリックではなく「送客量」の計装であり、
+判定ゲート指標①の分子には含めない**（management/_metrics/GATE_20260930.md）。
+
+const SURFACE_PLACEMENT = {
+  works: "works_to_articles_cta",
+  actresses: "actresses_to_articles_cta",
+} as const;
+```
+
+**送信しているパラメータ**: `placement` / `target_slug` / `source_surface` / `source_id` / `transport_type: "beacon"`。
+
+**使用箇所**: `works/[floor]/[id]/page.tsx:373` と `:539`（**β/α で 3→6本に増やした箇所**）、`actresses/[id]/page.tsx:266`。
+
+**→ ①-a は「`article_guide_click` の `placement=works_to_articles_cta`」として取得できる。** **第37便の「未取得」は「API が無いから取れていない」の意味であり、**計装が無いという意味ではなかった**。**本便でその区別を確定させた。**
+
+**【厳守・ゲート①との関係】コンポーネントのコメントが明記しているとおり、`article_guide_click` は送客量の計装であって、判定ゲート指標①の分子には含めない。** **①-a はあくまで補助指標である**（`GATE_20260930.md` / 2026-08-11 の差し戻しで確定済み）。
+
+## 90-6. タスクB(4) — **取得できない見込みの項目を事前に明示する**
+
+| 項目 | 取得可否 | 理由 |
+|---|---|---|
+| 日別 `product_click` | **可** | `eventCount` は標準指標 |
+| `placement` 別 | **可** | **カスタムディメンション（イベントスコープ・登録日 2026-06-25）として登録済み** |
+| `article_guide_click` の `placement` 別 | **可** | 同じ `placement` ディメンションを使う |
+| **`target_slug` / `source_surface` / `source_id` 別** | **不可の見込み** | **カスタムディメンションに登録していないイベントパラメータは API でも取得できない**（`GA4_DATA_API_SETUP.md` §3）。**登録済みは `asp_name` / `source` / `intent` / `placement` の4件と記録されているため、これら3つは未登録と推定される。** **疎通後に実測して確定する** |
+| **2026-06-25 より前の `placement`** | **不可** | **カスタムディメンションの登録日より前のイベントには `placement` が付かない**（第31便で「(not set) 341件」として実測済み） |
+
+**【厳守】上記のうち「不可の見込み」は推定である。疎通後に実測して確定する。**
+
+## 90-7. 待機中に実施しないこと
+
+- **`~/Downloads` の他のファイルの操作**（`kit-net-5f0277ac68f0.json` を含む）
+- **GCP プロジェクト / サービスアカウントの作成**
+- **GA4 の設定変更**
+- **スクリプトの実行**（鍵が無いため実行しても失敗するだけだが、`app-concierge/scripts/` への移動も含めて行わない）

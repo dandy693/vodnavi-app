@@ -16,6 +16,11 @@
 
 ## 3. 計測（GA4）確定値（2026-07-01 claude-in-chrome 物理確認）
 - プロパティ `p489519780`（アカウント VODまとめ研究所 `a355462253`）＝vodnavi.jp。測定ID `G-GG7JV9MJRW`、web stream `11225897844`。アクセスは `authuser=2`=`moterist.com@gmail.com`（`authuser=0`=hdktchkw33 の他社既定プロパティ罠に注意）。
+- **【2026-08-16 CSO裁定・GA4 Data API の採用と、その権限の但し書き】** 日別・`placement` 別の継続取得は **GA4 Data API** で行う（Looker Studio は資格情報を増やさない唯一の経路だが **Chrome 依存が残り、Chrome 依存を外すことが本件の動機**だった＝第31・32便で2回連続失敗）。
+  - **サービスアカウントに付与するのは「GA4 プロパティ `p489519780` の閲覧者」のみ**で、**GCP プロジェクト側のロールは付与しない**（`GA4_DATA_API_SETUP.md` 手順3-4）。**読み取り専用であり、計測設定・データストリーム・イベント定義は変更できない。**
+  - **【但し書き・厳守】「GA4 閲覧者のみ」は、そのサービスアカウントが属する GCP プロジェクトの API 構成が変わらない限りにおいて正しい。** **サービスアカウントは GCP プロジェクトに属するため、後から別の API を有効化すれば、同じ鍵でその API も呼べるようになる。** **したがって「この鍵でできるのは GA4 の閲覧だけ」と無条件に書かないこと。** **鍵を作った GCP プロジェクトで API を追加有効化する際は、既存の鍵の権限が広がることを併せて確認する。**
+  - **鍵の保管**: `app-concierge/ga4-service-account.json`（`.gitignore` の `ga4-service-account.json` / `*service-account*.json` に一致）。**ランタイムでは使わず CTO ローカルバッチ専用**＝Vercel env への投入は不要（`link_approver` / `ai_proposer` と同じ扱い）。
+  - **【運用上の注意】GCP がダウンロードする鍵の既定ファイル名は `<プロジェクトID>-<ハッシュ>.json` 形式で、`.gitignore` の3パターンのいずれにも一致しない。** **配置時に必ず `ga4-service-account.json` へ改名すること**（改名前の名前のままリポジトリ配下に置くと git 管理外にならない）。
 - クロスドメイン linker 構成済：`vodnavi.jp`(完全一致) + `app.vodnavi.jp`(含む) + `moterist.com`(含む)。タイムゾーン (GMT+09:00) 日本時間 / 通貨 JPY(¥)。
 
 ## 4. ガバナンス手続き不変条件
