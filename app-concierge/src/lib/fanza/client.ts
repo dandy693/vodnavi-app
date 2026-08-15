@@ -278,11 +278,38 @@ export function isPlaceholderImageUrl(url: string | null | undefined): boolean {
 }
 
 /**
- * プレースホルダ画像と判定する Content-Length 閾値（バイト）。
- * NOW PRINTING 画像は通常 10KB 未満で、正規のパッケージ画像は数十 KB 以上。
- * 15KB を境界にすることで誤検出を避けつつプレースホルダを確実に弾く。
+ * 画像の種別。`pickImage` が `large ?? list ?? small` の順で選ぶため、
+ * 実際に採用された種別によって正常なサイズ帯がまったく異なる。
  */
-const PLACEHOLDER_SIZE_THRESHOLD = 15_000;
+export type FanzaImageKind = "large" | "list" | "small";
+
+/**
+ * プレースホルダ画像と判定する Content-Length 閾値（バイト・**種別ごと**）。
+ *
+ * 【2026-08-15 実測 n=100×3フロア=300作品・CSO裁定 第59便】旧コメントの
+ * 「NOW PRINTING 画像は通常 10KB 未満」は **配信元によって当たり外れがある**:
+ *   - `pics.dmm.co.jp/.../now_printing.jpg` = **2,732 バイト**（10KB 未満＝旧コメントどおり）
+ *   - `imgsrc.dmm.com/.../now_printing.jpg?w=800&h=800` = **19,378 バイト**（10KB を大きく超える）
+ * 未発売作品の `pl.jpg` は **302 で後者へ転送される**ため、
+ * **サイズ判定だけでは弾けない**。名前による判定（`isPlaceholderImageUrl` を
+ * リダイレクト先へ再適用）と併用して初めて機能する。
+ *
+ * 各種別の正常サイズ帯（2026-08-15 実測）:
+ *   - large : 63,597 〜 233,645（n=277）→ 15,000 は下限の 1/4 で余裕がある
+ *   - list  : 3,533 〜 8,622（n=289）→ pics 側プレースホルダ 2,732 との間に 3,000 を置く
+ *   - small : 6,921 〜 20,189（n=289）→ **imgsrc 側 19,378 が正常帯の内側にあり
+ *             サイズでは原理的に分離できない**。よって閾値を設定せず
+ *             名前判定（C-③）のみで対応する。`list` 欠落は 0/300 のため
+ *             `small` が採用される経路は実測で観測されていない。
+ */
+const PLACEHOLDER_SIZE_THRESHOLD_BY_KIND: Record<
+  FanzaImageKind,
+  number | null
+> = {
+  large: 15_000,
+  list: 3_000,
+  small: null, // サイズ判定を行わない（上記のとおり分離不能）
+};
 
 /**
  * 画像が「存在しない」「プレースホルダ」「アクセス不能」な作品を除外する共通フィルタ。
@@ -301,22 +328,37 @@ export async function filterItemsByImage(
 
   // ① URL 欠落の即時除外（軽量、ネットワーク不要）
   const withUrl = items
-    .map((item) => ({ item, url: pickImage(item.imageURL) }))
-    .filter((entry): entry is { item: DmmItem; url: string } => !!entry.url);
+    .map((item) => ({
+      item,
+      url: pickImage(item.imageURL),
+      kind: pickImageKind(item.imageURL),
+    }))
+    .filter(
+      (entry): entry is { item: DmmItem; url: string; kind: FanzaImageKind } =>
+        !!entry.url && !!entry.kind,
+    );
   const droppedNoUrl = total - withUrl.length;
 
   // ② URL パターンによる除外（NOW PRINTING 等）
   const passPattern = withUrl.filter((e) => !isPlaceholderImageUrl(e.url));
   const droppedByPattern = withUrl.length - passPattern.length;
 
-  // ③ HEAD 到達確認 + Content-Length サイズ判定
-  const { reachable, droppedBySize, droppedByHead, droppedSamples } =
-    await probeImageUrls(passPattern.map((e) => e.url), options.timeoutMs);
+  // ③ HEAD 到達確認 + 種別別の Content-Length サイズ判定 + リダイレクト先の名前判定
+  const {
+    reachable,
+    droppedBySize,
+    droppedByHead,
+    droppedByPlaceholderRedirect,
+    droppedSamples,
+  } = await probeImageUrls(
+    passPattern.map((e) => ({ url: e.url, kind: e.kind })),
+    options.timeoutMs,
+  );
   const survived = passPattern.filter((e) => reachable.has(e.url));
 
   // console.info を使用: Vercel の Function Logs で確実に拾える。
   console.info(
-    `[fanza-filter] in=${total} no_url=${droppedNoUrl} dropped_by_pattern=${droppedByPattern} dropped_by_size=${droppedBySize} head_fail=${droppedByHead} out=${survived.length} took_ms=${Date.now() - startedAt} threshold=${PLACEHOLDER_SIZE_THRESHOLD}`,
+    `[fanza-filter] in=${total} no_url=${droppedNoUrl} dropped_by_pattern=${droppedByPattern} dropped_by_size=${droppedBySize} head_fail=${droppedByHead} redirect_placeholder=${droppedByPlaceholderRedirect} out=${survived.length} took_ms=${Date.now() - startedAt} threshold=large:${PLACEHOLDER_SIZE_THRESHOLD_BY_KIND.large}/list:${PLACEHOLDER_SIZE_THRESHOLD_BY_KIND.list}/small:none`,
   );
   // サイズで弾いたサンプルを 5 件まで出力（プレースホルダ検出の物証）。
   if (droppedSamples.length) {
@@ -350,6 +392,20 @@ export function pickImage(
   return imageURL.large ?? imageURL.list ?? imageURL.small ?? null;
 }
 
+/**
+ * `pickImage` が **どの種別を採用したか** を返す（種別別の閾値判定に使う）。
+ * 選択順は `pickImage` と同一でなければならない（両者を同時に変更すること）。
+ */
+export function pickImageKind(
+  imageURL: { list?: string; small?: string; large?: string } | undefined,
+): FanzaImageKind | null {
+  if (!imageURL) return null;
+  if (imageURL.large) return "large";
+  if (imageURL.list) return "list";
+  if (imageURL.small) return "small";
+  return null;
+}
+
 interface ProbeResult {
   /** 200 応答かつ Content-Length が閾値以上の URL */
   reachable: Set<string>;
@@ -357,27 +413,38 @@ interface ProbeResult {
   droppedBySize: number;
   /** HEAD が非 200 / タイムアウト / ネットワークエラーで弾いた件数 */
   droppedByHead: number;
+  /** リダイレクト先が NOW PRINTING 等のプレースホルダだったため弾いた件数（C-③） */
+  droppedByPlaceholderRedirect: number;
   /** サイズ判定で除外された URL とそのバイト数のサンプル（ログ可視化用） */
   droppedSamples: Array<{ url: string; len: number | null }>;
 }
 
 /**
  * 与えられた画像 URL 群に対し HEAD で並列存在確認を行う。
+ * - **リダイレクト先がプレースホルダなら、ステータスに関わらず droppedByPlaceholderRedirect**
+ *   （C-③: `Response.url` は追跡後の最終 URL。追加リクエストは発生しない）
  * - 非 200, タイムアウト, ネットワークエラーは droppedByHead としてカウント
- * - 200 でも Content-Length が PLACEHOLDER_SIZE_THRESHOLD 未満 / 取得不能 / 0 は droppedBySize としてカウント
+ * - 200 でも Content-Length が **種別ごとの閾値** 未満 / 取得不能 / 0 は droppedBySize
+ *   （`small` は閾値 null＝サイズ判定を行わない）
  * - 上記のいずれにも該当しないものを reachable Set に入れる
  */
 async function probeImageUrls(
-  urls: string[],
+  targets: Array<{ url: string; kind: FanzaImageKind }>,
   timeoutMs = 2000,
 ): Promise<ProbeResult> {
-  const unique = Array.from(new Set(urls.filter(Boolean)));
+  const seen = new Set<string>();
+  const unique = targets.filter((t) => {
+    if (!t.url || seen.has(t.url)) return false;
+    seen.add(t.url);
+    return true;
+  });
   const reachable = new Set<string>();
   const droppedSamples: Array<{ url: string; len: number | null }> = [];
   let droppedBySize = 0;
   let droppedByHead = 0;
+  let droppedByPlaceholderRedirect = 0;
   await Promise.all(
-    unique.map(async (url) => {
+    unique.map(async ({ url, kind }) => {
       const controller = new AbortController();
       const timer = setTimeout(() => controller.abort(), timeoutMs);
       try {
@@ -388,14 +455,28 @@ async function probeImageUrls(
           cache: "no-store",
           signal: controller.signal,
         });
+        // C-③: リダイレクト先がプレースホルダなら、ステータスに関わらず除外する。
+        // 未発売作品の pl.jpg は now_printing.jpg へ 302 され、その転送先は
+        // HEAD を 405 で拒否する（=res.ok は false）。!res.ok より前に置かないと
+        // head_fail に吸われて「NOW PRINTING で落ちた」ことが判別できなくなる。
+        if (res.url && res.url !== url && isPlaceholderImageUrl(res.url)) {
+          droppedByPlaceholderRedirect++;
+          return;
+        }
         if (!res.ok) {
           droppedByHead++;
+          return;
+        }
+        const threshold = PLACEHOLDER_SIZE_THRESHOLD_BY_KIND[kind];
+        if (threshold === null) {
+          // small: サイズでは正常帯とプレースホルダを分離できないため判定しない。
+          reachable.add(url);
           return;
         }
         const lenHeader = res.headers.get("content-length");
         const size = lenHeader ? Number.parseInt(lenHeader, 10) : NaN;
         // Content-Length 未取得・0・閾値未満は NOW PRINTING 等のプレースホルダ扱い。
-        if (!Number.isFinite(size) || size < PLACEHOLDER_SIZE_THRESHOLD) {
+        if (!Number.isFinite(size) || size < threshold) {
           droppedBySize++;
           droppedSamples.push({
             url,
@@ -411,7 +492,13 @@ async function probeImageUrls(
       }
     }),
   );
-  return { reachable, droppedBySize, droppedByHead, droppedSamples };
+  return {
+    reachable,
+    droppedBySize,
+    droppedByHead,
+    droppedByPlaceholderRedirect,
+    droppedSamples,
+  };
 }
 
 export function joinNames(
