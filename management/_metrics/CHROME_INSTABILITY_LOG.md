@@ -36,6 +36,7 @@
 | **第52便** | 08-15 | `search.google.com` | **`computer key ctrl+a` が「全選択」ではなく文字 `a` の入力として着地した。** 入力欄は `ahttps://app.vodnavi.jp/...` となり GSC が **「不適切な形式の URL」** を表示 | **§10 の読み戻しで検出。**入力後に screenshot で値を確認していたため、`Return` を押す前に気づけた。**回避＝入力欄のクリアは `ctrl+a` ではなく ✕（検索をクリア）ボタンを使う** |
 | **第52便** | 08-15 | `search.google.com` | **URL 検査の実行後、結果のオーバーレイが自動的に閉じてサマリー画面に戻る**（2回） | **回復済み。**閉じても**タブの URL に新しい `id` が入っている**ため、その URL へ navigate し直せば結果を読める（2回とも回収成功）。**「取得できなかった」ではない** |
 | **第53便** | 08-15 | `search.google.com` | ①`computer left_click` → **`CDP sendCommand "Input.dispatchMouseEvent" timed out after 30000ms`** ②直後の `screenshot` ×2 → **`Script injection timed out after 5000ms`** | **2件とも誤報。**`read_page` を呼ぶと**検索オーバーレイは開いており、クリックは着地していた**（「検索をクリア」「検索を終了」が DOM に存在）。**§10 回避手順5 の「3回連続」をエラー文字列の回数で数えず、別手段で状態を読むという運用が機能した** |
+| **第61便 補遺3** | 08-16 | **`console.cloud.google.com`** / **`analytics.google.com`** | **`Script injection timed out after 5000ms`** および **`executeScript waited 45000ms for document_idle`**。**GCP で5回（2タブ）・GA4 で3回、いずれも連続で失敗** | **中断（§10 回避手順5）。迂回は行っていない。** **【重要】`tabs_context_mcp`（非注入系）で確認したところ、3ページとも正しいタイトルで読み込まれていた**（「リソースの管理 – Google Cloud コンソール」「ダッシュボード – Cloud の概要」「Analytics」）。**すなわち「到達できない」のではなく「読み取れない」。** **同一セッション・同時刻帯に `search.google.com` は `get_page_text` で正常取得できていた**（GSC ページレポート）。**また `console.cloud.google.com/`（トップ）は補遺1 で screenshot に成功しており、失敗したのは `cloud-resource-manager` / `projectselector2` という重いページである。** **原因は推測しない** |
 
 ---
 
