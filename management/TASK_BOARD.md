@@ -4600,3 +4600,38 @@
 - `APPLY_sitemap_cohort.sql`（10,267バイト・**`begin;`/`commit;` 各1**・**`raise exception` 8箇所**）/ `build-cohort-1.mjs`（7,331バイト・**`node --check` OK**）/ `ga4-pull.mjs`（**`node --check` OK**・本便で疎通済み）。
 - **DDL も抽出スクリプトも実行していない。**
 - **【新たに生じた制約】本セッションで Supabase MCP が切断された。** **`sitemap_cohort` の存在確認ができず、次便へ持ち越す。** **コホート1 の DDL 適用と事後検算は Supabase 接続を要するため、投入時までに疎通を回復させる必要がある**（§10「DB 作業前に Supabase MCP の疎通を確認する」／復旧が PAT 失効なら HUMAN 枠）。
+
+### T-20260817-SUPABASE-MCP — Supabase MCP の疎通【CTO 2026-08-17・**PAT 失効ではない。原因は未特定。ただし作業経路は確保できた**】
+- **(1) 切断の状態**: `SUPABASE_ACCESS_TOKEN` は **User / Process の両スコープに存在**（長さ44・接頭辞 `sbp_`）。**Management API `GET /v1/projects` は HTTP 200**（11プロジェクト・`vodnavi-production`=`xflqxxyvphqqmnzscpxr` は `ACTIVE_HEALTHY`）＝**トークンは有効**。`claude mcp list` は **`✔ Connected`**。`.mcp.json` は `${SUPABASE_ACCESS_TOKEN}` 参照（鍵の直書き0件）、`settings.local.json` は `enableAllProjectMcpServers: true` + `enabledMcpjsonServers: ["supabase"]`。**にもかかわらず `mcp__supabase__*` が本セッションに1つも露出しない**（ToolSearch 2通りで該当なし）。
+- **(2) 第9便の前例には該当しない**: 第9便は **Management API が直接 401**。**本件は 200。** **PAT 失効ではないため §10 の復旧手順（PAT 再発行 → 環境変数差し替え → 再起動）は適用されず、CSO 枠の作業は発生しない。**
+- **(3) 原因は未特定。** **設定・トークン・ハンドシェイクのすべてが正常なのにツールが露出しない。** **【厳守】推測しない。** §10 の「`✔ Connected` はハンドシェイクのみを保証する」の実例。
+- **(4) 代替経路で存在確認を完了**: **`POST /v1/projects/{ref}/database/query` が HTTP 201**（実行主体 `postgres` / `is_superuser`=off）。**public のテーブルは5件**（`article_products` / `editorial_articles` / `fanza_response_cache` / `internal_links` / `sitemap_works_archive`）で **`sitemap_cohort` は存在しない**。`cohort_writer` / `cohort_publisher` も不在（`ai_proposer` / `link_approver` のみ）＝**DDL 未適用と整合**。
+- **【新たに確定した制約】`.mcp.json` は `--read-only` で起動している＝MCP が回復してもコホート1 の DDL は MCP 経由では適用できない。** **投入経路の候補2つ（Management API `database/query` / Chrome の SQL Editor）はいずれも MCP を必要としない。** **→ 第63便の「投入時までに疎通を回復させる必要がある」を訂正する。書き込み・DDL が Management API で通るかは未検証**（検証には DDL の実行を要するため投入禁止期間中は試さない）。**経路の選択は CSO 裁定。**
+
+### T-20260817-INSTRUMENTATION-EPOCHS — 計装日による断絶の棚卸し【CTO 2026-08-17】
+- **(1) 計装日を main 履歴のコミットで確定**（`git log -S` + `git merge-base --is-ancestor`）: `detail_main_cta`/`detail_sample`=`31987b4`(05-25) / `detail_sticky_cta`=`0ec465b`(05-29) / **`detail_fv_cta`=`52235ff`(06-25)** / `article_product_cta`=**`2a8e4d2`**(06-30) / `works_fv_newuser` 他=`03891b9`(07-07) / `guide_tv_signup_cta`=`f1942f0`(07-07) / `guide_tvplus_add_cta`=`5653a0c`(07-29) / `list_*_card_cta`=**`5c2579a`**(07-31) / `works_to_articles_cta` 他=`643ff1f`(08-03)。
+  - **【第63便の SHA を2件訂正】`8b131b4` は main 履歴に含まれない**（マージ前のブランチ側・件名同一・main 側は `5c2579a`）。**`article_product_cta` は `73038f8` ではなく `2a8e4d2`**（`73038f8` は Supabase MCP 導入のコミット）。**本便の指示の前提も `8b131b4` を引用している。今後の照合先にしないこと。**
+- **(2) `placement` 次元は3帯構造**（実測・`date × customEvent:placement`）: **〜06-16 は行として返らない（377件）/ 06-17〜06-24 は `(not set)`（74件）/ 06-25 以降は名前付き（461件）**。合計 912 で一致。**登録日は 2026-06-25**（`TASK_BOARD.md` L1118 に物理確認記録＝**§15-1 の検索で解決**）。**コードは 05-25 から `product_click` に `placement` を送っており（`6e3497a` が追加したのは `ai_affiliate_click` 側のみ）、値の欠落は GA4 側の制約で実装の欠落ではない。** **`(not set)` が直前8日間に限られる理由は未特定。**
+  - **works 詳細の4 placement は実効窓が 54日（06-25〜08-17）で一致する**＝**1本あたりの比較は窓の長さでは交絡しない。**
+- **(3) 洗い出し結果**: **§14-2/§14-4/§14-8 の 884・8.3% は分母が希釈**。実測で分割＝**全体 10,699セッション/884/8.26%** に対し **works 詳細 計装前の12日間（05-13〜05-24）は 1,524セッション/`product_click` 1件/0.07%**。**計装後で揃えると 9.62% で約1.4ポイント高い。** EPC への影響は無視できる（¥9.73→¥9.74）。**GSC 基準 10.9% は未分割（Chrome を要する）＝取得していない。** **→ `FACT_GOVERNANCE.md` §14-13 を新設**（§14-7 と同型の注意書き・3帯構造・計装日表・分割実測・分離できない4要因を収録）。
+- **(4) β/α への影響は項目④のみ**（①②③は GSC で無関係）。**①-a のラベルを訂正**: 「0件／2026-05-13〜08-17」→ **「0件／計装 2026-08-03 以降の15日間」**。**値は変わらない。** β/α デプロイ 08-13 を挟んで事前10日・事後9日でいずれも計装後＝**比較の内側に断絶はない。**
+
+### T-20260817-SCROLL-PV — works 詳細の PV 総数とスクロール到達【CTO 2026-08-17】
+- **(1)(2) 第13便の 4.6% は「サイト全体のユーザー基準」だった**（原文 L39/L44＝`scroll` 175ユーザー ÷ アクティブユーザー 3,800）。**同一定義で対照窓を再現＝2026-05-28〜06-24 で 178÷3,872＝4.60%**（`product_click` ユーザー比も 7.62% vs 第13便 7.55%）＝**手法が一致**。**直近28日（07-21〜08-17）は 83÷1,751＝4.74% で水準は変わっていない。** **【新規】`scroll_custom`(25%) 発火ユーザーは 428＝24.44%。**
+- **works 詳細（`^/works/{floor}/{id}$`）2026-06-25〜08-17: PV 8,731 / activeUsers 3,673 / エンゲージ 28,383秒（PV あたり 3.25秒）。到達は 25%=988(11.32%) / 50%=433(4.96%) / 75%=174(1.99%) / 90%=107(1.23%)。25→90 継続率 10.83%**（第63便の 10.8% と一致）。
+- **【厳守】4.6% と 1.23% を並べて「悪化」と読まないこと。** 分子の単位（ユーザー数 vs イベント数）と分母（サイト全体のユーザー vs works 詳細 PV）が**両方**違う。同じ土俵は **4.60% → 4.74%**。
+- **(3) CTA 位置別のクリック率（PV 比・母数 8,731）**: `detail_sample` 191(2.188%・**最大12本**) / `detail_fv_cta` 183(2.096%・1本・**`lg:hidden`**) / `detail_main_cta` 56(0.641%・1本) / `detail_sticky_cta` 23(0.263%・1本・**mobile のみ**) / `works_fv_newuser` 1。
+  - **deviceCategory で露出面が違うことが実測で見えた**（works 詳細 PV: mobile 5,209/desktop 3,334/tablet 157/smart tv 31）: **`detail_fv_cta` は mobile 170・desktop 8**（ほぼ mobile/tablet 専用）/ **`detail_sticky_cta` は mobile 23・desktop 0** / **`detail_main_cta` は desktop 46・mobile 8**（ほぼ desktop）/ `detail_sample` は mobile 90・desktop 96（全面）。
+  - **露出面と本数で揃えた参考値（1本・PV1,000 あたり）**: **fv 32.6 > main 6.4 > sticky 4.4 > sample 1.82以上**（sample は本数が上限値のため**下限値**）。
+  - **【厳守】分離できていない要因が4つある**（本数 / 露出面 / 表示形態と面積 / **遷移先は4つとも同一の `primaryUrl`**）。**この順序から施策を導かないこと。** **直近28日では fv(89) が sample(82) を上回り全期間と順位が入れ替わる。理由は特定していない。**
+- **(4) 施策は1件も提案していない。**
+
+### T-20260817-BETA-ALPHA-FINAL2 — β/α 判定の実施準備【**8/21 より前に判定しない**】
+- **(1) 判定手順6ステップは変更なし**（①8/21 到達を PowerShell で実測 ②GSC URL 検査7本＝§43-2 の `id` 付き直リンク手順 ③GSC 検索パフォーマンス ④`ga4-pull.mjs` 実行 ⑤第49便の事前登録基準へ照合＝**基準は変更しない** ⑥交絡を併記）。
+- **(2) 交絡4件を確認**: sitemap 再送信+インデックス登録リクエスト(08-15・**articles 面に触れた**) / `c628485`(08-15 23:26) / `3b40134`(08-15 23:31)（**後2件は articles 面に触れていないがクロール配分への影響は排除できない**） / コホート1(**判定完了後＝交絡しない**)。
+- **(3) 本便では判定していない。現在 2026-08-17。GSC の URL 検査は1件も実施していない。** **項目④は基準が事前登録されていないため参考値扱いを維持。**
+
+### T-20260817-COHORT1-READY — コホート1 の投入準備【**8/21 かつ β/α 判定完了より後**】
+- **(1) `sitemap_cohort` は存在しない**（Management API で実測）。`cohort_writer`/`cohort_publisher` も不在。
+- **(2) `APPLY_sitemap_cohort.sql`（10,267B）は冪等を実測で確認**（`create table if not exists` / `create index if not exists` / `create role` は `pg_roles` 検査でガード / `drop policy if exists` 3 / `drop trigger if exists` 3 / `begin;`・`commit;` 各1 / `raise exception` 8）。`build-cohort-1.mjs`（7,331B）は `node --check` OK。
+- **(3) DDL も抽出スクリプトも実行していない。** **MCP の回復は投入の前提ではない**（§102-5）。
