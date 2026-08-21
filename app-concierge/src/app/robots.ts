@@ -29,7 +29,14 @@ export default function robots(): MetadataRoute.Robots {
       ...aiCrawlers.map((userAgent) => ({ userAgent, ...baseRule })),
     ],
     // D1: 本体(回転式・最新)とアーカイブ(累積・旧作)の2本を宣言し自動発見させる。
-    sitemap: [absoluteUrl("/sitemap.xml"), absoluteUrl("/sitemap-archive.xml")],
+    // BRIEF_128: コホート1(価格帯層化5,000・status=live のみ配信)を3本目として追加
+    // (CSO承認 2026-08-15 第57便 / 公開 2026-08-21 第86便)。
+    // ロールバック第一手はこの行から3本目を外すこと(コード revert 不要)。
+    sitemap: [
+      absoluteUrl("/sitemap.xml"),
+      absoluteUrl("/sitemap-archive.xml"),
+      absoluteUrl("/sitemap-cohort-1.xml"),
+    ],
     host: getSiteUrl(),
   };
 }
