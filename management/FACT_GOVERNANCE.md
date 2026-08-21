@@ -210,6 +210,11 @@
     - **資格情報の発行・配置は HUMAN 枠であり、CSO が判断する事項。** **CTO の禁止事項（資格情報の取得・配置）に該当する。**
     - **帰結**: `propose-internal-links.ts` は実装済みだが**実行できない**（dry-run も `SUPABASE_URL` 未設定で停止する）。
   - **【併記】`ai_proposer` には SELECT ポリシーが存在しない**（実測 2026-08-18: `internal_links` の SELECT ポリシーは `approver_select`＝`link_approver` のみ）。**したがって §10 の「INSERT 後に読み戻して検算する」は、`ai_proposer` の鍵しか持たないプロセスでは実行できない。** これは設計の帰結であって欠陥ではないが、**検算は別経路で行う必要がある。**
+- **【2026-08-21 追加・第70便 CSO裁定(3) / 第82便で実行】自己リンク制約 `chk_no_self_link` を追加した。**
+  - **定義**: `CHECK (NOT ((source_type = 'article') AND (source_id = target_slug)))`
+  - **追加した理由**: **トリガ3種は自己リンクを拒否しない**（`guard_ai_proposal()` が見るのは ①`origin='ai'` なら `status='proposed'` ②`target_slug` が公開済み記事 ③`(source_type, source_id)` あたり上限3本 —— の3点のみ）。**2026-08-18 の実測では自己リンクの INSERT が 201 で通っていた。**
+  - **挙動の実測（2026-08-21・意図的ロールバックで検証・テストデータは残していない）**: **陰性＝`article/fanza-tv-review → fanza-tv-review` は `check_violation` で拒否** / **陽性＝`article/fanza-first-guide → fanza-tv-review` は受理**。**検証後の行数は 0。**
+  - **`propose-internal-links.ts` 側の自己リンク判定は残している** —— **DB エラーではなく理由付きで棄却するため**（二重化であって重複ではない）。
 - **`guard_ai_proposal()` は `security definer`**（`set search_path = public, pg_temp`）。理由＝**公開 slug のホワイトリスト照合が `editorial_articles` の RLS に阻まれ、`ai_proposer` からは常に「公開済みでない」と誤判定された**（2026-08-11 実測で検出し修正）。**トリガ内から RLS 有効テーブルを参照する場合はこの罠に注意する。**
 - 実装・動作確認の全文 → `management/_metrics/2026-W33/impl-20260811-2315-b2-2b-rls-triggers.md`
 
