@@ -48,7 +48,12 @@ export function FanzaAffiliateLink({
     | "list_top_card_cta"
     | "list_genres_card_cta"
     | "list_actresses_card_cta"
-    | "list_card_cta"; // 面未指定のフォールバック
+    | "list_card_cta" // 面未指定のフォールバック
+    // /sale（2026-08-22 実装）: セール面のカード CTA。
+    // href は他面と同じ buildAffiliateURL 産（af_id=004）で、区別するのは placement のみ。
+    // DMM 側は af_id 共有のため成果を面別に分離できない（af_id の追加発行は不可能と確定）。
+    // **サイト内のクリック計測はこの placement で分離する。**
+    | "sale_list_cta";
   className?: string;
   children: ReactNode;
 }) {

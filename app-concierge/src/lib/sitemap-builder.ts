@@ -33,6 +33,15 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      // /sale（2026-08-22 新設）: セールは数日単位で入れ替わるため daily。
+      // 期限切れはページ側の `activeCampaign` が描画時に除外するため、
+      // インデックスされた状態でも常に現在のセールを示す。
+      url: absoluteUrl("/sale"),
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.7,
+    },
+    {
       url: absoluteUrl("/about"),
       lastModified: now,
       changeFrequency: "monthly",

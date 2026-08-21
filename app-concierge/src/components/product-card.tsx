@@ -18,23 +18,41 @@ import { normalizeFloorForUrl } from "@/lib/fanza/types";
 import { cn } from "@/lib/utils";
 
 /** S1: 一覧系の面を GA4 placement へ写像する（href は変更しない）。 */
-export type ListSurface = "top" | "genres" | "actresses";
+export type ListSurface = "top" | "genres" | "actresses" | "sale";
 
 const SURFACE_PLACEMENT = {
   top: "list_top_card_cta",
   genres: "list_genres_card_cta",
   actresses: "list_actresses_card_cta",
+  // /sale（2026-08-22 追加）。href は他面と同一（af_id=004）で、区別は placement のみ。
+  sale: "sale_list_cta",
 } as const;
+
+/**
+ * セールバッジの表示情報。**未指定なら描画しない**＝
+ * トップ / genres / actresses の3面は挙動が変わらない。
+ * 割引率は `sale.ts` の `discountRate`（価格から計算）で得た値であり、
+ * キャンペーン名の文言には依存しない。
+ */
+export interface ProductCardSale {
+  /** 割引率（%）。 */
+  rate: number;
+  /** 終了日時の表示文字列（JST の `M/D HH:mm`）。 */
+  endsAtLabel: string;
+}
 
 export function ProductCard({
   item,
   priority = false,
   surface,
+  sale,
 }: {
   item: DmmItem;
   priority?: boolean;
   /** S1: 面の識別。未指定時は placement="list_card_cta"（フォールバック）。 */
   surface?: ListSurface;
+  /** セール面のみ指定。未指定なら現行どおり何も描画しない。 */
+  sale?: ProductCardSale;
 }) {
   const image = pickImage(item.imageURL);
   const [imageBroken, setImageBroken] = useState(false);
@@ -105,6 +123,17 @@ export function ProductCard({
           {isNew && (
             <span className="absolute left-2 top-2 rounded-full bg-amber-400 px-2 py-0.5 text-[10px] font-bold tracking-wider text-black shadow-lg">
               NEW
+            </span>
+          )}
+          {/* セール面のみ。sale 未指定なら描画されないため既存3面は不変。 */}
+          {sale && (
+            <span className="absolute right-2 top-2 flex flex-col items-end gap-0.5">
+              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold tracking-wider text-white shadow-lg">
+                {sale.rate}%OFF
+              </span>
+              <span className="rounded-full bg-black/70 px-1.5 py-0.5 text-[9px] text-rose-100 backdrop-blur">
+                〜{sale.endsAtLabel}
+              </span>
             </span>
           )}
           {price && (

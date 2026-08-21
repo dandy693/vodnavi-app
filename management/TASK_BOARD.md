@@ -6000,3 +6000,93 @@
 #### 確定していないこと（CSO 裁定を要する7件）
 
 **①セール面を作るか ②noindex / index ③実装時期（(a)(b) なら交絡の事前登録が必須）④名称発見の方式（案B・C は静かな失敗の検知設計が別途要る）⑤価格履歴の蓄積方式 ⑥T3連動を行うか ⑦【前提の欠落】第91便のタスクB〜D の具体項目**
+
+### T-20260822-SALE-IMPL — `/sale` の実装【CTO 2026-08-22 07:5x〜08:4x JST・**実装・デプロイあり**】
+
+**前提照合**: 受領時 HEAD `ede7f69`（第92便）。**第91便は依然として欠落しており、本作業を第91便の履行として遡及認定しない。**
+
+#### 方針の転換（本作業から適用）
+
+**「既存施策の検証が終わるまで次を待つ」進め方を取らない。** 旧構造を厳密な比較基準として保存するより、**新しい構造を作って新しい基準データを蓄積すること**を優先する。**他施策との交絡だけを理由に実装を延期しない。**
+
+#### af_id — 責務分離を維持（**変更していない**）
+
+| 環境変数 | 実値 | 用途 | 参照 |
+|---|---|---|---|
+| `DMM_AFFILIATE_ID` | **`moterist-990`** | **FANZA API 呼び出しの認証**（`affiliate_id=` クエリ） | `src/lib/fanza/client.ts:112` |
+| `NEXT_PUBLIC_FANZA_AFFILIATE_ID` | **`moterist-004`** | **人間がクリックする href の af_id** | `src/lib/concierge/url-builder.ts:130` |
+
+- **`/sale` の商品リンクも `moterist-004`。** **`buildAffiliateURL()` をそのまま通すため、この面のためのリンク組立コードは1行も書いていない。**
+- **990 を href へ流すためのガード改修は行っていない。** `assertHumanFacingAffiliateId` / `guard-affiliate-id.mjs` / §8 は**現行のまま**。
+- **実測（ローカル 2026-08-22 08:35）**: `/sale` の `al.*` href **240本**（120作品 × primary + 盾④）で **host `al.dmm.co.jp` / af_id `moterist-004` / ch `link_tool` / ch_id `link` がすべて単一種類**、**`href` 内の `moterist-99[0-9]` は 0件**。
+
+#### 実装したもの
+
+| ファイル | 内容 |
+|---|---|
+| **`src/lib/fanza/sale.ts`**（新規） | セール判定の**純関数**群。`parseYen` / `parseFanzaDate` / `discountRate` / **`activeCampaign`（期限切れの自動除外）** / `isOnSale` / `dedupeByContentId` / `sortSaleItems` / `saleBadgeOf` / `groupByCampaign` / `formatEndsAtJst`。**`Date.now()` を直接触らず `now` を引数で受ける**＝時刻を固定してテストできる |
+| **`src/lib/fanza/sale-source.ts`**（新規） | 取得（I/O）。**rank 走査方式**（4フロア × offset 1/101/201/301 ＝ **16コール**）。**キャンペーン名を定数で持たない**——名称は結果の `campaign[0].title` から得る。`Promise.allSettled` で1フロアの失敗が全体を落とさない |
+| **`src/app/(site)/sale/page.tsx`**（新規） | `/sale`。`revalidate = 300` / canonical / OGP / JSON-LD `CollectionPage` / キャンペーン別の見出し / `ProductGrid surface="sale"` / **0件時は `notFound()` ではなく `EmptyState`** |
+| **`src/lib/fanza/sale.test.ts`**（新規） | **このリポジトリで最初の自動テスト。22件。** |
+| `src/components/fanza-affiliate-link.tsx` | `placement` union に **`"sale_list_cta"`** を追加 |
+| `src/components/product-card.tsx` | `ListSurface` に `"sale"`、`SURFACE_PLACEMENT` に `sale: "sale_list_cta"`、**optional な `sale?: ProductCardSale`**（未指定なら描画しない） |
+| `src/components/product-grid.tsx` | **optional な `saleMap`**（未指定なら現行どおり） |
+| `src/lib/sitemap-builder.ts` | `/sale` を静的エントリへ（`daily` / `priority 0.7`） |
+| `package.json` | **`"test": "node --test src/lib/**/*.test.ts"`** を追加 |
+| `scripts/snapshot-sale-prices.mjs`（新規） | 価格履歴のスナップショット（CTO ローカルバッチ・**ランタイムでは使わない**） |
+
+#### 実装中に実測で判明した欠陥2件（**推測ではなくログで特定**）
+
+**① `fetchItemList` は `service` に既定値を持たない → 省略すると FANZA API が 400 を返す**
+
+- **実測**: 初回ビルドで **`VODNAVI_SILENT_DEATH_GUARD` / `400 Bad Request` が16件**（全フロア・全ページ）。`/sale` は0件で描画され「一部のカテゴリ（videoa / anime / nikkatsu / videoc）」の告知が出た。
+- **原因**: `client.ts:199` は **`site` にのみ既定値 `"FANZA"` を設定**し、**`service` は設定しない**。既存の呼び出し（トップ / genres / actresses）はすべて `site` と `service` を明示している。
+- **対処**: `sale-source.ts` の呼び出しに `site: "FANZA", service: "digital"` を明示。**再ビルドで 400 は 0件。**
+- **【記録】これは `/sale` 固有の問題ではなく、`fetchItemList` の呼び出し規約が暗黙である**という構造。**新しい呼び出しを足すときは `site` と `service` を必ず明示すること。**
+
+**② 画像 HEAD 検証が、100件規模の取得では全件を落とす**
+
+- **実測**: `service` 修正後のビルドで **`[fanza-filter] in=100 ... head_fail=100 ... out=0` が16回すべてで発生**。**正常な作品まで全件落ちた。**
+- **原因は §7（第53便）に記録済みの構造**——未発売作品の `pl.jpg` は `now_printing.jpg` へ 302 し、リダイレクト先の `imgsrc.dmm.com` が **HEAD を 405 で拒否**する（GET は 200・19,378バイト）。**100件 × 16ページ ＝ 1,600 の HEAD を1レンダリングで投げる形は成立しない。**
+- **対処**: `skipImageValidation: true` を渡す。**安全性は落ちない**——`ProductCard` が描画側で `!image || isPlaceholderImageUrl(image) || imageBroken` を判定してカードごと非表示にする。works 詳細も `shouldFilterItems` が単体取得ではフィルタをスキップする既存設計と同じ考え方。
+- **再ビルドで `fanza-filter` は 0回**、`/sale` は 120件で描画。
+
+#### 検証の実測
+
+| # | 検査 | 結果 |
+|---|---|---|
+| 1 | **`npm test`** | **22件すべて pass / fail 0** |
+| 2 | `npx tsc --noEmit` | **exit 0** |
+| 3 | `npx eslint`（新規・変更9ファイル） | **exit 0** |
+| 4 | `npm run guard:affiliate` | **合格**（href への `affiliateURL` 直渡し 0件 / af_id ハードコード 0件 / 99x 実行時ガード存在） |
+| 5 | `npm run build` | **exit 0**。**`/sale` は `○ (Static)` + `Revalidate 5m`**（トップ / genres が `ƒ Dynamic` で `no-store` を返す問題を回避できている） |
+| 6 | ローカル `curl` | **HTTP 200 / 120件 / 271ms**。**%OFF バッジ121件（全50%）/ 表示された終了日時121件のうち過去は0件** / canonical / `robots: index, follow` / JSON-LD `CollectionPage` `numberOfItems=120` / **取得失敗の告知なし（全4フロア成功）** |
+| 7 | **回帰の対照**（本番＝未変更 vs ローカル＝変更後） | **トップ 48本 / genres 48本 / actresses 60本 がすべて一致**（host・af_id とも）。**既存3面に %OFF バッジは0件**＝`sale` prop 未指定で描画されないことを確認 |
+| 8 | sitemap | **`/sale` が `daily` / `priority 0.7` で出力される** |
+
+- **works 詳細の 本番14本 vs ローカル12本 は変更由来ではない。** **第89便で「変更あり12本 / 変更なし12本」を同一ビルド条件で実測済み**の環境差（本番とローカルの取得データの差）。
+
+#### SEO の扱い
+
+- **index する**（`noindex` にしない）。**根拠**: ①追加は1URLのみでクロール予算（更新目的 123.3件/日・§16-2）に対し無視できる ②**期限切れは `activeCampaign` が描画のたびに `now` で切るため、インデックスされた `/sale` は常に現在のセールを示す**（「古い情報がインデックスに残る」というリスクは内容側で解消される）③noindex にして得られるのは検索流入の放棄だけでリスク低減にならない。
+- `robots.ts` は変更していない（`/sale` は既定の allow 対象）。
+
+#### 計測
+
+- **サイト内のクリック**＝**GA4 `placement="sale_list_cta"`**。既存の `product_click` / `ai_affiliate_click` の双発にそのまま乗る（新しい計測経路は作っていない）。
+- **DMM 側の成果**＝**af_id を全面で共有するため面別に分離できない**（af_id の追加発行は不可能と確定・第92便裁定(1)）。**分離できるのはクリックまで。** 成果の判定は「セール掲載作品で成果が発生したか」までしか言えない（第92便タスクA(4) の限界と同じ）。
+
+#### 交絡の事前登録（**延期はしないが記録する**）
+
+- **本デプロイは articles 8本の `lastmod` を更新する**（`sitemap-builder.ts` の `lastModified: now`）。
+- **コホート1 D+14（9/4）の観測項目④** と **記事A 9/12 判定の項目①** に混じる。**8/21 のコホート1 公開デプロイと合わせて交絡2件。**
+- **§16 により再クロール頻度の原因探索は行わない。** 記録するのは交絡の存在のみ。
+
+#### 残った課題（**本作業では扱っていない**）
+
+1. **ページの `revalidate` が着地しない**（トップ / genres は `private, no-cache, no-store` + `MISS`）。`/sale` は静的プリレンダー化により回避できたが、**既存の動的ページは未解決**。
+2. **works 詳細の description が2系統**（§20-4）。
+3. **`guard-affiliate-id.mjs` が host / `ch` を検査しない**（第88便）。
+4. **盾④フォールバックが未計装**（§14-13-8 #2）。`/sale` でも盾④は素の `<a>` のままで GA4 に乗らない。
+5. **価格履歴の蓄積方式**（ファイル / Supabase / しない）は未裁定。**スクリプトは用意したが定期実行は設定していない。**
+6. **T3セール投稿との連動**（`/sale` へのリンク差し替え・`g14` のガード改修・UTM 付与）は未実施。§13 で T3 の自動化が保留中であるため。
