@@ -1,29 +1,35 @@
 /**
- * BRIEF_128 コホート1 — 抽出スクリプト【実装準備版・rev1】
+ * BRIEF_128 コホート1 — 抽出スクリプト【rev2・案C】
  *
  *   CSO承認 2026-08-15（第59便）/ 準備 2026-08-16（第61便 タスクD-2）
+ *   rev2 2026-08-21（第81便・CSO裁定「案C を採用」）
  *
- * 【厳守】本スクリプトは 2026-08-21 かつ β/α の判定完了より前に実行しない。
- * 【厳守】本ファイルは現在 `management/_metrics/2026-W33/cohort1-prepared/` に置いてある。
- *         実装時に `app-concierge/scripts/build-cohort-1.mjs` へ移すこと。
- *         いま `app-concierge/` 配下に置かないのは、`ignoreCommand` が
- *         production ビルドを起こし、**null ガードの効果測定窓
- *         （2026-08-15 23:31 〜 2026-08-16 23:31）にデプロイを挟まないため**である
- *         （スクリプト自体はアプリから import されず挙動は不変だが、
- *           測定窓に不要な変更を入れない）。
+ * 【rev1 の欠陥と rev2 の修正】
+ *   rev1 は **帯ごとに offset を1へリセット**し、`consecutiveOut < 3`
+ *   （帯外が3ページ連続で打ち切り）を持っていた。
+ *   実測（2026-08-21）: `sort=price` は**価格の高い順**（offset=1 で 11,000円 /
+ *   offset=1001 でまだ 3,480円）、`sort=-price` は**安い順**（offset=1 で 60円 /
+ *   offset=1501 でまだ 99円）。したがって中間帯（2000-2999 / 1000-1999 / 400-999）は
+ *   走査開始位置から帯へ到達する前に3ページ連続で帯外となり、**即座に打ち切られていた**。
+ *   結果は 1,900/5,000（3000+ 400 / 0-399 1,500 / 中間3帯 0）。
+ *
+ *   rev2（案C）: **走査方向ごとに単一パス**とし、取得した各アイテムを価格に応じて
+ *   該当帯へ振り分ける。**帯ごとの offset リセットを廃止**する。価格順に連続するため、
+ *   1回の走査で担当帯をすべてカバーできる。
+ *     - `sort=price`（高い順）  … 3000+ / 2000-2999 / 1000-1999
+ *     - `sort=-price`（安い順） … 0-399 / 400-999
+ *   打ち切りは「そのパスの担当範囲を完全に通り過ぎた」ときのみ（価格順なので戻らない）。
  *
  * 仕様（BRIEF_128 rev7 §6-4）:
  *   - 対象期間  : lte_date = 2026-07-31T23:59:59（下限なし）
- *   - 対象フロア: videoa のみ（非収録率 videoa 98% / amateur 81% に対し
- *                 anime 0% / nikkatsu 0%）
+ *   - 対象フロア: videoa のみ
  *   - 層化配分  : 〜399=1,500 / 400〜999=1,500 / 1,000〜1,999=800 /
  *                 2,000〜2,999=800 / 3,000〜=400  合計 5,000
- *   - API コール: 約50〜70回（帯境界の探索込みでも100未満の見込み）
+ *   - API コール: rev1 の見積りは「約50〜70回」。**rev2 は帯が充足した後も
+ *                 次の帯へ到達するまで走査を続けるため、実測して報告する。**
  *
  * 出力: `status='staged'` の INSERT 文を **標準出力へ吐くだけ**。
  *       DB へは接続しない（`cohort_writer` の鍵はこのプロセスに渡さない）。
- *       § FACT_GOVERNANCE §12 の思想（スクリプトが検証してから INSERT する）に合わせ、
- *       生成物を人が確認してから適用する。
  *
  * 実行: node --env-file=.env.local build-cohort-1.mjs > cohort1.sql
  */
@@ -39,14 +45,35 @@ const LTE_DATE = "2026-07-31T23:59:59";
 const FLOOR = "videoa";
 const HITS = 100;
 const COHORT_NO = 1;
+/** 暴走防止。到達したら警告して打ち切り、実測値として報告する。 */
+const MAX_CALLS = 600;
 
-/** 帯の定義（下限含む・上限含む）。抽出順とソート方向を持つ。 */
+/** 帯の定義（下限含む・上限含む）。 */
 const BANDS = [
-  { band: "3000+", min: 3000, max: Infinity, target: 400, sort: "price" },
-  { band: "2000-2999", min: 2000, max: 2999, target: 800, sort: "price" },
-  { band: "1000-1999", min: 1000, max: 1999, target: 800, sort: "price" },
-  { band: "400-999", min: 400, max: 999, target: 1500, sort: "-price" },
-  { band: "0-399", min: 0, max: 399, target: 1500, sort: "-price" },
+  { band: "3000+", min: 3000, max: Infinity, target: 400 },
+  { band: "2000-2999", min: 2000, max: 2999, target: 800 },
+  { band: "1000-1999", min: 1000, max: 1999, target: 800 },
+  { band: "400-999", min: 400, max: 999, target: 1500 },
+  { band: "0-399", min: 0, max: 399, target: 1500 },
+];
+
+/**
+ * 走査パス。**帯ごとではなく走査方向ごとに1パス**（案C）。
+ *   `beyond` … そのパスの担当範囲を通り過ぎたかの判定。価格順なので一度出たら戻らない。
+ */
+const PASSES = [
+  {
+    sort: "price", // 価格の高い順（2026-08-21 実測）
+    label: "高い順",
+    bands: ["3000+", "2000-2999", "1000-1999"],
+    beyond: (price) => price < 1000,
+  },
+  {
+    sort: "-price", // 価格の安い順（2026-08-21 実測）
+    label: "安い順",
+    bands: ["0-399", "400-999"],
+    beyond: (price) => price > 999,
+  },
 ];
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -91,26 +118,48 @@ async function main() {
   const existing = await loadExistingIds();
   console.error(`[cohort1] 既収録 content_id: ${existing.size} 件`);
 
+  const byBand = new Map(BANDS.map((b) => [b.band, b]));
+  const counts = Object.fromEntries(BANDS.map((b) => [b.band, 0]));
+  /** 帯が充足した後に「その帯だから」という理由で捨てた件数（到達はしている証拠）。 */
+  const overflow = Object.fromEntries(BANDS.map((b) => [b.band, 0]));
   const picked = new Map(); // content_id -> row
   let calls = 0;
+  let capped = false;
 
-  for (const b of BANDS) {
+  for (const p of PASSES) {
+    const targets = p.bands.map((n) => byBand.get(n));
+    const done = () => targets.every((b) => counts[b.band] >= b.target);
     let offset = 1;
-    let got = 0;
-    // 帯を外れた連続ページ数。帯を通り過ぎたら打ち切る。
-    let consecutiveOut = 0;
+    let beyondPages = 0;
+    const t0 = Date.now();
+    const callsAtStart = calls;
 
-    while (got < b.target && offset <= 50_000 && consecutiveOut < 3) {
-      const items = await fetchPage(b.sort, offset);
+    while (!done() && offset <= 50_000) {
+      if (calls >= MAX_CALLS) {
+        capped = true;
+        console.error(`[cohort1] ⚠ MAX_CALLS=${MAX_CALLS} に到達したため打ち切った`);
+        break;
+      }
+      const items = await fetchPage(p.sort, offset);
       calls++;
       if (items.length === 0) break;
 
-      let inBand = 0;
+      let priced = 0;
+      let beyond = 0;
       for (const it of items) {
         const price = parsePrice(it);
         if (price === null) continue;
-        if (price < b.min || price > b.max) continue;
-        inBand++;
+        priced++;
+        if (p.beyond(price)) {
+          beyond++;
+          continue;
+        }
+        const b = targets.find((x) => price >= x.min && price <= x.max);
+        if (!b) continue;
+        if (counts[b.band] >= b.target) {
+          overflow[b.band]++; // 到達しているが帯は充足済み
+          continue;
+        }
         const cid = it.content_id;
         // null ガード（第59便と同じ思想）と重複除外
         if (!cid || existing.has(cid) || picked.has(cid)) continue;
@@ -126,18 +175,45 @@ async function main() {
             .map((a) => a?.id)
             .filter((x) => x != null),
         });
-        got++;
-        if (got >= b.target) break;
+        counts[b.band]++;
       }
-      consecutiveOut = inBand === 0 ? consecutiveOut + 1 : 0;
+
+      // ページ全件が担当範囲の外＝価格順なので以降も戻らない。2ページ連続で打ち切る。
+      if (priced > 0 && beyond === priced) {
+        beyondPages++;
+        if (beyondPages >= 2) {
+          console.error(`[cohort1] ${p.label}: 担当範囲を通過したため打ち切り（offset=${offset}）`);
+          break;
+        }
+      } else {
+        beyondPages = 0;
+      }
       offset += HITS;
       await sleep(120);
     }
-    console.error(`[cohort1] ${b.band}: ${got}/${b.target} 件（累計コール ${calls}）`);
+
+    const sec = ((Date.now() - t0) / 1000).toFixed(1);
+    console.error(
+      `[cohort1] パス「${p.label}」(${p.sort}): コール ${calls - callsAtStart} 回 / ${sec}秒 / ` +
+        p.bands.map((n) => `${n}=${counts[n]}/${byBand.get(n).target}`).join(" "),
+    );
   }
 
   const rows = [...picked.values()];
-  console.error(`[cohort1] 合計 ${rows.length} 件 / API コール ${calls} 回`);
+  console.error("[cohort1] ── 帯別の結果 ──");
+  for (const b of BANDS) {
+    const reached = counts[b.band] + overflow[b.band] > 0;
+    const note =
+      counts[b.band] >= b.target
+        ? "充足"
+        : reached
+          ? `未充足（走査は到達している・充足後の破棄 ${overflow[b.band]} 件）`
+          : "未充足（走査が到達していない／該当データが無い）";
+    console.error(`[cohort1]   ${b.band}: ${counts[b.band]}/${b.target} … ${note}`);
+  }
+  console.error(
+    `[cohort1] 合計 ${rows.length} 件 / API コール ${calls} 回${capped ? "（MAX_CALLS で打ち切り）" : ""}`,
+  );
 
   // 標準出力へ INSERT 文を吐く（DB へは接続しない）
   console.log("-- BRIEF_128 コホート1 投入 SQL（自動生成・要人手確認）");
