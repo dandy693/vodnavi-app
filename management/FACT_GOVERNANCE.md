@@ -69,6 +69,63 @@
 - 一覧から探す場合は左サイドバー「サービス」の `FANZA TV` / `Plus限定` の切替でも確認できる
 - **この手順は HUMAN 実査枠**（`tv.dmm.co.jp` はツール層遮断のため CTO/ツールからは実行できない）
 
+#### 5-2-3. 【確定・CTO実測 2026-08-21・第87便】**FANZA API では「FANZA TV / TV Plus の見放題対象か」を判定できない**
+
+> **§5-2 の「FANZA API に見放題フラグが存在しない（2026-08-05 実呼び出しで確定）」を、より広い範囲で再確認し確定させたもの。** **以後、API での判定可否を再検討しないこと。再開の条件は本項末尾に記す。**
+
+**5軸ラベル**: ①対象範囲＝DMM アフィリエイト API v3 全体 ②期間＝2026-08-21 22:26〜22:40 ③計測系＝**API 直接照会のみ**（`tv.dmm.co.jp` / `video.dmm.co.jp` / `premium.dmm.co.jp` へは一切アクセスしていない）④出典＝自サイトの実測 ⑤機会の数＝既知の実査サンプルは **n=4**（対象1 / 対象外3）。
+
+**(1) `ItemList` のレスポンスに見放題フラグは存在しない**
+
+- videoa フロアのレスポンスは **33キー**（`service_code` / `service_name` / `floor_code` / `floor_name` / `category_name` / `content_id` / `product_id` / `title` / `volume` / `review.*` / `URL` / `affiliateURL` / `imageURL.*` / `sampleImageURL.*` / `sampleMovieURL.*` / `prices.*` / `date` / `iteminfo.*`）。
+- **見放題対象（`mifd00173`）と対象外3件（`ebwh00155` / `miab00373` / `dass00333`）でキー集合の差は `iteminfo.series` のみ**＝作品固有のメタデータであり見放題とは無関係。
+- **`見放題|放題|monthly|subscription|premium|svod|unlimited|tv|plus|channel|ch_` を含むキー・値は4件とも 0件。**
+
+**(2) `FloorList` の全レスポンス（FANZA 側）**
+
+| service | floors |
+|---|---|
+| `digital`（動画） | `videoa`(43) / `videoc`(44) / `nikkatsu`(45) / `anime`(46) |
+| **`monthly`（月額動画）** | **`premium`(68) 見放題ch デラックス / `vr`(91) VRch / `standard`(98) 見放題ch** |
+| `mono`（通販） | dvd / goods / anime / pcgame / book / figure |
+| `pcgame` / `doujin` / `ebook` / `unlimited_book` | （省略） |
+
+- **FANZA TV / TV Plus に対応するフロアコードは存在しない。** DMM.com（一般）側に `dmmtv`(95) があるが、**これは一般向け DMM TV であって FANZA TV ではない。**
+- `total_count`: premium **50,000（API 上限に張り付き）** / standard **50,000（同）** / vr **15,969（上限未満＝実数）**。
+
+**(3) `monthly` フロアでの cid 検索は可能。しかし FANZA TV の判定には使えない**
+
+- content_id は videoa と**同一形式**で、`cid=` 指定の照会が機能する。
+- 在籍率の実測: **旧作（コホート1 から等間隔 n=40）＝premium 17.5% / standard 10.0% / vr 0%** ／ **新作（archive の videoa n=12・配信日 2026-08-07〜09-12）＝3フロアとも 0%**。
+
+**【決定的な反証】既知の実査結果と一致しない:**
+
+| content_id | 配信日 | premium | standard | **FANZA TV 実査（§5-2 / §5-2-2）** |
+|---|---|---|---|---|
+| `mifd00173` | 2021-08-06 | ○ | ○ | **対象** |
+| **`ebwh00155`** | 2024-11-15 | **○** | **○** | **対象外** |
+| `miab00373` | 2024-11-15 | ○ | × | 対象外 |
+| `dass00333` | 2024-02-23 | ○ | × | 対象外 |
+
+- **`ebwh00155` は FANZA TV の見放題対象外と実査確認済みであるにもかかわらず、`premium`・`standard` の両方に在籍している。** **したがって monthly フロアの在籍は FANZA TV の見放題対象と一致しない。**
+- `premium` は対象・対象外の4件すべてで ○ となり、**この4件を区別していない。**
+
+**(4) 他のエンドポイントも存在しない**
+
+- v3 に実在するのは **`ItemList` / `FloorList` / `ActressSearch` / `GenreSearch` / `MakerSearch` / `SeriesSearch` / `AuthorSearch`**（400 応答は必須パラメータ不足であってエンドポイント不在ではない）。
+- **`ItemSearch` / `ChannelList` / `SubscriptionList` はいずれも HTTP 404＝存在しない。**
+- **`monthly` フロアのレスポンスに `videoa` に無いキーは1つも無い**（差は videoa 側のみが持つ `prices.list_price` / `prices.deliveries` / `iteminfo.series` / `iteminfo.director` / `campaign`）。**すなわち月額側にも判定用のフラグは無く、「そのフロアに在籍すること」自体が唯一の情報である。**
+
+**【確定】FANZA API では、作品が FANZA TV / TV Plus の見放題対象かを判定できない。**
+
+- **【厳守】迂回的な推定（価格帯・配信日・在籍フロアからの推測等）を判定手段として用いないこと。** 上表のとおり、在籍フロアからの推定は既知の実査結果と一致しない。
+- **【最重要・語の混同注意】「見放題」は2つの別商品を指す。**
+  - **①FANZA TV（DMMプレミアム 月550円）/ TV Plus（+1,078円）** … §5-3 の報酬 **¥2,200** の対象。**§5-2-1 の判定手順（`tv.dmm.co.jp` での品番検索）でしか判定できず、これは HUMAN 実査枠である。**
+  - **②見放題ch / 見放題ch デラックス / VRch（`service=monthly`）** … **API で在籍を機械判定できるが、①とは別商品であり、¥2,200 の報酬対象ではない。**
+  - **数値や判定を引用するときは、どちらの「見放題」かを必ず明示すること。**
+- **本項の判定不能は §5-2 の構造的制約と整合する**——**`video.dmm.co.jp` の作品ページに見放題対象の表示が存在しない**（§5-2・MIFD-173 の二面比較）ことと表裏であり、**VODNAVI の works 詳細が `video.dmm.co.jp` 側データで構成される以上、サイト上に見放題情報を持てない構造**は変わらない。
+- **再開の条件**: **FANZA API に見放題を示すフィールドまたは FANZA TV に対応するフロアが追加されたとき。** それ以外では再検討しない。
+
 #### 5-2-2. works CTA 3本の見放題判定（**CSO/HUMAN 実査 2026-08-11・実画面スクリーンショット**）
 | content_id | FANZA TV 側の品番検索結果 | 判定 |
 |---|---|---|
