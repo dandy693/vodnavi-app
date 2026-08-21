@@ -1,0 +1,155 @@
+From a703cde03c7492c62f961833c57526ff8a6e1a62 Mon Sep 17 00:00:00 2001
+From: Dandy T <trendnet@trendnet.biz>
+Date: Sat, 22 Aug 2026 01:07:28 +0900
+Subject: [PATCH] =?UTF-8?q?feat(affiliate):=20S4=20=E6=A4=9C=E8=A8=BC?=
+ =?UTF-8?q?=E3=83=BB=E7=AC=AC1=E6=AE=B5=E9=9A=8E=20=E2=80=94=20=E4=B8=80?=
+ =?UTF-8?q?=E8=A6=A7=E7=B3=BB=E3=81=AE=E3=81=BF=20host=20=E3=82=92=20al.fa?=
+ =?UTF-8?q?nza.co.jp=20=E3=81=B8=EF=BC=88=E6=9C=AA=E3=83=87=E3=83=97?=
+ =?UTF-8?q?=E3=83=AD=E3=82=A4=EF=BC=89?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+【厳守】このコミットは main に載せない。実施は 2026-09-01（第88便 CSO裁定⑥）
+
+案①（引数追加・既定値=現行）で実装
+- BuildAffiliateURLInput に linkHost?: "dmm" | "fanza" を追加（既定 "dmm"）
+- wrapWithDmmAffiliate に第3引数 linkHost を追加。組立は引き続きこの1関数に集約
+- product-card.tsx の1箇所（一覧系の唯一の呼び出し）に linkHost: "fanza" を追加
+- CSO裁定②により盾④の fallbackUrl も同じ host に揃える
+  （計装なしで GA4 に0件＝観測できない限界をコメントに記録）
+- af_id は 004 のまま / ch=link_tool&ch_id=link のまま / lurl 不変
+
+検証（ローカル・変更あり/なしの対照）
+- 変更あり: トップ48 / genres48 / actresses60 本すべて al.fanza.co.jp・004・
+  link_tool・link、lurl 形は不変。works 詳細は 12本 al.dmm.co.jp のまま
+- 変更なし（同一ビルド条件）: 同じ本数で全て al.dmm.co.jp
+- → 本数は変更の有無で完全一致し、変わったのは host のみ
+- articles が 404 / lp が 0本 なのは変更由来ではない
+  （ローカル .env.local に Supabase キーが無く記事本文を取得できないため。
+   変更なしの対照でも同じ 404 / 0本）
+- tsc exit 0 / eslint exit 0 / guard:affiliate 合格
+
+Co-Authored-By: Claude Opus 5 <noreply@anthropic.com>
+---
+ app-concierge/src/components/product-card.tsx | 15 +++++++
+ .../src/lib/concierge/url-builder.ts          | 45 +++++++++++++++++--
+ 2 files changed, 56 insertions(+), 4 deletions(-)
+
+diff --git a/app-concierge/src/components/product-card.tsx b/app-concierge/src/components/product-card.tsx
+index 6e145e9..64c01ad 100644
+--- a/app-concierge/src/components/product-card.tsx
++++ b/app-concierge/src/components/product-card.tsx
+@@ -66,12 +66,27 @@ export function ProductCard({
+   // 環境変数（NEXT_PUBLIC_FANZA_AFFILIATE_ID, 盾③）から動的に解決する。
+   const primaryActress = item.iteminfo?.actress?.[0]?.name ?? null;
+   const skuCode = item.maker_product ?? null;
++  // S4 検証・第1段階（CSO裁定 2026-08-21 第88便 / 実施 2026-09-01）:
++  // **一覧系3面（トップ / genres / actresses）だけ** host を S4 前の
++  // `al.fanza.co.jp` へ戻す。`af_id`（004）と `ch=link_tool&ch_id=link` と
++  // 遷移先（`lurl`）は変えない＝変数を host の1つに絞るため。
++  //
++  // このファイルは `ProductGrid` 経由でのみ描画され、`ProductGrid` を持つのは
++  // 上記3面だけである。works 詳細 / articles / コンシェルジュ / ガイドは
++  // `linkHost` を渡さないため既定（`"dmm"`）のまま変わらない。
++  //
++  // CSO裁定②により **盾④の `fallbackUrl` も同じ host に揃える**。
++  // 【限界の記録】フォールバックは計装されておらず GA4 に1件も存在しない
++  // （FACT_GOVERNANCE §14-13-8 #2）ため、変更しても観測できない。
++  //
++  // ロールバックは **この `linkHost` の1行を消すだけ**（既定へ戻る）。
+   const { primaryUrl: affiliateHref, fallbackUrl } = buildAffiliateURL({
+     asp: "fanza",
+     contentId: item.content_id,
+     actressOrSku: primaryActress ?? skuCode,
+     // S2/S4: フロア別パス。primaryUrl（メイン CTA）の lurl はここで決まるため必須。
+     floor: normalizeFloorForUrl(item.floor_code),
++    linkHost: "fanza",
+   });
+   const fallbackLabel = primaryActress
+     ? `${primaryActress}の作品を探す`
+diff --git a/app-concierge/src/lib/concierge/url-builder.ts b/app-concierge/src/lib/concierge/url-builder.ts
+index b208817..f6d93ae 100644
+--- a/app-concierge/src/lib/concierge/url-builder.ts
++++ b/app-concierge/src/lib/concierge/url-builder.ts
+@@ -40,8 +40,28 @@ export interface BuildAffiliateURLInput {
+    * 出し分けるために使う。未指定時は従来どおり av 面のパス。
+    */
+   floor?: string | null;
++  /**
++   * S4 検証・第1段階（CSO裁定 2026-08-21 第88便 / 実施 2026-09-01）:
++   * アフィリエイトリンクの **host のみ**を選ぶ。`af_id` と `ch` は変えない。
++   *
++   *   `"dmm"`（既定）… `https://al.dmm.co.jp/`  ＝ S4(2026-08-03) 以降の現行
++   *   `"fanza"`      … `https://al.fanza.co.jp/` ＝ S4 前に一覧系が使っていた host
++   *
++   * **既定値が現行動作**であるため、この入力を渡さない呼び出し（works 詳細 /
++   * articles / コンシェルジュ / ガイド）は挙動が変わらない。
++   * 現在これを指定するのは **`components/product-card.tsx` の1箇所だけ**＝
++   * 一覧系3面（トップ / genres / actresses）のみが対象。
++   *
++   * 【厳守】`af_id` を変える用途に使わないこと。af_id は
++   * `NEXT_PUBLIC_FANZA_AFFILIATE_ID`（004）から解決され、990〜999 は
++   * `assertHumanFacingAffiliateId` が拒否する。その経路は本入力では変わらない。
++   */
++  linkHost?: AffiliateLinkHost;
+ }
+ 
++/** S4 検証・第1段階で切り替える host の種別。 */
++export type AffiliateLinkHost = "dmm" | "fanza";
++
+ export interface AffiliateURLs {
+   /** 作品詳細ページへの直接アフィリエイト URL。 */
+   primaryUrl: string;
+@@ -57,6 +77,11 @@ export interface AffiliateURLs {
+ }
+ 
+ const DMM_AFFILIATE_BASE = "https://al.dmm.co.jp/";
++/**
++ * S4 検証・第1段階: S4(2026-08-03) 以前に一覧系が使っていた host。
++ * `af_id` / `ch` / `lurl` は変えない（変えるのは host のみ）。
++ */
++const FANZA_AFFILIATE_BASE = "https://al.fanza.co.jp/";
+ /**
+  * S2(2026-07-31 CSO承認): 旧実装は全フロアで `digital/videoa/-/detail/=/cid=` 固定
+  * だったため、anime / nikkatsu の作品でも videoa のパスを出力していた（2026-07-31
+@@ -133,10 +158,18 @@ function resolveAffiliateId(asp: AspName, override?: string): string | null {
+   return candidate ? assertHumanFacingAffiliateId(candidate) : null;
+ }
+ 
+-function wrapWithDmmAffiliate(targetUrl: string, affiliateId: string): string {
++function wrapWithDmmAffiliate(
++  targetUrl: string,
++  affiliateId: string,
++  linkHost: AffiliateLinkHost = "dmm",
++): string {
+   const lurl = encodeURIComponent(targetUrl);
+   const af = encodeURIComponent(affiliateId);
+-  return `${DMM_AFFILIATE_BASE}?lurl=${lurl}&af_id=${af}&ch=link_tool&ch_id=link`;
++  // 【組立はこの1関数に集約したまま】host だけを差し替える。
++  // `ch=link_tool&ch_id=link` は第1段階では変えない（第2段階＝ch=api は
++  // DMM サポートの回答後に CSO が判断する・第88便 CSO裁定）。
++  const base = linkHost === "fanza" ? FANZA_AFFILIATE_BASE : DMM_AFFILIATE_BASE;
++  return `${base}?lurl=${lurl}&af_id=${af}&ch=link_tool&ch_id=link`;
+ }
+ 
+ function deriveSearchQuery(input: BuildAffiliateURLInput): string {
+@@ -185,9 +218,13 @@ export function buildAffiliateURL(
+         affiliateResolved: false,
+       };
+     }
++    // CSO裁定(第88便②): 盾④のフォールバックも同じ host に揃える。
++    // 【限界の記録】フォールバックは計装されておらず GA4 に1件も存在しない
++    // （FACT_GOVERNANCE §14-13-8 #2）ため、変更しても観測できない。
++    const linkHost = input.linkHost ?? "dmm";
+     return {
+-      primaryUrl: wrapWithDmmAffiliate(detailTarget, affId),
+-      fallbackUrl: wrapWithDmmAffiliate(searchTarget, affId),
++      primaryUrl: wrapWithDmmAffiliate(detailTarget, affId, linkHost),
++      fallbackUrl: wrapWithDmmAffiliate(searchTarget, affId, linkHost),
+       asp,
+       affiliateResolved: true,
+     };
+-- 
+2.53.0.windows.1
+
