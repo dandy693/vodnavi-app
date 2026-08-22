@@ -6405,3 +6405,60 @@ dep=dpl_8vQwGkxhAkiSkpVApVLZ6WMGehHV branch=main
 #### 確定していないこと（CSO 裁定を要する6件）
 
 **①構造化データに Product/Offer/priceValidUntil を入れるか（陳腐化・第三者要件の2点が未確認）②title/description を時限にするか（§20-3 により CTR 改善は当サイトの実測では支持されない）③内部リンクを a/b/c のどれに置くか（β/α の8日0件を踏まえ「0件でも驚かない」を事前登録する）④実装時期（(i) 交絡3件+works 内容変更 / (ii) 交絡1件追加 / (iii) 交絡なしで3週間遅延）⑤cron の頻度を上げるか（日次では 10:10 開始のセールに同日夜が間に合わない）⑥T3 連動を行うか（行うなら g14 分岐・UTM 付与・枠消費の設計変更・og:image の4点が前提）**
+
+---
+
+### 第95便 実装完了（2026-08-22 10:38〜11:10 JST・CTO） — 裁定①〜⑥ を実装 / SHA `51d2adf`
+
+**前提 SHA `faeb181` → 実装 SHA `51d2adf`（push 済・remote 一致）。本番デプロイ `dpl_2iZcxjUprHGh2RGXgFhTG8qDrXxt` / READY / production。**
+**記録全文 → `management/_metrics/2026-W34/impl-20260822-1100-bin95-sale-seo-cron.md`**
+
+| 裁定 | 内容 | 実装 | **本番実測** |
+|---|---|---|---|
+| **①** | 構造化データ（期限切れ後は Offer ごと出力しない） | `saleOfferOf()` が null のとき `offers` を付けない | **Product 20 / Offer 20 / `priceValidUntil` 20件・期限切れ 0件 / `Offer.url` に `al.dmm` 0件** |
+| **②** | 時限 title / description | `buildMeta()` | **`FANZA セール中の作品まとめ｜最大50%OFF｜8/24 09:59まで`** |
+| **③** | 内部リンク b + c + `sale_entry_click` 新設 | `sale-entry-link.tsx`（`nav_sale` / `footer_sale`） | **トップ・works 詳細とも `/sale` リンク 2本** |
+| **④** | 実装時期 (ii)：b+c 即時 / a は 9/12 以降 | **案a は作業ブランチ `feature/works-detail-sale-badge`（`81a5abd`）にのみ準備。main へ入れていない** | **works 詳細の `%OFF` バッジ 0件＝未投入** |
+| **⑤** | cron 1日2回 + 最終スナップショットの定義 | `0 21 * * *`(06:00 JST) + `0 5 * * *`(14:00 JST) / `batch_at` 列を追加 | **列 8→9 / null 0 / 420行 / バッチ2 / 索引4** |
+| **⑥** | 新セール検知 + T3 材料出力（材料まで） | `detectNewCampaigns()` を cron 後処理に。`VODNAVI_NEW_CAMPAIGN` タグ | **未取得**（8/23 の2回実行後から有効） |
+
+#### 確定した定義
+
+**その日の最終スナップショット ＝ `snapshot_date` ごとに `batch_at` が最大の行の集合。**
+- `captured_at` は**行ごとの `now()`** でばらつくため基準にできない。`batch_at` は**1回の実行内で全行に同じ値**。
+- **主キー `(content_id, snapshot_date)` の upsert は消えた作品を削除しない**ため、同じ `snapshot_date` の全行は**複数バッチの和集合**になる（実測: 4回実行で 388 → 420行）。
+- **【厳守】2026-08-22 の 420行は `captured_at` からのバックフィルで複数バッチが混在しており、最終スナップショットを事後に復元できない。8/22 を日次比較の基準に使わないこと。差分検知は 8/23 と 8/24 の対から。**
+
+#### 検証
+
+`npm test` **35/35 pass**（`saleOfferOf` 5件 + `batch_at` 3件を追加）/ `tsc` exit 0 / `eslint` exit 0 / `guard:affiliate` 合格 / `npm run build` exit 0（`/sale` は `○` static・revalidate 5m）。
+
+**本番の5点検査**: `al.dmm.co.jp` の href **240本・全件 `af_id=moterist-004`** / **`href` 属性内の `moterist-99[0-9]` は 0件** / 期限切れ掲載 0件。
+**既存4面の回帰なし**: `/` 48本・`/genres/6925` 48本・`/actresses/1012507` 60本・`/works/videoa/lulu00423` 14本＝**全件 004・99x 0件・host は `al.dmm.co.jp` のみ**。
+**cron 認証（値は用いず挙動のみ）**: ヘッダ無し / 誤 Bearer / **偽装 `x-vercel-cron-schedule` のみ** ＝ **3件とも 401**、本文は `{"ok":false}` で理由を含まない。
+
+- **【§8 但し書きの実例】素の `moterist-990` は `/sale` に 580回出現するが `href` 属性内は 0件**（460件は `affi_id=moterist-990`＝`sampleMovieURL` の API 返却値・RSC ペイロード内）。**`href` 限定の検査でのみ違反を検出できる。**
+- **【計数の但し書き】件数は `grep -oE … | wc -l`（出現数）で数えた。`grep -c` は行数を返すため使わない**（2026-08-22 に CTO が `grep -c` で「/sale の href は1本」と誤報告した）。
+
+#### 交絡の事前登録（**延期はしない。記録のみ**）
+
+**本デプロイは articles 8本の sitemap `lastmod` を更新する**（`sitemap-builder.ts:200` の `lastModified: now`・§16-5）。
+
+| 影響先 | 交絡 |
+|---|---|
+| **コホート1 D+14（2026-09-04）観測項目④** | **8/21 コホート1公開 + 8/22 `/sale` 新設 + 8/22 本デプロイ ＝ 3件** |
+| **記事A 判定（2026-09-12）項目①** | **同上 3件** |
+
+**【厳守】§16 により再クロール頻度の原因探索は行わない。記録するのは交絡の存在のみ。**
+
+#### 本便では取得できないもの（**「0件だった」ではなく「まだ測っていない」**）
+
+- **`sale_entry_click` / `sale_list_cta` の実数** — GA4 の当日値は使えない（§14-8）。**判定は 10/1。**
+- **cron の初回自動実行** — **`0 5 * * *`＝本日 14:00 JST が最短**、次いで 8/23 06:00 JST（**タスクE は本日 14:00 JST 以降に実施**）。
+- **新セール検知の実動作** — 8/23 の2回実行後から有効。
+- **DMM 側の面別成果** — **af_id を全面で共有しており原理的に分離不能**（第92便裁定(1)）＝**構造的に取得不可**。
+
+#### 木曜サイクルへの組み込み（タスクC(3)）
+
+`management/checklists/ROUTINE_CHECKLISTS.md` に **「3. 木曜サイクル（X投稿）— 新セール検知の報告フォーマット」** を追加した。**取得元は Vercel Runtime Logs の `VODNAVI_NEW_CAMPAIGN` タグ。報告するのは材料（名称・検知日・終了日時・件数・最大割引率・代表作品3件・sale リンク）のみ。**
+**【厳守】投稿の自動生成・自動承認はしない。T3 への組み込みは保留のまま。**
