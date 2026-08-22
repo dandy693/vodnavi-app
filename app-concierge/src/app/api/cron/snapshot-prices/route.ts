@@ -4,15 +4,23 @@
  * 【スケジュール】`vercel.json` の `crons` で **`0 21 * * *`（UTC）= 06:00 JST**。
  * セールは実測で約3日（50%OFF）〜約7日（30%OFF）で入れ替わるため、日次で足りる。
  *
- * 【認証】Vercel の公式パターン（`Authorization: Bearer $CRON_SECRET` の自前検証）に従う。
- *   - **`CRON_SECRET` が設定されていれば、それが一致しない限り 401。**
- *   - **未設定の場合は `x-vercel-cron-schedule` ヘッダの存在を要求する。**
- *     このヘッダは Vercel の cron 起動時にのみ付与されるが、**偽装は可能**である。
- *     そのため被害を構造的に抑えてある——
- *       ① 書き込みは `(content_id, snapshot_date)` の upsert で**日次冪等**（行が増えない）
- *       ② 上流の FANZA API は `fetchItemList` の Data Cache（300秒）に保護される
- *     **【HUMAN 枠】`CRON_SECRET` を Vercel の環境変数へ設定すること。**
- *     設定されるまでは上記のフォールバックで動く（弱い保護であることを承知のうえ）。
+ * 【認証】Vercel の公式パターン（`Authorization: Bearer $CRON_SECRET` の自前検証）。
+ * **`CRON_SECRET` を必須とする。一致しない限り 401。**
+ *
+ * 【2026-08-22・第94便補遺で修正した2点】
+ *   ① **`x-vercel-cron-schedule` ヘッダの存在だけを見るフォールバックを廃止した。**
+ *      同ヘッダは**外部から任意に付けられる**ため保護にならない。実測（本番）で
+ *      **偽装ヘッダだけで 200 が返り、384件の書き込みが実行された**。
+ *      「日次冪等だから被害が限定的」は**認証が無いことの正当化にならない**。
+ *   ② **失敗理由を HTTP レスポンスに載せるのをやめた。** 旧実装は
+ *      「CRON_SECRET 未設定」と「CRON_SECRET が一致しない」を返し分けており、
+ *      **秘密が設定されているか否かを外部に開示していた**。理由はサーバログにのみ残す。
+ *
+ * 【env が反映されない罠】`vercel.json` の `ignoreCommand` は `app-concierge/` に
+ * 差分が無いコミットのビルドをスキップする。**Dashboard からの Redeploy も同じ判定を
+ * 通るため CANCELED になる**（2026-08-22 実測: `dpl_CsMib8Hy…` / `dpl_DQh63RPp…` が
+ * いずれも CANCELED）。**環境変数を反映させるには `app-concierge/` 配下に差分を含む
+ * コミットを push する必要がある。**
  *
  * 【冪等】同日中に何度叩かれても行数は増えない。値は最後の取得で上書きされる。
  *
@@ -29,26 +37,41 @@ export const dynamic = "force-dynamic";
 /** 4フロア × 4ページ + Supabase 書き込みぶんの余裕。 */
 export const maxDuration = 60;
 
-function authorize(request: NextRequest): { ok: true } | { ok: false; reason: string } {
+/**
+ * 認証。**理由は返り値に持たせるが、HTTP レスポンスには載せない**（サーバログのみ）。
+ * `configured` は **秘密が設定されているかどうかだけ**を表し、値には一切触れない。
+ */
+function authorize(
+  request: NextRequest,
+): { ok: boolean; configured: boolean; reason: string } {
   const cronSecret = process.env.CRON_SECRET;
   const authHeader = request.headers.get("authorization");
 
-  if (cronSecret) {
-    return authHeader === `Bearer ${cronSecret}`
-      ? { ok: true }
-      : { ok: false, reason: "CRON_SECRET が一致しない" };
+  if (!cronSecret) {
+    return {
+      ok: false,
+      configured: false,
+      reason: "CRON_SECRET が未設定（env が反映されていない可能性）",
+    };
   }
-
-  // CRON_SECRET 未設定時のフォールバック（弱い保護・上のコメント参照）。
-  return request.headers.get("x-vercel-cron-schedule") !== null
-    ? { ok: true }
-    : { ok: false, reason: "CRON_SECRET 未設定かつ Vercel Cron 由来ではない" };
+  return authHeader === `Bearer ${cronSecret}`
+    ? { ok: true, configured: true, reason: "ok" }
+    : { ok: false, configured: true, reason: "Authorization が一致しない" };
 }
 
 export async function GET(request: NextRequest): Promise<Response> {
   const auth = authorize(request);
   if (!auth.ok) {
-    return Response.json({ ok: false, reason: auth.reason }, { status: 401 });
+    // **理由はログにのみ残す。** レスポンスに含めると
+    // 「秘密が設定されているか」を外部に教えることになる。
+    console.warn(
+      JSON.stringify({
+        tag: "VODNAVI_CRON_UNAUTHORIZED",
+        cron_secret_configured: auth.configured,
+        reason: auth.reason,
+      }),
+    );
+    return Response.json({ ok: false }, { status: 401 });
   }
 
   const startedAt = Date.now();
