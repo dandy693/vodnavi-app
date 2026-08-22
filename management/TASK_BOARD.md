@@ -6090,3 +6090,76 @@
 4. **盾④フォールバックが未計装**（§14-13-8 #2）。`/sale` でも盾④は素の `<a>` のままで GA4 に乗らない。
 5. **価格履歴の蓄積方式**（ファイル / Supabase / しない）は未裁定。**スクリプトは用意したが定期実行は設定していない。**
 6. **T3セール投稿との連動**（`/sale` へのリンク差し替え・`g14` のガード改修・UTM 付与）は未実施。§13 で T3 の自動化が保留中であるため。
+
+#### 本番デプロイと実測【CTO 2026-08-22 08:38〜09:0x JST】
+
+**デプロイ**: コミット **`c96d888`** → **`dpl_24CAyvWWXPYQUcCY7E4x24hw7ZnU` / state `READY`**（2026-08-22 08:38:55 JST 作成）。**本番着地の確認は 08:40:23 JST。**
+
+**【記録・一時的な偽陰性】着地の1回目のポーリング（08:40:23）で `al.*` href が 1本しか無かった。** **再確認（08:40:42）では 240本で PASS。** **ISR の初回生成中を拾ったものであり、実装の欠陥ではない。** **デプロイ直後の1回だけの観測で判定しないこと**（§10 の「戻り値は着地の証拠にならない」と同型の注意）。
+
+**本番 `/sale` の実測（2026-08-22 08:40:42）**
+
+| 検査 | 実測 |
+|---|---|
+| HTTP / サイズ | **200 / 1,050,975 字** |
+| **キャッシュ** | **`X-Vercel-Cache: HIT` / `public, max-age=0, must-revalidate` / `Age: 20`**＝**ISR が効いている**（トップ / genres の `private, no-cache, no-store` + `MISS` とは異なる） |
+| **%OFF バッジ** | **121件・全て 50%**（120カード + グループ見出し1） |
+| **期限切れ除外** | **表示された終了日時 121件のうち、現在時刻より過去は 0件**（最も近い終了 `2026-08-24T00:59:00Z`） |
+| キャンペーン見出し | **「50％OFFキャンペーン」**（定数ではなく API の `campaign[0].title` 由来） |
+| **`al.*` href** | **240本**（120作品 × primary + 盾④）。**host `al.dmm.co.jp` / af_id `moterist-004` / ch `link_tool` / ch_id `link` がすべて単一種類** |
+| **`href` 内の `moterist-99[0-9]`** | **0件** |
+| lurl | `https://video.dmm.co.jp/av/content/?id=*` と `…/searchstr=*`（**href の値を読んだのみ。当該ドメインへはアクセスしていない**） |
+
+**af_id の使い分けの実測（§8 の但し書きどおり）**
+
+| 対象 | 実測 |
+|---|---|
+| **`href` 属性内の `moterist-004`** | **240件** |
+| **`href` 属性内の `moterist-99[0-9]`** | **0件** |
+| HTML 全体の `moterist-990` | **576件**＝**すべて RSC ペイロード内の API 返却値**（`affiliateURL` / `sampleMovieURL`）。**§8「本番 HTML への grep は `href` 属性内に限定する」の但し書きどおりであり、違反ではない** |
+
+- **API 認証は `DMM_AFFILIATE_ID=moterist-990` のまま変更していない**（`src/lib/fanza/client.ts:112`）。**人間導線は `NEXT_PUBLIC_FANZA_AFFILIATE_ID=moterist-004`**（`src/lib/concierge/url-builder.ts:130`）。**責務分離を維持した。**
+
+**既存面の回帰確認（本番・デプロイ前後の同一指標）**
+
+| 面 | デプロイ前 | **デプロイ後** | host / af_id / ch | `%OFF` バッジ | `href` 内 99x |
+|---|---|---|---|---|---|
+| トップ | 48本 | **48本** | `al.dmm.co.jp` / `moterist-004` / `link_tool` | **0件** | 0件 |
+| `/genres/6925` | 48本 | **48本** | 同上 | **0件** | 0件 |
+| `/actresses/1012507` | 60本 | **60本** | 同上 | **0件** | 0件 |
+| `/works/videoa/lulu00423` | 14本 | **14本** | 同上 | **0件** | 0件 |
+
+- **4面すべて本数・host・af_id・ch が完全一致＝回帰なし。**
+- **既存面に `%OFF` バッジは 0件**＝`sale` prop 未指定で描画されないことを本番で確認した。
+
+**SEO 付随物（本番実測）**
+
+| 項目 | 実測 |
+|---|---|
+| canonical | **`https://app.vodnavi.jp/sale`** |
+| robots meta | **`index, follow`**（`noindex` は **0件**） |
+| og:url | `https://app.vodnavi.jp/sale` |
+| JSON-LD | **`CollectionPage` あり / `numberOfItems=120`** |
+| **sitemap** | **`/sale` が `changefreq: daily` / `priority: 0.7` で出力**（1件） |
+| robots.txt | **変更していない。** `Disallow: /sale` は **0件**。Sitemap 宣言は3本のまま |
+| sitemap 総URL | **2,520**（デプロイ前 2,527）。内訳＝root 5 / **sale 1** / about 1 / privacy 1 / disclaimer 1 / works 1,200 / genres 200 / **actresses 1,103** / articles 8。**減少は actresses の回転収録による変動**（1,111→1,103）で、`/sale` は +1 されている。**`sitemap.xml` の総URL が時間とともに変動することは既知**（推移 2,964→2,555→2,509→2,527→2,520） |
+
+**計測（placement）の確認**
+
+- **`sale_list_cta` は本番 HTML に文字列として現れない（0件）。** **これは既存面と同じ挙動**——対照実測で **`list_genres_card_cta` / `list_actresses_card_cta` / `list_top_card_cta` も本番 HTML では 0件**だった。
+- **`placement` は `FanzaAffiliateLink` の `onClick` から GA4 へ渡す引数であり、静的マークアップには出力されない**（`fanza-affiliate-link.tsx`）。**したがって 0件は実装どおりであり、欠落ではない。**
+- **実際の計上確認は、実クリック後に GA4 Data API で `customEvent:placement = sale_list_cta` を見る必要がある。** **検証用 Chrome は `/g/collect` を送信しない**（§6 の例外）ため、**CTO の操作では計上されない。** **翌日以降の実データで確認する。**
+
+**デプロイの Canceled 確認**
+
+- **`c96d888` は `READY`。** 対照として、直近の `management/` のみのコミット（`ede7f69` / `247ceab` / `f2be1df` / `7ef49ff` / `9e3fb06`）は**すべて `CANCELED`**＝`vercel.json` の `ignoreCommand` が設計どおり動作している。
+
+**付随物の保全**
+
+| 資材 | 状態 |
+|---|---|
+| S4 作業ブランチ `s4-stage1-20260901`（`a703cde`） | **保管**（第92便裁定(2)） |
+| `management/_metrics/2026-W34/s4-stage1-20260901.patch` | **保管**（8,291バイト） |
+| `management/_metrics/price-history/snapshot-20260822.json` | **保管**（1,062件・第1回スナップショット） |
+| 作業ツリー | **clean**（未コミットの差分なし） |
+| remote 一致 | **`c96d888` で一致** |
