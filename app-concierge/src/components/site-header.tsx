@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
 
+import { SaleEntryLink } from "@/components/sale-entry-link";
+
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 w-full border-b border-white/5 bg-black/70 backdrop-blur-xl supports-[backdrop-filter]:bg-black/50">
@@ -34,6 +36,16 @@ export function SiteHeader() {
           >
             新着
           </Link>
+
+          {/* /sale への導線（第95便 CSO裁定③・案 b）。GA4: sale_entry_click / nav_sale。
+              セールは時限のため、他のナビより目立つ色にしている。 */}
+          <SaleEntryLink
+            placement="nav_sale"
+            ariaLabel="セール中の作品一覧を開く"
+            className="text-sm font-medium text-rose-300 transition-colors hover:text-rose-200"
+          >
+            セール
+          </SaleEntryLink>
 
           {/* AI コンシェルジュへの導線 — 全ページに表示するメイン CTA */}
           <Link

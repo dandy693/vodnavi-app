@@ -195,6 +195,13 @@ export interface PriceHistoryRow {
   campaign_title: string | null;
   /** ISO8601。`date_end` を JST として解釈した絶対時刻。 */
   campaign_end: string | null;
+  /**
+   * **1回の実行内で全行に同じ値**を入れるバッチ識別子（ISO8601）。
+   * cron は1日2回動くため、**その日の最終スナップショットは
+   * 「`snapshot_date` ごとに `batch_at` が最大の行の集合」**として定義する。
+   * `captured_at`（行ごとの `now()`）はばらつくため基準にできない。
+   */
+  batch_at: string;
 }
 
 /**
@@ -207,8 +214,10 @@ export interface PriceHistoryRow {
 export function toPriceHistoryRows(
   items: readonly DmmItem[],
   now: Date,
+  batchAt: Date = now,
 ): PriceHistoryRow[] {
   const snapshot_date = jstDateString(now);
+  const batch_at = batchAt.toISOString();
   const rows: PriceHistoryRow[] = [];
   const seen = new Set<string>();
 
@@ -226,9 +235,38 @@ export function toPriceHistoryRows(
       list_price: parseYen(it.prices?.list_price),
       campaign_title: campaign.title ?? null,
       campaign_end: parseFanzaDate(campaign.date_end)?.toISOString() ?? null,
+      batch_at,
     });
   }
   return rows;
+}
+
+export interface SaleOffer {
+  /** セール価格（円）。 */
+  price: number;
+  /** ISO8601。`campaign.date_end` を JST として解釈した絶対時刻。 */
+  priceValidUntil: string;
+}
+
+/**
+ * 構造化データ `Offer` の中身（**純関数**・第95便 CSO裁定①）。
+ *
+ * **有効なキャンペーンが無い／価格が読めない場合は `null` を返す。**
+ * 呼び出し側は `null` のとき **`offers` を出力しない**こと。
+ *
+ * 【なぜ期限切れで出力しないのか】`priceValidUntil` が過去の `Offer` は、
+ * 検索エンジンから見て「期限切れの価格情報」になる。セールは実測で約3日で入れ替わり、
+ * §16 により再クロール時期は予測できない。**間違った価格を構造化データで主張するより、
+ * 主張しないほうが安全である。**
+ */
+export function saleOfferOf(item: DmmItem, now: Date): SaleOffer | null {
+  const campaign = activeCampaign(item, now);
+  if (!campaign) return null;
+  const price = parseYen(item.prices?.price);
+  if (price === null) return null;
+  const end = parseFanzaDate(campaign.date_end);
+  if (end === null) return null;
+  return { price, priceValidUntil: end.toISOString() };
 }
 
 /** 終了日時を JST の `M/D HH:mm` で表示する（サーバ TZ に依存させない）。 */

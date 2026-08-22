@@ -24,34 +24,97 @@
  */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { cache } from "react";
 
 import { EmptyState } from "@/components/empty-state";
 import { ProductGrid } from "@/components/product-grid";
 import type { ProductCardSale } from "@/components/product-card";
+import { pickImage } from "@/lib/fanza/client";
 import {
+  activeCampaign,
   discountRate,
   formatEndsAtJst,
   groupByCampaign,
+  parseFanzaDate,
   saleBadgeOf,
+  saleOfferOf,
 } from "@/lib/fanza/sale";
 import { fetchSaleItems, SALE_DISPLAY_LIMIT } from "@/lib/fanza/sale-source";
 import { absoluteUrl } from "@/lib/site";
 
 export const revalidate = 300;
 
+/**
+ * `generateMetadata` と `SalePage` が同一リクエスト内で2回呼ぶため `cache()` で束ねる
+ * （works 詳細の `getWork` と同じ方針）。**`now` を引数に取らない**——
+ * リクエストごとに1度だけ評価し、メタデータと本文で同じ時刻・同じ結果を使うため。
+ */
+const getSale = cache(async () => {
+  const now = new Date();
+  const result = await fetchSaleItems({ now });
+  return { now, ...result };
+});
+
 const PATH = "/sale";
 const TITLE = "FANZA セール中の作品まとめ";
 const DESCRIPTION =
   "FANZA で現在セール中の作品を割引率順にまとめています。割引率・セール価格・終了日時は FANZA の配信情報から自動取得し、期限切れは自動で除外しています。";
 
+/**
+ * 時限のメタデータを組み立てる（第95便 CSO裁定②）。
+ *
+ * **【厳守・目的の明示】これは「内容の正確化」であって CTR 向上の施策ではない。**
+ * §20-3 の実測——**メタデータ構造が実質同一で CTR が41倍違う組が実在する**
+ * （`lulu00423` 12.3% / `hmn00874` 0.3%・順位 8.3 と 8.1）——により、
+ * **当サイトの実測では「日付や割引率を入れれば CTR が上がる」とは言えない。**
+ * **効果を約束しない。** 期待するのは「書いてある内容が実態と合っていること」だけである。
+ *
+ * 【陳腐化の限界】§16 により再クロール時期は予測できないため、
+ * **検索結果に古い日付・古い割引率が出続けうる。** これは避けられない。
+ */
+function buildMeta(
+  items: readonly import("@/lib/fanza/types").DmmItem[],
+  totalFound: number,
+  now: Date,
+): { title: string; description: string } {
+  if (items.length === 0) return { title: TITLE, description: DESCRIPTION };
+
+  const rates = items
+    .map((it) => discountRate(it))
+    .filter((r): r is number => r !== null);
+  const maxRate = rates.length > 0 ? Math.max(...rates) : null;
+
+  // 最も早く終わるキャンペーンの終了時刻（＝この面の内容が変わる最短の時点）。
+  const ends = items
+    .map((it) => parseFanzaDate(activeCampaign(it, now)?.date_end))
+    .filter((d): d is Date => d !== null)
+    .sort((a, b) => a.getTime() - b.getTime());
+  const soonest = ends[0] ?? null;
+
+  const titleParts = [TITLE];
+  if (maxRate !== null) titleParts.push(`最大${maxRate}%OFF`);
+  if (soonest) titleParts.push(`${formatEndsAtJst(soonest)}まで`);
+
+  const description =
+    `FANZA で現在セール中の作品 ${totalFound.toLocaleString("ja-JP")} 件を割引率順にまとめています。` +
+    (maxRate !== null ? `最大 ${maxRate}%OFF。` : "") +
+    (soonest ? `もっとも早い終了は ${formatEndsAtJst(soonest)}。` : "") +
+    "割引率・価格・終了日時は FANZA の配信情報から自動取得し、期限切れは自動で除外しています。";
+
+  return { title: titleParts.join("｜"), description };
+}
+
 export async function generateMetadata(): Promise<Metadata> {
+  const { items, totalFound, now } = await getSale();
+  const { title, description } = buildMeta(items, totalFound, now);
+
   return {
-    title: TITLE,
-    description: DESCRIPTION,
+    title,
+    description,
     alternates: { canonical: absoluteUrl(PATH) },
     openGraph: {
-      title: `${TITLE} | VODNAVI`,
-      description: DESCRIPTION,
+      title: `${title} | VODNAVI`,
+      description,
       url: absoluteUrl(PATH),
       type: "website",
       siteName: "VODNAVI",
@@ -59,15 +122,14 @@ export async function generateMetadata(): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${TITLE} | VODNAVI`,
-      description: DESCRIPTION,
+      title: `${title} | VODNAVI`,
+      description,
     },
   };
 }
 
 export default async function SalePage() {
-  const now = new Date();
-  const { items, totalFound, failedFloors } = await fetchSaleItems({ now });
+  const { items, totalFound, failedFloors, now } = await getSale();
 
   const groups = groupByCampaign(items, now);
 
@@ -89,6 +151,12 @@ export default async function SalePage() {
     .filter((r): r is number => r !== null);
   const maxRate = rates.length > 0 ? Math.max(...rates) : null;
 
+  // 構造化データ（第95便 CSO裁定①）。
+  // **期限切れの Offer は出力しない**——`saleOfferOf` が null を返したら
+  // `offers` を持たない `Product` にする。間違った価格を主張するより主張しない。
+  // **`Offer.url` にアフィリエイト URL（al.dmm.co.jp）を置かないこと**：
+  // `c237e51`（2026-07-07）が JSON-LD から af_id を除去した経緯があり、
+  // `scripts/guard-affiliate-id.mjs` が `url:` への `affiliateURL` 直渡しを回帰として検出する。
   const collectionLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
@@ -99,12 +167,37 @@ export default async function SalePage() {
     mainEntity: {
       "@type": "ItemList",
       numberOfItems: items.length,
-      itemListElement: items.slice(0, 20).map((it, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        url: absoluteUrl(`/works/${it.floor_code}/${it.content_id}`),
-        name: it.title,
-      })),
+      itemListElement: items.slice(0, 20).map((it, i) => {
+        const workUrl = absoluteUrl(`/works/${it.floor_code}/${it.content_id}`);
+        const image = pickImage(it.imageURL);
+        const maker = it.iteminfo?.maker?.[0]?.name;
+        const offer = saleOfferOf(it, now);
+
+        const product: Record<string, unknown> = {
+          "@type": "Product",
+          name: it.title,
+          url: workUrl,
+          ...(image ? { image } : {}),
+          ...(maker ? { brand: { "@type": "Brand", name: maker } } : {}),
+        };
+        // 有効なキャンペーンと読める価格が揃ったときだけ Offer を付ける。
+        if (offer) {
+          product.offers = {
+            "@type": "Offer",
+            price: offer.price,
+            priceCurrency: "JPY",
+            priceValidUntil: offer.priceValidUntil,
+            availability: "https://schema.org/InStock",
+            url: workUrl,
+          };
+        }
+
+        return {
+          "@type": "ListItem",
+          position: i + 1,
+          item: product,
+        };
+      }),
     },
   };
 

@@ -22,6 +22,7 @@ import {
   parseYen,
   jstDateString,
   saleBadgeOf,
+  saleOfferOf,
   sortSaleItems,
   toPriceHistoryRows,
 } from "./sale.ts";
@@ -266,6 +267,7 @@ test("toPriceHistoryRows: セール中のみを行にし、値を正しく写す
     list_price: 500,
     campaign_title: "50％OFFキャンペーン",
     campaign_end: "2026-08-24T00:59:59.000Z",
+    batch_at: NOW.toISOString(),
   });
 });
 
@@ -293,4 +295,85 @@ test("toPriceHistoryRows: 価格が読めなくても行は作る（null で保�
   assert.equal(rows.length, 1);
   assert.equal(rows[0].price, null);
   assert.equal(rows[0].list_price, null);
+});
+
+// ---------------------------------------------------------------------------
+// saleOfferOf — 構造化データ Offer（第95便 CSO裁定①）
+// **期限切れで Offer を出力しないこと**が要件の中核。
+// ---------------------------------------------------------------------------
+
+test("saleOfferOf: 有効なキャンペーン + 読める価格 → price と priceValidUntil を返す", () => {
+  const it = withSale("o1", "250", "500", "2026-08-24 09:59:59");
+  const offer = saleOfferOf(it, NOW);
+  assert.notEqual(offer, null);
+  assert.equal(offer?.price, 250);
+  // JST 09:59:59 = UTC 00:59:59
+  assert.equal(offer?.priceValidUntil, "2026-08-24T00:59:59.000Z");
+});
+
+test("saleOfferOf: 期限切れなら null（＝Offer を出力しない）", () => {
+  const expired = withSale("o2", "250", "500", "2026-08-01 09:59:59");
+  assert.equal(saleOfferOf(expired, NOW), null);
+});
+
+test("saleOfferOf: キャンペーンが無ければ null", () => {
+  const plain = item({ content_id: "o3", prices: { price: "250", list_price: "500" } });
+  assert.equal(saleOfferOf(plain, NOW), null);
+});
+
+test("saleOfferOf: 価格が読めなければ null（0円の Offer を出さない）", () => {
+  const noPrice = item({
+    content_id: "o4",
+    campaign: [{ date_begin: "2026-08-01 00:00:00", date_end: "2026-08-24 09:59:59", title: "t" }],
+  });
+  assert.equal(saleOfferOf(noPrice, NOW), null);
+});
+
+test("saleOfferOf: 未開始のキャンペーンは null（先出しの価格を主張しない）", () => {
+  const future = item({
+    content_id: "o5",
+    prices: { price: "250", list_price: "500" },
+    campaign: [{ date_begin: "2026-09-01 00:00:00", date_end: "2026-09-10 09:59:59", title: "t" }],
+  });
+  assert.equal(saleOfferOf(future, NOW), null);
+});
+
+// ---------------------------------------------------------------------------
+// batch_at — 最終スナップショットの定義（第95便 CSO裁定⑤）
+// **1回の実行内で全行に同じ値**でなければ「その日の最終スナップショット」を
+// 集合として取り出せない。
+// ---------------------------------------------------------------------------
+
+test("toPriceHistoryRows: batch_at は全行で同一（1バッチ = 1つの値）", () => {
+  const rows = toPriceHistoryRows(
+    [
+      withSale("b1", "250", "500", "2026-08-24 09:59:59"),
+      withSale("b2", "300", "600", "2026-08-25 09:59:59"),
+      withSale("b3", "400", "800", "2026-08-26 09:59:59"),
+    ],
+    NOW,
+  );
+  assert.equal(rows.length, 3);
+  assert.equal(new Set(rows.map((r) => r.batch_at)).size, 1, "1バッチなら値は1種類");
+});
+
+test("toPriceHistoryRows: batch_at は既定で now、明示すればその値を使う", () => {
+  const batch = new Date("2026-08-23T05:00:00.000Z");
+  const rows = toPriceHistoryRows([withSale("b4", "250", "500", "2026-08-24 09:59:59")], NOW, batch);
+  assert.equal(rows[0].batch_at, batch.toISOString());
+
+  const def = toPriceHistoryRows([withSale("b5", "250", "500", "2026-08-24 09:59:59")], NOW);
+  assert.equal(def[0].batch_at, NOW.toISOString());
+});
+
+test("toPriceHistoryRows: 同日2回の実行は snapshot_date が同じで batch_at だけが異なる", () => {
+  // 06:00 JST と 14:00 JST（同じ JST 日付）。
+  const morning = new Date("2026-08-22T21:00:00.000Z"); // = 8/23 06:00 JST
+  const afternoon = new Date("2026-08-23T05:00:00.000Z"); // = 8/23 14:00 JST
+  const a = toPriceHistoryRows([withSale("b6", "250", "500", "2026-08-24 09:59:59")], morning);
+  const b = toPriceHistoryRows([withSale("b6", "200", "500", "2026-08-24 09:59:59")], afternoon);
+
+  assert.equal(a[0].snapshot_date, "2026-08-23");
+  assert.equal(b[0].snapshot_date, "2026-08-23", "JST では同じ日");
+  assert.notEqual(a[0].batch_at, b[0].batch_at, "バッチは区別できる");
 });

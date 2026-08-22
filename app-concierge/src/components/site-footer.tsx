@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { SaleEntryLink } from "@/components/sale-entry-link";
+
 import { getActressLinks } from "@/lib/actress-editorial";
 import { getGenreLinks } from "@/lib/genre-editorial";
 
@@ -42,6 +44,18 @@ export function SiteFooter() {
             INFORMATION
           </p>
           <ul className="grid grid-cols-2 gap-x-6 gap-y-2 text-xs text-muted-foreground sm:grid-cols-1">
+            {/* /sale への導線（第95便 CSO裁定③・案 c）。GA4: sale_entry_click / footer_sale。
+                INFORMATION の各リンクとは性質が違う（時限の作品一覧）ため先頭に置く。 */}
+            <li>
+              <SaleEntryLink
+                placement="footer_sale"
+                ariaLabel="セール中の作品一覧を開く"
+                className="inline-flex items-center gap-1 text-rose-300/90 transition-colors hover:text-rose-200"
+              >
+                <span className="text-rose-400/40">›</span>
+                セール中の作品
+              </SaleEntryLink>
+            </li>
             {NAV_LINKS.map((link) => (
               <li key={link.href}>
                 <Link

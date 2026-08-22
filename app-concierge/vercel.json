@@ -1,6 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "regions": ["hnd1"],
+  "regions": [
+    "hnd1"
+  ],
   "ignoreCommand": "if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi",
   "github": {
     "silent": true
@@ -9,6 +11,10 @@
     {
       "path": "/api/cron/snapshot-prices",
       "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/cron/snapshot-prices",
+      "schedule": "0 5 * * *"
     }
   ],
   "rewrites": [
@@ -16,14 +22,20 @@
       "source": "/wordpress-sango-review/:path*",
       "destination": "https://site-brand-vodnavi.vercel.app/wordpress-sango-review/:path*",
       "has": [
-        { "type": "host", "value": "vodnavi.jp" }
+        {
+          "type": "host",
+          "value": "vodnavi.jp"
+        }
       ]
     },
     {
       "source": "/u-next-second-free-trial/:path*",
       "destination": "https://site-brand-vodnavi.vercel.app/u-next-second-free-trial/:path*",
       "has": [
-        { "type": "host", "value": "vodnavi.jp" }
+        {
+          "type": "host",
+          "value": "vodnavi.jp"
+        }
       ]
     }
   ]
