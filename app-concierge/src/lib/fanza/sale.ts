@@ -174,6 +174,63 @@ export function groupByCampaign(items: readonly DmmItem[], now: Date): CampaignG
   );
 }
 
+/**
+ * JST の日付（`YYYY-MM-DD`）。**サーバの TZ に依存させない。**
+ *
+ * 価格履歴の粒度に使う。セールの境界（`date_end`）が JST で切られるため、
+ * **UTC 日付で束ねると境界がずれる。**
+ */
+export function jstDateString(now: Date): string {
+  return new Date(now.getTime() + 9 * 60 * 60 * 1000).toISOString().slice(0, 10);
+}
+
+/** `price_history` テーブルの1行（第93便 CSO裁定B(1)）。 */
+export interface PriceHistoryRow {
+  content_id: string;
+  /** JST の日付 `YYYY-MM-DD`。主キーの一部。 */
+  snapshot_date: string;
+  floor_code: string;
+  price: number | null;
+  list_price: number | null;
+  campaign_title: string | null;
+  /** ISO8601。`date_end` を JST として解釈した絶対時刻。 */
+  campaign_end: string | null;
+}
+
+/**
+ * 作品の配列を `price_history` の保存行へ変換する（**純関数**）。
+ *
+ * **有効なキャンペーンを持たないものは落とす**（期限切れ・未開始・campaign なし）。
+ * `content_id` の重複も除去する——主キーが `(content_id, snapshot_date)` のため、
+ * 同一バッチ内に重複があると upsert が同じ行を二度書くことになる。
+ */
+export function toPriceHistoryRows(
+  items: readonly DmmItem[],
+  now: Date,
+): PriceHistoryRow[] {
+  const snapshot_date = jstDateString(now);
+  const rows: PriceHistoryRow[] = [];
+  const seen = new Set<string>();
+
+  for (const it of items) {
+    const campaign = activeCampaign(it, now);
+    if (!campaign) continue;
+    if (!it.content_id || seen.has(it.content_id)) continue;
+    seen.add(it.content_id);
+
+    rows.push({
+      content_id: it.content_id,
+      snapshot_date,
+      floor_code: it.floor_code,
+      price: parseYen(it.prices?.price),
+      list_price: parseYen(it.prices?.list_price),
+      campaign_title: campaign.title ?? null,
+      campaign_end: parseFanzaDate(campaign.date_end)?.toISOString() ?? null,
+    });
+  }
+  return rows;
+}
+
 /** 終了日時を JST の `M/D HH:mm` で表示する（サーバ TZ に依存させない）。 */
 export function formatEndsAtJst(d: Date): string {
   const jst = new Date(d.getTime() + 9 * 60 * 60 * 1000);

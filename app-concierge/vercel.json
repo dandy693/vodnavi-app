@@ -5,6 +5,12 @@
   "github": {
     "silent": true
   },
+  "crons": [
+    {
+      "path": "/api/cron/snapshot-prices",
+      "schedule": "0 21 * * *"
+    }
+  ],
   "rewrites": [
     {
       "source": "/wordpress-sango-review/:path*",

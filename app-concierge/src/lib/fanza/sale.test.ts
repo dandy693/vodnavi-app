@@ -20,8 +20,10 @@ import {
   isOnSale,
   parseFanzaDate,
   parseYen,
+  jstDateString,
   saleBadgeOf,
   sortSaleItems,
+  toPriceHistoryRows,
 } from "./sale.ts";
 import type { DmmItem } from "./types.ts";
 
@@ -237,4 +239,58 @@ test("groupByCampaign: キャンペーン名を定数で持たない（入力か
 test("formatEndsAtJst: JST の M/D HH:mm（サーバ TZ に依存しない）", () => {
   assert.equal(formatEndsAtJst(new Date("2026-08-24T00:59:59Z")), "8/24 09:59");
   assert.equal(formatEndsAtJst(new Date("2026-08-25T14:59:59Z")), "8/25 23:59");
+});
+
+// ───────────────────── 価格履歴（第93便 CSO裁定B(1)） ─────────────────────
+
+test("jstDateString: JST の日付。UTC 日付との境界がずれない", () => {
+  // UTC 2026-08-21T23:00Z は JST 2026-08-22 08:00 → 日付は 08-22 でなければならない
+  assert.equal(jstDateString(new Date("2026-08-21T23:00:00Z")), "2026-08-22");
+  // UTC 2026-08-22T14:59Z は JST 2026-08-22 23:59 → まだ 08-22
+  assert.equal(jstDateString(new Date("2026-08-22T14:59:00Z")), "2026-08-22");
+  // UTC 2026-08-22T15:00Z は JST 2026-08-23 00:00 → 08-23 に切り替わる
+  assert.equal(jstDateString(new Date("2026-08-22T15:00:00Z")), "2026-08-23");
+});
+
+test("toPriceHistoryRows: セール中のみを行にし、値を正しく写す", () => {
+  const rows = toPriceHistoryRows(
+    [withSale("p1", "250~", "500~", "2026-08-24 09:59:59", "2026-08-21 10:10:00", "50％OFFキャンペーン")],
+    NOW,
+  );
+  assert.equal(rows.length, 1);
+  assert.deepEqual(rows[0], {
+    content_id: "p1",
+    snapshot_date: "2026-08-22",
+    floor_code: "videoa",
+    price: 250,
+    list_price: 500,
+    campaign_title: "50％OFFキャンペーン",
+    campaign_end: "2026-08-24T00:59:59.000Z",
+  });
+});
+
+test("toPriceHistoryRows: 期限切れ・未開始・campaign なしは記録しない", () => {
+  const expired = withSale("p2", "250", "500", "2026-08-21 09:59:59");
+  const notYet = withSale("p3", "250", "500", "2026-08-30 00:00:00", "2026-08-25 00:00:00");
+  const none = item({ content_id: "p4", prices: { price: "250", list_price: "500" } });
+  assert.equal(toPriceHistoryRows([expired, notYet, none], NOW).length, 0);
+});
+
+test("toPriceHistoryRows: content_id の重複を除く（主キー衝突を防ぐ）", () => {
+  const a = withSale("dup", "250", "500", "2026-08-24 09:59:59");
+  const b = withSale("dup", "300", "600", "2026-08-24 09:59:59");
+  const rows = toPriceHistoryRows([a, b], NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].price, 250, "先に現れたほうを残す");
+});
+
+test("toPriceHistoryRows: 価格が読めなくても行は作る（null で保存する）", () => {
+  const noPrice = item({
+    content_id: "p5",
+    campaign: [{ date_begin: "2026-08-01 00:00:00", date_end: "2026-08-24 09:59:59", title: "t" }],
+  });
+  const rows = toPriceHistoryRows([noPrice], NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].price, null);
+  assert.equal(rows[0].list_price, null);
 });
