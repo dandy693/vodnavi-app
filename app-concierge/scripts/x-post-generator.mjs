@@ -467,6 +467,21 @@ export function buildT3(material, scheduledUtc) {
   return { text: lines.join("\n"), linkUrl: T3_SALE_URL, kind: "T3", material };
 }
 
+/**
+ * 既存行の投稿文から `campaign_title` を復元する（`g21` の入力用）。
+ *
+ * 【なぜ本文から取るか】Airtable の行に「どのキャンペーンを扱ったか」を持つ列は無い。
+ * **列を増やすのは Airtable のスキーマ変更＝CSO 枠**であり、本文で足りるなら足す必要がない。
+ * `buildT3` の1行目は `FANZAで「{名称}」を確認しました。` に固定されているため復元できる。
+ *
+ * **テンプレートの1行目を変えるときは、ここも併せて変えること。**
+ * 変え忘れると `g21` が既報告を見落とし、**同じキャンペーンを二度投稿する。**
+ */
+export function extractCampaignTitle(text) {
+  const m = String(text ?? "").match(/^FANZAで「(.+?)」を確認しました。/m);
+  return m ? m[1] : null;
+}
+
 /** 同一記事の再登場間隔の下限（**実測の最短 4日**を基準とする。最長は9日）。 */
 export const TG_MIN_REAPPEAR_DAYS = 4;
 /** 既存 TG の slug 別 最終使用日（実測 2026-08-13）。 */
@@ -918,7 +933,9 @@ export function runGuards(posts, existing = []) {
   // **posts 側は含めない**——同一バッチ内の自分自身を「既報告」と誤判定するため。
   const postedCampaignTitles = new Set();
   for (const p of existing) {
-    const t = p.material?.campaign_title ?? p.campaignTitle;
+    // 優先順: 明示の material → 明示の列 → **本文からの復元**。
+    // Airtable の行は前2つを持たないため、実運用で効くのは3番目である。
+    const t = p.material?.campaign_title ?? p.campaignTitle ?? extractCampaignTitle(p.text);
     if (t) postedCampaignTitles.add(t);
   }
   const ctx = { affiliateCountByJstDate, workIntroCountByJstDate, t3CountByJstDate, postedCampaignTitles };

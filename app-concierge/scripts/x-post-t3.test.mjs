@@ -303,3 +303,29 @@ test("T3 が枠外の時刻なら g8 が拒否する（既存ガードが T3 に
   const p = post(MULTI, "2026-08-23T02:00:00.000Z"); // 11:00 JST
   assert.equal(GUARDS.g8_time_window(p).ok, false);
 });
+
+// ---------------------------------------------------------------------------
+// extractCampaignTitle — 既存行の本文から復元（g21 の実運用経路）
+// ---------------------------------------------------------------------------
+
+test("extractCampaignTitle: 生成した本文から名称を復元できる", async () => {
+  const { extractCampaignTitle } = await import("./x-post-generator.mjs");
+  assert.equal(extractCampaignTitle(buildT3(DAILY, SCHED).text), "日替わりセール★");
+  assert.equal(extractCampaignTitle(buildT3(MULTI, SCHED).text), "50％OFFキャンペーン");
+});
+
+test("extractCampaignTitle: T3 以外の本文では null", async () => {
+  const { extractCampaignTitle } = await import("./x-post-generator.mjs");
+  assert.equal(extractCampaignTitle("紫堂るいの単体作品、SNOS-321。"), null);
+  assert.equal(extractCampaignTitle(""), null);
+  assert.equal(extractCampaignTitle(null), null);
+});
+
+test("g21: 既存行が本文しか持たなくても再報告を拒否できる（実運用の経路）", () => {
+  const existing = [{ text: buildT3(MULTI, SCHED).text, scheduledUtc: "2026-08-22T13:30:00.000Z" }];
+  const res = runGuards([post(MULTI)], existing);
+  assert.ok(
+    res.failures.some((f) => f.guard === "g21_t3_not_reported"),
+    "Airtable の行は material も campaignTitle 列も持たないため、ここが実際に効く経路",
+  );
+});

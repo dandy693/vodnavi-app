@@ -36,6 +36,7 @@ import {
 } from "@/lib/fanza/price-history";
 import { jstDateString } from "@/lib/fanza/sale";
 import { fetchSaleItems } from "@/lib/fanza/sale-source";
+import { autoPostT3, isT3AutoPostEnabled, type T3AutoResult } from "@/lib/x-post/t3-auto";
 
 /** cron は毎回実行する。キャッシュさせない。 */
 export const dynamic = "force-dynamic";
@@ -107,6 +108,47 @@ export async function GET(request: NextRequest): Promise<Response> {
         ? { newCampaigns: [], skipped: true, error: null }
         : await detectNewCampaigns(today, yesterday);
 
+    // T3 自動投稿（第99便 タスクA / CSO裁定(1) 案α）。
+    // **稼働フラグの既定は OFF。** ON は CSO の最終確認後であり、
+    // **先行条件（Make.com フィルタ修正 / 専用 PAT の発行）が揃うまで ON にしない。**
+    // **検知が0件なら何もしない。** 新規が無い日は T3 を作らない
+    // （§13-6 の在庫アラートの判定に T3 を当て込まないこと）。
+    let autoPost: (T3AutoResult & { campaign_title: string }) | null = null;
+    const t3Target = detected.newCampaigns[0];
+    if (t3Target) {
+      // **1回の実行で扱うのは1件だけ**（`g18` が1日1件を要求するため、
+      // 複数件を渡しても2件目以降は必ず落ちる。**落とすために呼ぶより、呼ばない**）。
+      if (!t3Target.ends_at) {
+        // **期限が無い材料は投稿しない。** `g19` が検証できず、
+        // 期限切れを配信時点で判定する手段が無くなる。
+        autoPost = {
+          skipped: "material.ends_at が無いため投稿しない（期限を検証できない）",
+          failures: [], recordId: null, verify: [], scheduledJst: null,
+          campaign_title: t3Target.campaign_title,
+        };
+      } else {
+        const r = await autoPostT3(
+          { ...t3Target, ends_at: t3Target.ends_at },
+          now,
+        );
+        autoPost = { ...r, campaign_title: t3Target.campaign_title };
+      }
+      console.info(
+        JSON.stringify({
+          tag: "VODNAVI_T3_AUTOPOST",
+          enabled: isT3AutoPostEnabled(),
+          campaign_title: autoPost.campaign_title,
+          skipped: autoPost.skipped,
+          failures: autoPost.failures,
+          record_id: autoPost.recordId,
+          scheduled_jst: autoPost.scheduledJst,
+          verify: autoPost.verify,
+          // **検算の不一致は取り消さない。** 記録して人が見る（§10）。
+          verify_all_ok: autoPost.verify.length > 0 && autoPost.verify.every((v) => v.ok),
+        }),
+      );
+    }
+
     const body = {
       ok: result.errors.length === 0,
       snapshot_date: rows[0]?.snapshot_date ?? null,
@@ -114,6 +156,8 @@ export async function GET(request: NextRequest): Promise<Response> {
       new_campaigns: detected.newCampaigns,
       detection_skipped: detected.skipped,
       detection_error: detected.error,
+      t3_autopost_enabled: isT3AutoPostEnabled(),
+      t3_autopost: autoPost,
       found: totalFound,
       rows: result.attempted,
       saved: result.saved,
