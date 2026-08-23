@@ -367,6 +367,106 @@ export function buildTg(slug, seq) {
   return { text: `${a.hook}\n${a.cta}`, linkUrl: buildTgUrl(slug, seq) };
 }
 
+// ─────────── T3（セール速報）— 第98便 タスクA。**CSO 最終裁定まで稼働しない** ───────────
+/**
+ * 【位置づけ】T3 は **FANZA API の実測値の事実通知**であり、訴求文の生成ではない。
+ * 本ブロックが作るのは **数値を差し込むだけのテンプレート**で、
+ * **形容・評価・推奨の語を一切含めない**（`T3_BANNED_WORDS` が機械的に拒否する）。
+ *
+ * 【§13 の T6TV 保留との違い（CSO 判断材料・CTO は可否を決めない）】
+ *   - T6TV … `al.*.dmm` への**直リンク**＝押されれば即成果。**訴求文を量産する**構造。
+ *   - T3   … リンク先は**自サイト `/sale`**。**直リンクではない**。本文は API 実測値の転記のみ。
+ *   **ただし `/sale` の先には af_id 004 のアフィリエイトリンクが 240本ある。**
+ *   **「収益導線ではない」とは書かない。** 1クッション挟まるという違いに留まる。
+ *
+ * 【時限性】実測（§5-4 / 第96便補遺）: 50%OFF ≈3日 / ブランドストア30%OFF ≈7日 /
+ * **日替わりセール★ は当日 23:59:59 JST 終了**。**当日終了のものは承認待ちの間に期限が切れる。**
+ * これが自動投稿を検討する理由だが、**採否は CSO が決める。**
+ */
+export const T3_SALE_URL = "https://app.vodnavi.jp/sale";
+
+/**
+ * **形容・評価・推奨の語**。1つでも含まれたら g20 が拒否する。
+ * 月次ルーティンの「法務表現一斉パトロール」対象語（絶対 / 最安 / 業界No.1）を含む。
+ * **迷ったら足す**——**足しすぎて生成が止まるのは安全側**であり、
+ * 通ってしまうより望ましい（§13 の「ガードレールは文言の自然さを検査しない」の教訓）。
+ */
+export const T3_BANNED_WORDS = [
+  "絶対", "最安", "業界No.1", "業界no.1", "お得", "おトク", "激安", "破格", "格安",
+  "見逃せない", "見逃さないで", "今すぐ", "急いで", "急げ", "お早めに", "お見逃しなく",
+  "必見", "おすすめ", "オススメ", "神", "ヤバ", "やばい", "爆", "驚き", "衝撃",
+  "チャンス", "見どころ", "人気", "話題", "注目", "厳選", "満足", "楽しめ", "おすすめし",
+];
+
+/** JST の `M/D HH:mm` 表記（サーバ TZ に依存させない）。 */
+export function t3JstLabel(iso) {
+  const d = new Date(iso);
+  if (Number.isNaN(+d)) return null;
+  const j = new Date(d.getTime() + 9 * 60 * 60 * 1000);
+  return `${j.getUTCMonth() + 1}/${j.getUTCDate()} ${String(j.getUTCHours()).padStart(2, "0")}:${String(j.getUTCMinutes()).padStart(2, "0")}`;
+}
+
+/** JST の `YYYY-MM-DD`。 */
+export function t3JstDate(iso) {
+  const d = new Date(iso);
+  return Number.isNaN(+d) ? null : new Date(d.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+}
+
+/**
+ * 配信時点で残り何時間か。**当日終了のセールで「あと N 時間」を出すために使う。**
+ * 配信時刻（`scheduledUtc`）を基準にする——**生成時刻ではない**。
+ * 生成は 14:00、配信は 21:00 で 7時間ずれるため、生成時刻で書くと嘘になる。
+ */
+export function t3HoursLeft(endsAtIso, scheduledUtc) {
+  const end = new Date(endsAtIso), at = new Date(scheduledUtc);
+  if (Number.isNaN(+end) || Number.isNaN(+at)) return null;
+  return Math.floor((end.getTime() - at.getTime()) / 3600000);
+}
+
+/**
+ * **数値固定テンプレート**（第98便 タスクA(3)）。
+ *
+ * 差し込むのは **名称 / 割引率 / 期限 / 件数 / 代表作品 / `/sale` リンク** のみ。
+ * **文の骨格は定数で、可変部はすべて `material` 由来の数値・文字列**である。
+ * **`material` は `VODNAVI_NEW_CAMPAIGN` の出力をそのまま渡す**（人が値を打ち直さない）。
+ *
+ * 【件数の但し書きを本文に入れる理由】`items` は **rank 走査（4フロア×4ページ＝上位400）で
+ * 見えた件数**であって全対象数ではない（§5-4(6) の悉皆値とは母集団が違う・§15-2 軸5）。
+ * **「N件」とだけ書くと総数と誤読される**ため、必ず「確認できた範囲で」を添える。
+ */
+export function buildT3(material, scheduledUtc) {
+  const { campaign_title, items, ends_at, max_discount, samples } = material ?? {};
+  if (!campaign_title || !ends_at || typeof items !== "number") return null;
+
+  const endLabel = t3JstLabel(ends_at);
+  if (!endLabel) return null;
+
+  const left = t3HoursLeft(ends_at, scheduledUtc);
+  const sameDay = t3JstDate(ends_at) === t3JstDate(scheduledUtc);
+
+  // 期限の書き方。**当日終了なら残り時間を明記する**（g19 が機械的に要求する）。
+  const deadline = sameDay
+    ? `${endLabel}まで（配信時点で残り約${left}時間）`
+    : `${endLabel}まで`;
+
+  const rate = typeof max_discount === "number" ? `最大${max_discount}%OFF` : null;
+  const sample = samples?.[0]?.content_id
+    ? `例: ${samples[0].content_id}（${samples[0].price}円 / 通常${samples[0].list_price}円）`
+    : null;
+
+  const lines = [
+    `FANZAで「${campaign_title}」を確認しました。`,
+    [rate, `${deadline}`].filter(Boolean).join(" / "),
+    `確認できた範囲で${items}件。`,
+    sample,
+    "",
+    "対象作品の一覧はこちら↓",
+    "#PR",
+  ].filter((x) => x !== null);
+
+  return { text: lines.join("\n"), linkUrl: T3_SALE_URL, kind: "T3", material };
+}
+
 /** 同一記事の再登場間隔の下限（**実測の最短 4日**を基準とする。最長は9日）。 */
 export const TG_MIN_REAPPEAR_DAYS = 4;
 /** 既存 TG の slug 別 最終使用日（実測 2026-08-13）。 */
@@ -521,6 +621,16 @@ export const GUARDS = {
    */
   g14_link_target_by_kind: (p) => {
     if (!p.kind) return { ok: true, ng: null };
+    // 【2026-08-23・第98便】T3 を追加。**第94便で「T3 のリンク先は現在まったく検査されて
+    // いない＝誤りも検出しない」と実測で判明した箇所の修正である。**
+    // T3 のリンク先は `/sale` 固定。**クエリ（UTM 等）は許容し origin+pathname で判定する。**
+    if (p.kind === "T3") {
+      let t;
+      try { t = new URL(p.linkUrl); } catch { return { ok: false, ng: `URL として解析できない: ${p.linkUrl}` }; }
+      return t.origin + t.pathname === T3_SALE_URL
+        ? { ok: true, ng: null }
+        : { ok: false, ng: `T3 のリンク先は ${T3_SALE_URL} 固定: ${p.linkUrl}` };
+    }
     if (p.kind !== "T5" && p.kind !== "TG") return { ok: true, ng: null };
     let u;
     try { u = new URL(p.linkUrl); } catch { return { ok: false, ng: `URL として解析できない: ${p.linkUrl}` }; }
@@ -560,6 +670,126 @@ export const GUARDS = {
       ? { ok: true, ng: null }
       : { ok: false, ng: `${slug} の前回使用 ${last} から ${Math.round(diff)}日（下限 ${TG_MIN_REAPPEAR_DAYS}日）` };
   },
+  // ───────── T3（セール速報）専用 4件・第98便 タスクA(2)(3)(4) ─────────
+  //
+  // 【既存ガードで既に担保されているもの＝ここで重複させない】
+  //   - 配信枠 21:00〜23:00 JST … **g8 が全種別に適用済**
+  //   - 重み 280 以下           … **g7 が全種別に適用済**
+  //   - リンク先の実在（最終200）… **g17（ASYNC_CHECKS）が own host に適用済**。
+  //     `/sale` は `app.vodnavi.jp` なので**自動的に最終 200 が要求される**
+  //   - 本文への URL 直書き禁止 … g13 ／ 99x の混入禁止 … g2
+  // **重複した検査を足さない**——同じことを2箇所に書くと、片方だけ直したときに矛盾する。
+
+  /**
+   * 【T3】1日1件まで。
+   *
+   * 【なぜ専用ガードが要るか】`/sale` は **`al.*` ホストでないため g6（アフィリエイト直リンク
+   * 1日1件）に載らず**、**`/works/` でないため g11（作品紹介1日1件）にも載らない**
+   * （第94便で実測・確認済み）。**T3 は既存の枠をどちらも消費しない。**
+   * **枠を消費しないということは、上限が無いということでもある。** ここで明示的に絞る。
+   */
+  g18_t3_one_per_day: (p, ctx) => {
+    if (p.kind !== "T3") return { ok: true, ng: null };
+    const day = jstDate(p.scheduledUtc);
+    const n = ctx?.t3CountByJstDate?.[day] ?? 0;
+    return n <= 1 ? { ok: true, ng: null } : { ok: false, ng: `${day} の T3 が ${n} 件（上限1件）` };
+  },
+
+  /**
+   * 【T3】期限の扱い。**配信時点で既に切れているものは投稿しない。**
+   *
+   * 生成（cron 06:00 / 14:00）から配信（21:00〜23:00）まで最大15時間空くため、
+   * **生成時点で有効でも配信時点で切れていることがある**（日替わりセール★は当日
+   * 23:59:59 JST 終了で、23:00 配信なら残り約1時間）。
+   * **判定は必ず `scheduledUtc` を基準に行う。生成時刻ではない。**
+   *
+   * **当日終了のセールは禁止しない**——時限性こそが T3 の存在理由であるため。
+   * **代わりに「配信時点で残り約N時間」の明記を本文に要求する。**
+   */
+  g19_t3_deadline: (p) => {
+    if (p.kind !== "T3") return { ok: true, ng: null };
+    const endsAt = p.material?.ends_at;
+    if (!endsAt) return { ok: false, ng: "material.ends_at が無い（期限を検証できない）" };
+    const left = t3HoursLeft(endsAt, p.scheduledUtc);
+    if (left === null) return { ok: false, ng: `期限または予約日時が不正: ${endsAt} / ${p.scheduledUtc}` };
+    if (left <= 0) return { ok: false, ng: `配信時点で期限切れ（残り ${left} 時間）: ${endsAt}` };
+    const sameDay = t3JstDate(endsAt) === t3JstDate(p.scheduledUtc);
+    if (!sameDay) return { ok: true, ng: null }; // 翌日以降の期限は残り時間の明記を要さない
+    return /残り約\d+時間/.test(p.text ?? "")
+      ? { ok: true, ng: null }
+      : { ok: false, ng: "当日期限なのに本文へ残り時間が明記されていない" };
+  },
+
+  /**
+   * 【T3】数値固定テンプレートへの適合。
+   *
+   * **本文中のすべての数値が `material` 由来であること**を検査する。
+   * 目的は**手打ちや LLM による数値の混入を機械的に塞ぐこと**——
+   * §13 の「ガードレールは文言の自然さを検査しない」（VRVR作品が10ガードを通過した）
+   * と同じ失敗を、**数値については起こさない**ようにする。
+   */
+  g20_t3_template: (p) => {
+    if (p.kind !== "T3") return { ok: true, ng: null };
+    const t = p.text ?? "";
+    const m = p.material;
+    if (!m) return { ok: false, ng: "material が無い（数値を照合できない）" };
+    if (!/#PR/.test(t)) return { ok: false, ng: "#PR がない" };
+
+    const banned = T3_BANNED_WORDS.filter((w) => t.includes(w));
+    if (banned.length > 0) return { ok: false, ng: `形容・評価・推奨の語: ${banned.join("・")}` };
+
+    if (!t.includes(m.campaign_title)) return { ok: false, ng: `キャンペーン名が本文に無い: ${m.campaign_title}` };
+
+    // 本文に現れる整数を集め、material から説明できないものが残らないことを確認する。
+    const allowed = new Set();
+    const add = (v) => { if (v !== null && v !== undefined) allowed.add(String(v)); };
+    add(m.items); add(m.max_discount);
+    for (const sm of m.samples ?? []) { add(sm.price); add(sm.list_price); }
+    add(t3HoursLeft(m.ends_at, p.scheduledUtc));
+    for (const n of (t3JstLabel(m.ends_at) ?? "").match(/\d+/g) ?? []) allowed.add(String(Number(n)));
+
+    // **content_id を先に取り除く。** 品番は `125umd00960` のように数字を含み、
+    // そのまま走査すると `125` / `00960` が「説明できない数値」として誤検出される
+    // （2026-08-23 の実材料 `125umd00960` で実際に発生した）。
+    // **content_id は material 由来なので、文字列ごと除外するのが正しい**——
+    // 桁を allowed に足すと、無関係な 125 も通ってしまう。
+    let scan = t;
+    for (const sm of m.samples ?? []) {
+      if (sm.content_id) scan = scan.split(sm.content_id).join("");
+    }
+
+    const unexplained = [];
+    for (const n of scan.match(/\d+/g) ?? []) if (!allowed.has(String(Number(n)))) unexplained.push(n);
+    if (unexplained.length > 0)
+      return { ok: false, ng: `material から説明できない数値: ${unexplained.join("・")}` };
+
+    // 件数は総数と誤読されるため但し書きを必須にする（§15-2 軸5）。
+    if (!t.includes("確認できた範囲で"))
+      return { ok: false, ng: "件数の但し書き（確認できた範囲で）が無い" };
+
+    return { ok: true, ng: null };
+  },
+
+  /**
+   * 【T3】再報告の重複除外（第98便 タスクA(4)）。
+   *
+   * 【なぜ要るか・第96便補遺の実測】差分検知は **「当日の最終スナップショット vs 前日の
+   * 最終スナップショット」**を比較する。**基準が前日で固定されているため、06:00 で新規と
+   * 判定されたキャンペーンは 14:00 の実行でも再び新規として報告される。**
+   * **検知が2回出るのは仕様であり、投稿を2回出してよい理由にはならない。**
+   *
+   * `ctx.postedCampaignTitles` は **既存 Airtable 行が扱った `campaign_title` の集合**。
+   * **名称の同一性で判定する**——`items` や期限は走査のたびに変わるため鍵にできない。
+   */
+  g21_t3_not_reported: (p, ctx) => {
+    if (p.kind !== "T3") return { ok: true, ng: null };
+    const title = p.material?.campaign_title;
+    if (!title) return { ok: false, ng: "material.campaign_title が無い" };
+    return ctx?.postedCampaignTitles?.has?.(title)
+      ? { ok: false, ng: `同名のキャンペーンを既に投稿済み: ${title}` }
+      : { ok: true, ng: null };
+  },
+
   /** 品番のラウンドトリップ検証（変換ロジックの誤りを検知する）。 */
   g10_hinban_roundtrip: (p) => {
     if (p.kind && p.kind !== "T1") return { ok: true, ng: null }; // 品番を持つのは T1改 のみ
@@ -667,6 +897,7 @@ export async function runGuardsAsync(posts, existing = []) {
 export function runGuards(posts, existing = []) {
   const affiliateCountByJstDate = {};
   const workIntroCountByJstDate = {};
+  const t3CountByJstDate = {};
   // 既存行（Airtable に既にある同日の投稿）も件数に含める。
   for (const p of [...existing, ...posts]) {
     const kind = postKind(p.linkUrl);
@@ -674,8 +905,23 @@ export function runGuards(posts, existing = []) {
     try { d = jstDate(p.scheduledUtc); } catch { continue; }
     if (kind === "affiliate") affiliateCountByJstDate[d] = (affiliateCountByJstDate[d] ?? 0) + 1;
     if (kind === "workIntro") workIntroCountByJstDate[d] = (workIntroCountByJstDate[d] ?? 0) + 1;
+    // T3 は `/sale` 宛で `al.*` でも `/works/` でもないため postKind では数えられない。
+    // **種別そのもの、またはリンク先が /sale であることで数える**——既存行は `kind` を
+    // 持たない場合があるため両方を見る。
+    let isT3 = p.kind === "T3";
+    if (!isT3 && p.linkUrl) {
+      try { const u = new URL(p.linkUrl); isT3 = u.origin + u.pathname === T3_SALE_URL; } catch { /* URL でなければ T3 ではない */ }
+    }
+    if (isT3) t3CountByJstDate[d] = (t3CountByJstDate[d] ?? 0) + 1;
   }
-  const ctx = { affiliateCountByJstDate, workIntroCountByJstDate };
+  // 既に投稿・予約済みの T3 が扱ったキャンペーン名（g21 が参照）。
+  // **posts 側は含めない**——同一バッチ内の自分自身を「既報告」と誤判定するため。
+  const postedCampaignTitles = new Set();
+  for (const p of existing) {
+    const t = p.material?.campaign_title ?? p.campaignTitle;
+    if (t) postedCampaignTitles.add(t);
+  }
+  const ctx = { affiliateCountByJstDate, workIntroCountByJstDate, t3CountByJstDate, postedCampaignTitles };
   const failures = [];
   for (const p of posts) {
     for (const [id, fn] of Object.entries(GUARDS)) {

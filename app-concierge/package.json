@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test src/lib/**/*.test.ts",
+    "test": "node --test src/lib/**/*.test.ts scripts/*.test.mjs",
     "guard:affiliate": "node scripts/guard-affiliate-id.mjs --static",
     "guard:affiliate:live": "node scripts/guard-affiliate-id.mjs --live"
   },
