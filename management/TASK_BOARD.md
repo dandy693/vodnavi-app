@@ -6911,3 +6911,48 @@ dep=dpl_8vQwGkxhAkiSkpVApVLZ6WMGehHV branch=main
 | 追加 | `T3_CLEANUP_ENABLED` | **未実施。候補を1度見てから CSO が判断** |
 
 **ON にする際の確認7項目（第99便登録済み・再掲）**: ①`verify` 6項目すべて ok（特に**予約日時 Z 終端 + JST 換算一致**）②`承認済`/`T3セール`/`/sale` ③配信後に**ポストID**が入る ④**`https://x.com/vodnavi_jp/status/{ポストID}` を直接開く**（§13-5）⑤配信時点で期限が残っていたか ⑥本文が生成物と完全一致 ⑦同日の他の投稿と枠が衝突していないか。
+
+---
+
+### 第101便 補遺（2026-08-24 06:20〜06:35 JST・CTO） — push / デプロイ READY / PAT 反映の読み戻し
+
+**push: `299d49e` → `57b0d31`（`79e7c93` を含む2コミット）。**
+**記録全文 → `management/_metrics/2026-W34/verify-20260824-0630-bin101h-pat-deploy.md`**
+
+#### タスクA — デプロイは **READY**（CANCELED ではない）
+
+push 前に `ignoreCommand` の判定材料を確認（`app-concierge/` に3ファイルの差分あり）。
+**`dpl_6hA4WSG7ivDLczcGEVkz31S8i9rP` / `READY` / production / commit `57b0d31` / created 2026-08-24 06:20:58 JST。**
+**2026-08-22 に観測した CANCELED の再現はない。**
+
+#### タスクB — PAT 反映（**値には触れていない**）
+
+**B(2) Vercel**: **`AIRTABLE_POSTS_PAT` / `Sensitive` / `Production` / `Added 8m ago`（≈06:14 JST）。錠アイコンのみで値は表示されない。**
+**追加（≈06:14）がデプロイ（06:20:58）より前**＝**本デプロイが env を取り込む順序になっている。**
+
+**B(3) Airtable**: **トークンは1件のみ。** `vodnavi-t3-autopost` / ACCESS `1 base` / 詳細画面で **Scopes は `data.records:read` + `data.records:write` の2つのみ**、**Access は `VODNAVI X Calendar` のみ**（`Add all resources` 不使用）。**指定と完全一致。`Save changes` は押していない。**
+**一覧に `TOKEN ID` 列があるがこれは識別子であり値ではない。台帳には転記しない。**
+
+**B(1) — 未実施。14:00 JST 枠を待つ。**
+**理由: 本日の 06:00 枠は 2026-08-23 21:00:01 UTC ＝ 06:01 JST に実行済みで、デプロイ（06:20:58）より前。** 当該ログは `dep=dpl_B3NDf9HxPRsbeiJXKZjvHcpuMLYU`（掃除処理を含まない版）で、**本文に `t3_cleanup` の項目そのものが無い**ことが裏付けになる。
+
+**【重要・観測条件の訂正】指示の「`VODNAVI_T3_AUTOPOST` の `skipped`」は__新規キャンペーンが検知された実行でしか出ない__**（06:00 枠も `new_campaigns:[]` のため `t3_autopost: null` だった）。**新規の出現は制御できないため、この条件だけでは確認できない日が生じる。**
+**代わりに毎回必ず出る `VODNAVI_PRICE_SNAPSHOT` の本文に `t3_cleanup` を含めてある。** 14:00 枠では **`t3_cleanup.skipped` が `null`（未反映なら `"AIRTABLE_POSTS_PAT が未設定"`）** を見る。
+**手動トリガは行っていない。**
+
+#### タスクC — 掃除候補
+
+**C(1) 未実施。14:00 JST 枠を待つ。**
+**`posts` を読む経路は PAT を持つ本番ランタイム（cron）だけ**であり、**PAT は Vercel の Sensitive 変数としてのみ存在し CTO のローカルには無い**（§13-0）。候補一覧は `t3_cleanup.candidates` としてログに現れる。
+**`rec8ccPuB7JWca8qf`（`接続テスト（後で削除）` / `承認済` / 予約 `2026-07-10T15:30:00.000Z`）の現存確認も同経路。** 予約日時が1ヶ月半以上過去のため、**現存していれば必ず候補に入る。**
+
+**C(2) `T3_CLEANUP_ENABLED` は OFF のまま。変更していない。** 実装上も `writeEnabled:false` のとき候補を返すだけで一切書かない。
+
+#### 稼働前チェックリスト
+
+| # | 先行条件 | 状態 |
+|---|---|---|
+| 1 | Make.com フィルタ | **完了**（第100便）。201/402 の実挙動は未検証 |
+| 2 | 専用 PAT | **配置は完了**（Airtable/Vercel 両側を読み戻し済み）。**ランタイムで実際に使えるかは未検証**——14:00 枠の `t3_cleanup.skipped` が `null` になって初めて確認できる |
+| 3 | `T3_AUTO_POST_ENABLED` | **未実施（CSO 最終確認後）** |
+| 追加 | `T3_CLEANUP_ENABLED` | **未実施。候補一覧を見てから CSO が裁定** |
