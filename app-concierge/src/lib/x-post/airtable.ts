@@ -32,6 +32,18 @@ export const FIELD = {
 /** 単一選択の値。**存在しない選択肢を書くと 422 になる**（第84便で実測）。 */
 export const TYPE_T3 = "T3セール";
 export const STATUS_APPROVED = "承認済";
+/**
+ * 掃除処理が書くステータス。
+ *
+ * 【選択肢名の確定について】第84便の実測では、**存在しない選択肢を書くと 422**
+ * （`Insufficient permissions to create new select option`）になる。`typecast: false`
+ * のため勝手に選択肢が作られることはなく、**誤った名前は静かに通らず必ず落ちる**。
+ * 台帳で実在が確認できている値は `承認済` / `ストック` / `投稿済` / `エラー` の4つ。
+ * **`エラー(期限切れ)` という選択肢の実在は確認できていないため、`エラー` を書き、
+ * 「期限切れである」ことは `エラー詳細` に文言で残す**（第101便 B(1) の
+ * 「エラー詳細に理由を記録」に沿う）。
+ */
+export const STATUS_ERROR = "エラー";
 
 const API = "https://api.airtable.com/v0";
 
@@ -153,4 +165,88 @@ export function plain(v: unknown): unknown {
   return v && typeof v === "object" && "name" in (v as Record<string, unknown>)
     ? (v as { name: unknown }).name
     : v;
+}
+
+// ───────────────────── 掃除処理（第101便 タスクB）─────────────────────
+//
+// 【なぜ要るか】第100便で成功経路に `Status code = 201` のフィルタを追加した結果、
+// **402 のときは Airtable に何も書かれなくなった**。レコードは `承認済` のまま
+// 残り、`予約日時` は過去になる。次の実行でモジュール1 が再び拾うため、
+// **クレジット復旧時に「予約日時が何日も前のレコード」がそのまま配信されうる。**
+// トリガの実行窓は 20:45〜23:45 JST なので日付を跨ぐことは無いが、
+// **意図した枠（21:00〜23:00）の外へ出うる。**
+//
+// 【なぜ `エラー詳細` だけ列名で書くか】`scripts/audit-posts.mjs` が実測している
+// フィールド ID に **`エラー詳細` が含まれていない**（当該スクリプトが読まない列のため）。
+// **ID を知らない列を ID で書くことはできない。** 列名で書くと改名時に壊れるが、
+// **Airtable は未知の列名を 422 で拒否する**ため、**静かに違う列へ書くことはない**。
+// ID が判明した時点で `FIELD` へ移すこと。
+
+/** `エラー詳細` の列名（ID 未確認のため名前で扱う。上のコメント参照）。 */
+export const FIELD_NAME_ERROR_DETAIL = "エラー詳細";
+
+/**
+ * **掃除の対象候補**を取る。`ステータス=承認済` かつ `予約日時` が
+ * `cutoffUtcIso` より前のもの。**予約日時を持たない行は対象外**
+ * （＝承認済でも未予約のストックは触らない）。
+ *
+ * **この関数は読むだけで、何も書かない。**
+ */
+export async function listStaleApproved(
+  cutoffUtcIso: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<AirtableRecord[]> {
+  const formula =
+    `AND({ステータス}="${STATUS_APPROVED}",` +
+    `{予約日時}!=BLANK(),` +
+    `IS_BEFORE({予約日時}, DATETIME_PARSE("${cutoffUtcIso}")))`;
+  const url =
+    `${API}/${BASE_ID}/${TABLE_ID}` +
+    `?returnFieldsByFieldId=true&pageSize=100&filterByFormula=${encodeURIComponent(formula)}`;
+
+  const res = await fetchImpl(url, { headers: authHeaders(), cache: "no-store" });
+  if (!res.ok) throw new Error(safeError(res.status, await res.text()));
+  const json = (await res.json()) as { records?: AirtableRecord[] };
+  return json.records ?? [];
+}
+
+/**
+ * 1件を「期限切れ」として落とす。**`ステータス` と `エラー詳細` だけを書く。**
+ *
+ * **`予約日時` は消さない**——いつの枠だったかが分からなくなると、
+ * 後から「なぜ配信されなかったか」を追えなくなる。
+ */
+export async function markExpired(
+  recordId: string,
+  detail: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<AirtableRecord> {
+  const body = {
+    fields: {
+      // **列名で書く**（`エラー詳細` の ID が未確認のため。混在させず名前で統一する）。
+      "ステータス": STATUS_ERROR,
+      [FIELD_NAME_ERROR_DETAIL]: detail,
+    },
+    typecast: false,
+  };
+  const res = await fetchImpl(`${API}/${BASE_ID}/${TABLE_ID}/${recordId}`, {
+    method: "PATCH",
+    headers: authHeaders(),
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) throw new Error(safeError(res.status, await res.text()));
+  return (await res.json()) as AirtableRecord;
+}
+
+/** 1件を**列名キー**で読み直す（`markExpired` の読み戻し検算用）。 */
+export async function getPostByName(
+  recordId: string,
+  fetchImpl: typeof fetch = fetch,
+): Promise<AirtableRecord> {
+  const res = await fetchImpl(`${API}/${BASE_ID}/${TABLE_ID}/${recordId}`, {
+    headers: authHeaders(),
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error(safeError(res.status, await res.text()));
+  return (await res.json()) as AirtableRecord;
 }

@@ -36,7 +36,15 @@ import {
 } from "@/lib/fanza/price-history";
 import { jstDateString } from "@/lib/fanza/sale";
 import { fetchSaleItems } from "@/lib/fanza/sale-source";
-import { autoPostT3, isT3AutoPostEnabled, type T3AutoResult } from "@/lib/x-post/t3-auto";
+import {
+  autoPostT3,
+  cleanupStaleApproved,
+  isT3AutoPostEnabled,
+  isT3CleanupEnabled,
+  STALE_GRACE_MINUTES,
+  type CleanupResult,
+  type T3AutoResult,
+} from "@/lib/x-post/t3-auto";
 
 /** cron は毎回実行する。キャッシュさせない。 */
 export const dynamic = "force-dynamic";
@@ -108,6 +116,28 @@ export async function GET(request: NextRequest): Promise<Response> {
         ? { newCampaigns: [], skipped: true, error: null }
         : await detectNewCampaigns(today, yesterday);
 
+    // 掃除処理（第101便 タスクB）。**自動投稿より先に走らせる**——
+    // 取り残しを片付けてから新しい枠を選ばないと、`autoPostT3` の枠選択が
+    // 「過去の予約で埋まっている」と誤判定しうる。
+    // **書き込みは `T3_CLEANUP_ENABLED=1` のときだけ。既定は検知とログのみ。**
+    const cleanup: CleanupResult = await cleanupStaleApproved(now);
+    if (cleanup.candidates.length > 0 || cleanup.skipped) {
+      console.info(
+        JSON.stringify({
+          tag: "VODNAVI_T3_CLEANUP",
+          write_enabled: cleanup.writeEnabled,
+          grace_minutes: STALE_GRACE_MINUTES,
+          cutoff_utc: cleanup.cutoffUtc,
+          skipped: cleanup.skipped,
+          candidates: cleanup.candidates,
+          // **検算の不一致は取り消さない。** 記録して人が見る（§10）。
+          verify_all_ok: cleanup.candidates
+            .filter((c) => c.marked)
+            .every((c) => (c.verify ?? []).every((v) => v.ok)),
+        }),
+      );
+    }
+
     // T3 自動投稿（第99便 タスクA / CSO裁定(1) 案α）。
     // **稼働フラグの既定は OFF。** ON は CSO の最終確認後であり、
     // **先行条件（Make.com フィルタ修正 / 専用 PAT の発行）が揃うまで ON にしない。**
@@ -158,6 +188,8 @@ export async function GET(request: NextRequest): Promise<Response> {
       detection_error: detected.error,
       t3_autopost_enabled: isT3AutoPostEnabled(),
       t3_autopost: autoPost,
+      t3_cleanup_enabled: isT3CleanupEnabled(),
+      t3_cleanup: cleanup,
       found: totalFound,
       rows: result.attempted,
       saved: result.saved,
