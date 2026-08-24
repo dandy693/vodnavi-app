@@ -21,6 +21,14 @@
  * その行自身を g12 で検査するとき、自分の登録で自分をブロックしないようにするため。
  * **配信済みの行は登録しない**（他の行から見ても自分から見ても通常の履歴であるため）。
  *
+ * 【厳守・恒久手順（§13-8）】**`--write` の前に必ず dry-run を実行し、解決件数を目視すること。**
+ * **解決件数が 0 または想定を大きく下回る場合は書き込まない。** 外部 API が停止していると
+ * 女優名を1件も解決できず、**生成される表が空になり `g12` が全通しになる**（2026-08-24 実測）。
+ *
+ * 【測定ログ・第107便】**両経路で `VODNAVI_ACTRESS_SYNC` を1行出力する。**
+ * **判定も拒否もしない。** ガードの閾値を決めるための分布を貯めることだけが目的である
+ * （§13-8 のガードは案C主+案A砦で仮採用されたが、**平常時の `U/T` 分布が未測定**）。
+ *
  * 使い方:
  *   node --env-file=.env.local scripts/sync-actress-table.mjs --input dump.json          # 差分表示のみ
  *   node --env-file=.env.local scripts/sync-actress-table.mjs --input dump.json --write  # モジュールを書き換える
@@ -59,8 +67,14 @@ async function actressesOf(contentId) {
     `&cid=${encodeURIComponent(contentId)}&hits=1&output=json`;
   const j = await (await fetch(u)).json();
   const items = j?.result?.items ?? [];
-  if (items.length === 0) return { names: [], note: "FANZA から取得できない（result_count=0）" };
-  return { names: (items[0].iteminfo?.actress ?? []).map((a) => a?.name).filter(Boolean), note: null };
+  if (items.length === 0) {
+    return { names: [], note: "FANZA から取得できない（result_count=0）", reason: "fetch_zero" };
+  }
+  return {
+    names: (items[0].iteminfo?.actress ?? []).map((a) => a?.name).filter(Boolean),
+    note: null,
+    reason: null,
+  };
 }
 
 /** 登録基準の判定。戻り値 null は「登録しない」。 */
@@ -82,6 +96,10 @@ async function main() {
   const entrySource = {};   // 女優名 -> record id（未配信の行のみ）
   const skipped = [];
   const unresolved = [];
+  // **T（解決を試みた行数）。** `skipped` は登録基準を満たさず API を呼んでいないため
+  // 分母に入れない。**分母を「入力レコード数」にすると、対象外の行が増えるだけで
+  // 失敗率が下がって見える**（§15-2 軸5＝機会の数）。
+  let attempted = 0;
 
   for (const r of records) {
     const f = r.fields ?? {};
@@ -96,10 +114,11 @@ async function main() {
     }
 
     const cid = new URL(linkUrl).pathname.split("/").pop();
-    const { names, note } = await actressesOf(cid);
+    attempted += 1;
+    const { names, note, reason } = await actressesOf(cid);
     await sleep(120);
-    if (note) { unresolved.push([f["管理ID"], cid, note]); continue; }
-    if (names.length === 0) { unresolved.push([f["管理ID"], cid, "iteminfo.actress が空"]); continue; }
+    if (note) { unresolved.push([f["管理ID"], cid, note, reason]); continue; }
+    if (names.length === 0) { unresolved.push([f["管理ID"], cid, "iteminfo.actress が空", "actress_empty"]); continue; }
 
     const day = jstDate(cls.sched);
     for (const n of names) {
@@ -131,6 +150,48 @@ async function main() {
 
   if (skipped.length) { console.log("\n── 登録しなかった行 ──"); skipped.forEach(([id, why]) => console.log(`  · ${id} … ${why}`)); }
   if (unresolved.length) { console.log("\n── 女優名を解決できなかった行（要確認）──"); unresolved.forEach(([id, cid, why]) => console.log(`  ! ${id} (${cid}) … ${why}`)); }
+
+  // ────────────────────────────────────────────────────────────────
+  // 測定ログ（第107便 タスクA・**判定も拒否もしない**）
+  //
+  // 【なぜ判定を入れないか】§13-8 のガードは案C（解決失敗率）を主に据える方向で
+  // 仮採用されたが、**閾値の根拠となる「平常時の U/T 分布」を1度も測っていない。**
+  // 勘で閾値を置くと、誤検知で運用が止まるか、見逃して表が壊れるかのどちらかになる。
+  // **本ブロックは分布を貯めるためだけに存在する。**
+  //
+  // 【`u_fetch` と `u_empty` を分けている理由】`unresolved` は原因が2種類ある。
+  //   - `u_fetch` … FANZA が作品を返さない（**API 停止でも、B8 のような恒久 404 でも起きる**）
+  //   - `u_empty` … 作品は返るが `iteminfo.actress` が空（**anime 等では正常な状態**）
+  // **合算した率で閾値を引くと、正常な `u_empty` が多い期間に誤検知する。**
+  // **どちらを分子にするかは閾値と同時に裁定する必要があるため、両方を出す。**
+  //
+  // 【dry-run / --write の双方で出す】`--write` の早期 return より前に置いてある。
+  // **測定が `--write` のときだけ出ると、dry-run 先行の手順（§13-8）で分布が貯まらない。**
+  const uFetch = unresolved.filter((u) => u[3] === "fetch_zero").length;
+  const uEmpty = unresolved.filter((u) => u[3] === "actress_empty").length;
+  const rate = (n) => (attempted === 0 ? null : Math.round((n / attempted) * 10000) / 10000);
+  console.info(JSON.stringify({
+    tag: "VODNAVI_ACTRESS_SYNC",
+    ts: new Date().toISOString(),
+    mode: WRITE ? "write" : "dry-run",
+    records_in: records.length,          // 入力レコード総数
+    skipped: skipped.length,             // 登録基準を満たさず API を呼んでいない行
+    t_attempted: attempted,              // T … 解決を試みた行数（分母）
+    u_total: unresolved.length,          // U … 解決できなかった行数
+    u_fetch: uFetch,                     // うち FANZA が作品を返さなかった
+    u_empty: uEmpty,                     // うち actress が空だった
+    r_resolved: attempted - unresolved.length,
+    u_rate: rate(unresolved.length),     // U / T
+    u_fetch_rate: rate(uFetch),          // u_fetch / T ← 案C の分子候補
+    n_new: Object.keys(sortedLast).length,   // 生成される女優名の数
+    n_cur: Object.keys(CURRENT_LAST).length, // 現行表の女優名の数
+    n_added: added.length,
+    n_changed: changed.length,
+    n_removed: removed.length,           // ← 案B（相対比較）の材料。案B 自体は不採用
+    src_new: Object.keys(entrySource).length,
+    src_cur: Object.keys(CURRENT_SRC).length,
+  }));
+  // ────────────────────────────────────────────────────────────────
 
   if (!WRITE) { console.log("\n--write が無いため書き換えていない。"); return; }
 
