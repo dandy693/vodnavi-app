@@ -423,7 +423,8 @@ export async function verifyExpired(
   const out: { item: string; ok: boolean; detail: string }[] = [];
   let rec;
   try {
-    // **列名キーで読む**（`markExpired` が列名で書いているため揃える）。
+    // **列名キーで読む。** `markExpired` は ID で書くが、**読みは名前で行うことで
+    // 「ID と名前が同じ列を指している」ことを毎回確認できる**（第104便で確定した対応の維持検査）。
     rec = await getPostByName(recordId, fetchImpl);
   } catch (e) {
     out.push({

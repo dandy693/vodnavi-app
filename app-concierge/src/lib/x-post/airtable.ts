@@ -27,6 +27,9 @@ export const FIELD = {
   status: "fldiGogHs9F7w5t2q",      // ステータス（単一選択）
   scheduledUtc: "fldDrNzqVRb9LxxqD",// 予約日時（UTC 格納・§13 の最重要ガード）
   postId: "fldLdjZEjuCqGt0UH",      // ポストID
+  // 【2026-08-24・第104便で実測確定】B8 の破棄で `fldvwbyc1oosQ1k23` へ書き込み、
+  // **列名 `エラー詳細` で照会して同じ値が返ることを確認した**（推定ではない）。
+  errorDetail: "fldvwbyc1oosQ1k23", // エラー詳細
 } as const;
 
 /** 単一選択の値。**存在しない選択肢を書くと 422 になる**（第84便で実測）。 */
@@ -176,13 +179,15 @@ export function plain(v: unknown): unknown {
 // トリガの実行窓は 20:45〜23:45 JST なので日付を跨ぐことは無いが、
 // **意図した枠（21:00〜23:00）の外へ出うる。**
 //
-// 【なぜ `エラー詳細` だけ列名で書くか】`scripts/audit-posts.mjs` が実測している
-// フィールド ID に **`エラー詳細` が含まれていない**（当該スクリプトが読まない列のため）。
-// **ID を知らない列を ID で書くことはできない。** 列名で書くと改名時に壊れるが、
-// **Airtable は未知の列名を 422 で拒否する**ため、**静かに違う列へ書くことはない**。
-// ID が判明した時点で `FIELD` へ移すこと。
+// 【`エラー詳細` の ID は 2026-08-24・第104便で確定した】以前は ID 未確認のため
+// 列名で書いていたが、**B8 の破棄で `fldvwbyc1oosQ1k23` へ書き込み、列名
+// `エラー詳細` で照会して同じ値が返ることを実測した**。**推定ではない。**
+// **以後は ID で書く**——列名は UI から変更でき、名前で書くと改名時に壊れるため。
 
-/** `エラー詳細` の列名（ID 未確認のため名前で扱う。上のコメント参照）。 */
+/**
+ * `エラー詳細` の列名。**読み戻しで列名キーを使う経路のために残す**
+ * （`getPostByName`）。**書き込みは `FIELD.errorDetail`（ID）で行う。**
+ */
 export const FIELD_NAME_ERROR_DETAIL = "エラー詳細";
 
 /**
@@ -223,9 +228,9 @@ export async function markExpired(
 ): Promise<AirtableRecord> {
   const body = {
     fields: {
-      // **列名で書く**（`エラー詳細` の ID が未確認のため。混在させず名前で統一する）。
-      "ステータス": STATUS_ERROR,
-      [FIELD_NAME_ERROR_DETAIL]: detail,
+      // **ID で書く**（2026-08-24 に `エラー詳細` の ID を実測確定したため）。
+      [FIELD.status]: STATUS_ERROR,
+      [FIELD.errorDetail]: detail,
     },
     typecast: false,
   };
