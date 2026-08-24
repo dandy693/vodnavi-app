@@ -1,7 +1,7 @@
 /**
  * T3（セール速報）の自動投稿フロー（第99便 タスクA / CSO裁定(1) 案α＝Vercel cron 内）。
  *
- * **【厳守】初期値は OFF。`T3_AUTO_POST_ENABLED=1` を明示しない限り何も書かない。**
+ * **【厳守】初期値は OFF。`T3_AUTO_POST_ENABLED` に `1` / `true` を明示しない限り何も書かない。**
  * **稼働の ON は CSO の最終確認後**であり、本モジュールの存在は稼働を意味しない。
  *
  * **【稼働の先行条件・CSO裁定(1)】**
@@ -58,9 +58,27 @@ export interface T3AutoResult {
   scheduledJst: string | null;
 }
 
-/** 稼働フラグ。**明示的に "1" のときだけ true。** */
+/**
+ * env の真偽フラグを読む。**`"1"` と `"true"`（大文字小文字を問わない）を受ける。**
+ * **それ以外はすべて false**——未設定・空文字・`"0"`・`"false"`・タイプミスは
+ * **すべて OFF に倒れる**（既定は OFF という契約を崩さない）。
+ *
+ * 【なぜ両方受けるか・2026-08-24 第102便】**旧実装は `=== "1"` だけを見ていた。**
+ * 第102便の指示は `T3_AUTO_POST_ENABLED=true` を設定するよう求めており、
+ * **そのまま設定すると両フラグとも OFF のままになる**——**ログ上は
+ * `enabled:false` と出るだけで、設定した側からは「入れたのに動かない」
+ * 理由が分からない静かな失敗になる。**
+ * **値を勝手に `1` へ読み替えるのではなく、受け口を広げて曖昧さを消す。**
+ */
+function envFlag(raw: string | undefined): boolean {
+  if (!raw) return false;
+  const v = raw.trim().toLowerCase();
+  return v === "1" || v === "true";
+}
+
+/** 自動投稿の稼働フラグ。**既定は OFF。** */
 export function isT3AutoPostEnabled(): boolean {
-  return process.env.T3_AUTO_POST_ENABLED === "1";
+  return envFlag(process.env.T3_AUTO_POST_ENABLED);
 }
 
 /**
@@ -112,7 +130,7 @@ export async function autoPostT3(
 
   // ── 0. 稼働フラグと資格情報 ──────────────────────────────
   if (!isT3AutoPostEnabled()) {
-    return { ...empty, skipped: "T3_AUTO_POST_ENABLED が 1 でない（既定は OFF）" };
+    return { ...empty, skipped: "T3_AUTO_POST_ENABLED が 1 / true でない（既定は OFF）" };
   }
   if (!isAirtableConfigured()) {
     return { ...empty, skipped: "AIRTABLE_POSTS_PAT が未設定" };
@@ -292,13 +310,13 @@ export const STALE_GRACE_MINUTES = 45;
  * そこで **検知とログ出力は常に走らせ、書き込みだけを別フラグで塞ぐ**。
  *   1. PAT 配置後の初回 cron … 候補を `VODNAVI_T3_CLEANUP` に出す（**書かない**）
  *   2. CSO が候補を見る       … 既存運用のレコードが混ざっていないか判断する
- *   3. `T3_CLEANUP_ENABLED=1` … 以後は実際に落とす
+ *   3. `T3_CLEANUP_ENABLED=1`（または `true`） … 以後は実際に落とす
  *
  * **`T3_AUTO_POST_ENABLED` とは別のフラグである**——掃除は自動投稿が
  * 止まっていても意味を持つ（402 の取り残しは手動運用でも生じる）。
  */
 export function isT3CleanupEnabled(): boolean {
-  return process.env.T3_CLEANUP_ENABLED === "1";
+  return envFlag(process.env.T3_CLEANUP_ENABLED);
 }
 
 export interface CleanupCandidate {
