@@ -141,9 +141,12 @@ export const ACTRESS_LAST_POSTED = {
   "純白彩永": "2026-08-17",
   "紫堂るい": "2026-08-18",
   "吉永塔子": "2026-08-21",
+  "石川澪": "2026-08-25",
+  "早坂奏音": "2026-08-26",
+  "月野江すい": "2026-08-27",
 };
 export const ACTRESS_ENTRY_SOURCE = {
-  "吉永塔子": "recchWYQDOycFkrZA",
+
 };
 // <<<AUTOGEN:ACTRESS_TABLE:END>>>
 
@@ -484,10 +487,24 @@ export function extractCampaignTitle(text) {
 
 /** 同一記事の再登場間隔の下限（**実測の最短 4日**を基準とする。最長は9日）。 */
 export const TG_MIN_REAPPEAR_DAYS = 4;
-/** 既存 TG の slug 別 最終使用日（実測 2026-08-13）。 */
+/**
+ * 既存 TG の slug 別 最終使用日（**実測 2026-08-28・Airtable の配信実績で更新**）。
+ *
+ * 【手で更新している。**`ACTRESS_LAST_POSTED` と同じ構造の危うさを持つ**】
+ * `g16` はこの表だけを見るため、**古いままだと直近に使った記事が検査を素通りする。**
+ * 2026-08-28 の照合で **2件が実績より古いまま**だった（下記）。
+ * **再生成の仕組みは無い。TG を投入するたびに手で直すこと。**
+ * **自動化する場合は §13-8 の失敗モード（外部依存の停止で表が空になる）も併せて継承する**
+ * ——`ACTRESS_LAST_POSTED` と違い TG は FANZA API を使わないため、
+ * **Airtable の実績だけで再生成でき、その意味では安全側にある。**
+ */
 export const TG_LAST_USED = {
-  "fanza-first-guide": "2026-08-04", "fanza-tv-free-trial": "2026-07-22",
-  "fanza-kaiyaku": "2026-08-06", "fanza-payment-methods": "2026-08-09",
+  "fanza-first-guide": "2026-08-04",
+  // TG-13（2026-08-21 配信・ポストID 2090793711005290572）。旧値 2026-07-22 は TG-3 のもの
+  "fanza-tv-free-trial": "2026-08-21",
+  // TG-14（2026-08-25 配信・ポストID 2092243234151977150）。旧値 2026-08-06 は TG-8 のもの
+  "fanza-kaiyaku": "2026-08-25",
+  "fanza-payment-methods": "2026-08-09",
   "fanza-payment-statement": "2026-08-10", "fanza-tv-guide": "2026-08-12",
   "fanza-tv-review": "2026-08-14",
   // fanza-subscription-vs-single-purchase は TG 未使用
