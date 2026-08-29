@@ -157,6 +157,17 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
 
         if (items.length < HITS_PER_REQUEST) break;
       } catch {
+        // 【全損のフェイルモード・2026-08-30 第112便 タスクA(2) で特定】
+        // **ここで例外を握りつぶすと、そのフロアの works が 0 件のまま先へ進む。**
+        // **全フロアで失敗すれば `works` は空配列となり、`genres`・`actresses` は
+        // `genreMap`・`actressMap` 由来なので連鎖して 0 件になる。**
+        // **それでも `buildSitemapEntries` は正常に return するため、
+        //   「works 0 件の sitemap」が成功として配信される。**
+        // 実際に 2026-08-28 18:26 JST の生成で発生し、本体 sitemap は
+        // 17 URL（静的 9 + articles 8）まで縮んだ（`FACT_GOVERNANCE` §22）。
+        // **本コミットは動作を変えない。** 恒久対策（件数が閾値未満なら前回値を
+        // 維持する / 生成を失敗させる 等）は第112便 タスクC の提案として起案し、
+        // **9/12 以降の CSO 裁定を待つ。**
         break;
       }
     }
