@@ -78,14 +78,33 @@ Phase 1 動画 {n}本目
 
 ---
 
-## 5. 生成物の所在（CTO 側・scratchpad）
+## 5. 生成物の出力先（**ひでき指定 2026-09-04**）
+
+### 5-1. 出力先（**恒久フォルダ**）
+
+```
+C:\Users\Tachi\Videos\vodnavi-phase1\{content_id}\
+```
+
+**作品ごとに `content_id` 名のサブフォルダを作って直接出力する。**
+
+| ファイル | 例（`1sun00067a` の場合） |
+|---|---|
+| 動画 | `C:\Users\Tachi\Videos\vodnavi-phase1\1sun00067a\video_1sun00067a.mp4` |
+| 1フレーム画像（パッケージ表面） | `…\1sun00067a\frame1_1sun00067a.png` |
+| 1フレーム画像（カウントダウン） | `…\1sun00067a\frame2_1sun00067a.png` |
+| 1フレーム画像（価格・CTA） | `…\1sun00067a\frame3_1sun00067a.png` |
+| パッケージ表面画像（加工なし・原本） | `…\1sun00067a\{content_id}_pkg.jpg` |
+
+- **【厳守】scratchpad（`%LOCALAPPDATA%\Temp\claude\…`）には出力しない。** **セッションごとにパスが変わり、OS のクリーンアップで消えるため。**
+- **【厳守】生成のたびに、報告へ__エクスプローラーで開ける Windows 形式のフルパス__を明記する。** **スクリプトが最後にフルパス一覧を出力する。**
+
+### 5-2. スクリプトの所在（CTO 側・scratchpad）
 
 | ファイル | 内容 |
 |---|---|
 | `pick2.mjs` | 候補選定（`gte_date`/`lte_date` で発売2〜7日後を抽出・2,000円台優先） |
 | `candidates.json` | 候補一覧 |
-| `make-video.mjs` | 動画生成（固定仕様・はみ出しの機械チェック込み） |
-| `video_{cid}.mp4` | 出力動画 |
-| `frame1/2/3_{cid}.png` | 目視用の1フレーム画像（各シーン） |
+| `make-video.mjs` | 動画生成（固定仕様・出力先は §5-1・はみ出しの機械チェック込み） |
 
-**【厳守】これらは scratchpad 配下であり、本番コード（`app-concierge/`）には一切触れていない。** **`vercel.json` の `ignoreCommand` 域にも入らないため、デプロイは起きない。**
+**【厳守】スクリプトは scratchpad 配下であり、本番コード（`app-concierge/`）には一切触れていない。** **`vercel.json` の `ignoreCommand` 域にも入らないため、デプロイは起きない。**
