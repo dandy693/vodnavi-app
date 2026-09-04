@@ -165,6 +165,14 @@ export async function buildSitemapEntries(): Promise<MetadataRoute.Sitemap> {
         //   「works 0 件の sitemap」が成功として配信される。**
         // 実際に 2026-08-28 18:26 JST の生成で発生し、本体 sitemap は
         // 17 URL（静的 9 + articles 8）まで縮んだ（`FACT_GOVERNANCE` §22）。
+        // 【2例目・2026-09-04 21:24:27 JST】同じ 17 URL まで縮む形で再発した
+        // （`FACT_GOVERNANCE` §22-8）。**1例目と違い契機が特定できており、
+        // デプロイ完了の 25 秒後に生成されている。** 検知は GH Actions の
+        // `API Health Check`（`works=0`）と `Affiliate ID Guard`（検査 URL を
+        // 解決できない）の 2 本で、いずれも 200 応答のため 404 とは無関係。
+        // **Vercel の Redeploy では復旧できない**——`ignoreCommand` に弾かれ
+        // `CANCELED` になることを 2026-09-05 06:16 JST に実測した。
+        // 復旧には `app-concierge/` 配下への差分を伴う push が要る。
         // **本コミットは動作を変えない。** 恒久対策（件数が閾値未満なら前回値を
         // 維持する / 生成を失敗させる 等）は第112便 タスクC の提案として起案し、
         // **9/12 以降の CSO 裁定を待つ。**
