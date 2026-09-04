@@ -9413,3 +9413,33 @@ and that the model names and/or ids are correct.
 - **M3 実施時の前段タスクに「セルフピンバック無効化設定」を追加する。**
 - **M3 設計時、moterist 内部の記事間リンク構造（初心者ガイド系 ↔ メリット系 ↔ セールハブの回遊）を調査項目に含める。** **第117便は app 向けリンクのみ調査済みのため。**
 
+
+### 【第118便 補遺1】sitemap 復旧完了 — C 失敗 → B で復旧（2026-09-05）
+
+**裁定**: **選択肢A（自然復旧待ち）は不採用。C→B の順で即時復旧。** **「実験変数の変更」ではなく「ベースライン復旧」であり 9/12 凍結と矛盾しない**（全損状態が逸脱、復旧が正常化）。
+
+**(1) C（Vercel Redeploy）＝失敗。ただし知見が1件確定した**
+- `dpl_EVP8yt8LFirbMHLttTTHFwcjsg13`（**`action: redeploy` / `originalDeploymentId: dpl_Gui7neMaC2jWLHNTZ6cGAgTGDnDp`**）
+- **state=CANCELED / errorLink=`.../projects#ignored-build-step`** / `buildingAt`→`ready` が **1.7秒**＝ビルド未実行
+- **【確定】Vercel の Redeploy は `ignoreCommand` を迂回できない。** **復旧には `app-concierge/` 配下への差分を伴う push が必ず要る。「Redeploy で戻せる」と書かない。**
+
+**(2) B（§22-6 と同手順）＝実施・成功**
+- **`app-concierge/src/lib/sitemap-builder.ts:166-173`**（`catch` 内のコメント）に **8行追加のみ・削除0行・全て `//` 行**
+- **`npx tsc --noEmit` exit 0** / commit **`83cfe69`** / push **06:18:40 JST**
+
+**(3) 復旧照合（06:20:56 JST）**: `<loc>` **2,550** / **works 1,200（videoa 400・anime 400・nikkatsu 400・videoc 0＝基準値と完全一致）** / **genres 200（一致）** / articles 8 / `?floor=` 4 / **actresses 1,133**。
+**root lastmod = 2026-09-05 06:19:19 JST。** archive 3,371・cohort-1 5,000 は全期間健全。
+**【併記】actresses のみ 8/30 の 1,241 を 108 下回る。** 9/2 の総数 2,616 からの逆算では約1,199で**この面は観測ごとに変動する**（`actressMap` は取得できた works から構築されるため）。**works・genres・articles・静的は完全一致で復旧は成立。変動の原因は追わない（§16）。**
+
+**(4) 第2次 sitemap 欠落期間を登録**（8/28〜30 の注記と同型・同列）:
+**2026-09-04 21:24:27 JST 〜 2026-09-05 06:19:19 JST（8時間54分52秒）。**
+archive / cohort-1 / `/articles/` 8件は同期間も欠落していない。
+**注記対象＝①9/12 判定群（記事A / Phase 1）②GSC 送信の `D0'` ③週次観測。** **§22-7 の判定ルールをそのまま適用する。**
+
+**(5) `eaadd42` の READY 異常は 9/12 以降の議題へ（§22-5 の受容と同じ棚）**
+記録するのは1点のみ＝**「`ignoreCommand` が想定外にビルドへ落ちたのは `eaadd42` の1件のみ」**。
+本便の `e63a3d5`（docs のみ）は **CANCELED＝想定どおり**であり、異常が1件に限られることを補強した。
+**【格上げの条件】次に「ドキュメントのみの commit が READY になる」事象が発生したとき。**
+
+**(6) 本日の予定は変更なし**（動画2本目・3本目候補・B系第4回16:20-17:00・B系第3回 夜）。**B系の測定記録に本欠落期間との重なりを交絡として併記する。**
+
