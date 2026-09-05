@@ -9583,3 +9583,50 @@ sticky はコンテナ `px-3` + `grid-cols-2 gap-2`、子 `px-3`。**375px 端�
 検証: `tsc` exit 0 / `eslint` exit 0 / `build` 成功。**main の `app-concierge/` は無変更。未 push 維持。**
 **9/12 手順書に補遺2 分の検証7項目を追加**（全面適用確認 / `tabular-nums` 競合なし / 小注の再測定 / 320px・375px の実機確認 / 導線不変 / md と ts 一致 / 年齢確認の文言不変）。
 
+
+### 【第121便】Make×X 接続のコールバックURL整合調査 — **(b) で判定。ただし実画面確認は未実施**
+
+**2026-09-05 12:0x JST／閲覧のみ・変更なし。**
+
+**【実施上の制約】MCP タブグループに Make.com と X Developer Portal のタブが無い。** Make は CSO のログイン済みセッションを要し、**再ログインは CTO の禁止事項**（§13-6-6）。**したがって本便は「台帳の物理確認済み記録」に基づく判定であり、実画面での再確認は未実施である。**
+
+**(1) 接続方式＝(b) HTTP 汎用 OAuth2 / カスタム App**（台帳 2026-07-09〜07-10・**当時スクショで物理確認済み**）
+
+| 項目 | 記録値 |
+|---|---|
+| **【前提変更①・2026-07-09】** | **Make に公式 X (Twitter) アプリが存在しない**（"Twitter" 検索＝3rd party のみ / "X (formerly" ＝ヒットなし）。**指示書の「X (Twitter) > Create a Post」は構成不可能**と判定 |
+| **採った代替** | **`HTTP (legacy) > Make an OAuth 2.0 request`**（＝**組み込みモジュールではない**） |
+| **Connection 名** | **`X @vodnavi_jp OAuth2 (Basic auth fix)`** |
+| **作成日** | **2026-07-10**（認可成功日） |
+| Flow / Authorize URI / Token URI | Authorization Code / `https://x.com/i/oauth2/authorize` / `https://api.x.com/2/oauth2/token` |
+| Scope | 4件（tweet.read / tweet.write / users.read / offline.access・SPACE 区切り） |
+| 特記 | **Basic 認証ヘッダー（Custom Headers）** + **静的 PKCE**（Make HTTP(legacy) は PKCE ネイティブ非対応のため Advanced settings の汎用パラメータで代替） |
+| **最終認証状態** | **2026-08-30 の Connections 画面実測で警告バッジなし**（§13-6-5(5)）。**ただし「見た目は壊れていることを示さない」**（同項の一般則） |
+| 実行時の呼称 | **`HTTP (legacy) POST /2/tweets`**（§13-3）／フィルタ左辺 `get( [🌐 2. HTTP (legacy) - Make an OAuth 2.0 request [bundle]] ; statusCode )`（§13-3-2） |
+
+**【内部整合の裏づけ】現在 Portal にある `https://www.integromat.com/oauth/cb/oauth2` のパス末尾は `oauth2` であり `twitter2` ではない。** **組み込み X モジュールなら `.../oauth/cb/twitter2` になる。** **パス自体が (b) を裏づける。**
+**併せて台帳 2026-07-09 の HUMAN 次作業に「接続画面表示の Callback URL を Dev Portal 側に登録」とある**——**現在値は Make の汎用 OAuth2 接続ダイアログが表示した値そのものと考えられる。**
+
+**(2) 判定（事前固定の分岐に照らす）＝(b)**
+- **現在値 `https://www.integromat.com/oauth/cb/oauth2` は正しい。**
+- **`.../oauth/cb/twitter2` および `.../oauth/cb/twitter` の追加は不要**（組み込みモジュールではないため）。
+- **保険としての追加のみ推奨: `https://www.make.com/oauth/cb/oauth2`**（Make 移行後ドメインの併記）。
+- **【厳守】現在の `integromat.com` 行は削除しない。** **稼働中の接続がこの値で認可されているため。**
+
+**(3) 保全確認の手順（変更前にひでき が行う）**
+1. **Portal 側は「追加」のみ行い、既存行の削除・編集をしない。**
+2. 追加後、**Make の Connections で `X @vodnavi_jp OAuth2 (Basic auth fix)` に警告バッジが出ていないこと**を目視。**`Verify` は押さない**（失敗時に再認証フローへ入りうる・§13-6-5(5)）。
+3. **夜間枠（20:45〜23:45 JST）の次の配信で Operations が 3 になり、`ポストID` が記録されることを確認**（§13-6-8 の様式）。
+- **Client ID / Client Secret の値には触れない・記録しない**（台帳の原則どおり。CTO は当時も入力していない）。
+- **【厳守】どの App(Client ID) に紐づくかは CTO からは特定できない。** **Connection の詳細は Client ID を表示せず、値は HUMAN 管理である。** **「同一 App であること」はひでき が Portal 側と突き合わせて確認する。**
+
+**(4) 再認証の要否**
+- **Callback URI の「追加」のみであれば、既存の access / refresh token は通常失効しない。** **【厳守】これは OAuth2 一般の挙動であって X 側の実測ではない**（§15-2 軸4）。
+- **確実に言えるのは1点**——**台帳の経緯では「Client Secret を再生成」した際に再認可が必要になった**（2026-07-10）。**Secret の再生成と Callback の追加は別の操作である。**
+- **したがって「再認証は不要と見込まれるが保証しない」。** **追加後は (3) の手順で実挙動を確認すること。**
+
+**(5) ひでき が設定画面を開いた経緯は不明。** **タブが共有されておらず観測できない。**
+**【厳守】経緯が分からないまま「何の問題も無い」と結論しない。** **新規接続の認証エラーが起きているなら、そのエラー文言が最短の診断材料である**（§13-3 で 402 の原文が決め手になったのと同型）。**エラー文言があれば共有を求める。**
+
+**【本便で実施していないこと】Portal 側の追加操作・Make 側の変更・`Verify` の押下・再認証。** **すべて未実施。**
+
