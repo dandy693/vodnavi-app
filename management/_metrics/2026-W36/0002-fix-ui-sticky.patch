@@ -1,7 +1,7 @@
 From 94ac14a68d8df14f87c80303227c074ffcb4c543 Mon Sep 17 00:00:00 2001
 From: Dandy T <trendnet@trendnet.biz>
 Date: Sat, 5 Sep 2026 11:21:48 +0900
-Subject: [PATCH 2/2] =?UTF-8?q?fix(ui):=20=E5=B9=B4=E9=BD=A2=E7=A2=BA?=
+Subject: [PATCH 2/3] =?UTF-8?q?fix(ui):=20=E5=B9=B4=E9=BD=A2=E7=A2=BA?=
  =?UTF-8?q?=E8=AA=8D=E3=81=AE=E6=95=B0=E5=AD=97=E3=82=92=E3=83=A9=E3=82=A4?=
  =?UTF-8?q?=E3=83=8B=E3=83=B3=E3=82=B0=E5=8C=96=20/=20sticky=20=E3=82=B5?=
  =?UTF-8?q?=E3=83=96=E3=83=A9=E3=83=99=E3=83=AB=E3=82=92=E6=A9=9F=E8=83=BD?=
