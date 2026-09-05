@@ -1,0 +1,135 @@
+From acfc59c6236eec9c4c04803c561f2f1e267b081e Mon Sep 17 00:00:00 2001
+From: Dandy T <trendnet@trendnet.biz>
+Date: Sat, 5 Sep 2026 10:36:23 +0900
+Subject: [PATCH] =?UTF-8?q?fix(ui):=20=E6=95=B0=E5=80=A4=E8=A1=A8=E7=A4=BA?=
+ =?UTF-8?q?=E3=81=AE=E5=8F=AF=E8=AA=AD=E6=80=A7=20=E2=80=94=20=E6=A1=81?=
+ =?UTF-8?q?=E5=8C=BA=E5=88=87=E3=82=8A=E3=81=AE=E5=BE=A9=E6=B4=BB=20/=20?=
+ =?UTF-8?q?=E3=83=81=E3=83=AB=E3=83=80=E9=87=8D=E8=A4=87=E3=81=AE=E8=A7=A3?=
+ =?UTF-8?q?=E6=B6=88=20/=20tabular-nums?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+第120便 B(2) の推奨案A。**main へはマージしない（9/12 以降のデプロイ便で扱う）。**
+
+実測した2つの欠陥(2026-09-05・本番 HTML)
+- formatPrice が桁区切りカンマを除去しており ¥2180 と表示されていた
+  トップの価格要素 22/22 件でカンマなし
+- 呼び出し側が別途 〜 を足す箇所があり ¥2180~〜 とチルダが重複していた
+  トップの価格要素 22/22 件で重複。product-card と works 詳細の関連作品の2箇所
+
+変更
+- client.ts formatPrice: 先頭の数値のみを取り toLocaleString で桁区切り。
+  範囲価格は全角 〜 を1つだけ付けて返す。数字が無ければ入力をそのまま返す
+- product-card.tsx: 重複していた <span>〜</span> を削除。価格・レビュー平均・
+  セール率・セール期限へ tabular-nums を付与
+- works/[floor]/[id]/page.tsx: 関連作品の {relPrice}〜 から 〜 を削除
+
+フォントは変更していない(next/font の読込を増やさない＝CLS への影響なし)
+
+検証: tsc --noEmit exit 0 / eslint exit 0 / guard:affiliate 合格 / build 成功
+単体: "2,180円"→"¥2,180" / "2180~"→"¥2,180〜" / "998"→"¥998" / "―"→"―"
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0165c2FHcxwFJoFqJAyrQywd
+---
+ .../app/(site)/works/[floor]/[id]/page.tsx    |  4 ++-
+ app-concierge/src/components/product-card.tsx | 16 +++++++-----
+ app-concierge/src/lib/fanza/client.ts         | 25 ++++++++++++++++---
+ 3 files changed, 35 insertions(+), 10 deletions(-)
+
+diff --git a/app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx b/app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx
+index aa8a01a..dea23c5 100644
+--- a/app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx
++++ b/app-concierge/src/app/(site)/works/[floor]/[id]/page.tsx
+@@ -697,9 +697,11 @@ export default async function WorkDetailPage({
+                       <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground group-hover:text-amber-300">
+                         {rel.title}
+                       </p>
++                      {/* 第120便: `formatPrice` が `〜` を1つだけ付けて返すため、
++                          ここでの追加をやめる（旧実装では `¥1480~〜` と重複していた）。 */}
+                       {relPrice && (
+                         <p className="mt-1 text-[11px] tabular-nums text-amber-300/80">
+-                          {relPrice}〜
++                          {relPrice}
+                         </p>
+                       )}
+                     </div>
+diff --git a/app-concierge/src/components/product-card.tsx b/app-concierge/src/components/product-card.tsx
+index 91a7309..974c79d 100644
+--- a/app-concierge/src/components/product-card.tsx
++++ b/app-concierge/src/components/product-card.tsx
+@@ -128,22 +128,26 @@ export function ProductCard({
+           {/* セール面のみ。sale 未指定なら描画されないため既存3面は不変。 */}
+           {sale && (
+             <span className="absolute right-2 top-2 flex flex-col items-end gap-0.5">
+-              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold tracking-wider text-white shadow-lg">
++              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold tabular-nums tracking-wider text-white shadow-lg">
+                 {sale.rate}%OFF
+               </span>
+-              <span className="rounded-full bg-black/70 px-1.5 py-0.5 text-[9px] text-rose-100 backdrop-blur">
++              <span className="rounded-full bg-black/70 px-1.5 py-0.5 text-[9px] tabular-nums text-rose-100 backdrop-blur">
+                 〜{sale.endsAtLabel}
+               </span>
+             </span>
+           )}
++          {/* 第120便: `formatPrice` が範囲価格の `〜` を1つだけ付けて返すようになったため、
++              ここで別 span の `〜` を足すのをやめる（旧実装では `¥2180~〜` と重複していた）。
++              併せて `tabular-nums` を付け、カード間で桁位置が揃うようにする。 */}
+           {price && (
+-            <div className="absolute bottom-2 left-2 flex items-baseline gap-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+-              <span className="text-base font-bold text-amber-300">{price}</span>
+-              <span className="text-[10px] text-amber-200/80">〜</span>
++            <div className="absolute bottom-2 left-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
++              <span className="text-base font-bold tabular-nums text-amber-300">
++                {price}
++              </span>
+             </div>
+           )}
+           {review?.average && (
+-            <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-black/60 px-2 py-0.5 text-[11px] text-amber-300 backdrop-blur">
++            <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-black/60 px-2 py-0.5 text-[11px] tabular-nums text-amber-300 backdrop-blur">
+               <span className="leading-none">★</span>
+               <span className="leading-none">{review.average}</span>
+             </div>
+diff --git a/app-concierge/src/lib/fanza/client.ts b/app-concierge/src/lib/fanza/client.ts
+index 770faae..0f45975 100644
+--- a/app-concierge/src/lib/fanza/client.ts
++++ b/app-concierge/src/lib/fanza/client.ts
+@@ -403,11 +403,30 @@ export async function filterItemsByImage(
+   return survived.map((e) => e.item);
+ }
+ 
++/**
++ * 価格文字列を表示用に整形する。
++ *
++ * 【2026-09-05・第120便 A(4)】旧実装は `price.replace(/[^\d~〜]/g, "")` で
++ * **桁区切りカンマを除去していた**ため `¥2180` と表示されていた（本番実測 22/22 件で
++ * カンマなし）。4桁以上の数字は区切りが無いと桁を読み取りにくい。
++ *
++ * また旧実装は API 由来の `~`（半角）をそのまま残していたため、呼び出し側が別途
++ * `〜`（全角）を足している箇所で **チルダが2つ並んでいた**（本番実測 22/22 件で
++ * `¥2180~〜`）。ここで `〜` を1つだけ付けて返し、呼び出し側の追加を不要にする。
++ *
++ * - `"2,180円"`   → `"¥2,180"`
++ * - `"2,180~"`    → `"¥2,180〜"`（範囲価格。チルダは全角1つに正規化）
++ * - 数字が無い     → 入力をそのまま返す（従来どおり）
++ */
+ export function formatPrice(price: string | undefined | null): string | null {
+   if (!price) return null;
+-  const cleaned = price.replace(/[^\d~〜]/g, "");
+-  if (!cleaned) return price;
+-  return `¥${cleaned}`;
++  // 先頭の数値のみを取る（"1,480~2,980" のような表記でも桁を連結しない）
++  const matched = price.match(/\d[\d,]*/);
++  if (!matched) return price;
++  const amount = Number(matched[0].replace(/,/g, ""));
++  if (!Number.isFinite(amount)) return price;
++  const hasRange = /[~〜]/.test(price);
++  return `¥${amount.toLocaleString("ja-JP")}${hasRange ? "〜" : ""}`;
+ }
+ 
+ export function isNewItem(dateStr: string | undefined, daysWindow = 14): boolean {
+-- 
+2.53.0.windows.1
+
