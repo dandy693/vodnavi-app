@@ -120,7 +120,11 @@ C:\Users\Tachi\Videos\vodnavi-phase1\{content_id}\
 | `candidates.json` | 候補一覧 |
 | `make-video.mjs` | 動画生成（固定仕様・出力先は §5-1・はみ出しの機械チェック込み） |
 
-**【厳守】スクリプトは scratchpad 配下であり、本番コード（`app-concierge/`）には一切触れていない。** **`vercel.json` の `ignoreCommand` 域にも入らないため、デプロイは起きない。**
+**【所在の訂正 2026-09-05・第116便 補遺19 裁定4】上記3ファイルは `management/_metrics/2026-W36/phase1-video/` へ移設した（git 管理下）。**
+**理由: scratchpad は OS のクリーンアップで消える。** **同日、B系の測定フレームを実際にこれで失った。** **事前固定した実験資産（フレーム・シード・母集団・生成パイプライン）は `management/` 配下へ置く。**
+**3本目の生成コマンド**: `node make-video.mjs --cid miab00677 --cands candidates3.json`（**上記ディレクトリで実行**）。
+
+**【厳守】スクリプトは本番コード（`app-concierge/`）には一切触れていない。** **`management/` 配下のため `vercel.json` の `ignoreCommand` 域にも入らず、デプロイは起きない。**
 
 ### 5-3. 【厳守】**当日生成ルール**（ひでき指定 2026-09-04）
 

@@ -1,0 +1,327 @@
+{
+ "name": "B'系 間欠404 特性測定フレーム",
+ "ruling": "第116便 補遺19 裁定2",
+ "seed": "bprime-20260905",
+ "generated_at_jst": "2026-09-05 22:02:48 JST",
+ "method": {
+  "faces": "sitemap.xml の /actresses/{id} と /genres/{id} から md5(url+SEED) 昇順で各 9 面",
+  "works": "各面の HTML から href=\"/works/{floor}/{cid}\" を抽出し md5(url+SEED) 昇順で先頭 3 本",
+  "dedupe": "複数面に重複した works は先着1件のみ残す",
+  "strata": "無し（旧34件『バースト経験あり』は復元不能のため層を設けない・裁定2③）"
+ },
+ "sitemap_loc_count": 2550,
+ "face_count": 18,
+ "n": 50,
+ "faces": [
+  {
+   "face": "https://app.vodnavi.jp/actresses/1092618",
+   "code": 200,
+   "found": 1,
+   "chosen": 1
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1087388",
+   "code": 200,
+   "found": 1,
+   "chosen": 1
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/9671",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1014614",
+   "code": 200,
+   "found": 29,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083560",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1071053",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1020504",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083217",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/24297",
+   "code": 200,
+   "found": 29,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/6975",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/307966",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/309021",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4009",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/2022",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/48",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/5005",
+   "code": 200,
+   "found": 26,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/1022",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4002",
+   "code": 200,
+   "found": 30,
+   "chosen": 3
+  }
+ ],
+ "frame": [
+  {
+   "face": "https://app.vodnavi.jp/actresses/1092618",
+   "url": "https://app.vodnavi.jp/works/nikkatsu/5342gp14809"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1087388",
+   "url": "https://app.vodnavi.jp/works/nikkatsu/5342sxva00106"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/9671",
+   "url": "https://app.vodnavi.jp/works/nikkatsu/145dvt000038"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/9671",
+   "url": "https://app.vodnavi.jp/works/nikkatsu/5342dmmd05817"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/9671",
+   "url": "https://app.vodnavi.jp/works/nikkatsu/174okuram00467"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1014614",
+   "url": "https://app.vodnavi.jp/works/videoa/kam00281"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1014614",
+   "url": "https://app.vodnavi.jp/works/videoa/juyu00008"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1014614",
+   "url": "https://app.vodnavi.jp/works/videoa/aquma00151"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083560",
+   "url": "https://app.vodnavi.jp/works/videoa/kwbd00406"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083560",
+   "url": "https://app.vodnavi.jp/works/videoa/h_1711jnkd00011"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083560",
+   "url": "https://app.vodnavi.jp/works/videoa/apak00286"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1071053",
+   "url": "https://app.vodnavi.jp/works/videoa/bbss00081"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1071053",
+   "url": "https://app.vodnavi.jp/works/videoa/1sbp00418"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1071053",
+   "url": "https://app.vodnavi.jp/works/videoa/bbss00090"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1020504",
+   "url": "https://app.vodnavi.jp/works/videoa/jur00638"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1020504",
+   "url": "https://app.vodnavi.jp/works/videoa/jur00418"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1020504",
+   "url": "https://app.vodnavi.jp/works/videoa/jums00172"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083217",
+   "url": "https://app.vodnavi.jp/works/videoa/13dsvr01667"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083217",
+   "url": "https://app.vodnavi.jp/works/videoa/1start00303"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/1083217",
+   "url": "https://app.vodnavi.jp/works/videoa/1sdhs00058"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/24297",
+   "url": "https://app.vodnavi.jp/works/videoa/rki00276"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/24297",
+   "url": "https://app.vodnavi.jp/works/videoa/h_910vspds00364"
+  },
+  {
+   "face": "https://app.vodnavi.jp/actresses/24297",
+   "url": "https://app.vodnavi.jp/works/videoa/1vspds00345ai"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/6975",
+   "url": "https://app.vodnavi.jp/works/videoa/140c01533ai"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/6975",
+   "url": "https://app.vodnavi.jp/works/videoa/bkh00370"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/6975",
+   "url": "https://app.vodnavi.jp/works/videoa/h_1422tpi00258"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/307966",
+   "url": "https://app.vodnavi.jp/works/videoa/1vaiav00031"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/307966",
+   "url": "https://app.vodnavi.jp/works/videoa/mmpb00137"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/307966",
+   "url": "https://app.vodnavi.jp/works/videoa/1vaiav00028"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/309021",
+   "url": "https://app.vodnavi.jp/works/videoa/bokd00320"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/309021",
+   "url": "https://app.vodnavi.jp/works/videoa/mooc00028"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/309021",
+   "url": "https://app.vodnavi.jp/works/videoa/h_1758pmgg00032"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4009",
+   "url": "https://app.vodnavi.jp/works/videoa/h_1650embm00054"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4009",
+   "url": "https://app.vodnavi.jp/works/videoa/fjin00163"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4009",
+   "url": "https://app.vodnavi.jp/works/videoa/nkovr00009"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/2022",
+   "url": "https://app.vodnavi.jp/works/videoa/dogg00001"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/2022",
+   "url": "https://app.vodnavi.jp/works/videoa/ofes00041"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/2022",
+   "url": "https://app.vodnavi.jp/works/videoa/mida00625"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/48",
+   "url": "https://app.vodnavi.jp/works/videoa/h_237clot00044"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/48",
+   "url": "https://app.vodnavi.jp/works/videoa/ipzz00980"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/48",
+   "url": "https://app.vodnavi.jp/works/videoa/kbtu00001"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/5005",
+   "url": "https://app.vodnavi.jp/works/videoa/xvsr00898"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/5005",
+   "url": "https://app.vodnavi.jp/works/videoa/mvg00173"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/5005",
+   "url": "https://app.vodnavi.jp/works/videoa/h_113cb00127"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/1022",
+   "url": "https://app.vodnavi.jp/works/videoa/mikr00109"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/1022",
+   "url": "https://app.vodnavi.jp/works/videoa/h_237nact00151"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/1022",
+   "url": "https://app.vodnavi.jp/works/videoa/urvrsp00561"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4002",
+   "url": "https://app.vodnavi.jp/works/videoa/h_1729goji00114"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4002",
+   "url": "https://app.vodnavi.jp/works/videoa/h_1664cou00021"
+  },
+  {
+   "face": "https://app.vodnavi.jp/genres/4002",
+   "url": "https://app.vodnavi.jp/works/videoa/dbnk00127"
+  }
+ ]
+}
