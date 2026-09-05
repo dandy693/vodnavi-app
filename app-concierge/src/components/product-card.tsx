@@ -128,22 +128,26 @@ export function ProductCard({
           {/* セール面のみ。sale 未指定なら描画されないため既存3面は不変。 */}
           {sale && (
             <span className="absolute right-2 top-2 flex flex-col items-end gap-0.5">
-              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold tracking-wider text-white shadow-lg">
+              <span className="rounded-full bg-rose-500 px-2 py-0.5 text-[10px] font-bold tabular-nums tracking-wider text-white shadow-lg">
                 {sale.rate}%OFF
               </span>
-              <span className="rounded-full bg-black/70 px-1.5 py-0.5 text-[9px] text-rose-100 backdrop-blur">
+              <span className="rounded-full bg-black/70 px-1.5 py-0.5 text-[9px] tabular-nums text-rose-100 backdrop-blur">
                 〜{sale.endsAtLabel}
               </span>
             </span>
           )}
+          {/* 第120便: `formatPrice` が範囲価格の `〜` を1つだけ付けて返すようになったため、
+              ここで別 span の `〜` を足すのをやめる（旧実装では `¥2180~〜` と重複していた）。
+              併せて `tabular-nums` を付け、カード間で桁位置が揃うようにする。 */}
           {price && (
-            <div className="absolute bottom-2 left-2 flex items-baseline gap-1 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
-              <span className="text-base font-bold text-amber-300">{price}</span>
-              <span className="text-[10px] text-amber-200/80">〜</span>
+            <div className="absolute bottom-2 left-2 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">
+              <span className="text-base font-bold tabular-nums text-amber-300">
+                {price}
+              </span>
             </div>
           )}
           {review?.average && (
-            <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-black/60 px-2 py-0.5 text-[11px] text-amber-300 backdrop-blur">
+            <div className="absolute bottom-2 right-2 flex items-center gap-0.5 rounded-full bg-black/60 px-2 py-0.5 text-[11px] tabular-nums text-amber-300 backdrop-blur">
               <span className="leading-none">★</span>
               <span className="leading-none">{review.average}</span>
             </div>

@@ -403,11 +403,30 @@ export async function filterItemsByImage(
   return survived.map((e) => e.item);
 }
 
+/**
+ * 価格文字列を表示用に整形する。
+ *
+ * 【2026-09-05・第120便 A(4)】旧実装は `price.replace(/[^\d~〜]/g, "")` で
+ * **桁区切りカンマを除去していた**ため `¥2180` と表示されていた（本番実測 22/22 件で
+ * カンマなし）。4桁以上の数字は区切りが無いと桁を読み取りにくい。
+ *
+ * また旧実装は API 由来の `~`（半角）をそのまま残していたため、呼び出し側が別途
+ * `〜`（全角）を足している箇所で **チルダが2つ並んでいた**（本番実測 22/22 件で
+ * `¥2180~〜`）。ここで `〜` を1つだけ付けて返し、呼び出し側の追加を不要にする。
+ *
+ * - `"2,180円"`   → `"¥2,180"`
+ * - `"2,180~"`    → `"¥2,180〜"`（範囲価格。チルダは全角1つに正規化）
+ * - 数字が無い     → 入力をそのまま返す（従来どおり）
+ */
 export function formatPrice(price: string | undefined | null): string | null {
   if (!price) return null;
-  const cleaned = price.replace(/[^\d~〜]/g, "");
-  if (!cleaned) return price;
-  return `¥${cleaned}`;
+  // 先頭の数値のみを取る（"1,480~2,980" のような表記でも桁を連結しない）
+  const matched = price.match(/\d[\d,]*/);
+  if (!matched) return price;
+  const amount = Number(matched[0].replace(/,/g, ""));
+  if (!Number.isFinite(amount)) return price;
+  const hasRange = /[~〜]/.test(price);
+  return `¥${amount.toLocaleString("ja-JP")}${hasRange ? "〜" : ""}`;
 }
 
 export function isNewItem(dateStr: string | undefined, daysWindow = 14): boolean {
