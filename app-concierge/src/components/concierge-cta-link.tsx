@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -45,8 +46,15 @@ export function ConciergeCtaLink({
    * intent 規約に従う。
    */
   intent?: string;
-  /** ボタン本文。世界観に合わせて外部から差し替え可能。 */
-  label?: string;
+  /**
+   * ボタン本文。外部から差し替え可能。
+   *
+   * 【2026-09-05・第120便 補遺2 裁定2】`string` から `ReactNode` へ広げた。
+   * 狭幅端末（〜359px）だけ短縮形へ切り替えるために、呼び出し側が
+   * 2つの `<span>` を breakpoint で出し分ける必要があるため。
+   * 既存の文字列渡しはそのまま動く（`string` は `ReactNode` の一部）。
+   */
+  label?: ReactNode;
   /**
    * 視覚的ヒエラルキー切替。
    *   - `outline` (default): リッチブラック背景 × ゴールド枠線テキスト。FANZA

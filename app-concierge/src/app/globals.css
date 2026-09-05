@@ -163,4 +163,31 @@
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+
+  /* 【2026-09-05・第120便 補遺2 裁定1】見出し書体の数字をライニングへ揃える。
+   *
+   * `--font-luxury-heading` は Cormorant Garamond で、**既定の数字がオールドスタイル
+   * （非ライニング）**である。実描画では `/age-gate` の h1「18 歳以上ですか？」の
+   * 「18」が `ɪ8`（1 が小文字高・8 がアセンダ付き）となり、同一ページ内の
+   * Noto Sans JP 側「満 18 歳以上」（ライニング）と字形が食い違っていた。
+   *
+   * オールドスタイル数字は本文組版では美質だが、価格・日付・年齢・件数のような
+   * **UI データ数字では可読性の欠陥として働く**。当サイトの見出し数字はほぼ全てが
+   * データ数字であり、ブランド表現として守る価値があるのは**書体（Cormorant）自体**
+   * であって数字字形ではない。`lining-nums` は書体を保ったまま字形だけを揃えるため、
+   * ブランドと可読性が両立する。「同一ページ内で同じ数字が2字形」という混在の解消は
+   * 全面適用でしか達成できない。
+   *
+   * `.btn-luxury-*` は `design-tokens.css` で `font-family: var(--font-luxury-heading)`
+   * を持つため同じ対象になる。**`design-tokens.css` 自体は触らない**
+   * （`FACT_GOVERNANCE` §1 の同期正典であるため）。
+   *
+   * @layer base に置くので、要素側の `tabular-nums` 等の utility が優先される。
+   * 2026-09-05 時点で `font-luxury-heading` と `tabular-nums` の併用箇所は 0 件。
+   */
+  .font-luxury-heading,
+  .btn-luxury-gold,
+  .btn-luxury-outline {
+    font-variant-numeric: lining-nums;
+  }
 }

@@ -19,6 +19,7 @@ import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import {
   STICKY_MAIN_LABEL,
   STICKY_SUB_LABEL,
+  STICKY_SUB_LABEL_SHORT,
 } from "@/data/copy/sticky-cta-text";
 import {
   fetchItemList,
@@ -754,7 +755,20 @@ export default async function WorkDetailPage({
           source="app_direct"
           intent="actress"
           variant="outline"
-          label={STICKY_SUB_LABEL}
+          /* 【第120便 補遺2 裁定2】320px 帯だけ短縮形にする。
+             「コンシェルジュに相談」は 13px で 130.0px。サブ列のテキスト領域は
+             375px→147.5px / 320px→120px のため、狭幅では 10px 超過する。
+             `min-[360px]:` で切り替え、はみ出しを構造的に防ぐ。 */
+          label={
+            <>
+              <span className="hidden min-[360px]:inline">
+                {STICKY_SUB_LABEL}
+              </span>
+              <span className="min-[360px]:hidden">
+                {STICKY_SUB_LABEL_SHORT}
+              </span>
+            </>
+          }
           className="h-12 px-3 text-[13px]"
         />
       </div>
