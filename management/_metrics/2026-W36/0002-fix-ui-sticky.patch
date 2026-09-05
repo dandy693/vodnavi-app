@@ -1,0 +1,140 @@
+From 94ac14a68d8df14f87c80303227c074ffcb4c543 Mon Sep 17 00:00:00 2001
+From: Dandy T <trendnet@trendnet.biz>
+Date: Sat, 5 Sep 2026 11:21:48 +0900
+Subject: [PATCH 2/2] =?UTF-8?q?fix(ui):=20=E5=B9=B4=E9=BD=A2=E7=A2=BA?=
+ =?UTF-8?q?=E8=AA=8D=E3=81=AE=E6=95=B0=E5=AD=97=E3=82=92=E3=83=A9=E3=82=A4?=
+ =?UTF-8?q?=E3=83=8B=E3=83=B3=E3=82=B0=E5=8C=96=20/=20sticky=20=E3=82=B5?=
+ =?UTF-8?q?=E3=83=96=E3=83=A9=E3=83=99=E3=83=AB=E3=82=92=E6=A9=9F=E8=83=BD?=
+ =?UTF-8?q?=E8=A1=A8=E8=A8=98=E3=81=B8?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+第120便 補遺1。**main へはマージしない（適用は 9/12）。**
+
+A. 年齢確認ページ(可読性のみ・文言は不変)
+  原因を実描画で特定 — font-luxury-heading は Cormorant Garamond で
+  **既定の数字がオールドスタイル(非ライニング)**。h1「18 歳以上ですか？」の
+  「18」が ɪ8(1が小文字高・8がアセンダ付き)となり、同ページ本文の
+  Noto Sans JP 側「満 18 歳以上」(ライニング)と字形が食い違っていた
+  → h1 とボタンへ lining-nums を付与。ブラウザ上で先に効果を実測済み
+  文言・サイズ・色・背景は一切変更していない(法的定型を触らない裁定に従う)
+  確定欠陥①②(カンマ除去・~〜重複)は当ページに該当なし(価格表示が無いため)
+
+B. sticky サブラベル 「司書に相談」→「コンシェルジュに相談」
+  遷移先は /concierge?source=app_direct&intent=actress&seed_cid=… の内部遷移で
+  パス名と自己一致。§25「機能表記は app」に従う。ts と md を同時に更新
+  【幅の実測・要注意】13px で 130.0px。コンテナ px-3 + grid-cols-2 gap-2、
+  子 px-3 のため 375px 端末は 147.5px で収まるが **320px 端末は 120px で
+  10px 超過**。短縮案「コンシェルジュ」(91.0px)。採否は CSO 裁定
+  代替案「ぴったりの1本を探してもらう」は 173.3px で 375px でも超過
+
+  メインラベル「今宵ひらく」は**未改名・据え置き**
+  裁定の例示(作品詳細/おすすめ提示)は実体と一致しない — このボタンは
+  FanzaAffiliateLink(placement=detail_sticky_cta)で**外部の FANZA 公式
+  作品ページ**へ出る。「実体を報告してから確定」の手順に従った
+
+検証: tsc exit 0 / eslint exit 0 / build 成功
+
+Co-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_0165c2FHcxwFJoFqJAyrQywd
+---
+ .../src/app/age-gate/age-gate-modal.tsx       | 10 +++++--
+ .../src/data/copy/sticky-cta-text.md          | 18 ++++++++++++-
+ .../src/data/copy/sticky-cta-text.ts          | 27 ++++++++++++++++---
+ 3 files changed, 49 insertions(+), 6 deletions(-)
+
+diff --git a/app-concierge/src/app/age-gate/age-gate-modal.tsx b/app-concierge/src/app/age-gate/age-gate-modal.tsx
+index 31491d7..5a7b043 100644
+--- a/app-concierge/src/app/age-gate/age-gate-modal.tsx
++++ b/app-concierge/src/app/age-gate/age-gate-modal.tsx
+@@ -58,7 +58,13 @@ export function AgeGateModal({ next }: { next: string }) {
+         <p className="font-luxury-heading text-xs tracking-[0.35em] text-brand-gold/80">
+           VODNAVI · 年齢確認
+         </p>
+-        <h1 className="mt-4 font-luxury-heading text-3xl leading-tight text-brand-text-primary sm:text-4xl">
++        {/* 【2026-09-05・第120便 補遺1 A】`font-luxury-heading` は Cormorant Garamond で、
++            **既定の数字がオールドスタイル（非ライニング）**である。実描画では「18」が
++            `ɪ8`（1 が小文字高・8 がアセンダ付き）となり、同ページ本文の Noto Sans JP 側の
++            「満 18 歳以上」（ライニング数字）と字形が食い違っていた。
++            `lining-nums` を当てて数字の高さを揃える。**文言は一切変更していない**
++            （年齢確認は法的定型のため可読性のみ触る、という裁定に従う）。 */}
++        <h1 className="mt-4 font-luxury-heading text-3xl leading-tight text-brand-text-primary lining-nums sm:text-4xl">
+           18 歳以上ですか？
+         </h1>
+         <p className="mt-6 text-sm leading-relaxed text-brand-text-secondary sm:text-base">
+@@ -72,7 +78,7 @@ export function AgeGateModal({ next }: { next: string }) {
+             onClick={confirm}
+             disabled={busy}
+             aria-disabled={busy}
+-            className="btn-luxury-gold disabled:opacity-50"
++            className="btn-luxury-gold lining-nums disabled:opacity-50"
+           >
+             {busy ? "確認中…" : "はい、18 歳以上です"}
+           </button>
+diff --git a/app-concierge/src/data/copy/sticky-cta-text.md b/app-concierge/src/data/copy/sticky-cta-text.md
+index 7004103..f3e12ba 100644
+--- a/app-concierge/src/data/copy/sticky-cta-text.md
++++ b/app-concierge/src/data/copy/sticky-cta-text.md
+@@ -5,4 +5,20 @@
+ 今宵ひらく
+ 
+ ### Sub Button
+-司書に相談
++コンシェルジュに相談
++
++---
++
++## 変更履歴
++
++### 2026-09-05（第120便 補遺1 B・CSO裁定）
++- **Sub Button: 「司書に相談」→「コンシェルジュに相談」**
++  遷移先は `/concierge?source=app_direct&intent=actress&seed_cid=…` の内部遷移で、パス名と自己一致する。
++  §25 の文言原則「世界観表現は moterist、機能表記は app」に従う。
++  **幅の実測: 13px で 130.0px。375px 端末では収まるが、320px 端末では 10px 超過する。**
++  320px を捨てない場合の短縮案は「コンシェルジュ」(91.0px)。**採否は CSO 裁定。**
++- **Main Button: 未改名（据え置き）。**
++  裁定の例示（作品詳細→「作品を見る」／おすすめ提示→「今夜の1本を探す」）は**実体と一致しない**。
++  このボタンは `FanzaAffiliateLink`（`placement="detail_sticky_cta"`）で **外部の FANZA 公式作品ページ**へ出る。
++  「遷移先の実体を報告してから最終文言を確定する」という手順に従い据え置いた。
++  参考の幅実測: 「FANZAで見る」80.2px ／「FANZA公式で見る」106.2px ／「作品を見る」65.0px ／「今夜の1本を探す」95.3px。
+diff --git a/app-concierge/src/data/copy/sticky-cta-text.ts b/app-concierge/src/data/copy/sticky-cta-text.ts
+index afd6ae9..1dabf73 100644
+--- a/app-concierge/src/data/copy/sticky-cta-text.ts
++++ b/app-concierge/src/data/copy/sticky-cta-text.ts
+@@ -11,8 +11,29 @@
+  * 避けた静かな招待のトーンに統一。
+  */
+ 
+-/** モバイル sticky CTA 1 列目: FANZA 公式 (成約の核心) のラベル。 */
++/**
++ * モバイル sticky CTA 1 列目: FANZA 公式 (成約の核心) のラベル。
++ *
++ * 【2026-09-05・第120便 補遺1 B】**未改名。CSO 裁定待ち。**
++ * 裁定の例示は「遷移先が作品詳細なら『作品を見る』、おすすめ提示なら
++ * 『今夜の1本を探す』」だったが、**実体はそのどちらでもない**——
++ * このボタンは `FanzaAffiliateLink href={fanzaAffiliate.primaryUrl}`
++ * (`placement="detail_sticky_cta"`) で、**外部の FANZA 公式作品ページ**へ出る。
++ * 遷移先の実体を報告したうえで最終文言を確定する、という手順に従い据え置く。
++ */
+ export const STICKY_MAIN_LABEL = "今宵ひらく";
+ 
+-/** モバイル sticky CTA 2 列目: コンシェルジュ (回遊の盾) のラベル。 */
+-export const STICKY_SUB_LABEL = "司書に相談";
++/**
++ * モバイル sticky CTA 2 列目: コンシェルジュ (回遊の盾) のラベル。
++ *
++ * 【2026-09-05・第120便 補遺1 B】「司書に相談」から改名。
++ * 遷移先は `/concierge?source=app_direct&intent=actress&seed_cid=…` の内部遷移で、
++ * **パス名と自己一致する**。§25 の「機能表記は app」に従う。
++ *
++ * **【幅の実測・要注意】13px で 130.0px。**
++ * sticky はコンテナ `px-3` + `grid-cols-2 gap-2`、子は `px-3`。
++ * - 375px 端末: テキスト領域 147.5px → **収まる**（余裕 17.5px）
++ * - **320px 端末: テキスト領域 120px → 10px 超過する**
++ * 320px を捨てない場合の短縮案は「コンシェルジュ」(91.0px)。**採否は CSO 裁定。**
++ */
++export const STICKY_SUB_LABEL = "コンシェルジュに相談";
+-- 
+2.53.0.windows.1
+
