@@ -84,9 +84,9 @@
 
 | # | 項目 | 状態 |
 |---|---|---|
-| ① | **www 11ページの被リンク** | **未取得**（Ahrefs はクレジット枯渇中・§24-11-7） |
-| ② | **`brand_pilot_001` 経由の流入実績**（GA4 source/medium 別） | **未取得**（本便では hostName 別までしか取っていない） |
-| ③ | apex 502（7月のみ）の内訳 | **追わない**（裁定どおり） |
+| ① | **www 11ページの被リンク** | **回収済（下記「追加回収」②）**——**GSC のリンクレポートで取得できた。Ahrefs は不要だった。外部リンクは トップへの1件のみ** |
+| ② | **`brand_pilot_001` 経由の流入実績** | **回収済（下記「追加回収」①）**——**90日で 0件** |
+| ③ | apex 502（7月のみ）の内訳 | **追わない**（裁定どおり）。**ただし別目的の照会で `trafficheap.cc` の URL に集中していることが偶然判明した**（下記①の副産物） |
 
 ---
 
@@ -109,3 +109,64 @@
 | `moterist.com` | **0** | 5 |
 
 - **【厳守】この表は「www と moterist に価値が無い」ことを示さない。** **示すのは__現時点の検索・流入の実績__だけである。** **§19-2 の裁定（主軸 C＝事業構造の見直し / 従 A＝works 面）と整合する材料であって、それ自体が施策の可否を決めるものではない。**
+
+---
+
+# 追加回収（2026-09-10 00:3x〜00:5x JST）— 未取得2項目 + W1 の変更要否
+
+## ① `brand_pilot_001` 経由流入 — **90日で 0件**
+
+**GA4 Data API `p489519780` / 2026-06-12〜09-09（90日）**
+
+| 検査 | 結果 |
+|---|---|
+| `customEvent:source` 別（上位25） | **`brand_pilot_001` は出現しない**（`app_direct` 99 / `x_vodnavi` 19 / `app_detail` 16 / `direct` 12 / `default` 9 …） |
+| `pageLocation` に `brand_pilot` を含む | **0件** |
+| `?source=brand`（www の他リンク） | **PV 6** |
+| **`brand_pilot_001` 由来の CTA クリック** | **0**（流入が0のため） |
+
+**www 側のリンク実装（`site-brand` 実測）**:
+
+| `source` 値 | 箇所 |
+|---|---|
+| **`brand_pilot_001`** | **`03_content/vod-selection-guide/article.md:50` の1箇所のみ**（`/lp?source=brand_pilot_001`） |
+| `brand` | 5箇所（各記事の `/concierge?source=brand`）+ `src/app/page.tsx` |
+| `brand_compare_hub` | 1箇所（`src/app/compare/page.tsx`） |
+
+- **→ `brand_pilot_001` は www の記事1本にしか置かれておらず、その記事からの流入が90日で0件だった。**
+- **【構造的な限界】www → app の遷移は `sessionSource` に referral として現れない。** **同一 GA4 プロパティ + クロスドメイン linker 構成のため内部遷移扱いになる**（§3 の設計どおり）。**したがって「www 経由流入」を source/medium で測ることは構造的にできず、URL パラメータが唯一の手掛かりである。**
+- **実測（`sessionSource` に vodnavi / moterist を含むもの）**: `x_vodnavi / social` 6セッション / `moterist.motelab.xyz / referral` 1セッション のみ。**`www.vodnavi.jp` からの referral は 0。**
+
+**【副産物・追わない】`?source=` を含むページの最上位は `https://vodnavi.jp?utm_source=trafficheap.cc&utm_medium=referral&utm_campaign=trafficheap.cc` で PV 502。**
+**`customEvent:source` 別でも `trafficheap.cc` が 1,506イベント / 500セッション。**
+**apex の7月502はこの URL に集中している。** **【厳守】裁定どおり原因は追わない。本項は別目的の照会で偶然現れたものを記録しただけである。**
+
+## ② www 11ページの被リンク — **GSC リンクレポートで取得できた（Ahrefs 不要）**
+
+**GSC `sc-domain:vodnavi.jp` の「リンク」レポート**
+
+| 外部リンク | 合計 **36件** |
+|---|---|
+| **上位のリンクされているページ** | `https://app.vodnavi.jp/concierge` **35** / **`https://www.vodnavi.jp/` 1** |
+| **上位のリンク元サイト** | **`moterist.com` 35** / **`freelance-jp.org` 1** |
+| 上位のリンク元テキスト | `vodnavi コンシェルジュへ進む` / `https vodnavi jp` |
+
+- **→ www 配下ページへの外部リンクは 1件のみ**（`https://www.vodnavi.jp/` ＝トップ）。**リンク元は `freelance-jp.org`。**
+- **→ www の 11ページのうち、被リンクを持つのはトップだけ。残り10ページは 0。**
+- **`moterist.com` からの35件はすべて `app.vodnavi.jp/concierge` 宛**——**第117便の「moterist の app へのリンクは全て `/concierge`・深リンク0」と一致する。**
+
+**内部リンク（参考）**: 合計 25,028件。上位は `/concierge` 12,899 / `/genres/1016` 10,218。
+
+## ③ W1（現状維持）を採る場合の「役割明文化」に必要な最小変更 — **コード変更は 0件**
+
+| 対象 | 現状 | 変更の要否 |
+|---|---|---|
+| **www の説明文** | **本番 meta description に「AI による映像解析と、人間の専門家による厳格な査読体制で運営される、次世代の VOD コンシェルジュ・サービス。__VODNAVI 公式ブランドサイト__。」と既に明記** | **不要** |
+| **フッター（app → www のリンク）** | **本番 app のトップに `href="https://www.vodnavi.jp..."` は 0件**＝そもそもリンクが無い | **不要**（整合を取る対象が無い） |
+| **app 側の www 参照文言** | **6箇所あるが、すべて__ユーザーに表示されない__**——`google-analytics.tsx` の**コメント4箇所**（計測構成の説明）と `sources.ts` の**LLM システムプロンプト2箇所**（流入コンテキスト） | **不要** |
+
+**→ W1 を採る場合、コードの変更は 0件で済む。**
+
+- **【厳守】「変更0件」は「明文化されている」と同義ではない。** **役割は www 側の meta description にしか存在せず、台帳（§25）には www が「裁定W 保留」としか書かれていない。**
+- **W1 を採るなら、__台帳 §25 に www の役割を1行書くこと__自体は必要である。** **それは台帳の変更であってコードの変更ではない。**
+- **【厳守】推奨は書かない。**
