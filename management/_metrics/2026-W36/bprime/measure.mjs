@@ -27,8 +27,17 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const frameFile = "bprime-frame-20260905.json";
 const frame = JSON.parse(readFileSync(frameFile, "utf8"));
+
+// 【2026-09-09・裁定2】フレーム構築からの経過日数を毎回記録する。
+// B系はフレーム構築と測定が同日だったが、B'系 第1回は 4日差があり、
+// 「4日の間に配信終了した作品は恒久的に404になる」という交絡が入った。
+// 鮮度は結果の解釈に直結するため、測定のたびに残す。
+const builtAt = new Date(frame.generated_at_jst.replace(" JST", "").replace(" ", "T") + "+09:00");
+const frameAgeDays = Math.round(((Date.now() - builtAt.getTime()) / 86400000) * 10) / 10;
+
 console.log(`=== B'系 測定 「${label}」 ===`);
 console.log(`フレーム: ${frameFile} / シード ${frame.seed} / n = ${frame.n}`);
+console.log(`**フレーム構築からの経過: ${frameAgeDays} 日**（構築 ${frame.generated_at_jst}）`);
 console.log(`開始 ${jstNow()} JST / 逐次 ${GAP_MS}ms`);
 
 const hdr = (r) => ({
@@ -97,6 +106,8 @@ const store = existsSync("bprime-results.json")
   : { runs: [] };
 store.runs.push({
   label, seed: frame.seed, n: frame.n,
+  frame_built_jst: frame.generated_at_jst,
+  frame_age_days: frameAgeDays,
   started_jst: rows[0]?.at, finished_jst: jstNow(),
   gap_ms: GAP_MS, requests,
   count_200: rows.filter((r) => r.status === 200).length,
