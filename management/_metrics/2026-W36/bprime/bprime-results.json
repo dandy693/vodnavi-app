@@ -1,0 +1,514 @@
+{
+ "runs": [
+  {
+   "label": "第1回・窓内(2026-09-09 16:1x)",
+   "seed": "bprime-20260905",
+   "n": 50,
+   "started_jst": "2026-09-09 16:16:22",
+   "finished_jst": "2026-09-09 16:17:19",
+   "gap_ms": 500,
+   "requests": 56,
+   "count_200": 44,
+   "count_404": 6,
+   "count_other": 0,
+   "header_combos": {
+    "404 / MISS / age=0": 6,
+    "200 / MISS / age=0": 44
+   },
+   "rows": [
+    {
+     "at": "2026-09-09 16:16:22",
+     "url": "https://app.vodnavi.jp/works/nikkatsu/5342gp14809",
+     "face": "https://app.vodnavi.jp/actresses/1092618",
+     "status": 404,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate",
+     "retry": {
+      "at": "2026-09-09 16:16:26",
+      "status": 404,
+      "cache": "MISS",
+      "age": "0",
+      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+     }
+    },
+    {
+     "at": "2026-09-09 16:16:26",
+     "url": "https://app.vodnavi.jp/works/nikkatsu/5342sxva00106",
+     "face": "https://app.vodnavi.jp/actresses/1087388",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:27",
+     "url": "https://app.vodnavi.jp/works/nikkatsu/145dvt000038",
+     "face": "https://app.vodnavi.jp/actresses/9671",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:28",
+     "url": "https://app.vodnavi.jp/works/nikkatsu/5342dmmd05817",
+     "face": "https://app.vodnavi.jp/actresses/9671",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:29",
+     "url": "https://app.vodnavi.jp/works/nikkatsu/174okuram00467",
+     "face": "https://app.vodnavi.jp/actresses/9671",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:29",
+     "url": "https://app.vodnavi.jp/works/videoa/kam00281",
+     "face": "https://app.vodnavi.jp/actresses/1014614",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:30",
+     "url": "https://app.vodnavi.jp/works/videoa/juyu00008",
+     "face": "https://app.vodnavi.jp/actresses/1014614",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:31",
+     "url": "https://app.vodnavi.jp/works/videoa/aquma00151",
+     "face": "https://app.vodnavi.jp/actresses/1014614",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:32",
+     "url": "https://app.vodnavi.jp/works/videoa/kwbd00406",
+     "face": "https://app.vodnavi.jp/actresses/1083560",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:33",
+     "url": "https://app.vodnavi.jp/works/videoa/h_1711jnkd00011",
+     "face": "https://app.vodnavi.jp/actresses/1083560",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:33",
+     "url": "https://app.vodnavi.jp/works/videoa/apak00286",
+     "face": "https://app.vodnavi.jp/actresses/1083560",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:34",
+     "url": "https://app.vodnavi.jp/works/videoa/bbss00081",
+     "face": "https://app.vodnavi.jp/actresses/1071053",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:35",
+     "url": "https://app.vodnavi.jp/works/videoa/1sbp00418",
+     "face": "https://app.vodnavi.jp/actresses/1071053",
+     "status": 404,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate",
+     "retry": {
+      "at": "2026-09-09 16:16:38",
+      "status": 404,
+      "cache": "MISS",
+      "age": "0",
+      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+     }
+    },
+    {
+     "at": "2026-09-09 16:16:39",
+     "url": "https://app.vodnavi.jp/works/videoa/bbss00090",
+     "face": "https://app.vodnavi.jp/actresses/1071053",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:39",
+     "url": "https://app.vodnavi.jp/works/videoa/jur00638",
+     "face": "https://app.vodnavi.jp/actresses/1020504",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:40",
+     "url": "https://app.vodnavi.jp/works/videoa/jur00418",
+     "face": "https://app.vodnavi.jp/actresses/1020504",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:41",
+     "url": "https://app.vodnavi.jp/works/videoa/jums00172",
+     "face": "https://app.vodnavi.jp/actresses/1020504",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:42",
+     "url": "https://app.vodnavi.jp/works/videoa/13dsvr01667",
+     "face": "https://app.vodnavi.jp/actresses/1083217",
+     "status": 404,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate",
+     "retry": {
+      "at": "2026-09-09 16:16:45",
+      "status": 404,
+      "cache": "MISS",
+      "age": "0",
+      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+     }
+    },
+    {
+     "at": "2026-09-09 16:16:46",
+     "url": "https://app.vodnavi.jp/works/videoa/1start00303",
+     "face": "https://app.vodnavi.jp/actresses/1083217",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:46",
+     "url": "https://app.vodnavi.jp/works/videoa/1sdhs00058",
+     "face": "https://app.vodnavi.jp/actresses/1083217",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:47",
+     "url": "https://app.vodnavi.jp/works/videoa/rki00276",
+     "face": "https://app.vodnavi.jp/actresses/24297",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:48",
+     "url": "https://app.vodnavi.jp/works/videoa/h_910vspds00364",
+     "face": "https://app.vodnavi.jp/actresses/24297",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:49",
+     "url": "https://app.vodnavi.jp/works/videoa/1vspds00345ai",
+     "face": "https://app.vodnavi.jp/actresses/24297",
+     "status": 404,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate",
+     "retry": {
+      "at": "2026-09-09 16:16:52",
+      "status": 404,
+      "cache": "MISS",
+      "age": "0",
+      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+     }
+    },
+    {
+     "at": "2026-09-09 16:16:53",
+     "url": "https://app.vodnavi.jp/works/videoa/140c01533ai",
+     "face": "https://app.vodnavi.jp/genres/6975",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:53",
+     "url": "https://app.vodnavi.jp/works/videoa/bkh00370",
+     "face": "https://app.vodnavi.jp/genres/6975",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:54",
+     "url": "https://app.vodnavi.jp/works/videoa/h_1422tpi00258",
+     "face": "https://app.vodnavi.jp/genres/6975",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:55",
+     "url": "https://app.vodnavi.jp/works/videoa/1vaiav00031",
+     "face": "https://app.vodnavi.jp/genres/307966",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:16:56",
+     "url": "https://app.vodnavi.jp/works/videoa/mmpb00137",
+     "face": "https://app.vodnavi.jp/genres/307966",
+     "status": 404,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate",
+     "retry": {
+      "at": "2026-09-09 16:16:59",
+      "status": 404,
+      "cache": "MISS",
+      "age": "0",
+      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+     }
+    },
+    {
+     "at": "2026-09-09 16:16:59",
+     "url": "https://app.vodnavi.jp/works/videoa/1vaiav00028",
+     "face": "https://app.vodnavi.jp/genres/307966",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:00",
+     "url": "https://app.vodnavi.jp/works/videoa/bokd00320",
+     "face": "https://app.vodnavi.jp/genres/309021",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:01",
+     "url": "https://app.vodnavi.jp/works/videoa/mooc00028",
+     "face": "https://app.vodnavi.jp/genres/309021",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:02",
+     "url": "https://app.vodnavi.jp/works/videoa/h_1758pmgg00032",
+     "face": "https://app.vodnavi.jp/genres/309021",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:02",
+     "url": "https://app.vodnavi.jp/works/videoa/h_1650embm00054",
+     "face": "https://app.vodnavi.jp/genres/4009",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:03",
+     "url": "https://app.vodnavi.jp/works/videoa/fjin00163",
+     "face": "https://app.vodnavi.jp/genres/4009",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:04",
+     "url": "https://app.vodnavi.jp/works/videoa/nkovr00009",
+     "face": "https://app.vodnavi.jp/genres/4009",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:05",
+     "url": "https://app.vodnavi.jp/works/videoa/dogg00001",
+     "face": "https://app.vodnavi.jp/genres/2022",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:05",
+     "url": "https://app.vodnavi.jp/works/videoa/ofes00041",
+     "face": "https://app.vodnavi.jp/genres/2022",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:06",
+     "url": "https://app.vodnavi.jp/works/videoa/mida00625",
+     "face": "https://app.vodnavi.jp/genres/2022",
+     "status": 404,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate",
+     "retry": {
+      "at": "2026-09-09 16:17:09",
+      "status": 404,
+      "cache": "MISS",
+      "age": "0",
+      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+     }
+    },
+    {
+     "at": "2026-09-09 16:17:10",
+     "url": "https://app.vodnavi.jp/works/videoa/h_237clot00044",
+     "face": "https://app.vodnavi.jp/genres/48",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:11",
+     "url": "https://app.vodnavi.jp/works/videoa/ipzz00980",
+     "face": "https://app.vodnavi.jp/genres/48",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:11",
+     "url": "https://app.vodnavi.jp/works/videoa/kbtu00001",
+     "face": "https://app.vodnavi.jp/genres/48",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:12",
+     "url": "https://app.vodnavi.jp/works/videoa/xvsr00898",
+     "face": "https://app.vodnavi.jp/genres/5005",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:13",
+     "url": "https://app.vodnavi.jp/works/videoa/mvg00173",
+     "face": "https://app.vodnavi.jp/genres/5005",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:14",
+     "url": "https://app.vodnavi.jp/works/videoa/h_113cb00127",
+     "face": "https://app.vodnavi.jp/genres/5005",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:14",
+     "url": "https://app.vodnavi.jp/works/videoa/mikr00109",
+     "face": "https://app.vodnavi.jp/genres/1022",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:15",
+     "url": "https://app.vodnavi.jp/works/videoa/h_237nact00151",
+     "face": "https://app.vodnavi.jp/genres/1022",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:16",
+     "url": "https://app.vodnavi.jp/works/videoa/urvrsp00561",
+     "face": "https://app.vodnavi.jp/genres/1022",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:17",
+     "url": "https://app.vodnavi.jp/works/videoa/h_1729goji00114",
+     "face": "https://app.vodnavi.jp/genres/4002",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:17",
+     "url": "https://app.vodnavi.jp/works/videoa/h_1664cou00021",
+     "face": "https://app.vodnavi.jp/genres/4002",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-09 16:17:18",
+     "url": "https://app.vodnavi.jp/works/videoa/dbnk00127",
+     "face": "https://app.vodnavi.jp/genres/4002",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    }
+   ]
+  }
+ ]
+}
