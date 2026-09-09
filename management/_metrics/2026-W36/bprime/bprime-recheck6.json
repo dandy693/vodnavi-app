@@ -57,6 +57,63 @@
      "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
     }
    ]
+  },
+  {
+   "label": "3回目・9/10 深夜（9/9 の回復確認から約8時間後）",
+   "started_jst": "2026-09-10 00:18:00",
+   "finished_jst": "2026-09-10 00:18:05",
+   "count_404": 0,
+   "count_200": 6,
+   "rows": [
+    {
+     "at": "2026-09-10 00:18:00",
+     "path": "/works/nikkatsu/5342gp14809",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-10 00:18:01",
+     "path": "/works/videoa/1sbp00418",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-10 00:18:02",
+     "path": "/works/videoa/13dsvr01667",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-10 00:18:03",
+     "path": "/works/videoa/1vspds00345ai",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-10 00:18:04",
+     "path": "/works/videoa/mmpb00137",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+     "at": "2026-09-10 00:18:05",
+     "path": "/works/videoa/mida00625",
+     "status": 200,
+     "cache": "MISS",
+     "age": "0",
+     "cc": "private, no-cache, no-store, max-age=0, must-revalidate"
+    }
+   ]
   }
  ]
 }
