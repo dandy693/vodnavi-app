@@ -2865,6 +2865,54 @@ PASS  llm.concierge stream
 - **これは §10 の「戻り値を証拠にしない」と同型である**——**コマンドが偽を返したことは「差分があった」ことの証拠にならない。**
 
 **【厳守】本仮説が支持されても、それは「間欠404（§24）の原因」とは無関係である。** **別事象として扱う**（§22-4 の「同時期に2つ壊れたから同じ原因と読まない」と同型）。
+
+**■ 照合材料（実測 2026-09-11 06:1x JST・登録の直後に取得）— 【厳守】判定は CSO。CTO は材料の提示に留める**
+
+**(1) 公開情報で確認できたこと（`search_vercel_documentation`・原文）**
+
+| 項目 | 原文 | 出典 |
+|---|---|---|
+| **`VERCEL_GIT_PREVIOUS_SHA`** | **"Contains the SHA of the last successful deployment; only exposed when an Ignored Build Step is configured."** | `vercel.com/docs/environment-variables/system-environment-variables` |
+| **`ignoreCommand` の終了コード** | **"Exiting with code 0 ignores the build, while code 1 continues it."** | `vercel.com/docs/project-configuration/vercel-json` |
+
+**(2) 公開情報で確認__できなかった__こと**
+
+- **Vercel のデフォルト fetch 深度（clone depth）は、`search_vercel_documentation` を2回（別トピック）実行しても記載を見つけられなかった。**
+- **【厳守】したがって H-shallow の支持条件「__fetch 深度を超えている__」は、__直接には検証できていない__。** **推測で深度を置かない。**
+
+**(3) `VERCEL_GIT_PREVIOUS_SHA` の実値は取得できなかった**
+
+- **ビルドログ（`direction: head`・25行）に `VERCEL_GIT_PREVIOUS_SHA=` の行は無い。**
+- **`get_deployment` の `meta` にも当該フィールドは無い**（`githubCommitSha` はあるが `PREVIOUS_SHA` は無い）。
+- **→ 下表の「PREV」は__公式定義（(1)）からの導出__であり、実測値ではない。** **この区別を消さないこと。**
+
+**(4) 距離（`PREV..HEAD` のコミット数）と state の対応（`git log --oneline` の実測）**
+
+| 距離 | state | commit | PREV（導出） |
+|---|---|---|---|
+| **1** | **CANCELED** | `61707e3` | `3f97e6c` |
+| **2** | **CANCELED** | `384b4bf` | `3f97e6c` |
+| **3** | **CANCELED** | `3775322` | `3f97e6c` |
+| **4** | **CANCELED** | `a769e7b` | `3f97e6c` |
+| **5** | **CANCELED** | `f3b82ce` | `3f97e6c` |
+| **10** | **READY** | **`3f97e6c`** | `d669889` |
+| **20** | **READY** | **`d669889`** | `83cfe69` |
+
+- **距離 1〜5 は全件 CANCELED、距離 10・20 は READY。** **閾値があるとすれば `5 < X ≤ 10` の範囲に入る。**
+- **`83cfe69`（9/5）は `app-concierge/` に +8行の差分があり、`ignoreCommand` が `exit 1` を返すのが正常である。** **対照から除外した。**
+
+**(5) 【厳守】この対応が確定させないこと**
+
+| # | 留保 |
+|---|---|
+| ① | **距離と時間差が交絡している。** **CANCELED 5件はすべて `3f97e6c` の 14〜71分後（同日）。READY 2件は前回 READY から 1.19日・4.75日。** **「距離が効いている」のか「時間が効いている」のかを本データは分離しない。** |
+| ② | **fetch 深度と突き合わせていない**（(2) のとおり深度が不明）。**したがって「深度を超えたから」とは言えない。** **言えるのは「距離と成否が対応した」までである。** |
+| ③ | **n が小さい。** **READY は 2件のみで、距離 6〜9 のデータが無い。** **閾値の範囲 `5 < X ≤ 10` はこの2点だけから出ている。** |
+| ④ | **他の説明を排除していない**——**build cache の復元元の違い、Vercel 側の内部状態、`repoPushedAt` との関係など。** |
+| ⑤ | **`exit 128` を直接観測したわけではない。** **§22-8-1-1 のとおり、Vercel は `exit 0` のときだけ明示行を出すため、`exit 1` と異常終了はログ上区別できない。** |
+
+- **【厳守】上表を「H-shallow が支持された」と書かないこと。** **支持条件は「fetch 深度を超えている」であり、深度が不明である以上その条件は判定できない。** **本項が提示したのは__距離と成否の対応__という材料のみである。**
+- **【厳守】判定は CSO。** **9/12 の E19 で扱う。**
 - **【厳守】ローカルでの `PREVIOUS_SHA` 再現は既に4通り試して全て SKIP になっている**（§22-8-1(5)）。**同じ再現を繰り返さない。** **本調査が見るのは__Vercel 側が実際に何を出力したか__である。**
 
 **【記録の精度・CTO 補足】記事A 観測窓（〜2026-09-12）の内側で articles の `lastmod` が動いたのは 3回だが、機構は同じではない。**
