@@ -2813,6 +2813,28 @@ PASS  llm.concierge stream
 2. **`ignoreCommand` の終了コードが `exit 0` / `exit 1` 以外（＝スクリプトエラー）なら Vercel はビルドに進む。** **まずそこを見る。**
 
 - **【厳守】これは仮説であって確定ではない。** **「スクリプトエラーだった」と先に書かない。** **ログを読んでから記録する。**
+
+**【データ取得済み・実測 2026-09-11 05:3x JST】ビルドログは3件とも取得できた。** **本項は__ログ原文の転記__であり、判定は 9/12 の E19 で行う。**
+
+> **取得を前倒しした理由**: **ビルドログには保持期限があり、9/12 に消えている可能性がある。** **②「必要データの取得可否」の点検範囲として取得だけ先に行った。** **解釈・原因の確定は行っていない。**
+
+| デプロイ | commit | state | `ignoreCommand` 実行後の次の行（**原文**） |
+|---|---|---|---|
+| `dpl_7e7zsbBse5gzekqjy5NZsER3gZyo` | **`d669889`** | **READY** | **`Running "vercel build"`** |
+| `dpl_7E6rWPUKhm6CCcb8bHJAvMdBUa12` | **`3f97e6c`** | **READY** | **`Running "vercel build"`** |
+| `dpl_AUm46mqEEaUU255XZ4vdHiFUZNMP` | `61707e3` | **CANCELED** | **`The deployment was canceled because the Ignored Build Step command returned exit code 0.`** |
+
+- **3件とも `Running "if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi"` の行は同一である。**
+- **CANCELED 側にのみ「exit code 0 で中止した」旨の行が出る。** **READY 側には終了コードに言及する行が1行も無く、直後に `vercel build` へ進んでいる。**
+- **`Cloning completed` は 1.135〜1.433秒。** **shallow clone かどうかはログに明示が無い。**
+- **build cache の復元元**: `3f97e6c` は `7E6rWPUKhm6CCcb8bHJAvMdBUa12`… ではなく **`7e7zsbBse5gzekqjy5NZsER3gZyo`（＝`d669889` の READY デプロイ）**／`61707e3` は **`7E6rWPUKhm6CCcb8bHJAvMdBUa12`（＝`3f97e6c`）**／`d669889` は `5UwfWHj3u4tmetXh3TkNrRTLNjzD`。
+
+**【厳守・このログが確定させないこと】**
+
+- **Vercel が明示的な行を出すのは `exit 0` のときだけである。** **`exit 1`（＝差分あり＝ビルドすべき）と、スクリプトエラーによる異常終了は、__どちらも `Running "vercel build"` になる__可能性がある。**
+- **→ 本ログから言えるのは「`ignoreCommand` は `exit 0` を返さなかった」までである。** **「スクリプトエラーだった」とは言えない。** **裁定A の仮説と矛盾はしないが、確定もしない。**
+- **【厳守】`app-concierge/` の差分が 0行であるにもかかわらず `git diff --quiet` が `exit 0` を返さなかった、という事実は残る。** **その理由は未解明である。推測しない。**
+- **【9/12 の E19 で見るべき残り】`exit 1` とスクリプトエラーを区別できる情報が Vercel 側にあるか**（ビルドログの他の粒度・API の別フィールド等）。**無ければ「区別不能」と記録する。**
 - **【厳守】ローカルでの `PREVIOUS_SHA` 再現は既に4通り試して全て SKIP になっている**（§22-8-1(5)）。**同じ再現を繰り返さない。** **本調査が見るのは__Vercel 側が実際に何を出力したか__である。**
 
 **【記録の精度・CTO 補足】記事A 観測窓（〜2026-09-12）の内側で articles の `lastmod` が動いたのは 3回だが、機構は同じではない。**

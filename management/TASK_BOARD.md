@@ -10495,3 +10495,23 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 
 - **B'系 第3回 ×2**（16時台＝窓内 / 夜＝窓外）。**リマインダー3件は設置済み。**
 - **【承認】リマインダーのセッション限界の明記は正しい。** **起動指示との二重化が前提**（§24-11-6 裁定3）。
+
+#### 【E19・データ取得のみ前倒し】ビルドログ3件を取得した（**判定は 9/12**）
+
+**理由: ビルドログには保持期限があり、9/12 に消えている可能性がある。** **②「必要データの取得可否」の点検範囲として取得だけ先に行った。解釈・原因の確定は行っていない。**
+
+| デプロイ | commit | state | `ignoreCommand` 実行後の次の行（**原文**） |
+|---|---|---|---|
+| `dpl_7e7zsbBse5gzekqjy5NZsER3gZyo` | **`d669889`** | **READY** | **`Running "vercel build"`** |
+| `dpl_7E6rWPUKhm6CCcb8bHJAvMdBUa12` | **`3f97e6c`** | **READY** | **`Running "vercel build"`** |
+| `dpl_AUm46mqEEaUU255XZ4vdHiFUZNMP` | `61707e3` | **CANCELED** | **`The deployment was canceled because the Ignored Build Step command returned exit code 0.`** |
+
+- **3件とも `Running "if git diff --quiet ..."` の行は同一。**
+- **CANCELED 側にのみ「exit code 0 で中止した」旨の行が出る。READY 側は終了コードに言及する行が無く直後に `vercel build` へ進む。**
+
+**【厳守・このログが確定させないこと】**
+
+- **Vercel が明示的な行を出すのは `exit 0` のときだけである。** **`exit 1`（差分あり＝ビルドすべき）とスクリプトエラーは、どちらも `Running "vercel build"` になりうる。**
+- **→ 言えるのは「`ignoreCommand` は `exit 0` を返さなかった」まで。** **「スクリプトエラーだった」とは言えない。** **裁定A の仮説と矛盾しないが確定もしない。**
+- **【厳守】差分0行なのに `git diff --quiet` が `exit 0` を返さなかった事実は残る。理由は未解明。推測しない。**
+- **9/12 の E19 で見るべき残り: `exit 1` とスクリプトエラーを区別できる情報が Vercel 側にあるか。無ければ「区別不能」と記録する。**
