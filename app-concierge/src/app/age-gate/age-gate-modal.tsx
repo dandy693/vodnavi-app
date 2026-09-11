@@ -58,9 +58,13 @@ export function AgeGateModal({ next }: { next: string }) {
         <p className="font-luxury-heading text-xs tracking-[0.35em] text-brand-gold/80">
           VODNAVI · 年齢確認
         </p>
-        {/* 数字のライニング化は `globals.css` の `.font-luxury-heading` へ一括適用した
-            （第120便 補遺2 裁定1）。ここでの個別指定は不要。文言は一切変更していない。 */}
-        <h1 className="mt-4 font-luxury-heading text-3xl leading-tight text-brand-text-primary sm:text-4xl">
+        {/* 【2026-09-05・第120便 補遺1 A】`font-luxury-heading` は Cormorant Garamond で、
+            **既定の数字がオールドスタイル（非ライニング）**である。実描画では「18」が
+            `ɪ8`（1 が小文字高・8 がアセンダ付き）となり、同ページ本文の Noto Sans JP 側の
+            「満 18 歳以上」（ライニング数字）と字形が食い違っていた。
+            `lining-nums` を当てて数字の高さを揃える。**文言は一切変更していない**
+            （年齢確認は法的定型のため可読性のみ触る、という裁定に従う）。 */}
+        <h1 className="mt-4 font-luxury-heading text-3xl leading-tight text-brand-text-primary lining-nums sm:text-4xl">
           18 歳以上ですか？
         </h1>
         <p className="mt-6 text-sm leading-relaxed text-brand-text-secondary sm:text-base">
@@ -74,7 +78,7 @@ export function AgeGateModal({ next }: { next: string }) {
             onClick={confirm}
             disabled={busy}
             aria-disabled={busy}
-            className="btn-luxury-gold disabled:opacity-50"
+            className="btn-luxury-gold lining-nums disabled:opacity-50"
           >
             {busy ? "確認中…" : "はい、18 歳以上です"}
           </button>
@@ -99,7 +103,7 @@ export function AgeGateModal({ next }: { next: string }) {
           </p>
         )}
 
-        <p className="mt-12 text-xs leading-relaxed text-brand-text-secondary/80">
+        <p className="mt-12 text-xs leading-relaxed text-brand-text-secondary/70">
           確認結果はクッキー（<span className="font-mono text-brand-gold/80">vodnavi_age_verified</span>、有効期限 1 年）として保存されます。
           本ゲートを通過せずにコンシェルジュ機能・API へ到達することはできません（HTTP 403）。
         </p>

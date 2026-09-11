@@ -173,7 +173,7 @@ export function AgeGateOverlay() {
           </p>
         )}
 
-        <p className="mt-12 text-xs leading-relaxed text-brand-text-secondary/80">
+        <p className="mt-12 text-xs leading-relaxed text-brand-text-secondary/70">
           確認結果はクッキー（
           <span className="font-mono text-brand-gold/80">vodnavi_age_verified</span>
           、有効期限 1 年、Secure、SameSite=Lax）として保存されます。
