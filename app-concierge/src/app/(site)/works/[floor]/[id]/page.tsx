@@ -697,11 +697,9 @@ export default async function WorkDetailPage({
                       <p className="line-clamp-2 text-xs font-medium leading-snug text-foreground group-hover:text-amber-300">
                         {rel.title}
                       </p>
-                      {/* 第120便: `formatPrice` が `〜` を1つだけ付けて返すため、
-                          ここでの追加をやめる（旧実装では `¥1480~〜` と重複していた）。 */}
                       {relPrice && (
                         <p className="mt-1 text-[11px] tabular-nums text-amber-300/80">
-                          {relPrice}
+                          {relPrice}〜
                         </p>
                       )}
                     </div>
