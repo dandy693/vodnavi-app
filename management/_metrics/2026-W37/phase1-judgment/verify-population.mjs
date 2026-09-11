@@ -47,8 +47,8 @@ const POP = [
   { side:"text",  postId:"2098041356757115094", due:"2026-09-10 22:30", type:"TG",              name:"W9-27 TG-21 解約の不安解消" },
   // ▼ 2026-09-11 の2件は本スクリプト作成時点で未配信（承認済）。9/12 実行前に Airtable で
   //    ポストID を読み取り、下の2行のコメントを外して postId を埋めること。
-  // { side:"text", postId:"__9/11 21:00 の実ID__", due:"2026-09-11 21:00", type:"T1改",            name:"W9-14 小笠原菜乃 DSVR-1933" },
-  // { side:"text", postId:"__9/11 22:30 の実ID__", due:"2026-09-11 22:30", type:"T5コンシェルジュ", name:"W9-28 時間が溶ける前に" },
+  { side:"text",  postId:"2098381152885068039", due:"2026-09-11 21:00", type:"T1改",            name:"W9-14 小笠原菜乃 DSVR-1933" },
+  { side:"text",  postId:"2098403736456446359", due:"2026-09-11 22:30", type:"T5コンシェルジュ", name:"W9-28 時間が溶ける前に" },
 ];
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
