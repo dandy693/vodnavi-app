@@ -184,7 +184,28 @@
    *
    * @layer base に置くので、要素側の `tabular-nums` 等の utility が優先される。
    * 2026-09-05 時点で `font-luxury-heading` と `tabular-nums` の併用箇所は 0 件。
+   *
+   * 【2026-09-12・第124便 補遺 E1-b ホットフィックス】`.font-heading` を追加。
+   * 2026-09-05 の3セレクタは **Cormorant を参照する経路の悉皆になっていなかった**。
+   * Cormorant（`--font-heading`）が要素に届く経路は次の4つで、これが全てである
+   * （`grep -rn "font-heading|font-luxury-heading|fontFamily|font-["` と
+   *   `design-tokens.css` の `font-family: var(--font-luxury-heading)` で列挙・2026-09-12）:
+   *   1. `.font-heading`        — Tailwind v4 が `@theme inline --font-heading` から生成する
+   *                              utility。**23 箇所**（works/actresses/genres/sale/articles の h1・h2、
+   *                              ProductCard タイトル、site-header/footer のブランド名 等）。
+   *                              **2026-09-05 の適用から漏れていた**（本番実測: works 詳細 h1 の
+   *                              computed font-variant-numeric が `normal`・「5匹」の 5 がオールドスタイル）。
+   *   2. `.font-luxury-heading` — `@theme inline --font-luxury-heading` から生成される utility。21 箇所。
+   *   3. `.btn-luxury-gold` / `.btn-luxury-outline` — `design-tokens.css` が直接 `font-family` を持つ。
+   *   4. 上記の子孫要素 — `font-variant-numeric` は継承プロパティなので、親に当たれば届く。
+   * `style={{ fontFamily: "serif" }}` の 2 箇所（トップの Skeleton / hero の装飾）は総称 serif で
+   * Cormorant ではないため対象外。
+   *
+   * 【厳守】Cormorant を参照するセレクタ（`@theme` の `--font-*` 追加・`design-tokens.css` の
+   * `font-family: var(--font-luxury-heading)` 追加）を増やしたら、必ずこの一覧と下のセレクタに加える。
+   * 検証は RUNBOOK §4-2「Cormorant 使用要素の computed 悉皆」（push 前・ローカルビルド）で行う。
    */
+  .font-heading,
   .font-luxury-heading,
   .btn-luxury-gold,
   .btn-luxury-outline {
