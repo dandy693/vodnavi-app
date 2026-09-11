@@ -3064,6 +3064,16 @@ PASS  llm.concierge stream
 - **【併記・実測の帰結】切替閾値は `min-[375px]:` に置いた。** **360px は overlay scrollbar（モバイル実機相当）なら 1 行（余裕 2.4px）だが、従来型スクロールバーが出る条件では 2 行になった。** **折返す条件が1つでもあったため閾値を上げた**（裁定4(1) の「いずれかで折返す場合は調整」）。
 - **【併記】E14（参照表2件）は再適用便に同梱され復帰した。** **§13-8-2 の 9/17 前の再更新は本便で満たされた。**
 
+#### 22-10-1. 【補遺 E1-b・2026-09-12 08:3x〜08:47】**「3セレクタで全面適用」の検証設計が不足していた — `.font-heading` の漏れ**
+
+- **ひでき目視（再適用後）**: works 詳細の作品タイトルで「5匹」の 5 がオールドスタイルのまま。同テキストの「RUSH」は Cormorant 描画。
+- **本番 DOM 実測**: `h1.font-heading` の computed font-family = Cormorant / **font-variant-numeric = `normal`**。
+- **原因**: **Cormorant（`--font-heading`）が要素に届く経路は4つ**（①`.font-heading`＝Tailwind v4 が `@theme inline` から生成する utility・**23箇所** ②`.font-luxury-heading`・21箇所 ③`.btn-luxury-gold/-outline`＝`design-tokens.css` ④継承）。**2026-09-05（第120便 補遺2 裁定1）の3セレクタは①を含んでいなかった。** grep 対象が `font-luxury-heading` で、`font-heading` 単独の utility が掛からなかった。
+- **検証設計の不足（CSO 指定・CTO 実施の両方）**: **「全21箇所へ一括適用」の検証が `/age-gate` の h1・ボタンの computed 値だけだった。** **Cormorant 使用要素は 9面で 67件あり、35件（52%）が未適用のまま「全面適用」と記録されていた。** **§10 の「戻り値を証拠にしない」と同型**——**適用したセレクタの数ではなく、__描画される要素の悉皆__で確認しなければならなかった。**
+- **修正**: base ルールを4セレクタへ拡張し、経路の悉皆をコメントに固定（`globals.css`）。**push 前にローカルビルドで computed 悉皆（55件・未適用0）→ 単一デプロイ `dpl_FazhuyvrPRL7hn54pKA8yGagPaik` → 本番 悉皆（67件・未適用0）＝ PASS**（08:47 JST）。
+- **【恒久】RUNBOOK §4-2 に「Cormorant 使用要素の computed 悉皆」（`cormorant-audit.mjs`・9面）を push 前・デプロイ後の項目として追加。** **検証対象は「年齢確認のみ」ではなく「Cormorant 使用要素の悉皆」。**
+- **【厳守】Cormorant を参照するセレクタ（`@theme` の `--font-*`・`design-tokens.css` の `font-family: var(--font-luxury-heading)`）を増やしたら、必ず `globals.css` の一覧とセレクタに加える。**
+
 ---
 
 ### 21-6. 【CSO裁定 2026-09-05・第119便 D】**Phase 1 判定の母集団は「X 上に実在が確認された投稿」のみで構成する**

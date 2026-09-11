@@ -10771,3 +10771,18 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **E14 は本便に同梱され復帰**（参照表2件は 2026-09-10 更新分。9/17 前の再更新は本便で充足）。
 - **分類（裁定4(5)）**: 裁定側の幅前提の誤り（CSO）＋ push 前検証に移せた項目の後置（手順）。**ロールバック機構は設計どおり機能**（§22-10）。
 - **並行して H（E19・E6① の起案作成）へ。**
+
+### 【2026-09-12 第124便 補遺・E1-b ホットフィックス】works 詳細の数字が未是正 → `.font-heading` の漏れを是正 → 本番 悉皆 PASS・ひでき再検収待ち
+
+**全文 → `deploy-20260912-bin124-E.md` §8 ／ 台帳 §22-10-1 ／ RUNBOOK §4-2（恒久項目追加）。**
+
+| 段 | 実測 |
+|---|---|
+| 原因（本番 DOM） | `h1.font-heading` computed font-family=Cormorant / **font-variant-numeric=normal**。**Cormorant が届く経路は4つで、9/5 の3セレクタは Tailwind v4 の theme utility `.font-heading`（23箇所）を含んでいなかった** |
+| 修正 | `globals.css` の base ルールを `.font-heading` を含む4セレクタへ拡張・経路の悉皆をコメントに固定（design-tokens.css は不変・個別クラス追加なし） |
+| push 前 | ローカルビルド `cormorant-audit.mjs`（9面）: **55件 / 未適用 0 = PASS**。対照＝本番適用前 **67件 / 未適用 35 = FAIL** |
+| デプロイ | `81747c8` → push 08:45:10 → **`dpl_FazhuyvrPRL7hn54pKA8yGagPaik` READY** → sitemap 08:45:47（本日7回目） |
+| 本番描画 | **悉皆 67件 / 未適用 0 = PASS**（08:47）。回帰なし（カンマ/af_id/旧ラベル/文言/小注）。`after_works_h1_lining_20260912.png` 保存 |
+| 記録 | 検証設計の不足（CSO 指定・CTO 実施の両方＝`/age-gate` のみで「全面適用」と判定）を §22-10-1 へ。RUNBOOK §4-2 に「Cormorant 使用要素の computed 悉皆」を恒久追加 |
+
+- **ひでき再検収 待ち。** 並行して H（E19・E6① 起案）へ。

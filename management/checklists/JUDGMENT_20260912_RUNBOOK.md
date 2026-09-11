@@ -162,6 +162,7 @@
 - [ ] **【2026-09-12 に移設】sticky ラベルの折返し** —— `npx next start` でローカル起動し、**Playwright（`browser_resize`）で 320 / 360 / 375 / 414 px の DOM 実幅を計測**。**年齢確認 cookie を通過させた状態（縦スクロールバーが出る条件）で行う。** メイン・サブとも表示中の `<span>` の `getBoundingClientRect().height / lineHeight` が **1** であること。**折返す幅があれば `min-[Npx]:` の閾値を実測に合わせて調整してから push する**
 - [ ] **【2026-09-12 に移設】`.md` と `.ts` の文言一致**（`sticky-cta-text.md` / `sticky-cta-text.ts`・狭幅の短縮形を含む）
 - [ ] **【2026-09-12 に移設】ローカルビルドの CSS に `font-variant-numeric:lining-nums` が含まれること**（`.next/static/chunks/*.css` を grep）
+- [ ] **【2026-09-12 恒久追加・補遺 E1-b】Cormorant 使用要素の computed 悉皆** —— `node management/_metrics/2026-W37/deploy-20260912/cormorant-audit.mjs http://localhost:3123`。**9面（トップ / sale / genres / actresses / age-gate / lp / concierge / articles / works 詳細）で computed font-family に Cormorant を含む全要素の computed `font-variant-numeric` が `lining-nums` であること（未適用 0 件＝PASS）。** **検証対象は「年齢確認のみ」ではなく「Cormorant 使用要素の悉皆」**（2026-09-12 に `.font-heading` の漏れを本番で目視検出した教訓）
 
 **デプロイ後（本番描画の確認に限定）**
 
@@ -170,7 +171,7 @@
 - [ ] `tabular-nums` を持つ数値要素が **13 件 → 大幅増**
 - [ ] **af_id `99x` が href 属性内 0 件**（回帰確認・**素の grep ではなく `href="[^"]*moterist-99[0-9][^"]*"` で**・§8）
 - [ ] **年齢確認の文言が一字も変わっていない**——`18 歳以上ですか？` / `はい、18 歳以上です` / `いいえ（退出）`
-- [ ] **`lining-nums` の適用確認**——`/age-gate` に加え `/lp`・`/concierge`・works 詳細の sticky
+- [ ] **`lining-nums` の適用確認（本番）**——同じ `cormorant-audit.mjs` を `https://app.vodnavi.jp` に対して実行し未適用 0 件（`/age-gate` だけを見ない）
 - [ ] **`tabular-nums` との競合なし**——works 詳細の価格（`text-3xl tabular-nums`）が等幅のまま
 - [ ] **小注のコントラスト**——3箇所すべて **4.5 以上**（想定 4.98）。**機械判定でよい**（法的情報のため基準値で扱う）
 - [ ] **sticky ラベル（本番描画）**——push 前の DOM 実測と同じ4幅で、**本番**の表示文言と行数が一致すること（**2026-09-12 以降、閾値は `min-[375px]:`**＝375px 以上「コンシェルジュに相談」/ 〜374px「コンシェルジュ」）
