@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import type { ReactNode } from "react";
 
 import { track } from "@/lib/analytics";
 import { cn } from "@/lib/utils";
@@ -28,6 +29,7 @@ export function ConciergeCtaLink({
   intent = "re_recommend",
   label = "この作品の余韻に合う一本を AI に相談する",
   variant = "outline",
+  icon = true,
 }: {
   contentId: string;
   floorCode: string;
@@ -45,8 +47,15 @@ export function ConciergeCtaLink({
    * intent 規約に従う。
    */
   intent?: string;
-  /** ボタン本文。世界観に合わせて外部から差し替え可能。 */
-  label?: string;
+  /**
+   * ボタン本文。外部から差し替え可能。
+   *
+   * 【2026-09-05・第120便 補遺2 裁定2】`string` から `ReactNode` へ広げた。
+   * 狭幅端末（〜359px）だけ短縮形へ切り替えるために、呼び出し側が
+   * 2つの `<span>` を breakpoint で出し分ける必要があるため。
+   * 既存の文字列渡しはそのまま動く（`string` は `ReactNode` の一部）。
+   */
+  label?: ReactNode;
   /**
    * 視覚的ヒエラルキー切替。
    *   - `outline` (default): リッチブラック背景 × ゴールド枠線テキスト。FANZA
@@ -59,6 +68,17 @@ export function ConciergeCtaLink({
    * 著しく窒息していたことを受けて、視覚 weight を強化する選択肢として導入。
    */
   variant?: "outline" | "solid";
+  /**
+   * 先頭の Sparkles アイコンを描画するか。既定 `true`（従来どおり）。
+   *
+   * 【2026-09-12・第124便 裁定4】works 詳細の 2 列 sticky（サブ列）では
+   * `false` を渡す。狭幅（320〜375px）ではアイコン 13.7〜14.8px + gap 8px が
+   * テキスト領域を食い、「コンシェルジュに相談」（13px で 130.0px）が
+   * 2 行に折り返した（2026-09-12 本番実測: 375px でテキスト実幅 115.9px）。
+   * 情報価値に対して幅コストが大きいため、sticky に限りアイコンを外す。
+   * 他の呼び出し（パネル CTA / FV）は `true` のまま。
+   */
+  icon?: boolean;
 }) {
   const href = `/concierge?source=${encodeURIComponent(source)}&intent=${encodeURIComponent(intent)}&seed_cid=${encodeURIComponent(contentId)}`;
 
@@ -104,13 +124,15 @@ export function ConciergeCtaLink({
         className,
       )}
     >
-      <Sparkles
-        className={cn(
-          "transition-transform duration-300 group-hover:rotate-12",
-          variant === "solid" ? "size-5" : "size-4",
-        )}
-        aria-hidden
-      />
+      {icon ? (
+        <Sparkles
+          className={cn(
+            "transition-transform duration-300 group-hover:rotate-12",
+            variant === "solid" ? "size-5" : "size-4",
+          )}
+          aria-hidden
+        />
+      ) : null}
       <span className="leading-tight">{label}</span>
     </Link>
   );

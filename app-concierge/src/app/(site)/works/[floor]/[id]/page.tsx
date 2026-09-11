@@ -19,6 +19,7 @@ import { buildAffiliateURL } from "@/lib/concierge/url-builder";
 import {
   STICKY_MAIN_LABEL,
   STICKY_SUB_LABEL,
+  STICKY_SUB_LABEL_SHORT,
 } from "@/data/copy/sticky-cta-text";
 import {
   fetchItemList,
@@ -754,7 +755,27 @@ export default async function WorkDetailPage({
           source="app_direct"
           intent="actress"
           variant="outline"
-          label={STICKY_SUB_LABEL}
+          /* 【第120便 補遺2 裁定2】狭幅だけ短縮形にする。
+             「コンシェルジュに相談」は 13px で 130.0px。
+             【2026-09-12・第124便 裁定4】補遺2 の幅前提（サブ列 375px→147.5px /
+             320px→120px）はアイコン + gap を含めておらず、本番実測では
+             375px→115.9px / 320px→87.3px で 2 行に折り返した（全体ロールバック済み）。
+             裁定4 によりサブ列のアイコンを除去（`icon={false}`）し、
+             切替閾値は push 前にローカルビルドの DOM 実幅（320/360/375/414）で
+             確定した → `min-[375px]:`。360px は縦スクロールバー（従来型・15px）が
+             出る条件で docW 345 → テキスト領域 130.4px < 135.6px で 2 行になった。
+             375px 以上はスクロールバー込みでも 1 行（138px ≥ 135.6px）。 */
+          icon={false}
+          label={
+            <>
+              <span className="hidden min-[375px]:inline">
+                {STICKY_SUB_LABEL}
+              </span>
+              <span className="min-[375px]:hidden">
+                {STICKY_SUB_LABEL_SHORT}
+              </span>
+            </>
+          }
           className="h-12 px-3 text-[13px]"
         />
       </div>
