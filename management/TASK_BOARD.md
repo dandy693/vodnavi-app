@@ -10786,3 +10786,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 | 記録 | 検証設計の不足（CSO 指定・CTO 実施の両方＝`/age-gate` のみで「全面適用」と判定）を §22-10-1 へ。RUNBOOK §4-2 に「Cormorant 使用要素の computed 悉皆」を恒久追加 |
 
 - **ひでき再検収 待ち。** 並行して H（E19・E6① 起案）へ。
+
+### 【2026-09-12】E デプロイ便 — **ひでき目視検収 OK**（CSO 経由・08:5x JST）→ E1 / E2 / E14 クローズ
+
+- 対象＝再適用便 `dd7ddf8`（`dpl_9PrFhNcuVp8zEcx74FPiQgj8KWSi`）＋ E1-b ホットフィックス `81747c8`（`dpl_FazhuyvrPRL7hn54pKA8yGagPaik`）。
+- 残: Lighthouse CLS（未実施・要否は裁定）。
+- **H（E19・E6① の起案作成）へ。実装は承認後。**
