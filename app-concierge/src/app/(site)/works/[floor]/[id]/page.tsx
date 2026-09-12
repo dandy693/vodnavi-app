@@ -32,6 +32,7 @@ import {
   normalizeFloorForUrl,
   type DmmItem,
 } from "@/lib/fanza/types";
+import { logUpstreamServed } from "@/lib/fanza/upstream-failure";
 import {
   absoluteUrl,
   compactDescription,
@@ -82,6 +83,13 @@ const getWork = cache(
     // 怠ると sitemap が出力した `/works/amateur/{cid}` 等が API 側で空 / 別物
     // を引いてしまい、notFound() → 404 化する (GSC 289 件の構造発生源)。
     const apiFloorParam = floorMeta.apiFloor ?? floorMeta.code;
+    // E6①（第124便 裁定5・案A・2026-09-12）: 404 を返すのは「API が正常応答し、該当
+    // item が存在しない」場合のみ（items が空 → null → notFound）。API リクエスト自体
+    // の失敗（400/5xx/タイムアウト/ネットワーク/設定事故）は throw → error.tsx →
+    // HTTP 500。従来の `catch { return null }` は上流 400 バーストを 404 として
+    // Googlebot に「消えた」と伝えていた（FACT_GOVERNANCE §24-11-8 / §24-12(B)①）。
+    // stale-serve（fetchItemList 内・鮮度上限内のキャッシュ）が効く場合は resolve
+    // するため従来どおり 200 ステイル。MISS 時のみ本分岐が効く。
     try {
       const data = await fetchItemList({
         site: "FANZA",
@@ -91,8 +99,9 @@ const getWork = cache(
         hits: 1,
       });
       return data.result.items?.[0] ?? null;
-    } catch {
-      return null;
+    } catch (e) {
+      logUpstreamServed(`works/${floor}/${id}`, e, 500);
+      throw e;
     }
   },
 );

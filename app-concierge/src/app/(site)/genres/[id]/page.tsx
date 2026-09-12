@@ -6,6 +6,10 @@ import { EmptyState } from "@/components/empty-state";
 import { ProductGrid } from "@/components/product-grid";
 import { fetchItemList } from "@/lib/fanza/client";
 import {
+  logUpstreamServed,
+  resolveAcrossFloors,
+} from "@/lib/fanza/upstream-failure";
+import {
   FANZA_FLOORS,
   normalizeFloorForUrl,
   type DmmItem,
@@ -44,34 +48,34 @@ async function getGenrePage(
   floor: string;
 }> {
   const genreId = Number(id);
-  for (const floor of GENRE_FLOORS) {
-    let items: DmmItem[] = [];
-    let totalCount = 0;
-    try {
-      const data = await fetchItemList({
-        site: "FANZA",
-        service: "digital",
-        floor,
-        article: "genre",
-        article_id: id,
-        sort,
-        hits: 30,
-      });
-      items = data.result.items ?? [];
-      totalCount = data.result.total_count ?? 0;
-    } catch {
-      // このフロアでの取得失敗は致命ではない。次フロアを試す。
-      continue;
-    }
-    if (items.length === 0) continue;
-    const genreName =
-      items
-        .flatMap((item) => item.iteminfo?.genre ?? [])
-        .find((g) => g.id === genreId)?.name ?? null;
-    return { items, totalCount, genreName, floor };
+  // E6①（第124便 裁定5・案A・2026-09-12）: 1 フロアの取得失敗は致命ではなく次フロアを
+  // 試す（従来どおり）。ただし「どのフロアでも見つからず、かつ 1 フロアでも失敗した」
+  // 場合は不在と断定できないため throw → error.tsx → HTTP 500。404（items 空）を
+  // 返すのは全フロアが正常応答して該当なしのときだけ（FACT_GOVERNANCE §24-12(B)①）。
+  const resolved = await resolveAcrossFloors(GENRE_FLOORS, async (floor) => {
+    const data = await fetchItemList({
+      site: "FANZA",
+      service: "digital",
+      floor,
+      article: "genre",
+      article_id: id,
+      sort,
+      hits: 30,
+    });
+    const items = data.result.items ?? [];
+    if (items.length === 0) return null;
+    return { items, totalCount: data.result.total_count ?? 0 };
+  });
+  if (resolved.kind === "empty") {
+    // どのフロアにも該当ジャンルの作品が無い → 呼び出し側が length===0 で notFound()。
+    return { items: [], totalCount: 0, genreName: null, floor: GENRE_FLOORS[0] };
   }
-  // どのフロアにも該当ジャンルの作品が無い → 呼び出し側が length===0 で notFound()。
-  return { items: [], totalCount: 0, genreName: null, floor: GENRE_FLOORS[0] };
+  const { items, totalCount } = resolved.value;
+  const genreName =
+    items
+      .flatMap((item) => item.iteminfo?.genre ?? [])
+      .find((g) => g.id === genreId)?.name ?? null;
+  return { items, totalCount, genreName, floor: resolved.floor };
 }
 
 async function getRelatedGenres(
@@ -111,15 +115,9 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { id } = await params;
-  let page;
-  try {
-    page = await getGenrePage(id);
-  } catch {
-    return {
-      title: "ジャンルが見つかりません",
-      robots: { index: false, follow: false },
-    };
-  }
+  // E6①: 上流失敗は generateMetadata でも握らない（握ると 500 ページに
+  // 「見つかりません」の title が付く）。throw → error.tsx → HTTP 500。
+  const page = await getGenrePage(id);
   if (page.items.length === 0) {
     return {
       title: "ジャンルが見つかりません",
@@ -209,8 +207,10 @@ export default async function GenrePage({
   let page;
   try {
     page = await getGenrePage(id, sort);
-  } catch {
-    notFound();
+  } catch (e) {
+    // E6①: 上流失敗は 404 ではなく 500（error.tsx）。真の不在は下の length===0 のみ。
+    logUpstreamServed(`genres/${id}`, e, 500);
+    throw e;
   }
   if (page.items.length === 0) notFound();
   const displayName = page.genreName ?? "選択ジャンル";

@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
 
-export default function WorksDetailError({
+export default function GenrePageError({
   error,
   reset,
 }: {
@@ -13,7 +13,7 @@ export default function WorksDetailError({
   reset: () => void;
 }) {
   useEffect(() => {
-    console.error("[works/[floor]/[id]] runtime error", {
+    console.error("[genres/[id]] runtime error", {
       message: error.message,
       digest: error.digest,
     });
