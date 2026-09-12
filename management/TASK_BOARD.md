@@ -10830,3 +10830,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 
 - **未観測（観測のみ・誘発しない）**: E6①(c) 成功基準＝次の自然発生バーストで GUARD 行の `served`＝500／E19 の skip 経路（次の docs コミット）・再試行 / fail-open 経路（距離 ≥ 10 が自然発生したとき）。
 - **§7 の GUARD 行数監視**: 500 で返したリクエスト 1 件につき `served` 付き行が 1 行増える。行数比較は `served` 有無で分ける。
+- 【09:45 追記・E19 skip 経路を Vercel で初観測】docs 記録の push `7e1912f`（距離 1・09:44:42）→ `dpl_BcMU2uTYnKwuwXjXVDVuvqPD9YLZ` **CANCELED**。ビルドログ原文: `[ignore-build] no changes under /vercel/path0/app-concierge vs e2f5b50f… -> skip build` → `canceled … exit code 0`。**PREV は新 READY `e2f5b50` に更新されている。** 残る未観測は再試行 / fail-open 経路（距離 ≥ 10 の自然発生待ち）。sitemap 不変（09:40:37）。

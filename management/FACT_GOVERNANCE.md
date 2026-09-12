@@ -3059,7 +3059,7 @@ PASS  llm.concierge stream
 
 | 経路 | 観測方法 | 状態 |
 |---|---|---|
-| **skip**（`no changes … -> skip build` → CANCELED） | 次の docs コミットのビルドログ | **観測待ち**（本記録の push で確認する） |
+| **skip**（`no changes … -> skip build` → CANCELED） | 次の docs コミットのビルドログ | ✅ **観測済み（2026-09-12 09:44:47 JST・`7e1912f`・距離 1）**: `[ignore-build] no changes under /vercel/path0/app-concierge vs e2f5b50f… -> skip build` → `The deployment was canceled because the Ignored Build Step command returned exit code 0.`（`dpl_BcMU2uTYnKwuwXjXVDVuvqPD9YLZ` CANCELED） |
 | **build**（`changes … -> build`） | 本便で観測済み | ✅ |
 | **再試行 → 成功**（`git diff failed (rc=…)` → `retry: git fetch --deepen` → `PREV now reachable` → skip/build） | 距離 ≥ 10 の docs コミットが**自然に**発生したとき | 観測待ち（**観測目的の push は禁止**・(d)） |
 | **fail-open**（`diff impossible even after retry → build`） | 同上 | 観測待ち |
