@@ -9,7 +9,7 @@
 |---|---|
 | 現行 `vercel.json` | `"ignoreCommand": "if git diff --quiet ${VERCEL_GIT_PREVIOUS_SHA:-HEAD^} HEAD -- . 2>/dev/null; then exit 0; else exit 1; fi"` |
 | 失敗モード | `git diff --quiet` は **変更なし→0 / 変更あり→1 / 実行不能（比較対象のオブジェクト不在等）→128** を返す。現行は **0 以外をすべて「ビルド」に倒し、`2>/dev/null` で理由を消している** |
-| 実測（n=12・§22-8-1-1-b/-d） | `PREV..HEAD` の距離 1〜9＝CANCELED（9件）／距離 10＝READY（2件）／距離 20＝READY（1件）。**差分 0 行でも距離 10 以上で READY** |
+| 実測（n=16・§22-8-1-1-b/-d＋2026-09-12 09:1x の追加4件） | `PREV..HEAD` の距離 1〜9＝CANCELED（13件）／距離 10＝READY（2件）／距離 20＝READY（1件）。**差分 0 行でも距離 10 以上で READY**。追加4件（`81747c8` 起点・距離1〜4）は直前 READY から 8〜27 分以内で、距離と時間差の交絡は分離されない |
 | Vercel のログ | `exit 0` のときだけ「canceled because … exit code 0」が出る。**`exit 1` と `exit 128` は区別できない**（§22-8-1-1-a） |
 | `VERCEL_GIT_PREVIOUS_SHA` | 公式定義＝「直前の成功デプロイの SHA」。**ビルドログ・API からは実値を取得できない**（§22-8-1-1-b(3)） |
 | 影響 | docs のみのコミットで本番ビルドが走り **sitemap が再生成される（`lastmod` が動く）**。2026-09-04〜09-12 で想定外 READY は 4 件（`eaadd42` / `d669889` / `3f97e6c` / `c8b95b9`） |

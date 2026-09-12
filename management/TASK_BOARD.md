@@ -10803,3 +10803,15 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **機構の確定（起案の前提）**: `getWork()` の `catch { return null }` が「API 失敗」と「作品不在」を同一視して `notFound()` へ落とす。`actresses` / `genres` も `catch { notFound() }` で同型。
 - **裏取り窓の制約は起案に明記**（GSC 404 レポート 867 件 × Vercel ログ保持は概ね 9/3 以降のみ）。
 - **【厳守】実装していない。E19 と E6① の実装コミットを同じ push に同梱すればビルドは 1 回（裁定B の考え方）。**
+
+### 【2026-09-12 09:15〜09:16】push 後の Vercel state 確認（§22-8-1-1 の運用則）— `81747c8` 以降の docs コミット 4 件は全件 CANCELED
+
+| commit | 距離（`81747c8`＝直前 READY 起点） | push（JST） | デプロイ | state | 作成（JST） |
+|---|---|---|---|---|---|
+| `f5b335b` | 1 | 08:53:09 | `dpl_9x9Su6EBNkKHHZkrXiYdM9PyEUK9` | **CANCELED** | 08:53:16 |
+| `0f2b13a` | 2 | 09:04:50 | `dpl_G1XqzY7X3dJ9U5DALotiBUU36G1c` | **CANCELED** | 09:04:57 |
+| `38c13d8` | 3 | 09:11:15 | `dpl_J3x9zqQV8GZPrSdvD2hbYgn2m3cC` | **CANCELED** | 09:11:21 |
+| `976cf96` | 4 | 09:12:10 | `dpl_Gpc9RrpcPkjF9HXN1r9VM1jrn7UU` | **CANCELED** | 09:12:19 |
+
+- 本番 sitemap root `lastmod` ＝ `2026-09-11T23:45:47.497Z`（08:45:47 JST・`81747c8` の再生成）のまま不変（09:16:29 実測）。**想定外の再生成なし。**
+- **E19 の照合材料へ追加**: 距離 1〜4 CANCELED（4 件）。**ただし 4 件とも直前 READY から 8〜27 分以内であり、距離と時間差の交絡は本件でも分離されない**（分離済みなのは裁定2 の距離9/10・4分31秒差の1組のみ）。**観測目的の push はしていない**（すべて記録目的の docs コミット）。
