@@ -1,0 +1,2 @@
+# Vercel の Ignored Build Step は Linux の sh で実行される。CRLF が混入すると壊れるため LF を強制する（E19・2026-09-12）。
+*.sh text eol=lf
