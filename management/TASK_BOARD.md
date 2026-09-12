@@ -10792,3 +10792,14 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 対象＝再適用便 `dd7ddf8`（`dpl_9PrFhNcuVp8zEcx74FPiQgj8KWSi`）＋ E1-b ホットフィックス `81747c8`（`dpl_FazhuyvrPRL7hn54pKA8yGagPaik`）。
 - 残: Lighthouse CLS（未実施・要否は裁定）。
 - **H（E19・E6① の起案作成）へ。実装は承認後。**
+
+### 【2026-09-12 判定デー・第124便】H 完了 — E19 / E6① の起案を作成（実装は承認後）
+
+| 起案 | ファイル | 要点 |
+|---|---|---|
+| **E19**（`ignoreCommand` の diff 不能を明示化） | `management/_metrics/2026-W37/proposals/proposal-20260912-E19-ignore-command.md` | POSIX sh スクリプト（`git diff --quiet` の rc を 0/1/≥2 で分岐 → ≥2 なら `fetch --deepen=50/200/1000` → `fetch origin <PREV> --depth=1` → 再 diff → それでも不能なら `exit 1` を「diff impossible → build」の明示ログ付きで）＋ `vercel.json` 1 行。**検証はログ行の有無で判定**（§22-8-1-1-c の併記どおり）。副次: Vercel の clone が shallow か否かがログで初めて実測される |
+| **E6①**（上流失敗時の応答コード） | `management/_metrics/2026-W37/proposals/proposal-20260912-E6-1-upstream-failure-status.md` | **App Router のページから 503 は直接返せない**——ローカル実験（09:07・`getWork` の catch を throw に変更・`DMM_API_ID` 無効化・実験後に復元）で **throw → HTTP 500 / `Retry-After` なし**を実測。案A（throw で 500・3 ファイル小差分）/ 案B（Route Handler・実現性に疑義）/ 案C（middleware + 共有フラグで 503 + Retry-After・中〜大・資格情報は HUMAN 枠）/ 案D を並列提示。**推奨は書いていない**。③ FANZA API サポート照会の文面案を添付（送信は HUMAN・回答は要旨のみ） |
+
+- **機構の確定（起案の前提）**: `getWork()` の `catch { return null }` が「API 失敗」と「作品不在」を同一視して `notFound()` へ落とす。`actresses` / `genres` も `catch { notFound() }` で同型。
+- **裏取り窓の制約は起案に明記**（GSC 404 レポート 867 件 × Vercel ログ保持は概ね 9/3 以降のみ）。
+- **【厳守】実装していない。E19 と E6① の実装コミットを同じ push に同梱すればビルドは 1 回（裁定B の考え方）。**
