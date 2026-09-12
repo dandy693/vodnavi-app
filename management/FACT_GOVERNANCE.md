@@ -3031,6 +3031,41 @@ PASS  llm.concierge stream
 - **【厳守】「閾値＝10」は実測上の分岐点であり、Vercel の仕様として確認された値ではない。** **公式記載が得られた時点で照合する。**
 - **修正設計 §22-8-1-1-c (a)〜(c) を束2の先頭で実装起案へ。** **(d) の観測目的 push 禁止は継続。**
 - **2026-09-12 の後続 docs コミット**: `2988286`（距離1）・`e2c4224`（距離2）はいずれも **CANCELED**（新運用則による push 後の確認）。**閾値10 と整合。**
+- **【追加 2026-09-12 09:1x】`81747c8`（READY）以降の docs 5 件（距離 1〜5・`f5b335b` / `0f2b13a` / `38c13d8` / `976cf96` / `4424302`）も全件 CANCELED。** **照合材料は n=16（距離1〜9 CANCELED 13件 / 10 READY 2件 / 20 READY 1件）。** **ただし追加分は直前 READY から 8〜27 分以内で、距離と時間差の交絡は分離されない**（分離済みは上記の距離9/10 の1組のみ）。
+
+###### 22-8-1-1-e. 【実装完了 2026-09-12・第124便 裁定5】**E19 を実装・デプロイした。`ignoreCommand` は POSIX sh スクリプトへ**
+
+**裁定5（CSO）**: **E19 採用・起案どおり**（`management/_metrics/2026-W37/proposals/proposal-20260912-E19-ignore-command.md`）。**検証は「diff impossible」ログ行の有無。副次観測（clone が shallow か）も記録。**
+
+| 項目 | 実装 |
+|---|---|
+| **`app-concierge/scripts/vercel-ignore-build.sh`**（新規・POSIX sh） | `git diff --quiet "$PREV" HEAD -- .` の rc を **0（skip）/ 1（build）/ ≥2（diff 不能）** で分岐。**≥2 なら理由（stderr 先頭 200 字）・`git rev-list --count HEAD`・shallow 有無をログ → `git fetch --deepen=50 / 200 / 1000` → 不能なら `git fetch origin <PREV> --depth=1` → 再 diff。それでも不能なら `diff impossible even after retry → build (fail-open)` を明示して exit 1**（(c) のとおり現行と同じ側へ倒す） |
+| **`vercel.json`** | `"ignoreCommand": "sh scripts/vercel-ignore-build.sh"` |
+| **`.gitattributes`** | `*.sh text eol=lf`（Linux の sh で CRLF が混入すると壊れるため） |
+| commit / デプロイ | **`1aff344`**（E6① `e2f5b50` と同一 push・1 ビルド）→ **`dpl_BjT4XYE4SVBFsb17tfRa22tqEmQ2` READY 09:41:15 JST** |
+
+**初回実行（ビルドログ原文・2026-09-12 09:40:08 JST）**:
+
+> `Running "sh scripts/vercel-ignore-build.sh"`
+> **`[ignore-build] changes under /vercel/path0/app-concierge vs 81747c8feddfe4328b85077d85b5c5bbd86759fd -> build`**
+> `Running "vercel build"`
+
+- **`VERCEL_GIT_PREVIOUS_SHA` の実値が初めて観測された＝`81747c8`（直前 READY）。** **§22-8-1-1-b(3) の「PREV は公式定義からの導出であり実測ではない」は、本観測で実測に一致した。**
+- **cwd は `/vercel/path0/app-concierge`**（Root Directory＝`app-concierge/`）。
+- **距離 8（`81747c8..e2f5b50`）で `git diff` は計算できた**（rc=1・再試行経路に入らず）。**shallow か否かは失敗経路でしかログしないため本回は未観測。**
+- **【厳守】これは「機構の確定」ではない。** **H-shallow（実測上の閾値＝10）の判定は §22-8-1-1-d のまま。** **本実装が変えたのは「diff 不能時に何が起きるかが暗黙だった」構造だけである。**
+
+**検証の形（裁定どおり）**:
+
+| 経路 | 観測方法 | 状態 |
+|---|---|---|
+| **skip**（`no changes … -> skip build` → CANCELED） | 次の docs コミットのビルドログ | **観測待ち**（本記録の push で確認する） |
+| **build**（`changes … -> build`） | 本便で観測済み | ✅ |
+| **再試行 → 成功**（`git diff failed (rc=…)` → `retry: git fetch --deepen` → `PREV now reachable` → skip/build） | 距離 ≥ 10 の docs コミットが**自然に**発生したとき | 観測待ち（**観測目的の push は禁止**・(d)） |
+| **fail-open**（`diff impossible even after retry → build`） | 同上 | 観測待ち |
+
+- **【厳守】判定文は「READY が出たか」ではなく「__diff 不能のログが出たか__」で書く**（§22-8-1-1-c の CTO 併記どおり）。**「差分 0 行で READY」は (c) により実装後も起こりうる。**
+- **ローカル実行（push 前）**: rc0 / rc1 / rc128（不在 SHA → deepen 3 段 → fetch PREV → fail-open）/ unset の 4 経路を確認済み（`deploy-20260912-bin124-H-impl.md` §2）。
 
 ### 22-9. 【E22・実測 2026-09-12 06:5x JST・第124便】**現行 `sitemap.xml` の GSC 処理状態 — 「成功しました」。「一時的な処理エラー」は sitemap 全体には及んでいない**
 
@@ -4035,6 +4070,26 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **URL 一覧を取るなら「ページのインデックス登録 → 見つかりませんでした(404)」レポート、または Search Console API による。** **後者の資格情報整備は §23-8 裁定3 で HUMAN タスクとして起案予定であり、未整備である。**
   - **本番ログ側の遡及範囲**: **実測で 2026-09-03 まで遡れた**（7日一括のクエリはタイムアウトし、分割で取得）。**保持期間そのものは未確認。**
   - **→ 突合の窓は「GSC 側の URL 一覧が取れる範囲」と「Vercel ログが残っている範囲」の積である。** **起案時にこの積を先に確認すること。**
+
+###### ①-実装. 【CSO裁定 2026-09-12・第124便 裁定5／実装完了 同日 09:41】**案A（500）を採用・デプロイ済み。503 + `Retry-After` ではない**
+
+**起案** → `management/_metrics/2026-W37/proposals/proposal-20260912-E6-1-upstream-failure-status.md`（App Router のページから 503 は直接返せない＝ローカル実験で throw → HTTP 500・`Retry-After` なし）。
+**裁定の理由（CSO 原文の趣旨）**: **本件の目的は Googlebot に「消えた」（404）ではなく「一時的」を伝えること。Google は 5xx 全般を一時的エラーとして扱い再クロールするため、503 + Retry-After でなくとも 500 で目的の大半を達成する。** **案C（middleware + 共有フラグ・資格情報 HUMAN 枠）は規模・依存に対して増分が小さい——案A の実効を観測してから再検討。案B/C/D は「旧案」として保持。**
+
+**設計条件（CSO 固定）と実装**:
+
+| 条件 | 実装（commit **`e2f5b50`**・デプロイ `dpl_BjT4XYE4SVBFsb17tfRa22tqEmQ2`） |
+|---|---|
+| **(a)** 404 を返すのは「API が正常応答し、該当 item が存在しない」場合のみ。リクエスト自体の失敗（400/5xx/タイムアウト/ネットワーク）は 5xx | **works**: `getWork` の `catch { return null }` を廃止。**throw されたものはすべてリクエスト失敗として rethrow**（種別で分岐しない・設定事故 `FanzaConfigError` も 500）。`items` 空 → `null` → `notFound()` は従来どおり。**actresses / genres**: フロア巡回を `resolveAcrossFloors`（`src/lib/fanza/upstream-failure.ts`）へ。**全フロアが正常応答・該当なし** のときだけ 404。**1 フロアでも失敗し見つからなければ throw（不在と断定しない）**。`generateMetadata` の catch も廃止（500 ページに「見つかりません」の title を付けない） |
+| **(b)** error.tsx の表示 | **「一時的に作品情報を取得できません」／「しばらくして再読み込みしてください。」**（works を更新・actresses / genres に新設）。時点注記なし。**noindex の明示は不要——Next が 5xx 応答に `<meta name="robots" content="noindex">` を自動付与することをローカルで実測** |
+| **(c)** GUARD ログに応答コード | **`VODNAVI_SILENT_DEATH_GUARD` タグで `served: 500` / `upstream_kind`（api / config / timeout / network / unknown）/ `upstream_status` / `context`（例 `works/videoa/xxx`）を本番のみ射出**。**成功基準＝次に自然発生するバーストで GUARD 行の served が 404 でなく 500 であることを本番ログで確認（誘発しない・観測のみ）＝未観測** |
+| **(d)** stale-serve が効く場合は不変 | `fetchItemList` 内で鮮度上限内キャッシュがあれば resolve するため **200 ステイルのまま**。**MISS 時のみ本改修が効く** |
+
+- **push 前検証**: tsc / eslint / guard:affiliate / build exit 0・**`npm test` 88 pass（新規 16: API 失敗 7 種 → throw／空 → empty／混在）**・ローカル `next start` で設定事故経路（FANZA へ投げない）により 3 面とも 500 + 文言を headless Chromium で確認・有効 env で 200 と不在 cid/id の 404 を維持。
+- **本番検証（09:41）**: 既存 works / actresses / genres 200・不在 cid / id **404 を維持**・`5342gp14809`（9/9 の 404 事例）200・sitemap 再生成 09:40:37（全損なし）。
+- **【厳守・§7 の監視への影響】500 で返したリクエスト 1 件につき GUARD 行が 1 行増える（`served` 付き）。** **行数の比較では `served` の有無で分けること。**
+- **【厳守】これは §24-12(B)① の「503 + `Retry-After`」の実装ではない。** **500 である。** **500 と 503 の扱いの差・`Retry-After` の効果は一般論でも未確認（起案 §2）。**
+- **E6②（MISS 時の Supabase スナップショット）は別起案（束4）・未着手。** **③ FANZA サポート照会文面は承認済み・送信はひでき（HUMAN）・回答は要旨のみ（§9）。**
 
 ##### ② MISS 時の退避先 — **直近成功時の works 詳細スナップショットを永続層（Supabase）に持つ**（中規模・**①の後**）
 

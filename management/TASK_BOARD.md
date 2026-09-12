@@ -10816,3 +10816,17 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 本番 sitemap root `lastmod` ＝ `2026-09-11T23:45:47.497Z`（08:45:47 JST・`81747c8` の再生成）のまま不変（09:16:29 実測）。**想定外の再生成なし。**
 - **E19 の照合材料へ追加**: 距離 1〜4 CANCELED（4 件）。**ただし 4 件とも直前 READY から 8〜27 分以内であり、距離と時間差の交絡は本件でも分離されない**（分離済みなのは裁定2 の距離9/10・4分31秒差の1組のみ）。**観測目的の push はしていない**（すべて記録目的の docs コミット）。
 - 【09:17 追記】上記記録の push `4424302`（距離 5・09:17:04）→ `dpl_6kFq77MtDb7rsGTa6vW5DmED9kYt` **CANCELED**（09:17:06）。距離 1〜5 が全件 CANCELED（`81747c8` 起点）。
+
+### 【2026-09-12 判定デー・第124便 裁定5】H 実装便 — E19 + E6①（案A）を同一 push・1 ビルドで適用 → READY・本番検証 PASS
+
+| 項目 | 実測 |
+|---|---|
+| 裁定5 | E19 採用（起案どおり）／E6① 案A（500・小変更）採用・案B/C/D は旧案保持／同梱 1 ビルド・ロールバック単位は全体（§4-3）／Lighthouse CLS 不要／FANZA 照会文面 承認（送信＝ひでき）／E6② は束4 |
+| commit | **`1aff344`**（E19: `scripts/vercel-ignore-build.sh` + `vercel.json` + `.gitattributes`）／**`e2f5b50`**（E6①: `upstream-failure.ts` + テスト 16 件・works/actresses/genres の page・error.tsx ×3）。push 09:39:59〜09:40:02（`4755125` docs を同梱） |
+| push 前検証 | tsc / eslint / guard / build exit 0・`npm test` **88 pass**・E19 スクリプト rc0/rc1/rc128/unset の 4 経路・ローカル `next start`（設定事故経路・FANZA へ投げない）で 3 面 500 + 文言を headless Chromium で確認・有効 env で 200 / 不在 → 404 |
+| デプロイ | **`dpl_BjT4XYE4SVBFsb17tfRa22tqEmQ2` READY 09:41:15**。**E19 初回ログ `[ignore-build] changes under /vercel/path0/app-concierge vs 81747c8… -> build`**＝`VERCEL_GIT_PREVIOUS_SHA` 実値を初観測（距離 8・diff 計算可） |
+| 本番検証（09:41） | works / actresses / genres 既存 200・不在 cid / id **404 維持**・`5342gp14809` 200・sitemap 09:40:37 再生成（loc 2,543 / works 1,200 / genres 200 / actresses 1,126 / articles 8・本日 8 回目） |
+| 記録 | `management/_metrics/2026-W37/deploy-20260912/deploy-20260912-bin124-H-impl.md`／FACT_GOVERNANCE §22-8-1-1-e・§24-12(B)①-実装／NOTES E19・E6 |
+
+- **未観測（観測のみ・誘発しない）**: E6①(c) 成功基準＝次の自然発生バーストで GUARD 行の `served`＝500／E19 の skip 経路（次の docs コミット）・再試行 / fail-open 経路（距離 ≥ 10 が自然発生したとき）。
+- **§7 の GUARD 行数監視**: 500 で返したリクエスト 1 件につき `served` 付き行が 1 行増える。行数比較は `served` 有無で分ける。
