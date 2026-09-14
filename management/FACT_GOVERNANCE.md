@@ -320,6 +320,7 @@
 - **【2026-08-15・第53便／第41便の訂正】GSC の URL 検査は `id` 付き直リンクで結果を取得できる。** 「直リンク不可」は誤りで、正しくは **「`id` を捏造できない」**。**通らなかったのは CTO が組み立てた id であり、GSC が発行した id なら通る**（第52便で3回成功）。**検査を実行するとタブの URL に新しい id が入るため、結果のオーバーレイが閉じてもその URL へ navigate し直せば読める**（実際に2回回収した）。**手順の全文 → `management/_metrics/2026-W33/research-20260814-2300-traffic-diagnosis.md` §43**
   6. **DB 作業前に Supabase MCP の疎通を確認し、通るなら Chrome を経由しない**
 - **単一障害点の解消**: Supabase MCP の `Unauthorized` は **env 継承漏れではなくトークン失効**（2026-08-11 実測: `SUPABASE_ACCESS_TOKEN` は Process スコープに存在＝True だが Management API `GET /v1/projects` が直接 **401**）。**Claude Code の再起動では直らない**。復旧＝**PAT を新規発行 → User 環境変数を差し替え → Claude Code 再起動**（**HUMAN 枠**）。「401 を見たら反射的に再起動」しないこと。
+  - **【実例 2026-09-14〜15】2026-09-14 00:19 JST に `Unauthorized`。同日 12:3x・9/15 00:10 も同じ（`claude mcp list` は ✓ Connected を表示するが実疎通は不可・User / Process 両スコープの同一値で Management API 401＝失効）。** **2026-09-15 06:52:07 JST、HUMAN が PAT を差し替えて `list_tables` 成功。** **新 PAT のスコープ（CSO 転記）: 読み取り専用・vodnavi-production のみ・期限 2027-09-13・秘密系 Read なし・Backups なし。** **CTO は値に触れていない。**
 - **【2026-09-01 追加・第115便の再送】本則は「発行した指示」にも及ぶ。** **第115便は 2026-08-31 に起案されたが転写漏れで正本に未着だった**（**CSO 側の伝達事故**）。**第116便冒頭の SHA 照合が欠番として検出し、同内容のまま再送された**（起案版から不変）。**「発行した」は「着地した」の証拠にならない。** **§13-6 の「指示が届かないと何も起きない」（第68・75・78便）に続く4例目だが、__事故が起きる前に受領側の照合で検出された初の事例__である点が異なる**（第78便は 2026-08-20 の配信0件事故として顕在化してから判明した）。
   - **【2026-09-02 追記・転写漏れの2例目】第116便 補遺6 も同じ経路で未着だった**（9/1 起案・**CSO 側の伝達事故**）。**CTO が補遺7改 の受領時に「前便は補遺5 であり補遺6 を受領していない」と自発的に照会して検出し、内容不変のまま再送された。**
   - **【2026-09-02 追記・転写漏れの3例目】第116便 補遺13 および 補遺13追記 も未着だった**（**CSO 側の伝達事故**）。**CTO が補遺14 の受領時に欠番を検出して報告した。** **再送はせず吸収**——**(0) はひでき目視でクローズ済み、(C) は補遺14 に統合済み、未消化は DebugView のみで補遺15(3) が扱った。**
@@ -4172,10 +4173,12 @@ gtag('config', 'G-GG7JV9MJRW', {
 | ② | **束3「現行 20:45〜24:00・900 秒間隔の枠内」** | **Make のトリガ実行窓は 20:45〜23:45 の 15 分間隔（§13-3）。投稿予約枠は g8＝21:00〜23:00**（CSO 確定 2026-08-13・旧 20:45〜24:00 を実測に合わせて狭めた・`x-post-generator.mjs` L618-630） | 束3 の「時間帯・間隔は変更しない」を g8（21:00〜23:00・15 分刻みで 9 スロット）で読むか、20:45〜24:00 で読むかは裁定。**後者は §26-2「投稿時間帯の変更をしない」との整合を要確認** |
 | ③ | **束6「登録済み候補」（T1改ツリー形式）** | **台帳に記録なし**（FACT_GOVERNANCE / TASK_BOARD / checklists で `ツリー形式`・`T1改ツリー`・`スレッド形式` 0 件。初出＝第125便・2026-09-13 23:42 JST のチャット） | **本節 §26-2 が初登録**。成功基準は投入前に確定（束6 の指示どおり・未確定） |
 | ④ | **§0-2 outreach 工数 週 1 時間以内** | 第126便 §3(b) 見積（チャット）＝CTO 約 45〜55 分＋CSO 約 15〜25 分（返信対応込み） | **合計は約 60〜80 分。** 「週 1 時間」が CTO+CSO 合計か CSO 単独かは裁定 |
-| ⑤ | **束2「作品知識は Supabase の既存 works データから引く」** | **Supabase MCP は 2026-09-14 00:19 JST に `Unauthorized`（トークン失効型・§10・PAT 再発行は HUMAN 枠）。** 「works データ」に相当するテーブルの実在は未確認 | 束2 の read-only 調査で確認する。**確認自体が MCP 疎通に依存** |
+| ⑤ | **束2「作品知識は Supabase の既存 works データから引く」** | **Supabase MCP は 2026-09-14 00:19 JST に `Unauthorized`（トークン失効型・§10）→ 2026-09-15 06:52:07 JST に PAT 差し替え（HUMAN）で復旧・`list_tables` 成功。** **`public` の実在は 7 表（`editorial_articles` / `article_products` / `fanza_response_cache` / `sitemap_works_archive` / `internal_links` / `sitemap_cohort` / `price_history`）のみで、`works` という名の表は無い** | **【CSO裁定 2026-09-15・解消】束2 の作品知識ソース＝`fanza_response_cache`（主）＋`sitemap_works_archive`（従）。`sitemap_cohort` は束2 の対象外。** フィールド一覧 → §26-5 |
 | ⑥ | **束1 許可範囲「既存 posts テーブル（tblZMqvjtJY8MfaWZ）は触らない」／束3 許可範囲「posts テーブルへのフィールド追加」** | — | 束別の許可範囲か矛盾かは裁定。**フィールド追加の実行前に、束3 の許可を個別に確認する**（§4 の選択肢値はスキーマ実測値のみ） |
 | ⑦ | **束5「`reports/x_weekly_YYYYMMDD.md`」／束2「`tools/` 配下」** | `reports/`・`tools/` はリポジトリに存在しない。実験資産は `management/` 配下（git 管理）が慣行（§24-11-1） | 新設フォルダの位置は設計段階で裁定 |
 | ⑧ | **§0-1「SEO は主軸から外す」** | 9/30 判定ゲート（`GATE_20260930.md` 指標①〜③・再変更禁止）への言及は第127便に無い | ゲートの扱いは裁定（§11「収益ゲートと自動化ゲートは別軸」と同型かを含む）。**本節はゲートの目標値を変更しない** |
+
+- **【CSO裁定 2026-09-15】①〜⑧の「扱い」欄を承認（「1〜8 OK」）。⑤は解消。** **②（時間帯の読み）・④（週 1 時間の読み）・⑥（posts の許可範囲）・⑦（新設フォルダの位置）は「扱い」欄のとおり__各束の設計段階で個別に裁定する事項__として残る。**
 
 ### 26-4. 主軸の変遷（記録）
 
@@ -4186,3 +4189,17 @@ gtag('config', 'G-GG7JV9MJRW', {
 | **2026-09-14** | **X（SNS 集客）を主軸。SEO は主軸から外す。outreach は背景で継続** | **本節（第127便 §0）** |
 
 - **【厳守】§19-2 の本文は削除しない**（履歴保全）。**§19-2 を引用するときは「2026-09-14 に §26 で上書き」と併記する。**
+
+### 26-5. 【CSO裁定 2026-09-15／CTO 実測 同日 06:52〜07:0x JST】**束2 の作品知識ソースとフィールド一覧**
+
+| 項目 | 確定 |
+|---|---|
+| **ソース** | **`fanza_response_cache`（主）＋ `sitemap_works_archive`（従）。`sitemap_cohort` は対象外** |
+| `fanza_response_cache` の実態 | `cache_key`（PK・**params の sha256**・`api_id` / `affiliate_id` は含まない）/ `kind`（`list` | `cid`）/ `payload`（**`{result}` のみ・`request` は保存前に除去＝資格情報なし**）/ `fetched_at`。**保持は 7 日ローリング**（`stale-cache.ts` が upsert 時 2% の確率で `fetched_at` < 7 日前を DELETE）。07:0x 断面＝`cid` 70,748 行（distinct content_id 70,535・items 空 199・actress あり 63,480・campaign あり 633）/ `list` 22,911 行 |
+| `sitemap_works_archive` の実態 | `content_id`（PK）/ `floor_code` / `released_at` / `first_seen_at` / `last_seen_at` の 5 列のみ・3,749 行（videoa 2,820 / nikkatsu 488 / anime 441）。**作品属性を持たない**。うち現在の `cid` キャッシュに payload がある content_id＝2,963（79.0%） |
+| **使えるフィールド** | `content_id` / `product_id` / `floor_code` / `title` / `date` / `volume` / `prices.price`・`list_price`（文字列 `300~` 形式）/ `iteminfo.actress[].name`（89.7% の行）/ `genre[].name` / `maker` / `label` / `series` / `director` / `review.count`・`average`（保有率 18.6%・§20-5）/ `campaign[]`（633 行・時限） |
+| **渡さないフィールド**（束2 ガード「URL・ドメイン・af_id・vodnavi を含めない」に照らす） | `affiliateURL`（API 返却の af_id 990・§8）/ `URL` / `imageURL.*` / `sampleImageURL.*` / `sampleMovieURL.*` |
+| **制約（設計の前提）** | ①**cache に載るのは直近 7 日にランタイムが要求した作品のみ**——「6 万件の在庫」ではない。窓外の作品は FANZA API の新規呼び出しを要する（束2 は「増やさない」と規定）②**content_id → payload の逆引きに index が無い**（PK は `cache_key`。全走査か `buildCacheKey` の再現が要る）③MCP は `--read-only`・実績の記録先は Airtable `x_replies`（束1）であり Supabase には書かない |
+
+- 調査の全文（代表行 3 件・集計 SQL の結果）→ `management/_metrics/2026-W38/research-20260915-bin127-bundle2-supabase-fields.md`
+- **【厳守】本節は事実の整理であり束2 の設計ではない。** **設計は別途起案し、実装は許可範囲（`tools/` 相当の新規ファイル＋Supabase 読み取り）内で CSO 承認後。**

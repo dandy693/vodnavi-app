@@ -10870,3 +10870,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 【12:24〜12:30 追記・§26-3 ① の読み取り】**E6①(c) の成功基準（GUARD 行 `served`=500）を本番ログで確認**: `"served":500` 行＝9/12（09:41〜）576／9/13 458／9/14（〜12:29）371（statusCode 500・Vercel Runtime Logs）。ルート別 works 1,041 / actresses 368 / genres 4。同期間の GUARD 付き 404 は 6 件（全件 works・直後に `VODNAVI_STALE_SERVED`・`served` 行なし＝(d) 経路）。**併記＝`served:500` 行ありで statusCode 200 のリクエスト 8 件（全件 `/works/nikkatsu/*`・機構未特定・解釈しない）。** 記録 → FACT_GOVERNANCE §24-12(B)①-実装 末尾。**判定は CSO。**
 - 【12:3x 追記・read-only の事前確認（束1・束2 の前提）】Airtable base `app0VKGU2B16qny6c` のテーブルは **`posts` と `internal_link_proposals` の 2 つのみ＝`x_targets` / `x_replies` は未存在**（束1 は新設）。`posts` は 11 フィールド・`post_type` 無し・**`画像`（multipleAttachments・`fldS0ZPIPHSzR5y25`）は既存**。**Supabase MCP は 12:3x も `Unauthorized`**（束2「Supabase の works データ」・束3 `ranking` の前提が取得不能・PAT 再発行は HUMAN 枠）。
 - **【停止・第127便 §10】§26-3 の不一致 8 件を CSO へ報告し、束1 以降の設計・実装は裁定後に着手する。**
+
+### 【 JST・CSO裁定 2026-09-15】§26-3 ⑤ 解消（Supabase PAT 復旧）／①〜⑧「1〜8 OK」／束2 の作品知識ソース確定 → read-only 調査 完了
+
+- **Supabase MCP**: 9/15 00:10 時点は `claude mcp list` ✓ Connected でも `list_tables` は `Unauthorized`（User / Process 両スコープの同一値で Management API 401＝失効・§10）。**06:52:07 JST に PAT 差し替え（HUMAN）後の `list_tables`（public）成功。** 新 PAT＝読み取り専用・vodnavi-production・期限 **2027-09-13**・秘密系 Read なし・Backups なし（CSO 転記・§10 に登録）。
+- **裁定**: ⑤ 解消（`public` は 7 表・`works` 表なし）／束2 ソース＝`fanza_response_cache`（主）＋`sitemap_works_archive`（従）・`sitemap_cohort` 対象外／①②③④⑥⑦⑧は「扱い」欄のとおり承認（②④⑥⑦は各束の設計段階で個別裁定として残る）。
+- **承認された read-only 調査（実施 06:52〜07:0x）**: 両表の `verbose` カラム定義・`fanza_response_cache` の代表行 3 件（`masm00023` / `65stv01137` / `h_067nass00931`・kind=cid・9/14 21:53〜21:54 UTC）・集計（cid 70,748 行 / distinct 70,535 / items 空 199 / actress あり 63,480 / campaign あり 633・list 22,911 行・保持 7 日ローリング・archive 3,749 件中 cid キャッシュあり 2,963）。**フィールド一覧 → FACT_GOVERNANCE §26-5／全文 → `management/_metrics/2026-W38/research-20260915-bin127-bundle2-supabase-fields.md`。**
+- **【併記・事実のみ】cid 行のうち items が空の 199 件は「API 正常応答・該当なし」の応答キャッシュ。** 9/12〜14 の GUARD 付き 404（6 件・stale-serve 経路）との関係は本便で突合していない。
+- **次**: 束1〜7 の設計へ（束2 は本調査を前提に設計起案・実装は承認後）。**push 後の Vercel state を確認する。**
