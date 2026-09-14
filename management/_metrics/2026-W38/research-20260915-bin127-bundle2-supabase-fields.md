@@ -75,22 +75,25 @@
 - **作品の属性（タイトル・出演・ジャンル）は持たない。** **content_id と配信日だけ。** **束2 での役割は「対象 content_id の候補リスト（新作寄り・sitemap 収録済み）」に限られる。**
 - **archive 3,749 件のうち、現在の `cid` キャッシュに payload がある content_id＝2,963 件（79.0%・07:0x 断面）。** 残り 786 件は 7 日以内にランタイムが要求していない＝キャッシュに無い。
 
-## 5. リプ案生成に使えるフィールド一覧（**事実の整理・設計ではない**）
+## 5. リプ案生成に使えるフィールド一覧（**事実の整理・設計ではない**／第128便 §6-3 の形式＝フィールド名／型／欠損の有無／用途）
 
-| 用途候補 | フィールド | 出典表 | 備考 |
-|---|---|---|---|
-| 作品の同定 | `content_id` / `product_id` / `floor_code` | cache（cid） | 品番表記（例 `MASM-023`）は `product_id` 側 |
-| 作品名 | `title` | cache | 長い（60 字超あり・§20-1） |
-| 出演 | `iteminfo.actress[].name` | cache | **89.7% の行に存在**。anime 等は無い（§17-1） |
-| ジャンル | `iteminfo.genre[].name` | cache | 中央値 7 件（§20-5） |
-| メーカー / レーベル / シリーズ / 監督 | `iteminfo.maker` / `label` / `series` / `director` | cache | series 54.2% / director 53.4%（§20-5） |
-| 配信日 | `date`（cache）／`released_at`（archive） | 両表 | archive は未来日付を含む |
-| 収録分数 | `volume` | cache | 100% |
-| 価格 | `prices.price` / `prices.list_price` | cache | **`300~` のような文字列**（§5-4(1)・`parseYen` が要る） |
-| セール | `campaign[]`（`title` / `date_begin` / `date_end`） | cache | 633 行のみ。**時限・取得時刻の併記必須（§5-4(7)）** |
-| レビュー | `review.count` / `review.average` | cache | 保有率 18.6%（§20-5） |
-| **渡さない（束2 ガード）** | `affiliateURL` / `URL` / `imageURL.*` / `sampleImageURL.*` / `sampleMovieURL.*` | cache | URL・af_id を含む |
-| 候補の母集団 | `content_id` / `floor_code` / `released_at` | archive | 3,749 件・属性なし |
+| フィールド | 型（jsonb 内） | 欠損の有無（実測） | 作品知識としての用途候補 | 出典表 |
+|---|---|---|---|---|
+| `content_id` / `product_id` / `floor_code` | string | なし（3/3） | 作品の同定。品番表記（例 `MASM-023`）は `product_id` 側 | cache（cid） |
+| `title` | string | なし | 作品名（60 字超あり・§20-1） | cache |
+| `iteminfo.actress[].name` | array of {id,name} | **あり**——cid 行の 89.7%（63,480 / 70,734）が保有。anime 等は無い（§17-1） | 出演 | cache |
+| `iteminfo.genre[].name` | array of {id,name} | 3/3 に存在（代表行で 3〜9 件・中央値 7 件 §20-5） | ジャンル | cache |
+| `iteminfo.maker[].name` / `label[].name` | array of {id,name} | 3/3 に存在 | メーカー / レーベル | cache |
+| `iteminfo.series[].name` / `director[].name` | array of {id,name} | **あり**（3 件中 series 2・director 1。保有率 54.2% / 53.4% §20-5） | シリーズ / 監督 | cache |
+| `date` | string `YYYY-MM-DD HH:MM:SS` | なし | 配信日 | cache |
+| `released_at` | timestamptz（nullable） | 列は nullable・未来日付あり（最大 2026-10-10） | 配信日（候補リスト側） | archive |
+| `volume` | string（分） | なし | 収録分数 | cache |
+| `prices.price` / `prices.list_price` | **string**（例 `300~`） | なし（3/3） | 価格（`parseYen` 相当の解釈が要る・§5-4(1)） | cache |
+| `campaign[]`（`title` / `date_begin` / `date_end`） | array | **あり**——633 行のみ（0.9%）。時限 | セール（取得時刻の併記必須・§5-4(7)） | cache |
+| `review.count` / `review.average` | string | **あり**（3 件中 1。保有率 18.6% §20-5） | レビュー | cache |
+| `fetched_at` | timestamptz | なし | 鮮度（7 日ローリング）の判定 | cache |
+| **渡さない（束2 ガード）** `affiliateURL` / `URL` / `imageURL.*` / `sampleImageURL.*` / `sampleMovieURL.*` | string / object | `sampleMovieURL` は無い行あり | URL・af_id（990 埋め込み）を含むため入力に渡さない | cache |
+| `content_id` / `floor_code` / `first_seen_at` / `last_seen_at` | text / timestamptz | なし | 候補の母集団（3,749 件・属性なし） | archive |
 
 ## 6. 制約（設計時に前提とする事実）
 
