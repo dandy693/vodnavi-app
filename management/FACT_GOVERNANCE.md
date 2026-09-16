@@ -3064,11 +3064,46 @@ PASS  llm.concierge stream
 |---|---|---|
 | **skip**（`no changes … -> skip build` → CANCELED） | 次の docs コミットのビルドログ | ✅ **観測済み（2026-09-12 09:44:47 JST・`7e1912f`・距離 1）**: `[ignore-build] no changes under /vercel/path0/app-concierge vs e2f5b50f… -> skip build` → `The deployment was canceled because the Ignored Build Step command returned exit code 0.`（`dpl_BcMU2uTYnKwuwXjXVDVuvqPD9YLZ` CANCELED） |
 | **build**（`changes … -> build`） | 本便で観測済み | ✅ |
-| **再試行 → 成功**（`git diff failed (rc=…)` → `retry: git fetch --deepen` → `PREV now reachable` → skip/build） | 距離 ≥ 10 の docs コミットが**自然に**発生したとき | 観測待ち（**観測目的の push は禁止**・(d)） |
-| **fail-open**（`diff impossible even after retry → build`） | 同上 | 観測待ち |
+| **再試行 → 成功**（`git diff failed (rc=…)` → `retry: git fetch --deepen` → `PREV now reachable` → skip/build） | 距離 ≥ 10 の docs コミットが**自然に**発生したとき | **未達（2026-09-17 00:30・距離 10 で `--deepen` 3 段と PREV 単体 fetch が全件失敗 → §22-8-1-1-f）** |
+| **fail-open**（`diff impossible even after retry → build`） | 同上 | ✅ **観測済み（2026-09-17 00:30 JST・`706bcda`・距離 10・`dpl_7Pd1RdVasjNMx6PKtcf2rbWegdtR` READY → §22-8-1-1-f）** |
 
 - **【厳守】判定文は「READY が出たか」ではなく「__diff 不能のログが出たか__」で書く**（§22-8-1-1-c の CTO 併記どおり）。**「差分 0 行で READY」は (c) により実装後も起こりうる。**
 - **ローカル実行（push 前）**: rc0 / rc1 / rc128（不在 SHA → deepen 3 段 → fetch PREV → fail-open）/ unset の 4 経路を確認済み（`deploy-20260912-bin124-H-impl.md` §2）。
+
+###### 22-8-1-1-f. 【E19・初観測 2026-09-17 00:30 JST】**距離 10 の docs コミットで fail-open 経路が発動した。再試行（`git fetch --deepen` / PREV 単体 fetch）は Vercel のビルド環境で全件失敗。clone 深度は実測 10**
+
+**5軸ラベル**: ①対象範囲＝`706bcda`（docs のみ・`app-concierge/` 差分 0 行・直前 READY `e2f5b50` から**距離 10**）②期間＝2026-09-17 00:30:28〜00:31:01 JST ③計測系＝Vercel ビルドログ（`dpl_7Pd1RdVasjNMx6PKtcf2rbWegdtR`）＋ 本番 `curl` ④出典＝自サイト実測 ⑤機会の数＝距離 10 の自然発生 1 回（**観測目的の push ではない**——CSO 追記の反映 push が偶然 10 件目だった）。
+
+**ビルドログ原文（`sh scripts/vercel-ignore-build.sh` の出力）**:
+
+```
+[ignore-build] git diff failed (rc=128): fatal: bad object e2f5b50f6a211d9aaf6e062694a0075b4395f67f
+[ignore-build] commit count HEAD: 10 / shallow=yes
+[ignore-build] retry: git fetch --deepen=50
+[ignore-build] fetch --deepen=50 failed
+[ignore-build] retry: git fetch --deepen=200
+[ignore-build] fetch --deepen=200 failed
+[ignore-build] retry: git fetch --deepen=1000
+[ignore-build] fetch --deepen=1000 failed
+[ignore-build] retry: git fetch origin e2f5b50f6a211d9aaf6e062694a0075b4395f67f --depth=1
+[ignore-build] fetch of PREV failed
+[ignore-build] diff impossible even after retry (rc=128) -> build (fail-open, per FACT_GOVERNANCE 22-8-1-1-c(c))
+Running "vercel build"
+```
+
+**確定した事実**:
+
+| # | 事実 |
+|---|---|
+| 1 | **H-shallow の機構が直接観測された**——`shallow=yes`・`rev-list --count HEAD` = **10**・PREV（距離 10）は `bad object`。**Vercel の clone 深度は実測 10**（HEAD を含む 10 コミット。距離 ≤9 なら PREV が含まれ、距離 10 で外れる＝§22-8-1-1-d の「実測上の閾値＝10」と完全に整合）。公式記載は依然未確認 |
+| 2 | **(b) 再試行は Vercel のビルド環境では効かない**——`git fetch --deepen=50/200/1000` と `git fetch origin <PREV> --depth=1` の 4 回とも失敗。**失敗理由はスクリプトがログしていない**（stderr を捨てている）ため未特定。推測しない |
+| 3 | **(a) の明示ログは機能した**——「差分 0 行で READY」が起きたが、今回は **`diff impossible … -> build (fail-open)` の行で区別できる**（§22-8-1-1-c の CTO 併記どおり）。**判定文は「READY が出たか」ではなく「diff 不能のログが出たか」＝出た** |
+| 4 | **帰結**: **docs のみのコミットでも距離 ≥10 なら必ずビルドが走る**（fail-open）。E19 実装前と同じ側に倒れているが、暗黙ではなく明示になった |
+| 5 | **sitemap は再生成された**（root `lastmod` `2026-09-16T15:31:01.291Z`＝00:31:01 JST・ビルド開始 +33 秒）。`<loc>` 2,475 / **works 1,181（videoa 381 / anime 400 / nikkatsu 400）** / genres 200 / actresses 1,077 / articles 8。**全損ではない。** **videoa が 400 未満（381）は本台帳で初記録**——原因は追わない（§16・§22-5 と同型の受容）。記録のみ |
+
+- **§22-8-1-1-e の検証表を更新**: 「再試行 → 成功」＝**未達（fetch 全失敗）**／「fail-open」＝**✅ 観測済み（本項）**。
+- **公開情報の確認（`search_vercel_documentation`・2026-09-17 00:3x）**: clone 深度・deep clone の設定に関する記載は本検索では見つからなかった。**見つかった関連記載**＝Turborepo 向けの Ignored Build Step 例 `npx turbo-ignore --fallback=HEAD^1`（基準 SHA が使えない場合の fallback を持つ公式パターン）と、既定例 `git diff --quiet HEAD^ HEAD ./`（直前 1 コミットのみを比較）。
+- **【厳守・CTO は決めない】次の選択肢は裁定事項**: (i) fail-open を受容する（距離 ≥10 の docs push は必ずビルド・sitemap `lastmod` が動く）／(ii) スクリプトで fetch 失敗の stderr をログして原因を特定する（1 行の変更・観測目的の push は不可のため次の自然発生待ち）／(iii) 深い clone を得る設定を探す（公式記載は未確認）／(iv) PREV 不能時に「clone 内の全コミットが `app-concierge/` に触れていない」ことを検査し、**かつ clone 内コミット数 ＝ 距離と一致する場合に限り** skip する（今回は距離 10 ＝ clone 内 10 で一致していたが、一般には距離が分からないため不一致の可能性が残る）。**採否は CSO。**
 
 ### 22-9. 【E22・実測 2026-09-12 06:5x JST・第124便】**現行 `sitemap.xml` の GSC 処理状態 — 「成功しました」。「一時的な処理エラー」は sitemap 全体には及んでいない**
 
