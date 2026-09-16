@@ -57,7 +57,7 @@
 | 9 | **`reply_post_id`**（追加提案） | singleLineText | — | **CTO 追加** | 自分のリプの投稿 ID。**§13-5 の直接 URL 確認**を可能にする |
 | 10 | **`target_post_url`**（追加提案） | url | 相手の投稿 URL | **CTO 追加** | 実績の突合用。**相手の URL であり自サイト URL ではない**（束2 ガードの対象外） |
 
-## 3. 取り込み手順（**テーブル作成の承認後に実行・本書時点では未実行**）
+## 3. 取り込み手順（**テーブル作成の承認後に実行・本書時点では未実行 → 2026-09-17 01:15 JST 段 0〜5 完了・§7**）
 
 | 段 | 内容 | 実施者 |
 |---|---|---|
@@ -66,7 +66,7 @@
 | 2 | `get_table_schema` で **選択肢名の実在を読み戻し**（§4） | CTO |
 | 3 | `node management/_metrics/2026-W38/bundle1/seed-to-records.mjs` → `x_targets_seed_20260917.batches.json`（**42 件・10 件×5 バッチ・status は全件 `候補` 固定・followers は空**） | CTO（読み取りのみ） |
 | 4 | MCP `create_records_for_table` を 5 回 | CTO |
-| 5 | `list_records_for_table` で **42 件を読み戻し**（handle 一致・status=候補・priority 分布 24/13/4/空 1） | CTO |
+| 5 | `list_records_for_table` で **42 件を読み戻し**（handle 一致・status=候補・priority 分布 24/13/4/空 1 → **CSO 追記後は 28/9/4/空 1・§7-3 で一致**） | CTO |
 | 6 | HUMAN が X 画面で実査（実在／フォロワー数／直近 7 日の投稿／返信制限）→ `followers` を入力・`verified_at`・`reply_restricted` を記録 → **`status=稼働`** | HUMAN |
 
 - **【厳守】status を書く箇所はスクリプト内の 1 箇所（`STATUS = "候補"`）に限定**（§13 の緩和①と同型）。
@@ -79,7 +79,7 @@
 | ① | **`@otona_rank_info` の priority「保留」** | 便の `priority` は 1〜3。「保留」は表現できない | **【解消・CSO 追記 2026-09-17】非稼働（フォロワー 78・7/13 以降投稿なし）＝`status=候補`・`priority` 空・`no_repropose` ON・理由は `note`。投入はする** |
 | ② | フォロワー目安 1万〜20万（便 束1）と候補の乖離 | 20万超が 8 件（p1 の `@Aizawa_miyu03` 20.1万・`@nao_satsuki` 23.5万 を含む）・1万未満が 3 件（レビュー系 p1） | **CSO 指定のため矛盾ではない**（「目安」）。記録のみ |
 | ③ | 初期件数 30 件（便）→ 42 件（CSO 2026-09-17） | 便の「初期30件を登録」を上回る | CSO 指定のため矛盾ではない。記録のみ |
-| ④ | `reply_count_30d` の条件付きロールアップ | Airtable の UI では設定可能だが、**MCP `create_field` で条件付きロールアップを作れるかは未確認** | 作成時に確認。不可なら (a) HUMAN が UI で作る／(b) 単純ロールアップ（全期間 COUNT）＋ビューで代替 |
+| ④ | `reply_count_30d` の条件付きロールアップ | Airtable の UI では設定可能だが、**MCP `create_field` で条件付きロールアップを作れるかは未確認** | 作成時に確認。不可なら (a) HUMAN が UI で作る／(b) 単純ロールアップ（全期間 COUNT）＋ビューで代替 → **【着地 2026-09-17】MCP スキーマに条件付きオプション無し → (b) 代替（`within_30d` formula ＋ SUM ロールアップ・§7-1）。CSO 裁定 3 のとおり HUMAN UI には回していない** |
 | ⑤ | `genres` の CSO 例示と cache 上位の差 | 本中・PREMIUM＝CSO「企画」だが cache 上位は 美少女／お姉さん | **CSO 例示を採用**し、cache 上位を `note` に併記。「厳密性不要」の指示どおり |
 
 ## 5. 投入候補の内訳（seed 実測・`seed-to-records.mjs` の出力・**CSO 追記 2026-09-17 反映後**）
@@ -103,3 +103,69 @@
 
 - 候補の女優のうち **篠原いよ（W10-03・9/14）・彩月七緒（W10-05・9/16）・逢沢みゆ（W9-06・9/3 / 動画 3 本目 9/9）・美園和花（動画 1 本目 9/4）** は直近の自アカウント投稿で紹介済み（Airtable `posts` 実読み・`ACTRESS_LAST_POSTED`）。**g12（30 日以内の再登場禁止）は posts 側の検査であり、x_targets のリプ対象選定には及ばない**（別テーブル・別目的）。
 - ファイル一式: `management/_metrics/2026-W38/bundle1/`（`x_targets_seed_20260917.json` / `.csv` / `.batches.json` / `seed-to-records.mjs`）。§24-11-1 のとおり git 管理下に置いた。
+
+---
+
+## 7. 着地記録（**CSO 承認 2026-09-17 → CTO 実行 00:5x〜01:15 JST**）
+
+> **CSO 裁定（2026-09-17・束1 設計報告への回答）**: 1. 設計書改訂版を承認。作成 → `get_table_schema` で選択肢の実在確認 → 5 バッチ投入 → 42 件読み戻し、の順で実行してよい ／ 2. 追加提案フィールド 7 件すべて採用 ／ 3. `reply_count_30d` は MCP `create_field` で条件付きロールアップを試み、不可なら「単純ロールアップ＋ビュー側フィルタ」で代替。HUMAN の UI 作業には回さない ／ 4. §4 ②③⑤は記録のみで確定 ／ 5. 投入後の報告に読み戻し結果と「本日の対象」のフィルタ定義を含める。
+
+### 7-1. 実体（base `app0VKGU2B16qny6c`・MCP `create_table` / `create_field`）
+
+| テーブル | tableId | primary | フィールド数 | 備考 |
+|---|---|---|---|---|
+| **`x_targets`** | **`tblStC3L57aJh22sD`** | `handle` | **16**（便 11 ＋ 追加 `source` / `verified_at` / `reply_restriction` / `no_repropose` ＋ 逆リンク `x_replies` ＋ `reply_count_30d`） | 選択肢 ID は `x_targets_field_map.json` |
+| **`x_replies`** | **`tblpFVorIemSOywTH`** | `reply_key` | **11**（便 7 ＋ `reply_key` / `reply_post_id` / `target_post_url` ＋ `within_30d`） | 同上 |
+
+- **`get_table_schema` の読み戻し（段 2）**: `type` 5 値・`status` 3 値（候補 / 稼働 / 除外）・`source` 3 値・`reply_restriction` 3 値（不明 / なし / あり）・`genres` 17 値が**設計書の文字列と一致**（ID は `x_targets_field_map.json`）。
+- **§4 ④ の着地＝(b) 代替**: MCP `create_field` の rollup スキーマに**条件付きオプションが存在しない**（試行で確認）。→ **`x_replies.within_30d`**（formula `IF(AND({posted_at}, IS_AFTER({posted_at}, DATEADD(NOW(), -30, 'days'))), 1, 0)`）を置き、**`x_targets.reply_count_30d` を `SUM(values)` over `within_30d` の単純ロールアップ**とした。**HUMAN の UI 作業には回していない**（裁定 3）。**値の意味は「直近 30 日のリプ件数」で設計どおり**（formula 側で期間を切っているため、ビュー側に追加フィルタは不要）。
+- **【併記】`within_30d` は `NOW()` 依存のため Airtable 側の再計算タイミングに従う**（数分〜数時間の遅延がありうる）。**厳密な瞬時値ではない。**
+
+### 7-2. 投入（段 3〜4・`create_records_for_table`・フィールド ID キー・`typecast` 未使用）
+
+| バッチ | 件数 | createdTime（UTC） | JST |
+|---|---|---|---|
+| 1 | 10 | `2026-09-16T16:06:45Z` | 01:06:45 |
+| 2 | 10 | `2026-09-16T16:11:23Z` | 01:11:23 |
+| 3 | 10 | `2026-09-16T16:12:01Z` | 01:12:01 |
+| 4 | 10 | `2026-09-16T16:13:15Z` | 01:13:15 |
+| 5 | 2 | `2026-09-16T16:13:38Z` | 01:13:38 |
+
+- 投入元＝`x_targets_seed_20260917.batches.byid.json`（`seed-to-records.mjs` の出力を `x_targets_field_map.json` でフィールド ID キーへ変換したもの）。
+- **バッチ 2 の投入前に `list_records_for_table` で 10 件のみ存在（重複なし）を確認してから続行**（§10）。
+
+### 7-3. 読み戻し（段 5・`list_records_for_table`・2026-09-17 01:14 JST・全 13 フィールド）
+
+| 検査 | 結果 |
+|---|---|
+| 件数 | **42 / 42**（`totalRecordCount` 42） |
+| handle 一致（seed ↔ 読み戻し・機械照合） | **42 / 42・不一致 0**（`x_targets_readback_20260917.tsv` × `batches.byid.json`・priority / type / no_repropose / genres の 4 属性） |
+| `status` | **全件 `候補`**（`selavY7cGkoPRyKu3`） |
+| `source` / `reply_restriction` | **全件 `Grok調査` / `不明`** |
+| `priority` | **1: 28 / 2: 9 / 3: 4 / 空: 1**（`@otona_rank_info`） |
+| `no_repropose` ON | **7**（`@otona_rank_info` / `@SOFT_ON_DEMAND` / `@Miyoshi_style` / `@hinako_matsui` / `@hosimiyaichika` / `@rinrin_dayou` / `@piyomaru_cmore`） |
+| `type` | セール告知系 3 / レビュー系 4 / メーカー公式 15 / 女優本人 20 |
+| **稼働候補（`no_repropose` OFF）** | **35**＝セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15（**CSO 追記の内訳と一致**） |
+| `followers` / `verified_at` / `last_reply_at` / `last_quote_at` | **全件 空**（HUMAN 実査で埋める） |
+| `reply_count_30d` | **全件 0**（`x_replies` 0 件） |
+
+- 読み戻しの転記 → `x_targets_readback_20260917.tsv`（handle / recId / priority / type / no_repropose / genres / createdTime）。
+
+### 7-4. ビュー「本日の対象」（**MCP にビュー作成ツールが無いため定義のみ・作成は HUMAN の UI 操作または束2 CLI のクエリで実現**）
+
+| 項目 | 定義（フィールド ID・選択肢 ID は `x_targets_field_map.json`） |
+|---|---|
+| フィルタ 1 | `status`（`fldHHsmMVoqkFZXpe`）**= 稼働**（`selL5ZBRxnuzpuQFc`） |
+| フィルタ 2 | `no_repropose`（`fldlBROgusXj2PZTs`）**≠ true**（未チェック） |
+| フィルタ 3 | `reply_restriction`（`fld212NAEGBWRujwI`）**≠ あり**（`sellfceEd25p8HQu6`） |
+| フィルタ 4 | `last_reply_at`（`fldaqFoEVEIdvFXV3`）**が空 OR 3 日以上前**（`daysAgo 3`・timeZone `Asia/Tokyo`） |
+| ソート | `priority`（`fldxeGSQKtSZtwaPG`）昇順 → `last_reply_at` 昇順（古い順・空を先頭） |
+| **現時点の該当件数** | **0**（`status=稼働` が 0 件＝HUMAN 実査前） |
+
+- **`list_records_for_table` の `filters` で同じ条件を表現できる**（`and` ／ `=` / `!=` / `isEmpty` / `<` with `{mode: daysAgo, numberOfDays: 3, timeZone: Asia/Tokyo}`）＝束2 の CLI は Airtable のビューに依存せず同じ集合を取れる。
+- **【厳守】`status=稼働` への遷移は HUMAN の実査後のみ**（§26-8）。CTO は書かない。
+
+### 7-5. 残（HUMAN）
+
+- **X 画面での実査**（実在／フォロワー数／直近 7 日の投稿／返信制限）→ `followers` / `verified_at` / `reply_restriction` を記入 → `status=稼働`。**対象は稼働候補 35 件**（`no_repropose` OFF）。
+- 「本日の対象」ビューを Airtable UI で作る場合は §7-4 の定義どおり（任意・束2 CLI はビュー不要）。

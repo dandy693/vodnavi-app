@@ -24,7 +24,7 @@
 - クロスドメイン linker 構成済：`vodnavi.jp`(完全一致) + `app.vodnavi.jp`(含む) + `moterist.com`(含む)。タイムゾーン (GMT+09:00) 日本時間 / 通貨 JPY(¥)。
 
 ## 4. ガバナンス手続き不変条件
-- **TASK_BOARD.md は in-place のみ**：`cat >` / `mv tmp` の全面上書き禁止、`>>` 追記 or `Edit` 部分置換のみ（履歴保全）。日本語 append は heredoc（`printf` はマルチバイト破損）。
+- **TASK_BOARD.md は in-place のみ**：`cat >` / `mv tmp` の全面上書き禁止、`>>` 追記 or `Edit` 部分置換のみ（履歴保全）。日本語 append は heredoc（`printf` はマルチバイト破損）。**【運用則・CSO 承認 2026-09-17】TASK_BOARD 等への heredoc 追記は引用符付き（`<<'EOF'`）を既定とする**——実例＝2026-09-17 `c38c83a` で `<<EOF` により本文中のバッククォート区間がコマンド置換として実行・脱落した（`1607270` で訂正・自己申告）。
 - **タスク ID / BRIEF 番号は一意**。既存作業への重複タスクは新規起票せず既存へ集約（cross-ref）。
 - **`git add -A` を使用しないこと。意図した成果物のみを明示的に add すること。** 2026-08-13、`git add -A` により**未追跡ファイル1件（`x_nikka_kantan_tejunsho.md`）が意図せずコミット・push された**。**当該ファイルはそのまま残す**（CSO裁定 2026-08-13。秘匿情報の検査が0件で実害がなく、履歴を書き換えるほうがリスクが高い）。**`git commit -a` / `git add .` も同じ理由で使わない。**
 - **捏造禁止**：HUMAN 承認 / 実行完了 / gate 通過を勝手に既成事実化しない。目視/物理確認できた事実のみ記載、未確認は「未確認」と明記。
@@ -3065,7 +3065,7 @@ PASS  llm.concierge stream
 | **skip**（`no changes … -> skip build` → CANCELED） | 次の docs コミットのビルドログ | ✅ **観測済み（2026-09-12 09:44:47 JST・`7e1912f`・距離 1）**: `[ignore-build] no changes under /vercel/path0/app-concierge vs e2f5b50f… -> skip build` → `The deployment was canceled because the Ignored Build Step command returned exit code 0.`（`dpl_BcMU2uTYnKwuwXjXVDVuvqPD9YLZ` CANCELED） |
 | **build**（`changes … -> build`） | 本便で観測済み | ✅ |
 | **再試行 → 成功**（`git diff failed (rc=…)` → `retry: git fetch --deepen` → `PREV now reachable` → skip/build） | 距離 ≥ 10 の docs コミットが**自然に**発生したとき | **未達（2026-09-17 00:30・距離 10 で `--deepen` 3 段と PREV 単体 fetch が全件失敗 → §22-8-1-1-f）** |
-| **fail-open**（`diff impossible even after retry → build`） | 同上 | ✅ **観測済み（2026-09-17 00:30 JST・`706bcda`・距離 10・`dpl_7Pd1RdVasjNMx6PKtcf2rbWegdtR` READY → §22-8-1-1-f）** |
+| **fail-open**（`diff impossible even after retry → build`） | 同上 | ✅ **観測済み（2026-09-17 00:30 JST・`706bcda`・距離 10・`dpl_7Pd1RdVasjNMx6PKtcf2rbWegdtR` READY → §22-8-1-1-f）。【CSO裁定 2026-09-17】距離 10 で自然観測・受容** |
 
 - **【厳守】判定文は「READY が出たか」ではなく「__diff 不能のログが出たか__」で書く**（§22-8-1-1-c の CTO 併記どおり）。**「差分 0 行で READY」は (c) により実装後も起こりうる。**
 - **ローカル実行（push 前）**: rc0 / rc1 / rc128（不在 SHA → deepen 3 段 → fetch PREV → fail-open）/ unset の 4 経路を確認済み（`deploy-20260912-bin124-H-impl.md` §2）。
@@ -3104,6 +3104,9 @@ Running "vercel build"
 - **§22-8-1-1-e の検証表を更新**: 「再試行 → 成功」＝**未達（fetch 全失敗）**／「fail-open」＝**✅ 観測済み（本項）**。
 - **公開情報の確認（`search_vercel_documentation`・2026-09-17 00:3x）**: clone 深度・deep clone の設定に関する記載は本検索では見つからなかった。**見つかった関連記載**＝Turborepo 向けの Ignored Build Step 例 `npx turbo-ignore --fallback=HEAD^1`（基準 SHA が使えない場合の fallback を持つ公式パターン）と、既定例 `git diff --quiet HEAD^ HEAD ./`（直前 1 コミットのみを比較）。
 - **【厳守・CTO は決めない】次の選択肢は裁定事項**: (i) fail-open を受容する（距離 ≥10 の docs push は必ずビルド・sitemap `lastmod` が動く）／(ii) スクリプトで fetch 失敗の stderr をログして原因を特定する（1 行の変更・観測目的の push は不可のため次の自然発生待ち）／(iii) 深い clone を得る設定を探す（公式記載は未確認）／(iv) PREV 不能時に「clone 内の全コミットが `app-concierge/` に触れていない」ことを検査し、**かつ clone 内コミット数 ＝ 距離と一致する場合に限り** skip する（今回は距離 10 ＝ clone 内 10 で一致していたが、一般には距離が分からないため不一致の可能性が残る）。**採否は CSO。**
+- **【CSO裁定 2026-09-17】(i) 受容。(ii)〜(iv) は着手しない。** **(ii) は未決に残し、fail-open が実害（sitemap 全損・想定外の再生成）を伴って再発した場合にのみ起案する。** **E19 の検証表（§22-8-1-1-e）には「距離 10 で自然観測・受容」と記録。**
+  - **【厳守】「受容」は「距離 ≥10 の docs push は必ずビルドが走り sitemap `lastmod` が動く」ことを既知の挙動として持つという意味であり、機構（fetch が失敗する理由）が判明したという意味ではない。** **§16 / §22-5 / §6-5 と同型の「原因未特定のまま受容」。**
+  - **【運用上の帰結】凍結期間中の docs push は距離を意識する**——**距離 ≥10 になる前に push すれば skip 経路（CANCELED）で済む。** **ただし観測目的の push は引き続き禁止**（(d)）。
 
 ### 22-9. 【E22・実測 2026-09-12 06:5x JST・第124便】**現行 `sitemap.xml` の GSC 処理状態 — 「成功しました」。「一時的な処理エラー」は sitemap 全体には及んでいない**
 
@@ -4281,13 +4284,22 @@ gtag('config', 'G-GG7JV9MJRW', {
 
 ### 26-9. 【記録・2026-09-17】**`x_targets` 初期候補（CSO 指定 42 件・Grok 調査由来）と不採用 13 件**
 
-- **設計報告（実装前）** → `management/_metrics/2026-W38/bundle1/design-20260917-bin127-bundle1-x-targets.md`。**テーブルは未作成・投入は未実行**（2026-09-17 00:18 JST 実測: base のテーブルは `posts` / `internal_link_proposals` のみ）。
+- **設計報告（実装前）** → `management/_metrics/2026-W38/bundle1/design-20260917-bin127-bundle1-x-targets.md`。**テーブルは未作成・投入は未実行**（2026-09-17 00:18 JST 実測: base のテーブルは `posts` / `internal_link_proposals` のみ）。 → **【2026-09-17 01:15 更新】CSO 承認後に作成・投入・読み戻しまで完了（本節末尾の「着地」）。**
 - **候補 42 件**（seed: `bundle1/x_targets_seed_20260917.json`）: セール告知系 3 / レビュー系 4 / メーカー公式 15 / 女優本人 20。**priority 1＝24 / 2＝13 / 3＝4 / 空 1**（`@otona_rank_info`＝CSO「保留」・内容実査後に判定）。**status は全件 `候補` で投入予定。followers は空。**
 - **不採用（登録しない・理由）**: `@fanzagames_info` / `@douzinr18` / `@FANZA_ebook`＝ゲーム・同人・電子書籍の公式（**フロア不一致**）／同人作家 10 件（`@acechan_f` / `@a_mezashi` / `@umakuchu` / `@new_yumeki` / `@takara_joney` / `@onioni029029` / `@shunjyo_shusuke` / `@crowe_sbs` / `@akisuke06080608` / `@MuG1_77`）＝**読者層が同人購入者で単品動画に転換しない**。
 - **`genres` の初期値**: CSO 例示（マドンナ→熟女／本中・PREMIUM→企画／kawaii*→美少女）を優先し、例示のない先は `fanza_response_cache` の属性系ジャンル上位から概算（設計書 §1-1・§5）。**束2「知識なしモード」の方向づけ用・厳密性は不要**（CSO）。
 - **【停止して報告】不一致の候補 5 件は設計書 §4**（①「保留」を priority 1〜3 で表現できない ②フォロワー目安との乖離＝CSO 指定 ③30 件→42 件＝CSO 指定 ④条件付きロールアップの MCP 可否 ⑤genres の例示と cache の差）。**①は CSO 追記で解消。④は裁定が要る。**
 - **【CSO 追記 2026-09-17（Grok 実査前チェック）を反映・00:5x】** priority 2→1＝`@azusa_hikari_` / `@sakuramio_X` / `@mio_sakai_` / `@5may_itsukaichi`（4 件）／フォロワー目安を「2026-09-16 Grok取得」で note に更新（5 件）／**非稼働 7 件**（`status=候補` のまま・`no_repropose` ON・再提案しない・理由は note）＝`@Miyoshi_style`（7/10 以降投稿なし・表示名「シャドバン中」）/ `@hinako_matsui`（5/19 以降なし）/ `@hosimiyaichika`（8/5 以降なし）/ `@rinrin_dayou`（5/30 以降なし）/ `@piyomaru_cmore`（7/31 引退）/ `@SOFT_ON_DEMAND`（1/20 以降なし）/ `@otona_rank_info`（フォロワー 78・7/13 以降なし＝①「保留」は解消）。**更新後: 投入 42 件＝priority 1: 28 / 2: 9 / 3: 4 / 空 1。うち稼働候補 35 件（セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15）＝priority 1: 27 / 2: 4 / 3: 4。「本日の対象」（最終リプから 3 日以上）で 3 日一巡の規模。**
 - **【運用の固定・CSO 追記】返信制限は全件「不明」で投入し HUMAN 実査で埋める（`reply_restriction`＝不明／なし／あり）。認証バッジの有無は台帳に載せない（Grok の認証列は Blue のみ検出のためメーカー公式では信頼しない）。**
+- **【CSO裁定 2026-09-17・束1 設計承認】** 1. 設計書改訂版を承認・作成 → `get_table_schema` → 5 バッチ投入 → 42 件読み戻しの順で実行可 ／ 2. 追加提案フィールド 7 件すべて採用 ／ 3. `reply_count_30d` は MCP で条件付きロールアップを試み、不可なら「単純ロールアップ＋ビュー側フィルタ」で代替（HUMAN の UI 作業には回さない・着地を報告）／ 4. §4 ②③⑤は記録のみで確定 ／ 5. 投入後の報告に読み戻し結果と「本日の対象」のフィルタ定義を含める。
+- **【着地・CTO 実行 2026-09-17 00:5x〜01:15 JST】**（全文 → 設計書 §7）
+  - **テーブル実体**: **`x_targets` = `tblStC3L57aJh22sD`**（primary `handle`・16 フィールド）／ **`x_replies` = `tblpFVorIemSOywTH`**（primary `reply_key`・11 フィールド）。**フィールド ID・選択肢 ID の全マップ → `bundle1/x_targets_field_map.json`**。`get_table_schema` で選択肢名の実在を読み戻し済み（設計書の文字列と一致）。
+  - **§4 ④ の着地＝代替**: MCP `create_field` の rollup スキーマに条件付きオプションが無い → **`x_replies.within_30d`（formula・`posted_at` が 30 日以内なら 1）＋ `x_targets.reply_count_30d`（`SUM(values)` over `within_30d`）**。**HUMAN UI には回していない**（裁定 3）。**`NOW()` 依存のため Airtable の再計算タイミングに従う（厳密な瞬時値ではない）。**
+  - **投入**: `create_records_for_table` × 5（フィールド ID キー・`typecast` 未使用）。createdTime＝**01:06:45 / 01:11:23 / 01:12:01 / 01:13:15 / 01:13:38 JST**（10/10/10/10/2）。**バッチ 2 の前に 10 件のみ存在を読み戻して重複を排除**（§10）。
+  - **読み戻し（01:14 JST・`list_records_for_table`・13 フィールド）**: **42 / 42・seed との機械照合で不一致 0**（`bundle1/x_targets_readback_20260917.tsv` × `x_targets_seed_20260917.batches.byid.json`・priority / type / no_repropose / genres）。**`status` 全件 `候補`・`source` 全件 `Grok調査`・`reply_restriction` 全件 `不明`・`priority` 1: 28 / 2: 9 / 3: 4 / 空 1・`no_repropose` ON 7・稼働候補 35（セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15）＝CSO 追記の内訳と一致。`followers` / `verified_at` / `last_reply_at` / `last_quote_at` は全件空。`reply_count_30d` 全件 0。**
+  - **ビュー「本日の対象」**: **MCP にビュー作成ツールが無いため定義のみ**——`status = 稼働`（`selL5ZBRxnuzpuQFc`）∧ `no_repropose ≠ true` ∧ `reply_restriction ≠ あり`（`sellfceEd25p8HQu6`）∧（`last_reply_at` 空 ∨ 3 日以上前・`Asia/Tokyo`）／ソート `priority` 昇順 → `last_reply_at` 昇順。**現時点の該当 0 件**（`稼働` が 0＝HUMAN 実査前）。**束2 の CLI は `list_records_for_table` の `filters` で同じ集合を取れるためビューに依存しない。** UI でビューを作るかは任意（HUMAN）。
+  - **【厳守】`status=稼働` への遷移は HUMAN の実査後のみ**（§26-8）。**CTO は書いていない。**
+  - **【併記・§13 の限界はそのまま】`x_targets` / `x_replies` も Airtable 一層のみ。** `status` を書く箇所をスクリプト 1 箇所に限定（`seed-to-records.mjs` の `STATUS = "候補"`）し読み戻しで検算した——**構造的保証ではなく緩和**（§13）。
 
 ---
 
@@ -4328,10 +4340,11 @@ gtag('config', 'G-GG7JV9MJRW', {
 | Mac mini CLI トークンのスコープ化 | 未着手 |
 | **E6②（MISS 時スナップショット退避）** | 別束・**束1〜3 着地後** |
 | 第127便 §9「間欠エラー修正の前倒し可否」 | **§26-3-1 ① の裁定で消滅**（記述は削除せず訂正で残す） |
+| **E19 (ii) fetch 失敗の stderr をログして原因を特定する（1 行の変更）** | **未決（CSO裁定 2026-09-17）。fail-open が実害（sitemap 全損・想定外の再生成）を伴って再発した場合にのみ起案**（§22-8-1-1-f） |
 
 ### 27-6. HUMAN 残（第128便 §3・§7）
 
 - 新 PAT の「Last used」が「Never used」表示のまま → 次回 MCP 使用後に画面再読込で更新を確認。更新されなければ報告。
 - Google カレンダーに期限通知（2027-08-30 頃）を登録。
 - 旧トークン 2 件（§27-2）の削除完了。
-- X Premium 加入（未完なら今週中）／`x_targets` 初期 30 件の登録（束1 のテーブル新設後）。
+- X Premium 加入（未完なら今週中）／`x_targets` 初期 30 件の登録（束1 のテーブル新設後）。 → **【2026-09-17 更新】X Premium は 9/16 加入済み（§26-7・実請求額の追記が残）。`x_targets` は CTO が 42 件を `status=候補` で投入済み（§26-9）。HUMAN 残＝稼働候補 35 件の X 画面実査（`followers` / `verified_at` / `reply_restriction`）→ `status=稼働`。**

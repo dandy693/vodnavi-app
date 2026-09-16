@@ -10910,3 +10910,18 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **更新後の件数（`seed-to-records.mjs` 実測）**: 投入 42＝**priority 1: 28 / 2: 9 / 3: 4 / 空 1**。**稼働候補 35**（セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15）＝**1: 27 / 2: 4 / 3: 4**（CSO 追記の 35 件と一致）。
 - **残る裁定**: 設計書 §4 ④（`reply_count_30d` の条件付きロールアップを MCP で作れるか）＋ 追加提案フィールド（`source` / `verified_at` / `reply_restriction` / `no_repropose` / `reply_key` / `reply_post_id` / `target_post_url`）の採否。**push 後の Vercel state を確認する（本 push は直前 READY から距離 10＝E19 の再試行経路が自然観測になりうる）。**
 - 【2026-09-17 00:35:22 追記・push 後の Vercel state】`c38c83a`（距離 8）・`1607270`（距離 9）＝CANCELED（skip 経路）。**`706bcda`（距離 10・00:30:25 push）＝`dpl_7Pd1RdVasjNMx6PKtcf2rbWegdtR` READY**——**E19 の fail-open 経路を初観測**: `git diff failed (rc=128): fatal: bad object e2f5b50…` / `commit count HEAD: 10 / shallow=yes` / `--deepen=50/200/1000` と PREV 単体 fetch が**全件失敗** / `diff impossible even after retry -> build (fail-open)`。**H-shallow の機構を直接観測（clone 深度＝実測 10）。** sitemap 再生成 00:31:01（`<loc>` 2,475・works 1,181＝**videoa 381**（初記録）/ anime 400 / nikkatsu 400・genres 200・actresses 1,077・articles 8・全損なし）。記録 → FACT **§22-8-1-1-f**・§22-8-1-1-e 検証表・NOTES E19。**次の扱い（受容／fetch 失敗理由のログ化／深い clone の設定／clone 内全コミット検査）は裁定事項。観測目的の push は引き続き禁止。**
+
+### 【2026-09-17 01:15:37 JST・CSO裁定 2026-09-17（束1 設計承認＋E19 回答）】束1 `x_targets` / `x_replies` を作成し 42 件を投入・読み戻し一致 ／ E19 は (i) 受容でクローズ ／ heredoc 運用則を §4 へ
+
+- **受領した裁定（原文の趣旨）**: ■束1＝設計書改訂版を承認・作成 → `get_table_schema` → 5 バッチ投入 → 42 件読み戻しの順で実行可／追加 7 フィールド全採用／`reply_count_30d` は MCP で条件付きロールアップを試み不可なら「単純ロールアップ＋ビュー側フィルタ」で代替（HUMAN UI に回さない・着地を報告）／§4 ②③⑤は記録のみ／報告に読み戻し結果と「本日の対象」のフィルタ定義を含める。■E19＝(i) 受容・(ii)〜(iv) 着手しない・(ii) は未決（実害を伴う再発時のみ起案）・検証表に「距離 10 で自然観測・受容」。■heredoc 自己申告は承認・運用則を 1 行追加。■未追跡ファイル（`.codex/`・`AGENTS.md`・compass）は CSO 配置・対象外・`.gitignore` は CSO が別途判断するまで触らない。
+- **束1 着地（CTO・00:5x〜01:15 JST・全文 → 設計書 §7 / FACT §26-9 末尾）**:
+  - **`x_targets` = `tblStC3L57aJh22sD`（16 フィールド）／`x_replies` = `tblpFVorIemSOywTH`（11 フィールド）**。ID マップ → `bundle1/x_targets_field_map.json`。`get_table_schema` で選択肢の実在を読み戻し（設計書と一致）。
+  - **§4 ④＝代替で着地**: MCP `create_field` の rollup に条件付きオプション無し → `x_replies.within_30d`（formula）＋ `x_targets.reply_count_30d`（SUM ロールアップ）。HUMAN UI には回していない。
+  - **投入**: `create_records_for_table` × 5（01:06:45 / 01:11:23 / 01:12:01 / 01:13:15 / 01:13:38 JST・10/10/10/10/2）。バッチ 2 の前に 10 件のみ存在を確認（重複なし）。
+  - **読み戻し（01:14 JST）**: **42 / 42・seed との機械照合で不一致 0**（`bundle1/x_targets_readback_20260917.tsv`）。`status` 全件 `候補`／`source` `Grok調査`／`reply_restriction` `不明`／priority **28 / 9 / 4 / 空 1**／`no_repropose` ON **7**／**稼働候補 35**（セール 3 / レビュー 3 / メーカー 14 / 女優 15）＝CSO 追記と一致。`followers` 等は全件空・`reply_count_30d` 全件 0。
+  - **「本日の対象」**: MCP にビュー作成ツール無し → **定義のみ**（`status=稼働` ∧ `no_repropose≠true` ∧ `reply_restriction≠あり` ∧ `last_reply_at` 空∨3 日以上前／`priority` 昇順 → `last_reply_at` 昇順）。**現時点 0 件**（`稼働` 0＝HUMAN 実査前）。束2 CLI は `list_records_for_table` の `filters` で同集合を取れる。
+  - **CTO は `status=稼働` を書いていない**（§26-8）。
+- **台帳**: FACT §4（heredoc 運用則 1 行）・§22-8-1-1-e（fail-open 行に「距離 10 で自然観測・受容」）・§22-8-1-1-f（裁定・受容の意味・運用上の帰結）・§26-9（承認＋着地）・§27-5（E19 (ii) 未決行）・§27-6（HUMAN 残の更新）／NOTES E19 行（クローズ・再燃条件）／設計書 §3・§4 ④・§7 新設。
+- **新規ファイル（明示 add）**: `bundle1/x_targets_field_map.json`・`bundle1/x_targets_seed_20260917.batches.byid.json`・`bundle1/x_targets_readback_20260917.tsv`。
+- **HUMAN 残**: 稼働候補 35 件の X 画面実査 → `followers` / `verified_at` / `reply_restriction` → `status=稼働`／X Premium 実請求額の追記（§26-7）／旧 Supabase トークン 2 件の削除確認・カレンダー通知・新 PAT「Last used」（§27-6）。
+- **次**: 束2 設計（§26-5 前提・`tools/` → `management/` 慣行）→ 束3（`posts` へ `post_type` 追加は許可済み・g8 21:00〜23:00）。**本 push は直前 READY `706bcda` から距離 2（`c4377f4` が距離 1＝`dpl_32MorjnQybXKCHaaUZ5KcG2BsoGX` CANCELED・00:35:34 JST・01:1x に Vercel API で実測）＝skip 経路（CANCELED）の見込み。push 後に state を確認する。**
