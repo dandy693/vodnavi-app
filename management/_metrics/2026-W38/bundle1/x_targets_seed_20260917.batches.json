@@ -11,7 +11,8 @@
           "type": "セール告知系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 9.4万（2026-09-17）｜FANZA動画公式",
+          "note": "Grok目安 9.4万（CSO 指示 2026-09-17 転記）｜FANZA動画公式",
+          "reply_restriction": "不明",
           "priority": 1
         }
       },
@@ -22,7 +23,8 @@
           "type": "セール告知系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 5.1万（2026-09-17）｜セール速報。束3 C型（セール即応）の検知元としても使う",
+          "note": "Grok目安 5.1万（CSO 指示 2026-09-17 転記）｜セール速報。束3 C型（セール即応）の検知元としても使う",
+          "reply_restriction": "不明",
           "priority": 1
         }
       },
@@ -33,7 +35,8 @@
           "type": "セール告知系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 19.9万（2026-09-17）｜FANZA総合公式",
+          "note": "Grok目安 19.9万（CSO 指示 2026-09-17 転記）｜FANZA総合公式",
+          "reply_restriction": "不明",
           "priority": 2
         }
       },
@@ -44,7 +47,8 @@
           "type": "レビュー系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 0.9万（2026-09-17）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "note": "Grok目安 0.9万（CSO 指示 2026-09-17 転記）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "reply_restriction": "不明",
           "priority": 1
         }
       },
@@ -55,7 +59,8 @@
           "type": "レビュー系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 0.8万（2026-09-17）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "note": "Grok目安 0.8万（CSO 指示 2026-09-17 転記）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "reply_restriction": "不明",
           "priority": 1
         }
       },
@@ -66,7 +71,8 @@
           "type": "レビュー系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 0.5万（2026-09-17）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "note": "Grok目安 0.5万（CSO 指示 2026-09-17 転記）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "reply_restriction": "不明",
           "priority": 1
         }
       },
@@ -77,7 +83,9 @@
           "type": "レビュー系",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 不明（2026-09-17）｜【保留・CSO 2026-09-17】内容実査後に priority を判定。priority は空のまま"
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: フォロワー 78・7/13 以降投稿なし】｜Grok目安 不明（CSO 指示 2026-09-17 転記）｜【保留・CSO 2026-09-17】内容実査後に priority を判定。priority は空のまま",
+          "reply_restriction": "不明",
+          "no_repropose": true
         }
       },
       {
@@ -87,7 +95,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 9万（2026-09-17）｜マドンナ｜cache上位: 熟女(1562)/人妻・主婦(1292)",
+          "note": "Grok目安 9.0万（2026-09-16 Grok取得）｜マドンナ｜cache上位: 熟女(1562)/人妻・主婦(1292)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "熟女",
@@ -102,7 +111,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 7.1万（2026-09-17）｜PREMIUM｜genres は CSO 例示（企画）。cache上位: お姉さん(120)/巨乳(91)",
+          "note": "Grok目安 7.1万（CSO 指示 2026-09-17 転記）｜PREMIUM｜genres は CSO 例示（企画）。cache上位: お姉さん(120)/巨乳(91)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "企画",
@@ -117,7 +127,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 6.7万（2026-09-17）｜kawaii*｜cache上位: 美少女(261)/淫乱・ハード系(106)",
+          "note": "Grok目安 6.7万（CSO 指示 2026-09-17 転記）｜kawaii*｜cache上位: 美少女(261)/淫乱・ハード系(106)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "美少女",
@@ -134,7 +145,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 6.1万（2026-09-17）｜アタッカーズ｜cache上位: 辱め(278)/人妻・主婦(182)/ドラマ(174)",
+          "note": "Grok目安 6.1万（2026-09-16 Grok取得）｜アタッカーズ｜cache上位: 辱め(278)/人妻・主婦(182)/ドラマ(174)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "辱め",
@@ -150,7 +162,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 6万（2026-09-17）｜Fitch｜cache上位: 巨乳(292)/痴女(86)",
+          "note": "Grok目安 6万（CSO 指示 2026-09-17 転記）｜Fitch｜cache上位: 巨乳(292)/痴女(86)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "巨乳",
@@ -165,7 +178,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 5.1万（2026-09-17）｜プレステージ｜cache 0 件（maker 名一致なし）のため genres 空",
+          "note": "Grok目安 5.1万（CSO 指示 2026-09-17 転記）｜プレステージ｜cache 0 件（maker 名一致なし）のため genres 空",
+          "reply_restriction": "不明",
           "priority": 1
         }
       },
@@ -176,7 +190,9 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 4.9万（2026-09-17）｜SOD広報｜genres は CSO 例示（企画系）。cache上位（SODクリエイト）: 巨乳(283)/OL(210)/企画(209)",
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: 1/20 以降投稿なし】｜Grok目安 4.9万（CSO 指示 2026-09-17 転記）｜SOD広報｜genres は CSO 例示（企画系）。cache上位（SODクリエイト）: 巨乳(283)/OL(210)/企画(209)",
+          "reply_restriction": "不明",
+          "no_repropose": true,
           "priority": 1,
           "genres": [
             "企画",
@@ -191,7 +207,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 4.7万（2026-09-17）｜ワンズファクトリー｜cache上位: 巨乳(146)/痴女(97)",
+          "note": "Grok目安 4.7万（2026-09-16 Grok取得）｜ワンズファクトリー｜cache上位: 巨乳(146)/痴女(97)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "巨乳",
@@ -206,7 +223,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 2.1万（2026-09-17）｜FALENO広報｜cache上位: 巨乳(178)/美少女(104)",
+          "note": "Grok目安 2.1万（2026-09-16 Grok取得）｜FALENO広報｜cache上位: 巨乳(178)/美少女(104)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "巨乳",
@@ -221,7 +239,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 1.8万（2026-09-17）｜SODSTAR｜genres は CSO 例示（SOD 系＝企画）。cache に SODSTAR 名義の maker 無し",
+          "note": "Grok目安 1.8万（2026-09-16 Grok取得）｜SODSTAR｜genres は CSO 例示（SOD 系＝企画）。cache に SODSTAR 名義の maker 無し",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "企画"
@@ -235,7 +254,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 1.2万（2026-09-17）｜本中｜genres は CSO 例示（企画）。cache上位: 美少女(133)/巨乳(94)",
+          "note": "Grok目安 1.2万（CSO 指示 2026-09-17 転記）｜本中｜genres は CSO 例示（企画）。cache上位: 美少女(133)/巨乳(94)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "企画",
@@ -250,7 +270,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 18万（2026-09-17）｜アイデアポケット｜cache上位: 美少女(205)/巨乳(198)/お姉さん(167)",
+          "note": "Grok目安 17.6万（2026-09-16 Grok取得）｜アイデアポケット｜cache上位: 美少女(205)/巨乳(198)/お姉さん(167)",
+          "reply_restriction": "不明",
           "priority": 2,
           "genres": [
             "美少女",
@@ -265,7 +286,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 26万（2026-09-17）｜MOODYZ｜cache上位: 巨乳(652)/美少女(569)",
+          "note": "Grok目安 26万（CSO 指示 2026-09-17 転記）｜MOODYZ｜cache上位: 巨乳(652)/美少女(569)",
+          "reply_restriction": "不明",
           "priority": 2,
           "genres": [
             "巨乳",
@@ -282,7 +304,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 36万（2026-09-17）｜エスワン。週1〜2件の対照用｜cache上位: 巨乳(637)/美少女(419)",
+          "note": "Grok目安 36万（CSO 指示 2026-09-17 転記）｜エスワン。週1〜2件の対照用｜cache上位: 巨乳(637)/美少女(419)",
+          "reply_restriction": "不明",
           "priority": 3,
           "genres": [
             "巨乳",
@@ -297,7 +320,8 @@
           "type": "メーカー公式",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 24万（2026-09-17）｜SOD女子社員（企画系）。対照用｜genres は CSO 例示",
+          "note": "Grok目安 24万（CSO 指示 2026-09-17 転記）｜SOD女子社員（企画系）。対照用｜genres は CSO 例示",
+          "reply_restriction": "不明",
           "priority": 3,
           "genres": [
             "企画"
@@ -311,7 +335,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 15.1万（2026-09-17）｜篠原いよ／マドンナ専属｜根拠=メーカー公式からのメンション｜cache 29 件: 人妻・主婦(25)/熟女(25)",
+          "note": "Grok目安 15.1万（CSO 指示 2026-09-17 転記）｜篠原いよ／マドンナ専属｜根拠=メーカー公式からのメンション｜cache 29 件: 人妻・主婦(25)/熟女(25)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "熟女",
@@ -326,7 +351,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 20.1万（2026-09-17）｜逢沢みゆ／PREMIUM・MOODYZ・本中｜根拠=メーカー公式からのメンション｜cache 295 件: 美少女(125)/巨乳(92)",
+          "note": "Grok目安 20.1万（CSO 指示 2026-09-17 転記）｜逢沢みゆ／PREMIUM・MOODYZ・本中｜根拠=メーカー公式からのメンション｜cache 295 件: 美少女(125)/巨乳(92)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "美少女",
@@ -341,7 +367,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 23.5万（2026-09-17）｜彩月七緒／マドンナ・PREMIUM｜根拠=メーカー公式からのメンション｜cache 49 件: 巨乳(39)",
+          "note": "Grok目安 23.5万（CSO 指示 2026-09-17 転記）｜彩月七緒／マドンナ・PREMIUM｜根拠=メーカー公式からのメンション｜cache 49 件: 巨乳(39)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "巨乳"
@@ -355,7 +382,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 7.1万（2026-09-17）｜清野咲／kawaii*専属｜根拠=メーカー公式からのメンション｜cache 18 件: 美少女(15)/スレンダー(8)",
+          "note": "Grok目安 7.1万（CSO 指示 2026-09-17 転記）｜清野咲／kawaii*専属｜根拠=メーカー公式からのメンション｜cache 18 件: 美少女(15)/スレンダー(8)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "美少女",
@@ -370,7 +398,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 10.2万（2026-09-17）｜北岡果林／本中・PREMIUM｜根拠=メーカー公式からのメンション｜cache 267 件: 美少女(145)/痴女(53)",
+          "note": "Grok目安 10.2万（CSO 指示 2026-09-17 転記）｜北岡果林／本中・PREMIUM｜根拠=メーカー公式からのメンション｜cache 267 件: 美少女(145)/痴女(53)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "美少女",
@@ -385,7 +414,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 16.8万（2026-09-17）｜美園和花／アタッカーズ・本中｜根拠=メーカー公式からのメンション｜cache 609 件: 巨乳(308)/痴女(186)",
+          "note": "Grok目安 16.8万（CSO 指示 2026-09-17 転記）｜美園和花／アタッカーズ・本中｜根拠=メーカー公式からのメンション｜cache 609 件: 巨乳(308)/痴女(186)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "巨乳",
@@ -400,7 +430,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 8.6万（2026-09-17）｜菊乃らん／Fitch専属｜根拠=メーカー公式からのメンション｜cache 43 件: 巨乳(38)",
+          "note": "Grok目安 8.6万（CSO 指示 2026-09-17 転記）｜菊乃らん／Fitch専属｜根拠=メーカー公式からのメンション｜cache 43 件: 巨乳(38)",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "巨乳"
@@ -414,7 +445,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 1.6万（2026-09-17）｜希月あまね／アイデアポケット専属｜根拠=メーカー公式からのメンション｜cache 1 件（デビュー作）: お姉さん/巨乳",
+          "note": "Grok目安 1.6万（CSO 指示 2026-09-17 転記）｜希月あまね／アイデアポケット専属｜根拠=メーカー公式からのメンション｜cache 1 件（デビュー作）: お姉さん/巨乳",
+          "reply_restriction": "不明",
           "priority": 1,
           "genres": [
             "お姉さん",
@@ -431,7 +463,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 30.3万（2026-09-17）｜白峰ミウ／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 120 件: 寝取り・寝取られ・NTR(23)/巨乳(23)",
+          "note": "Grok目安 30.2万（2026-09-16 Grok取得）｜白峰ミウ／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 120 件: 寝取り・寝取られ・NTR(23)/巨乳(23)",
+          "reply_restriction": "不明",
           "priority": 2,
           "genres": [
             "寝取り・寝取られ・NTR",
@@ -446,7 +479,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜三好佑香／PREMIUM｜根拠=メーカー公式からのメンション｜cache 17 件: お姉さん(9)/スレンダー(5)",
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: 7/10 以降投稿なし・表示名「シャドバン中」】｜Grok目安 未取得（CSO 指示 2026-09-17 転記）｜三好佑香／PREMIUM｜根拠=メーカー公式からのメンション｜cache 17 件: お姉さん(9)/スレンダー(5)",
+          "reply_restriction": "不明",
+          "no_repropose": true,
           "priority": 2,
           "genres": [
             "お姉さん",
@@ -461,7 +496,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜松井日奈子／kawaii*｜根拠=メーカー公式からのメンション｜cache 144 件: 美少女(58)/巨乳(31)",
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: 5/19 以降投稿なし】｜Grok目安 未取得（CSO 指示 2026-09-17 転記）｜松井日奈子／kawaii*｜根拠=メーカー公式からのメンション｜cache 144 件: 美少女(58)/巨乳(31)",
+          "reply_restriction": "不明",
+          "no_repropose": true,
           "priority": 2,
           "genres": [
             "美少女",
@@ -476,7 +513,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜星宮一花／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 137 件: 美少女(46)/巨乳(40)/スレンダー(37)",
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: 8/5 以降投稿なし】｜Grok目安 未取得（CSO 指示 2026-09-17 転記）｜星宮一花／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 137 件: 美少女(46)/巨乳(40)/スレンダー(37)",
+          "reply_restriction": "不明",
+          "no_repropose": true,
           "priority": 2,
           "genres": [
             "美少女",
@@ -491,8 +530,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜梓ヒカリ／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 116 件: 巨乳(35)/美少女(30)",
-          "priority": 2,
+          "note": "Grok目安 25.7万（2026-09-16 Grok取得）｜梓ヒカリ／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 116 件: 巨乳(35)/美少女(30)｜9/13 投稿あり（CSO 追記 2026-09-17）",
+          "reply_restriction": "不明",
+          "priority": 1,
           "genres": [
             "巨乳",
             "美少女"
@@ -506,8 +546,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜桜みお／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 13 件: 看護婦・ナース(6)/お姉さん(5)",
-          "priority": 2,
+          "note": "Grok目安 1.3万（2026-09-16 Grok取得）｜桜みお／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 13 件: 看護婦・ナース(6)/お姉さん(5)｜9/16 投稿あり（CSO 追記 2026-09-17）",
+          "reply_restriction": "不明",
+          "priority": 1,
           "genres": [
             "お姉さん"
           ]
@@ -520,8 +561,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜坂井美桜／アイデアポケット｜根拠=メーカー公式からのメンション｜cache 14 件: スレンダー(9)/巨乳(8)/お姉さん(5)",
-          "priority": 2,
+          "note": "Grok目安 2.9万（2026-09-16 Grok取得）｜坂井美桜／アイデアポケット｜根拠=メーカー公式からのメンション｜cache 14 件: スレンダー(9)/巨乳(8)/お姉さん(5)｜9/15 投稿あり（CSO 追記 2026-09-17）",
+          "reply_restriction": "不明",
+          "priority": 1,
           "genres": [
             "スレンダー",
             "お姉さん"
@@ -535,7 +577,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜鈴の家りん／本中｜根拠=メーカー公式からのメンション｜cache 42 件: 巨乳(20)/美少女(11)",
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: 5/30 以降投稿なし】｜Grok目安 未取得（CSO 指示 2026-09-17 転記）｜鈴の家りん／本中｜根拠=メーカー公式からのメンション｜cache 42 件: 巨乳(20)/美少女(11)",
+          "reply_restriction": "不明",
+          "no_repropose": true,
           "priority": 2,
           "genres": [
             "巨乳",
@@ -550,8 +594,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜五日市芽依／本中｜根拠=メーカー公式からのメンション｜cache 139 件: 巨乳(57)/痴女(36)",
-          "priority": 2,
+          "note": "Grok目安 18.1万（2026-09-16 Grok取得）｜五日市芽依／本中｜根拠=メーカー公式からのメンション｜cache 139 件: 巨乳(57)/痴女(36)｜9/16 投稿あり（CSO 追記 2026-09-17）",
+          "reply_restriction": "不明",
+          "priority": 1,
           "genres": [
             "巨乳",
             "痴女"
@@ -565,7 +610,9 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 未取得（2026-09-17）｜海老咲あお／Fitch｜根拠=メーカー公式からのメンション｜cache 51 件: 巨乳(26)/痴女(10)",
+          "note": "【非稼働・再提案しない（CSO 追記 2026-09-17）: 7/31 引退】｜Grok目安 未取得（CSO 指示 2026-09-17 転記）｜海老咲あお／Fitch｜根拠=メーカー公式からのメンション｜cache 51 件: 巨乳(26)/痴女(10)",
+          "reply_restriction": "不明",
+          "no_repropose": true,
           "priority": 2,
           "genres": [
             "巨乳",
@@ -582,7 +629,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 114万（2026-09-17）｜伊藤舞雪／kawaii*。対照用｜根拠=メーカー公式からのメンション｜cache 201 件: 美少女(98)/巨乳(60)",
+          "note": "Grok目安 114万（CSO 指示 2026-09-17 転記）｜伊藤舞雪／kawaii*。対照用｜根拠=メーカー公式からのメンション｜cache 201 件: 美少女(98)/巨乳(60)",
+          "reply_restriction": "不明",
           "priority": 3,
           "genres": [
             "美少女",
@@ -597,7 +645,8 @@
           "type": "女優本人",
           "status": "候補",
           "source": "Grok調査",
-          "note": "Grok目安 109万（2026-09-17）｜八掛うみ／プレステージ。対照用｜根拠=メーカー公式からのメンション｜cache 0 件のため genres 空",
+          "note": "Grok目安 109万（CSO 指示 2026-09-17 転記）｜八掛うみ／プレステージ。対照用｜根拠=メーカー公式からのメンション｜cache 0 件のため genres 空",
+          "reply_restriction": "不明",
           "priority": 3
         }
       }

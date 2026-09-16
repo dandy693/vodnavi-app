@@ -10900,3 +10900,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **【停止して報告】不一致の候補（設計書 §4）**: ①「保留」は priority 1〜3 で表現できない（(a) priority 空＋note＝seed の現状 / (b) status に `保留` を追加 / (c) 投入しない）②フォロワー目安 1万〜20万との乖離＝CSO 指定・記録のみ ③30 件→42 件＝CSO 指定・記録のみ ④`reply_count_30d` の条件付きロールアップを MCP で作れるか未確認 ⑤genres の CSO 例示と cache 上位の差＝例示を採用・cache は note に併記。**①④は裁定要。**
 - **未追跡ファイル（本便で add しない）**: `.codex/config.toml`・`AGENTS.md`（2026-09-16 18:29・ユーザー配置・CLAUDE.md と同内容の冒頭）・`compass_artifact_…md`（採否待ち）。
 - **次**: 設計承認 → テーブル作成（MCP `create_table`）→ `get_table_schema` で選択肢の実在確認 → 5 バッチ投入 → 42 件読み戻し → HUMAN 実査で `稼働` へ。**push 後の Vercel state を確認する。**
+
+### 【 JST・CSO 追記 2026-09-17】`x_targets` 初期投入候補の更新（Grok 実査前チェック反映）— seed・設計書・FACT §26-9 を更新（**テーブル作成・投入は引き続き未実行**）
+
+- **priority 2→1（4 件）**: `@azusa_hikari_`（25.7万・9/13 投稿）/ `@sakuramio_X`（1.3万・9/16 投稿）/ `@mio_sakai_`（2.9万・9/15 投稿）/ `@5may_itsukaichi`（18.1万・9/16 投稿）。`@shiromine_miu`（30.2万）・`@IDEAPOCKETTER`（17.6万）は 2 のまま。
+- **目安更新（note・「2026-09-16 Grok取得」）**: `@Madonna_AVinfo` 9.0万 / `@attackers_av` 6.1万 / `@wanz_official` 4.7万 / `@FalenoEvent` 2.1万 / `@sodstarofficial` 1.8万。
+- **非稼働 7 件**（`status=候補` のまま・`no_repropose` ON・再提案しない・理由は note 先頭）: `@Miyoshi_style` / `@hinako_matsui` / `@hosimiyaichika` / `@rinrin_dayou` / `@piyomaru_cmore` / `@SOFT_ON_DEMAND` / `@otona_rank_info`。**設計書 §4 ①（「保留」）は解消。**
+- **設計の改訂**: `reply_restricted`（checkbox）→ **`reply_restriction`（singleSelect 不明／なし／あり・投入時は全件 不明）**／**`no_repropose`（checkbox）を追加提案**／認証バッジの列は設けない／「本日の対象」のフィルタに `no_repropose` OFF・`reply_restriction ≠ あり` を追加。
+- **更新後の件数（`seed-to-records.mjs` 実測）**: 投入 42＝**priority 1: 28 / 2: 9 / 3: 4 / 空 1**。**稼働候補 35**（セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15）＝**1: 27 / 2: 4 / 3: 4**（CSO 追記の 35 件と一致）。
+- **残る裁定**: 設計書 §4 ④（`reply_count_30d` の条件付きロールアップを MCP で作れるか）＋ 追加提案フィールド（`source` / `verified_at` / `reply_restriction` / `no_repropose` / `reply_key` / `reply_post_id` / `target_post_url`）の採否。**push 後の Vercel state を確認する（本 push は直前 READY から距離 10＝E19 の再試行経路が自然観測になりうる）。**
