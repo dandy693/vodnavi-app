@@ -4227,6 +4227,31 @@ gtag('config', 'G-GG7JV9MJRW', {
 - `served:500` 行ありで statusCode 200 のリクエスト **8 件**（全件 `/works/nikkatsu/*`）＝**機構未特定・観測継続**。解釈を書かない。
 - **【CSO 確定】Vercel Observability「Works route 5xx spike」アラート（9/13・9/14）は上記と同一機構。デプロイ変更なしで自己回復。HUMAN 対応不要。**
 
+### 26-7. 【HUMAN 実施の記録・CSO 2026-09-17】**X Premium 加入＝2026-09-16**
+
+| 項目 | 記録 |
+|---|---|
+| アカウント | `@vodnavi_jp`（af_id 006） |
+| 加入日 | **2026-09-16** |
+| プラン | **「プレミアム」（中位）・月払い** |
+| 実請求額 | **未記入（HUMAN が確認後に追記）** |
+| 関係 | §26-1 裁定 3「X Premium に加入する（HUMAN・今週中）」の実施。**§26-2 の観測窓（9/15〜10/12）内の変数**として記録する（NOTES B11「判定 KPI の取得に Premium 不要」は取得可否の記録であり本件と別） |
+
+### 26-8. 【運用則・CSO 確定 2026-09-17】**Grok の扱い**
+
+- **Grok の出力は候補扱い。** **`x_targets` への登録は HUMAN が X 画面で実査（実在／フォロワー数／直近 7 日の投稿／返信制限）した後に `status=稼働` とする。**
+- **投稿・リプの最終稿は Grok に書かせない。**
+- **Grok に af_id・トークン・設定値を入力しない**（§13-0 / §27-4 と同じ原則の Grok への適用）。
+- **【併記】Grok 調査時点のフォロワー数は「目安」として `note` に記録し、`followers` 列には HUMAN 実査値のみを入れる**（CSO 指示 2026-09-17）。
+
+### 26-9. 【記録・2026-09-17】**`x_targets` 初期候補（CSO 指定 42 件・Grok 調査由来）と不採用 13 件**
+
+- **設計報告（実装前）** → `management/_metrics/2026-W38/bundle1/design-20260917-bin127-bundle1-x-targets.md`。**テーブルは未作成・投入は未実行**（2026-09-17 00:18 JST 実測: base のテーブルは `posts` / `internal_link_proposals` のみ）。
+- **候補 42 件**（seed: `bundle1/x_targets_seed_20260917.json`）: セール告知系 3 / レビュー系 4 / メーカー公式 15 / 女優本人 20。**priority 1＝24 / 2＝13 / 3＝4 / 空 1**（`@otona_rank_info`＝CSO「保留」・内容実査後に判定）。**status は全件 `候補` で投入予定。followers は空。**
+- **不採用（登録しない・理由）**: `@fanzagames_info` / `@douzinr18` / `@FANZA_ebook`＝ゲーム・同人・電子書籍の公式（**フロア不一致**）／同人作家 10 件（`@acechan_f` / `@a_mezashi` / `@umakuchu` / `@new_yumeki` / `@takara_joney` / `@onioni029029` / `@shunjyo_shusuke` / `@crowe_sbs` / `@akisuke06080608` / `@MuG1_77`）＝**読者層が同人購入者で単品動画に転換しない**。
+- **`genres` の初期値**: CSO 例示（マドンナ→熟女／本中・PREMIUM→企画／kawaii*→美少女）を優先し、例示のない先は `fanza_response_cache` の属性系ジャンル上位から概算（設計書 §1-1・§5）。**束2「知識なしモード」の方向づけ用・厳密性は不要**（CSO）。
+- **【停止して報告】不一致の候補 5 件は設計書 §4**（①「保留」を priority 1〜3 で表現できない ②フォロワー目安との乖離＝CSO 指定 ③30 件→42 件＝CSO 指定 ④条件付きロールアップの MCP 可否 ⑤genres の例示と cache の差）。**①④は裁定が要る。**
+
 ---
 
 ## 27. Supabase 資格情報台帳（**新設・CSO 2026-09-15・第128便 §3〜§5。値は書かない**）

@@ -1,0 +1,606 @@
+{
+  "table": "x_targets",
+  "status_fixed": "候補",
+  "count": 42,
+  "batches": [
+    [
+      {
+        "fields": {
+          "handle": "@FANZAdougaX",
+          "display_name": "FANZA動画公式",
+          "type": "セール告知系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 9.4万（2026-09-17）｜FANZA動画公式",
+          "priority": 1
+        }
+      },
+      {
+        "fields": {
+          "handle": "@DMM10sale",
+          "display_name": "セール速報",
+          "type": "セール告知系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 5.1万（2026-09-17）｜セール速報。束3 C型（セール即応）の検知元としても使う",
+          "priority": 1
+        }
+      },
+      {
+        "fields": {
+          "handle": "@fanza_sns",
+          "display_name": "FANZA総合公式",
+          "type": "セール告知系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 19.9万（2026-09-17）｜FANZA総合公式",
+          "priority": 2
+        }
+      },
+      {
+        "fields": {
+          "handle": "@fanza_meireview",
+          "display_name": "AVレビュー紹介",
+          "type": "レビュー系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 0.9万（2026-09-17）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "priority": 1
+        }
+      },
+      {
+        "fields": {
+          "handle": "@AViiyone",
+          "display_name": "AVレビュー紹介",
+          "type": "レビュー系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 0.8万（2026-09-17）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "priority": 1
+        }
+      },
+      {
+        "fields": {
+          "handle": "@shirot_AV_chosa",
+          "display_name": "AVレビュー紹介",
+          "type": "レビュー系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 0.5万（2026-09-17）｜AVレビュー紹介。規模は小さいが読者層一致",
+          "priority": 1
+        }
+      },
+      {
+        "fields": {
+          "handle": "@otona_rank_info",
+          "display_name": "（未確認）",
+          "type": "レビュー系",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 不明（2026-09-17）｜【保留・CSO 2026-09-17】内容実査後に priority を判定。priority は空のまま"
+        }
+      },
+      {
+        "fields": {
+          "handle": "@Madonna_AVinfo",
+          "display_name": "マドンナ",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 9万（2026-09-17）｜マドンナ｜cache上位: 熟女(1562)/人妻・主婦(1292)",
+          "priority": 1,
+          "genres": [
+            "熟女",
+            "人妻・主婦"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@PREMIUM_AV",
+          "display_name": "PREMIUM",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 7.1万（2026-09-17）｜PREMIUM｜genres は CSO 例示（企画）。cache上位: お姉さん(120)/巨乳(91)",
+          "priority": 1,
+          "genres": [
+            "企画",
+            "お姉さん"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@kawaii_pr",
+          "display_name": "kawaii*",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 6.7万（2026-09-17）｜kawaii*｜cache上位: 美少女(261)/淫乱・ハード系(106)",
+          "priority": 1,
+          "genres": [
+            "美少女",
+            "スレンダー"
+          ]
+        }
+      }
+    ],
+    [
+      {
+        "fields": {
+          "handle": "@attackers_av",
+          "display_name": "アタッカーズ",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 6.1万（2026-09-17）｜アタッカーズ｜cache上位: 辱め(278)/人妻・主婦(182)/ドラマ(174)",
+          "priority": 1,
+          "genres": [
+            "辱め",
+            "人妻・主婦",
+            "ドラマ"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@Fitch_official",
+          "display_name": "Fitch",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 6万（2026-09-17）｜Fitch｜cache上位: 巨乳(292)/痴女(86)",
+          "priority": 1,
+          "genres": [
+            "巨乳",
+            "痴女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@PRESTIGE_PR2020",
+          "display_name": "プレステージ",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 5.1万（2026-09-17）｜プレステージ｜cache 0 件（maker 名一致なし）のため genres 空",
+          "priority": 1
+        }
+      },
+      {
+        "fields": {
+          "handle": "@SOFT_ON_DEMAND",
+          "display_name": "SOD広報",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 4.9万（2026-09-17）｜SOD広報｜genres は CSO 例示（企画系）。cache上位（SODクリエイト）: 巨乳(283)/OL(210)/企画(209)",
+          "priority": 1,
+          "genres": [
+            "企画",
+            "OL"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@wanz_official",
+          "display_name": "ワンズファクトリー",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 4.7万（2026-09-17）｜ワンズファクトリー｜cache上位: 巨乳(146)/痴女(97)",
+          "priority": 1,
+          "genres": [
+            "巨乳",
+            "痴女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@FalenoEvent",
+          "display_name": "FALENO広報",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 2.1万（2026-09-17）｜FALENO広報｜cache上位: 巨乳(178)/美少女(104)",
+          "priority": 1,
+          "genres": [
+            "巨乳",
+            "美少女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@sodstarofficial",
+          "display_name": "SODSTAR",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 1.8万（2026-09-17）｜SODSTAR｜genres は CSO 例示（SOD 系＝企画）。cache に SODSTAR 名義の maker 無し",
+          "priority": 1,
+          "genres": [
+            "企画"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@honnaka_NN",
+          "display_name": "本中",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 1.2万（2026-09-17）｜本中｜genres は CSO 例示（企画）。cache上位: 美少女(133)/巨乳(94)",
+          "priority": 1,
+          "genres": [
+            "企画",
+            "美少女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@IDEAPOCKETTER",
+          "display_name": "アイデアポケット",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 18万（2026-09-17）｜アイデアポケット｜cache上位: 美少女(205)/巨乳(198)/お姉さん(167)",
+          "priority": 2,
+          "genres": [
+            "美少女",
+            "お姉さん"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@MOODYZ_official",
+          "display_name": "MOODYZ",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 26万（2026-09-17）｜MOODYZ｜cache上位: 巨乳(652)/美少女(569)",
+          "priority": 2,
+          "genres": [
+            "巨乳",
+            "美少女"
+          ]
+        }
+      }
+    ],
+    [
+      {
+        "fields": {
+          "handle": "@S1_No1_Style",
+          "display_name": "エスワン",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 36万（2026-09-17）｜エスワン。週1〜2件の対照用｜cache上位: 巨乳(637)/美少女(419)",
+          "priority": 3,
+          "genres": [
+            "巨乳",
+            "美少女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@shinnakanodream",
+          "display_name": "SOD女子社員",
+          "type": "メーカー公式",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 24万（2026-09-17）｜SOD女子社員（企画系）。対照用｜genres は CSO 例示",
+          "priority": 3,
+          "genres": [
+            "企画"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@iyo_shinohara",
+          "display_name": "篠原いよ",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 15.1万（2026-09-17）｜篠原いよ／マドンナ専属｜根拠=メーカー公式からのメンション｜cache 29 件: 人妻・主婦(25)/熟女(25)",
+          "priority": 1,
+          "genres": [
+            "熟女",
+            "人妻・主婦"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@Aizawa_miyu03",
+          "display_name": "逢沢みゆ",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 20.1万（2026-09-17）｜逢沢みゆ／PREMIUM・MOODYZ・本中｜根拠=メーカー公式からのメンション｜cache 295 件: 美少女(125)/巨乳(92)",
+          "priority": 1,
+          "genres": [
+            "美少女",
+            "巨乳"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@nao_satsuki",
+          "display_name": "彩月七緒",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 23.5万（2026-09-17）｜彩月七緒／マドンナ・PREMIUM｜根拠=メーカー公式からのメンション｜cache 49 件: 巨乳(39)",
+          "priority": 1,
+          "genres": [
+            "巨乳"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@saki_seino",
+          "display_name": "清野咲",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 7.1万（2026-09-17）｜清野咲／kawaii*専属｜根拠=メーカー公式からのメンション｜cache 18 件: 美少女(15)/スレンダー(8)",
+          "priority": 1,
+          "genres": [
+            "美少女",
+            "スレンダー"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@karin_kitaoka_",
+          "display_name": "北岡果林",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 10.2万（2026-09-17）｜北岡果林／本中・PREMIUM｜根拠=メーカー公式からのメンション｜cache 267 件: 美少女(145)/痴女(53)",
+          "priority": 1,
+          "genres": [
+            "美少女",
+            "痴女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@waka_misono",
+          "display_name": "美園和花",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 16.8万（2026-09-17）｜美園和花／アタッカーズ・本中｜根拠=メーカー公式からのメンション｜cache 609 件: 巨乳(308)/痴女(186)",
+          "priority": 1,
+          "genres": [
+            "巨乳",
+            "痴女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@ran_tpowers",
+          "display_name": "菊乃らん",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 8.6万（2026-09-17）｜菊乃らん／Fitch専属｜根拠=メーカー公式からのメンション｜cache 43 件: 巨乳(38)",
+          "priority": 1,
+          "genres": [
+            "巨乳"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@Kizukiamane",
+          "display_name": "希月あまね",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 1.6万（2026-09-17）｜希月あまね／アイデアポケット専属｜根拠=メーカー公式からのメンション｜cache 1 件（デビュー作）: お姉さん/巨乳",
+          "priority": 1,
+          "genres": [
+            "お姉さん",
+            "巨乳"
+          ]
+        }
+      }
+    ],
+    [
+      {
+        "fields": {
+          "handle": "@shiromine_miu",
+          "display_name": "白峰ミウ",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 30.3万（2026-09-17）｜白峰ミウ／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 120 件: 寝取り・寝取られ・NTR(23)/巨乳(23)",
+          "priority": 2,
+          "genres": [
+            "寝取り・寝取られ・NTR",
+            "巨乳"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@Miyoshi_style",
+          "display_name": "三好佑香",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜三好佑香／PREMIUM｜根拠=メーカー公式からのメンション｜cache 17 件: お姉さん(9)/スレンダー(5)",
+          "priority": 2,
+          "genres": [
+            "お姉さん",
+            "スレンダー"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@hinako_matsui",
+          "display_name": "松井日奈子",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜松井日奈子／kawaii*｜根拠=メーカー公式からのメンション｜cache 144 件: 美少女(58)/巨乳(31)",
+          "priority": 2,
+          "genres": [
+            "美少女",
+            "巨乳"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@hosimiyaichika",
+          "display_name": "星宮一花",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜星宮一花／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 137 件: 美少女(46)/巨乳(40)/スレンダー(37)",
+          "priority": 2,
+          "genres": [
+            "美少女",
+            "スレンダー"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@azusa_hikari_",
+          "display_name": "梓ヒカリ",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜梓ヒカリ／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 116 件: 巨乳(35)/美少女(30)",
+          "priority": 2,
+          "genres": [
+            "巨乳",
+            "美少女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@sakuramio_X",
+          "display_name": "桜みお",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜桜みお／アタッカーズ｜根拠=メーカー公式からのメンション｜cache 13 件: 看護婦・ナース(6)/お姉さん(5)",
+          "priority": 2,
+          "genres": [
+            "お姉さん"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@mio_sakai_",
+          "display_name": "坂井美桜",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜坂井美桜／アイデアポケット｜根拠=メーカー公式からのメンション｜cache 14 件: スレンダー(9)/巨乳(8)/お姉さん(5)",
+          "priority": 2,
+          "genres": [
+            "スレンダー",
+            "お姉さん"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@rinrin_dayou",
+          "display_name": "鈴の家りん",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜鈴の家りん／本中｜根拠=メーカー公式からのメンション｜cache 42 件: 巨乳(20)/美少女(11)",
+          "priority": 2,
+          "genres": [
+            "巨乳",
+            "美少女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@5may_itsukaichi",
+          "display_name": "五日市芽依",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜五日市芽依／本中｜根拠=メーカー公式からのメンション｜cache 139 件: 巨乳(57)/痴女(36)",
+          "priority": 2,
+          "genres": [
+            "巨乳",
+            "痴女"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@piyomaru_cmore",
+          "display_name": "海老咲あお",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 未取得（2026-09-17）｜海老咲あお／Fitch｜根拠=メーカー公式からのメンション｜cache 51 件: 巨乳(26)/痴女(10)",
+          "priority": 2,
+          "genres": [
+            "巨乳",
+            "痴女"
+          ]
+        }
+      }
+    ],
+    [
+      {
+        "fields": {
+          "handle": "@mayukiito",
+          "display_name": "伊藤舞雪",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 114万（2026-09-17）｜伊藤舞雪／kawaii*。対照用｜根拠=メーカー公式からのメンション｜cache 201 件: 美少女(98)/巨乳(60)",
+          "priority": 3,
+          "genres": [
+            "美少女",
+            "巨乳"
+          ]
+        }
+      },
+      {
+        "fields": {
+          "handle": "@umi_sea_0v0",
+          "display_name": "八掛うみ",
+          "type": "女優本人",
+          "status": "候補",
+          "source": "Grok調査",
+          "note": "Grok目安 109万（2026-09-17）｜八掛うみ／プレステージ。対照用｜根拠=メーカー公式からのメンション｜cache 0 件のため genres 空",
+          "priority": 3
+        }
+      }
+    ]
+  ]
+}
