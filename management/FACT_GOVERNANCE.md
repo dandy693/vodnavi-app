@@ -4281,6 +4281,8 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **投稿・リプの最終稿は Grok に書かせない。**
 - **Grok に af_id・トークン・設定値を入力しない**（§13-0 / §27-4 と同じ原則の Grok への適用）。
 - **【併記】Grok 調査時点のフォロワー数は「目安」として `note` に記録し、`followers` 列には HUMAN 実査値のみを入れる**（CSO 指示 2026-09-17）。
+- **【改訂・CSO 指示 2026-09-17】`followers` と直近投稿の有無は Grok 取得値を暫定として記録可（`source=Grok調査`・取得日を `note` に）。** **`verified_at` と `status=稼働` は、HUMAN が返信制限を X 画面で目視した後にのみ HUMAN が書く。** **CTO が `status` を書かない原則は不変。**
+  - **上の「`followers` 列には HUMAN 実査値のみ」は本改訂で上書き**（削除せず訂正で残す）。**暫定値であることは `note` 先頭の `followers=Grok YYYY-MM-DD` で識別する。HUMAN 実査で上書きした時点で HUMAN が `note` の先頭を書き換える。**
 
 ### 26-9. 【記録・2026-09-17】**`x_targets` 初期候補（CSO 指定 42 件・Grok 調査由来）と不採用 13 件**
 
@@ -4300,6 +4302,14 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **ビュー「本日の対象」**: **MCP にビュー作成ツールが無いため定義のみ**——`status = 稼働`（`selL5ZBRxnuzpuQFc`）∧ `no_repropose ≠ true` ∧ `reply_restriction ≠ あり`（`sellfceEd25p8HQu6`）∧（`last_reply_at` 空 ∨ 3 日以上前・`Asia/Tokyo`）／ソート `priority` 昇順 → `last_reply_at` 昇順。**現時点の該当 0 件**（`稼働` が 0＝HUMAN 実査前）。**束2 の CLI は `list_records_for_table` の `filters` で同じ集合を取れるためビューに依存しない。** UI でビューを作るかは任意（HUMAN）。
   - **【厳守】`status=稼働` への遷移は HUMAN の実査後のみ**（§26-8）。**CTO は書いていない。**
   - **【併記・§13 の限界はそのまま】`x_targets` / `x_replies` も Airtable 一層のみ。** `status` を書く箇所をスクリプト 1 箇所に限定（`seed-to-records.mjs` の `STATUS = "候補"`）し読み戻しで検算した——**構造的保証ではなく緩和**（§13）。
+- **【暫定記入・CSO 指示 2026-09-17／CTO 実行 01:4x〜01:5x JST】`followers` を 35 件に記入（§26-8 改訂に基づく暫定値）。全文 → 設計書 §7-6**
+  - **入力**: 本日 Grok 取得 24 件（CSO 転記・`bundle1/x_targets_grok_followers_20260917.tsv` に永続化）＋ 9/16 取得済み 11 件（seed note の「N.N万」を概数のまま転記）。**seed 目安（CSO 転記）と本日値の乖離は全件 1 万未満で矛盾なし**（停止条件に該当せず）。
+  - **書き込み**: `update_records_for_table` × 2（24 + 11）。`followers`（`fldECZiqBvFOJnY49`）と `note` 先頭のみ。**`verified_at` / `status`（候補のまま）/ `reply_restriction`（不明のまま・空ではない）/ `no_repropose` は触っていない。**
+  - **`note` 先頭のラベル**: 本日分＝`followers=Grok 2026-09-17｜最終投稿 YYYY-MM-DD（Grok）`／9/16 分＝**`followers=Grok 2026-09-16（概数・seed note から 2026-09-17 転記）`**——**指示の文言は全件「followers=Grok 2026-09-17」だったが、取得日を偽らないため 9/16 分は取得日で記した**（§15-2 軸2・運用則「取得日を note に」に従う。CTO 判断・要否は CSO）。
+  - **読み戻し（01:5x JST・42 件・機械照合）**: **`followers` 35 件が payload と一致・不一致 0**。**空 7 件＝非稼働 7 件**（`@hinako_matsui` / `@hosimiyaichika` / `@Miyoshi_style` / `@otona_rank_info` / `@piyomaru_cmore` / `@rinrin_dayou` / `@SOFT_ON_DEMAND`・本日の Grok 結果に無く 9/16 取得分にも無い）。**`status` 全件 `候補`・`verified_at` 全件空・`reply_restriction` 全件 `不明`。** 分布（n=35・Grok 暫定）: min 4,630 / 中央値 86,005 / max 1,139,796。
+  - **「最終投稿 …・要HUMAN確認」を付けた 11 件**（`no_repropose` は触っていない）: **(a) 7 日超・不明＝4 件**——`@fanza_meireview`（2026-05-25）/ `@PRESTIGE_PR2020`（2026-09-01）/ `@Kizukiamane`（2026-09-09・8 日）/ `@waka_misono`（不明）／**(b) 日付未取得＝7 件**——`@Madonna_AVinfo` / `@attackers_av` / `@wanz_official` / `@FalenoEvent` / `@sodstarofficial` / `@IDEAPOCKETTER` / `@shiromine_miu`（9/16 Grok 取得分に最終投稿日が無い。**「不明」と同列に扱った＝CTO 判断・要否は CSO**）。**7 日超の境界＝2026-09-10 より前**（9/17 − 9/10 ＝ 7 日は「超」ではない）。
+  - **【併記】9/16 分のうち CSO 追記に投稿日があった 4 件**（`@azusa_hikari_` 9/13 / `@sakuramio_X` 9/16 / `@mio_sakai_` 9/15 / `@5may_itsukaichi` 9/16）は `最終投稿 YYYY-MM-DD（CSO 追記 2026-09-17）` で記し、フラグなし。
+  - **【厳守】35 件の `followers` は Grok 暫定値であり実査値ではない。** **`status=稼働` の前提（返信制限の目視）は満たしていない。**
 
 ---
 

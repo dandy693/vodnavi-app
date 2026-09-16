@@ -10925,3 +10925,13 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **新規ファイル（明示 add）**: `bundle1/x_targets_field_map.json`・`bundle1/x_targets_seed_20260917.batches.byid.json`・`bundle1/x_targets_readback_20260917.tsv`。
 - **HUMAN 残**: 稼働候補 35 件の X 画面実査 → `followers` / `verified_at` / `reply_restriction` → `status=稼働`／X Premium 実請求額の追記（§26-7）／旧 Supabase トークン 2 件の削除確認・カレンダー通知・新 PAT「Last used」（§27-6）。
 - **次**: 束2 設計（§26-5 前提・`tools/` → `management/` 慣行）→ 束3（`posts` へ `post_type` 追加は許可済み・g8 21:00〜23:00）。**本 push は直前 READY `706bcda` から距離 2（`c4377f4` が距離 1＝`dpl_32MorjnQybXKCHaaUZ5KcG2BsoGX` CANCELED・00:35:34 JST・01:1x に Vercel API で実測）＝skip 経路（CANCELED）の見込み。push 後に state を確認する。**
+- 【2026-09-17 01:2x 追記・push 後の Vercel state】`6e24f1a`（距離 2）＝`dpl_HVb9STrc8SxPfx9AsNhV8myX5yXw` **CANCELED**（created 01:20:30 JST・skip 経路・見込みどおり・ビルドなし＝sitemap 不変）。`c4377f4`（距離 1）＝`dpl_32MorjnQybXKCHaaUZ5KcG2BsoGX` CANCELED（00:35:34 JST）。**本行は次の実質コミットに同乗させる（state 記録のためだけの push はしない・従来慣行）。**
+
+### 【2026-09-17 01:5x JST・CSO 指示 2026-09-17】`x_targets` 実査列の暫定記入 — `followers` 35 件を Grok 暫定値で記入・要HUMAN確認 11 件・§26-8 運用則を改訂
+
+- **§26-8 改訂（CSO）**: `followers` と直近投稿の有無は Grok 取得値を暫定として記録可（`source=Grok調査`・取得日を `note` に）。`verified_at` と `status=稼働` は HUMAN が返信制限を X 画面で目視した後にのみ HUMAN が書く。CTO が `status` を書かない原則は不変。
+- **書き込み**: `update_records_for_table` × 2（本日 Grok 24 件＋9/16 取得の 11 件＝35 件）。`followers` と `note` 先頭のみ。`verified_at` / `status`（候補）/ `reply_restriction`（不明）/ `no_repropose` は不変。
+- **読み戻し（42 件・機械照合・不一致 0）**: **`followers` 空＝7 件**（非稼働 7 件＝`@hinako_matsui` / `@hosimiyaichika` / `@Miyoshi_style` / `@otona_rank_info` / `@piyomaru_cmore` / `@rinrin_dayou` / `@SOFT_ON_DEMAND`・Grok 値の提供なし）。**要HUMAN確認＝11 件**: (a) 7 日超・不明 4＝`@fanza_meireview`（05-25）/ `@PRESTIGE_PR2020`（09-01）/ `@Kizukiamane`（09-09）/ `@waka_misono`（不明）／(b) 9/16 取得分で最終投稿日が無い 7＝`@Madonna_AVinfo` / `@attackers_av` / `@wanz_official` / `@FalenoEvent` / `@sodstarofficial` / `@IDEAPOCKETTER` / `@shiromine_miu`。
+- **CTO 判断 2 点（要否は CSO）**: ①9/16 分のラベルを指示文言「followers=Grok 2026-09-17」ではなく取得日 `2026-09-16（概数・転記）` で記した（取得日を偽らないため）②日付未取得 7 件を「不明」と同列に 要HUMAN確認 とした。
+- **台帳**: FACT §26-8（改訂・旧記述は訂正で残す）・§26-9（暫定記入の記録）／設計書 §7-6／新規ファイル 5（`x_targets_grok_followers_20260917.tsv` / `followers-update.mjs` / `x_targets_readback_notes_20260917.json` / `x_targets_followers_update_20260917.byid.json` / `x_targets_readback_followers_20260917.tsv`）。
+- **HUMAN 残**: 稼働候補 35 件の X 画面実査（返信制限の目視 → `verified_at`・`reply_restriction`・`status=稼働`・`followers` の実査上書きと `note` 先頭ラベルの書き換え）。要HUMAN確認 11 件は最終投稿の確認を優先。

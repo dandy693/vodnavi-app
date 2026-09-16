@@ -169,3 +169,11 @@
 
 - **X 画面での実査**（実在／フォロワー数／直近 7 日の投稿／返信制限）→ `followers` / `verified_at` / `reply_restriction` を記入 → `status=稼働`。**対象は稼働候補 35 件**（`no_repropose` OFF）。
 - 「本日の対象」ビューを Airtable UI で作る場合は §7-4 の定義どおり（任意・束2 CLI はビュー不要）。
+
+### 7-6. 暫定記入（**CSO 指示 2026-09-17・CTO 実行 01:4x〜01:5x JST**）— `followers` 35 件・`note` 先頭ラベル
+
+- **運用則（FACT §26-8 改訂）**: `followers` と直近投稿の有無は Grok 取得値を暫定として記録可（`source=Grok調査`・取得日を `note` に）。`verified_at` と `status=稼働` は HUMAN が返信制限を X 画面で目視した後にのみ HUMAN が書く。
+- **入力ファイル**: `x_targets_grok_followers_20260917.tsv`（本日 Grok 24 件＋9/16 取得の 11 件・概数）／**生成器**: `followers-update.mjs`（現 `note` の読み戻し `x_targets_readback_notes_20260917.json` を基準に先頭へラベルを付け、URL・`vodnavi`・`af_id` の混入を検査）／**payload**: `x_targets_followers_update_20260917.byid.json`（35 件）／**読み戻し**: `x_targets_readback_followers_20260917.tsv`（42 件・不一致 0）。
+- **ラベル規則**: 本日分 `followers=Grok 2026-09-17｜最終投稿 YYYY-MM-DD（Grok）`／9/16 分 `followers=Grok 2026-09-16（概数・seed note から 2026-09-17 転記）｜最終投稿 …`。**7 日超（2026-09-10 より前）・不明・未取得は「・要HUMAN確認」を付ける**（`no_repropose` は触らない）。
+- **結果**: `followers` 記入 35 / 空 7（非稼働 7 件）／要HUMAN確認 11（7 日超・不明 4 ＋ 日付未取得 7）／`status` 全件 候補・`verified_at` 全件空・`reply_restriction` 全件 不明。
+- **【厳守】`followers` は暫定値。HUMAN 実査で上書きした時点で `note` 先頭のラベルを HUMAN が書き換える（暫定か実査かを `note` で識別する設計）。**
