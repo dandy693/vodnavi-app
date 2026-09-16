@@ -4310,6 +4310,7 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **「最終投稿 …・要HUMAN確認」を付けた 11 件**（`no_repropose` は触っていない）: **(a) 7 日超・不明＝4 件**——`@fanza_meireview`（2026-05-25）/ `@PRESTIGE_PR2020`（2026-09-01）/ `@Kizukiamane`（2026-09-09・8 日）/ `@waka_misono`（不明）／**(b) 日付未取得＝7 件**——`@Madonna_AVinfo` / `@attackers_av` / `@wanz_official` / `@FalenoEvent` / `@sodstarofficial` / `@IDEAPOCKETTER` / `@shiromine_miu`（9/16 Grok 取得分に最終投稿日が無い。**「不明」と同列に扱った＝CTO 判断・要否は CSO**）。**7 日超の境界＝2026-09-10 より前**（9/17 − 9/10 ＝ 7 日は「超」ではない）。
   - **【併記】9/16 分のうち CSO 追記に投稿日があった 4 件**（`@azusa_hikari_` 9/13 / `@sakuramio_X` 9/16 / `@mio_sakai_` 9/15 / `@5may_itsukaichi` 9/16）は `最終投稿 YYYY-MM-DD（CSO 追記 2026-09-17）` で記し、フラグなし。
   - **【厳守】35 件の `followers` は Grok 暫定値であり実査値ではない。** **`status=稼働` の前提（返信制限の目視）は満たしていない。**
+  - **【CSO裁定 2026-09-17・06:4x 反映】CTO 判断 2 点（9/16 分のラベルを取得日 `2026-09-16` で記す／日付未取得を「不明」と同列に扱う）を承認。** **(b) 7 件の最終投稿日を CSO 手元の 9/16 Grok 取得値で補完**（`@Madonna_AVinfo` 09-16 / `@attackers_av` 09-16 / `@wanz_official` 09-13 / `@FalenoEvent` 09-16 / `@sodstarofficial` 09-16 / `@IDEAPOCKETTER` 09-16 / `@shiromine_miu` 09-15＝**全件 7 日以内**）→ `note` を `最終投稿 YYYY-MM-DD（Grok 2026-09-16）` に書き換え「要HUMAN確認」を外した（`update_records_for_table` × 1・`status` / `followers` 不変・payload → `bundle1/x_targets_lastpost_fix_20260917.byid.json`）。**読み戻し: 7 件とも payload と一致／`要HUMAN確認` を含む行＝サーバ側フィルタで 4 件**（`@fanza_meireview` 05-25 / `@PRESTIGE_PR2020` 09-01 / `@Kizukiamane` 09-09・境界 / `@waka_misono` 不明）。**要HUMAN確認は 4 件で確定。**
 
 ---
 

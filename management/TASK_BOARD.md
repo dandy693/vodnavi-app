@@ -10935,3 +10935,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **CTO 判断 2 点（要否は CSO）**: ①9/16 分のラベルを指示文言「followers=Grok 2026-09-17」ではなく取得日 `2026-09-16（概数・転記）` で記した（取得日を偽らないため）②日付未取得 7 件を「不明」と同列に 要HUMAN確認 とした。
 - **台帳**: FACT §26-8（改訂・旧記述は訂正で残す）・§26-9（暫定記入の記録）／設計書 §7-6／新規ファイル 5（`x_targets_grok_followers_20260917.tsv` / `followers-update.mjs` / `x_targets_readback_notes_20260917.json` / `x_targets_followers_update_20260917.byid.json` / `x_targets_readback_followers_20260917.tsv`）。
 - **HUMAN 残**: 稼働候補 35 件の X 画面実査（返信制限の目視 → `verified_at`・`reply_restriction`・`status=稼働`・`followers` の実査上書きと `note` 先頭ラベルの書き換え）。要HUMAN確認 11 件は最終投稿の確認を優先。
+- 【2026-09-17 06:2x 追記・push 後の Vercel state】`b999f95`（距離 3）＝`dpl_6zkdmJMXEssC4pGHvr1TfWyymFEb` **CANCELED**（created 1789593786055＝06:23:06 JST・skip 経路・sitemap 不変）。次の実質コミットに同乗。
+
+### 【2026-09-17 06:4x JST・CSO裁定 2026-09-17】暫定記入の CTO 判断 2 点を承認 ／ (b) 7 件の最終投稿日を補完し「要HUMAN確認」を 4 件に確定
+
+- **承認**: ①9/16 取得分のラベルは `followers=Grok 2026-09-16`（取得日を偽らない）②日付未取得は「不明」と同列に要HUMAN確認——いずれも正しい。
+- **追加情報（CSO 手元・9/16 Grok 取得）で (b) 7 件を補完**: `@Madonna_AVinfo` 09-16 / `@attackers_av` 09-16 / `@wanz_official` 09-13 / `@FalenoEvent` 09-16 / `@sodstarofficial` 09-16 / `@IDEAPOCKETTER` 09-16 / `@shiromine_miu` 09-15＝全件 7 日以内 → `note` を `最終投稿 YYYY-MM-DD（Grok 2026-09-16）` に書き換え・「要HUMAN確認」を外した。`status` / `followers` / `no_repropose` は不変。
+- **読み戻し**: 7 件とも payload と一致（`x_targets_lastpost_fix_20260917.byid.json`）。**`要HUMAN確認` を含む行＝4 件**（サーバ側フィルタ）＝`@fanza_meireview`（05-25・稼働見送りの可能性大＝CSO）/ `@PRESTIGE_PR2020`（09-01）/ `@Kizukiamane`（09-09・境界）/ `@waka_misono`（不明）。**CSO の想定「4 のはず」と一致。**
+- **台帳**: FACT §26-9・設計書 §7-6・読み戻し TSV（flagged 列）・入力 TSV（`last_post`）。

@@ -177,3 +177,4 @@
 - **ラベル規則**: 本日分 `followers=Grok 2026-09-17｜最終投稿 YYYY-MM-DD（Grok）`／9/16 分 `followers=Grok 2026-09-16（概数・seed note から 2026-09-17 転記）｜最終投稿 …`。**7 日超（2026-09-10 より前）・不明・未取得は「・要HUMAN確認」を付ける**（`no_repropose` は触らない）。
 - **結果**: `followers` 記入 35 / 空 7（非稼働 7 件）／要HUMAN確認 11（7 日超・不明 4 ＋ 日付未取得 7）／`status` 全件 候補・`verified_at` 全件空・`reply_restriction` 全件 不明。
 - **【厳守】`followers` は暫定値。HUMAN 実査で上書きした時点で `note` 先頭のラベルを HUMAN が書き換える（暫定か実査かを `note` で識別する設計）。**
+- **【CSO裁定 2026-09-17・06:4x 反映】** CTO 判断 2 点を承認。(b) 7 件の最終投稿日を CSO 手元の 9/16 Grok 取得値で補完（全件 7 日以内）→ `note` を `最終投稿 YYYY-MM-DD（Grok 2026-09-16）` へ書き換え・「要HUMAN確認」を外した（payload: `x_targets_lastpost_fix_20260917.byid.json`・`status` / `followers` 不変）。**読み戻し: 7 件一致・`要HUMAN確認` を含む行＝4 件で確定**（`@fanza_meireview` / `@PRESTIGE_PR2020` / `@Kizukiamane` / `@waka_misono`）。入力 TSV の `last_post` 列も `YYYY-MM-DD(CSO追記)` で更新。
