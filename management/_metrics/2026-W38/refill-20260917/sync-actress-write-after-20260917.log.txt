@@ -1,0 +1,28 @@
+[sync] 入力レコード: 127 件
+
+[sync] 生成: 99 名 / 現行: 93 名
+[sync] 一致: 90 名
+
+── 追加される ──
+  + 泉ももか: 2026-09-18
+  + 葵いぶき: 2026-09-20
+  + 小野六花: 2026-09-21
+  + 新ありな: 2026-09-22
+  + 八木奈々: 2026-09-23
+  + 楪カレン: 2026-09-24
+
+── 日付が変わる ──
+  ~ 瀬戸環奈: 2026-07-14 → 2026-09-19
+  ~ 松本いちか: 2026-08-15 → 2026-09-21
+  ~ 石原希望: 2026-08-15 → 2026-09-21
+
+── ACTRESS_ENTRY_SOURCE ──
+  生成: {"泉ももか":"reclmmYTDwXMYUJpY","瀬戸環奈":"recgF8jVs8bGHkxV1","葵いぶき":"rec9kYtwmj6JioZgy","小野六花":"recM8dOVeVuUzupVR","松本いちか":"recM8dOVeVuUzupVR","石原希望":"recM8dOVeVuUzupVR","新ありな":"rec9zSmdeIzWQ7iri","八木奈々":"recBArcUTazKuPJfQ","楪カレン":"recJpXzMJs17PuVz7"} ／ 現行: {}
+
+── 登録しなかった行 ──
+  · B8 T1改 園田茉莉華 デビュー作 … 登録基準を満たさない（エラー・予約日時なし・ポストIDなし）
+  · W5-13 T1改 尾崎えりか SAVR-1157 8K VR … 登録基準を満たさない（投稿済・ポストIDなし）
+  · W9-01 T1改 瀬戸環奈 SONE-682 … 登録基準を満たさない（ストック・ポストIDなし）
+{"tag":"VODNAVI_ACTRESS_SYNC","ts":"2026-09-17T13:26:30.827Z","mode":"write","records_in":127,"skipped":75,"t_attempted":52,"u_total":0,"u_fetch":0,"u_empty":0,"r_resolved":52,"u_rate":0,"u_fetch_rate":0,"n_new":99,"n_cur":93,"n_added":6,"n_changed":3,"n_removed":0,"src_new":9,"src_cur":0}
+
+モジュールを書き換えた: C:\Users\Tachi\projects\VODNAVI-GROUP\app-concierge\scripts\x-post-generator.mjs

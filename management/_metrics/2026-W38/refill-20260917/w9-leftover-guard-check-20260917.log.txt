@@ -1,0 +1,2 @@
+{"label":"W9-01 → 2026-09-25 21:00","pass":false,"failures":[{"post":"W9-01 T1改 瀬戸環奈 SONE-682","guard":"g12_actress_not_recent","ng":"30日以内に登場済みの女優: 瀬戸環奈"}]}
+{"label":"W9-15 → 2026-09-18 22:30","pass":true,"failures":[]}

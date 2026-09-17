@@ -9,16 +9,16 @@
 | 22:08:58 | 着手（現在時刻の実測） | TASK_BOARD |
 | 22:1x | `posts` 全 120 件を読み戻し → **予約日時 ≥ 9/17 の行 0 件＝キュー切れ**（投稿済 117 / ストック 2 / エラー 1 / 承認済 0） | `posts_dump_20260917.json`（`build-dump.mjs` で MCP 生結果をフィールド名キーへ変換） |
 | 22:18:35 | FANZA API 疎通 `floor=videoa&sort=rank&hits=1` → **HTTP 200**（446ms） | — |
-| 22:18:56 | `sync-actress-table.mjs` dry-run: `t_attempted=45 / u_total=0 / n_added=6 / n_changed=0 / n_removed=0` | `sync-actress-dryrun-20260917.log` |
-| 22:19:20 | 同 `--write`（W10 の 5 名＋共演 1 名を追加・`ACTRESS_ENTRY_SOURCE` は空に） | `sync-actress-write-20260917.log` |
+| 22:18:56 | `sync-actress-table.mjs` dry-run: `t_attempted=45 / u_total=0 / n_added=6 / n_changed=0 / n_removed=0` | `sync-actress-dryrun-20260917.log.txt` |
+| 22:19:20 | 同 `--write`（W10 の 5 名＋共演 1 名を追加・`ACTRESS_ENTRY_SOURCE` は空に） | `sync-actress-write-20260917.log.txt` |
 | 22:2x | `TG_LAST_USED` を手で更新（TG-22 first-guide 9/12 / TG-23 payment-methods 9/14 / TG-24 payment-statement 9/16・いずれも投稿済＋ポストIDあり） | `x-post-generator.mjs`（作業ツリー・未コミット） |
-| 22:2x | `generate-t1.mjs --slots 9/18〜9/24 21:00 --id-prefix W11 --recent X1,X2,X3,X5,X1 --existing dump` → **7 件生成・ガード21件 PASS** | `generate-t1-20260917.log` / `w11-t1-generated.json` |
+| 22:2x | `generate-t1.mjs --slots 9/18〜9/24 21:00 --id-prefix W11 --recent X1,X2,X3,X5,X1 --existing dump` → **7 件生成・ガード21件 PASS** | `generate-t1-20260917.log.txt` / `w11-t1-generated.json` |
 | 22:23:24 | MCP `create_records_for_table` × 1（7 件・`ストック`・予約日時なし） | `w11-create-payload.json` |
-| 22:24:48 | 読み戻し 7/7・生成 JSON と機械照合 **不一致 0** → **ガード21件 再実行 PASS**（承認直前） | `w11-readback-stock-20260917.json` / `reguard-before-approve-20260917.log` |
+| 22:24:48 | 読み戻し 7/7・生成 JSON と機械照合 **不一致 0** → **ガード21件 再実行 PASS**（承認直前） | `w11-readback-stock-20260917.json` / `reguard-before-approve-20260917.log.txt` |
 | 22:25 | `update_records_for_table` × 1: `承認済`＋予約日時 `2026-09-18..24T12:00:00.000Z`（21:00 JST・Z 終端） | — |
 | 22:2x | 投入後の全件読み戻し（127 件）→ 日付別件数（下表） | `posts_dump_20260917_after.json` |
-| 22:26:30 | `sync-actress-table.mjs` dry-run → `--write`（承認済 7 件を予約済みとして登録・`src_new=9`） | `sync-actress-dryrun-after-20260917.log` / `sync-actress-write-after-20260917.log` |
-| 22:2x | `W9-01` / `W9-15` の再割当可否をガード21件で dry 検査（書き込みなし） | `w9-leftover-guard-check-20260917.log` |
+| 22:26:30 | `sync-actress-table.mjs` dry-run → `--write`（承認済 7 件を予約済みとして登録・`src_new=9`） | `sync-actress-dryrun-after-20260917.log.txt` / `sync-actress-write-after-20260917.log.txt` |
+| 22:2x | `W9-01` / `W9-15` の再割当可否をガード21件で dry 検査（書き込みなし） | `w9-leftover-guard-check-20260917.log.txt` |
 
 ## 投入後の日付別件数（読み戻し・JST）
 

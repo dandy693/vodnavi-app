@@ -1,0 +1,9 @@
+OK reclmmYTDwXMYUJpY W11-01 T1改 泉ももか MIMK-271
+OK recgF8jVs8bGHkxV1 W11-02 T1改 瀬戸環奈 SNOS-334
+OK rec9kYtwmj6JioZgy W11-03 T1改 葵いぶき MDVR-422
+OK recM8dOVeVuUzupVR W11-04 T1改 小野六花 MIZD-481
+OK rec9zSmdeIzWQ7iri W11-05 T1改 新ありな MIZD-464
+OK recBArcUTazKuPJfQ W11-06 T1改 八木奈々 MIZD-450
+OK recJpXzMJs17PuVz7 W11-07 T1改 楪カレン MIMK-244
+readback: 7 generated / 7 read / mismatch 0
+{"tag":"REGUARD_BEFORE_APPROVE","ts":"2026-09-17T13:24:48.766Z","n":7,"existing":120,"pass":true,"failures":[]}
