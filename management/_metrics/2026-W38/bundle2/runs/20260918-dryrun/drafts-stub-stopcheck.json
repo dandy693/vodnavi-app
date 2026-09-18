@@ -1,0 +1,164 @@
+{
+  "generated_at": "2026-09-18T14:46:19.382Z",
+  "today_jst": "20260918",
+  "model": "stub",
+  "dry_run": false,
+  "system_prompt_sha256": "5d308aa091c43a8264d49dfd6d7c3f286b4ec7c2008117c1d3e1d1bf9afac222",
+  "counts": {
+    "lines": 6,
+    "generated": 0,
+    "stopped": 6
+  },
+  "items": [
+    {
+      "lineNo": 2,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2100752031036342529",
+      "targetPostId": "2100752031036342529",
+      "postedAtJst": "2026-09-18 10:01",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:21:33.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-FANZAdougaX",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260918-FANZAdougaX が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2100906434854895695",
+      "targetPostId": "2100906434854895695",
+      "postedAtJst": "2026-09-18 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:26:03.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-Fitch_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260918-Fitch_official が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2100600690574029265",
+      "targetPostId": "2100600690574029265",
+      "postedAtJst": "2026-09-18 00:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:27:02.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-honnaka_NN",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260918-honnaka_NN が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2100918766158950416",
+      "targetPostId": "2100918766158950416",
+      "postedAtJst": "2026-09-18 21:04",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:25:16.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-kawaii_pr",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260918-kawaii_pr が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "Madonna_AVinfo",
+      "postUrl": "https://x.com/Madonna_AVinfo/status/2100759316206850326",
+      "targetPostId": "2100759316206850326",
+      "postedAtJst": "2026-09-18 10:30",
+      "target": {
+        "id": "rec81cW6UPEmdwPZQ",
+        "handle": "Madonna_AVinfo",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:23:19.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-Madonna_AVinfo",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260918-Madonna_AVinfo が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2100600674639847771",
+      "targetPostId": "2100600674639847771",
+      "postedAtJst": "2026-09-18 00:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:24:04.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-PREMIUM_AV",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260918-PREMIUM_AV が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "_source": "management/_metrics/2026-W38/bundle1/x_targets_field_map.json（2026-09-17 作成時の実測）。ID を変えるときは両方を更新する。",
+  "baseId": "app0VKGU2B16qny6c",
+  "x_targets": {
+    "tableId": "tblStC3L57aJh22sD",
+    "fields": {
+      "handle": "fldaWVD2Hs0AeWURb",
+      "display_name": "fldaICvYPxdZ3kdfx",
+      "type": "fldIgWtSHvJ44v5Pi",
+      "genres": "fldd267xKLe1mDgQt",
+      "priority": "fldxeGSQKtSZtwaPG",
+      "status": "fldHHsmMVoqkFZXpe",
+      "last_reply_at": "fldaqFoEVEIdvFXV3",
+      "note": "fldjxdAebj2DK8lwu",
+      "reply_restriction": "fld212NAEGBWRujwI",
+      "no_repropose": "fldlBROgusXj2PZTs"
+    },
+    "choices": {
+      "status": { "候補": "selavY7cGkoPRyKu3", "稼働": "selL5ZBRxnuzpuQFc", "除外": "selKzJRkdiykahZ37" },
+      "reply_restriction": { "不明": "selMozdLV96PUDVMA", "なし": "selEB8wpR8UyyrZYS", "あり": "sellfceEd25p8HQu6" }
+    }
+  },
+  "x_replies": {
+    "tableId": "tblpFVorIemSOywTH",
+    "fields": {
+      "reply_key": "fld63cUuOti14Vlnj",
+      "target": "fldPt0Ob7S3llquKB",
+      "posted_at": "fldACpFxznVDTtmWu",
+      "draft_used": "fldeXo1Hzlb5xytfv",
+      "reply_text": "fldbKfB0mpR9wMS2g",
+      "reply_post_id": "fld3EPVhYRfBuvEZL",
+      "target_post_url": "fld69HPg8Qrm2JVPK"
+    },
+    "choices": { "draft_used": { "A": "seliGVnNd1DJ5D1mY", "B": "selzKCzvAAkQlzpKe", "C": "selPPvuenDPVpssHe" } }
+  }
+}

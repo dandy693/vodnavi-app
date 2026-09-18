@@ -151,3 +151,43 @@ management/tools/x-reply-drafts/
 - **9/18 の 6 件は本ツールを使わずに作成・記録された**（チャット側 Claude・CTO が読み戻し済み）。本ツールはその手順を**置換**するものであり、拡張ではない（§26-1 裁定 6）。
 - **`reply_count_30d` は `NOW()` 依存の formula＋rollup**（§26-9）であり、本ツールは触らない。
 - **CSO 連絡の「TASK_BOARD に 1 行追記」は本リポジトリに未着地**（TASK_BOARD 2026-09-18 23:0x の項）。
+
+## 12. 実装記録（2026-09-18 23:2x〜23:5x JST・CTO）— 設計からの差分と実測
+
+- **成果物**: `management/tools/x-reply-drafts/`（`README.md` / `PROMPT.md` / `parse.mjs` / `guards.mjs` / `guards.config.json` / `knowledge.mjs` / `generate.mjs` / `record.mjs` / `airtable-fields.json` / `*.test.mjs` × 5）。**`node --test` 39 件 全通過**（API・Airtable・Supabase に触れない・裁定 H）。本番コード・`posts`・Make・`x_targets.status` には触れていない。
+- **生成 API（裁定 A の実装）**: Anthropic Messages API を `fetch` で直接呼ぶ（SDK 依存なし）。`model=claude-opus-5`・`thinking: adaptive`・`output_config.format=json_schema`（A/B/C の 3 キー）・system プロンプトに `cache_control`・`max_tokens 4096`（非ストリーミング）・429/5xx は 2 回まで再試行・タイムアウト 120 秒。**キーは `process.env.ANTHROPIC_API_KEY` を読むだけで出力・ログ・payload に載せない。**
+
+| # | 設計 | 実装（差分） | 理由 |
+|---|---|---|---|
+| 1 | §2-2 品番は `sitemap_works_archive` を**後方一致** | **含有一致**（`like '%sone00682%'`） | 後方一致だと `1vspds00345ai` 型（末尾付き id）を取りこぼす。複数ヒットは「解決不能」で HUMAN へ |
+| 2 | §3 字数 80〜140 | 既定値は同じ。**`guards.config.json` の `R8_chars` に外出し** | 9/18 実績 6 件が全件下限未満（→ §12-1）。変更は CSO（コードを触らずに済む） |
+| 3 | §4 R9「B 案に含まれる数値」＋裁定 D（R10 統合） | **B＝全数値／A・C＝「数値＋円・%・割・OFF」のみ**を出典検査 | A/C の「第2弾」「10時」のような本文由来でない推量数値まで止めると C 型の質問が書けない。価格・割引は全案で出典必須（裁定 D） |
+| 4 | §2-5 `prices` / `campaign` は渡さない（→ 裁定 D） | 裁定 D に従い **`price` / `list_price` / `campaign[]` を `fetched_at` 付きで渡す** | 出典のある数値のみ言及可・時点注記が要るため取得時刻を同梱 |
+| 5 | — | **`--dry-run`**（停止判定を無効化して生成のみ・`record.mjs` は拒否） | 着地報告用に 9/18 の 6 件（既に記録済み・同日 2 件目に当たる）を再生成するため |
+| 6 | §1 | `#` で始まる行はコメントとして読み飛ばす | HUMAN の入力ファイルに注記を書けるように |
+| 7 | §3 敬称 | R7 の対象名＝作品知識の `actress[]` ＋ 女優本人の `display_name`。**本文中のハッシュタグ名（`#東條なつ` 等）は対象外** | ハッシュタグには `#本中` `#PR` のような非人名が混じる。プロンプト側（規則 6）で「さん」を要求 |
+
+### 12-1. 実測（回帰・疎通）
+
+- **9/18 実績 6 件を現行ガードに通した結果**: **全件 R8（字数 52 / 53 / 62 / 50 / 55 / 47・下限 80 未満）**。加えて #2 Fitch＝**R4**（`#肉欲の秋`）、#5 Madonna＝**R5**（「お気に入り登録」の「登録」）。**ガードは緩めていない。** 字数下限（`R8_chars.min`）と「登録」「#」の扱いは CSO 裁定（`guards.config.json` で変更可）。
+- **snowflake 復元**: 6 件中 5 件が Airtable の `posted_at` と秒単位で一致。Madonna（`2100938725194977383`）のみ BigInt 計算 `13:23:20.297Z` に対し記録値 `13:23:19`（1 秒差・記録側の丸め違い）。
+- **`buildCacheKey` の写し**: `pxvr00483` / `snos00334`（videoa・hits 1・filtered=false）で本番 PK と一致。**Supabase MCP（read-only）で `knowledge.mjs --sql` の SQL をそのまま実行 → 1 件ヒット（`fetched_at` 2026-09-18 14:27:49 UTC）→ `--extract` で URL / af_id / 画像系が落ち、許可フィールド（title / date / volume / actress / genre / maker / label / series / director / review / price / list_price / campaign / fetched_at）だけになることを確認**（`runs/20260918-dryrun/knowledge-check/`）。
+- **品番 → content_id（`sitemap_works_archive`・3,749 行）の含有一致**: `SNOS-334` → 1 件 / **`SONE-682` → 0 件 / `PXVR-483` → 0 件**（archive は main sitemap の窓を通過した works のみ・§18）。**品番だけの入力は解決できないことが多い＝content_id か works URL を貼るのが確実。**
+- **停止判定（裁定 G）**: stub 実行で `--today 2026-09-18` ＋ `replies.json`（9/18 の 6 行）→ **6 件とも「停止（同日同ハンドル 2 件目）」・API 呼び出し 0**。
+- **API エラー経路**: 無効キーで `API 401 authentication_error: invalid x-api-key`（キー値は出力に載らない）。
+
+### 12-2. 【停止して報告】dry-run（18 案）は未実行 — `ANTHROPIC_API_KEY` の値が空
+
+- `app-concierge/.env.local` の `ANTHROPIC_API_KEY` は**キー名のみで値が `""`**（実測 2026-09-18 23:46 JST・`node --env-file` で `process.env.ANTHROPIC_API_KEY` が空）。§11 の併記「キー名は存在する」は正しかったが、**値の有無は見ていなかった**。
+- 資格情報の値の取得・配置は CTO の禁止事項（FACT §13-0 / §27-4）。**HUMAN が値を置いた後、`runs/20260918-dryrun/README.md` の 1 コマンドで 6 件（最大 18 回の API 呼び出し）を生成する。** 入力・台帳読み戻し・停止判定・知識経路はすべて用意済み。
+- **`OPENAI_API_KEY`（値あり・166 文字）への切替は行わない**（裁定 A は Anthropic API・CTO は資格情報の選択を決めない）。
+
+### 12-3. 見積と実測（§11-1 の形式）
+
+| 工程 | 見積（§9） | 実測 |
+|---|---|---|
+| parse / guards / record ＋ tests | 60〜90 分 | **約 25 分**（23:22〜23:47・テストの期待値誤り 2 件の修正を含む） |
+| PROMPT.md ＋ README | 30 分 | 約 8 分 |
+| knowledge.mjs ＋ MCP 経路の実走 | 30 分 | 約 10 分 |
+| 9/18 実績 6 件での回帰確認 | 20 分 | テストに同梱（`guards.test.mjs`） |
+| **診断分岐（発生した）** | 項目のみ | **約 10 分**——①Bash ツール経由の heredoc / インライン python が `\u` と `\\` を書き換える（ソースは Write ツールで書く）②`process.exit()` が Windows で libuv assertion（`exitCode` へ）③9/18 本文の取得（oEmbed 403 → Chrome の `<title>` 読み取り） |

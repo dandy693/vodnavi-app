@@ -1,0 +1,74 @@
+# x-reply-drafts — リプ営業の下書き生成ツール（第127便 束2・基盤A）
+
+- 設計書: `management/_metrics/2026-W38/bundle2/design-20260918-bin127-bundle2-reply-drafts.md`（§10-1 の CSO裁定 A〜H が正）
+- 形態: **ローカル CLI（node・依存パッケージなし）。Claude Code から呼ぶ。スキル化しない**（裁定 A）
+- 触らないもの: `posts` / Make 5615632 / `x_targets.status`（HUMAN 専権・§26-8）/ FANZA API の新規呼び出し / 本番コード
+- 資格情報: 生成は `app-concierge/.env.local` の `ANTHROPIC_API_KEY` を **環境変数として読むだけ**（値は出力・ログ・payload に載せない）。Airtable PAT は発行しない（裁定 E）。Supabase の資格情報はローカルに無い（§12）ので、Airtable / Supabase の読み書きは **Claude Code の MCP** が行う。
+
+## ファイル
+
+| ファイル | 役割 | ネットワーク |
+|---|---|---|
+| `parse.mjs` | 入力 1 行形式のパーサ（純関数） | なし |
+| `guards.mjs` / `guards.config.json` | `guardReply(text, ctx)` R1〜R11（純関数）／語リスト（**HUMAN 編集可**・R8 の字数範囲もここ） | なし |
+| `knowledge.mjs` | `buildCacheKey` 再現・PK 照会 SQL の生成・execute_sql 結果からの知識抽出 | なし（SQL 文字列を出すだけ） |
+| `generate.mjs` | 生成オーケストレータ（Anthropic Messages API を `fetch`・ガード・再生成 ≤2 回・停止判定） | **Anthropic API のみ** |
+| `record.mjs` | `x_replies` / `x_targets` の payload 生成・snowflake → `posted_at` | なし |
+| `PROMPT.md` | system プロンプト（固定・差分レビュー対象） | — |
+| `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
+| `*.test.mjs` | `node --test`（dry-run のみ・API も Airtable も呼ばない・裁定 H） | なし |
+
+```
+node --test management/tools/x-reply-drafts/*.test.mjs
+```
+
+## 手順（1 回分）
+
+作業ディレクトリはリポジトリルート。中間ファイルは `management/_metrics/<週>/bundle2/runs/<YYYYMMDD>/` に置く（実験資産は git 管理・§24-11-1）。
+
+1. **HUMAN**: 対象投稿を 1 行 1 件で `input.txt` に貼る
+   `@ハンドル｜投稿日時｜投稿URL｜本文｜作品コード（任意）`
+   - 区切りは全角「｜」（半角「|」も可・混在不可）。本文に「｜」があっても末尾が作品コードでなければ本文として扱う。
+   - 作品コードは 品番（`SONE-682`）／content_id（`pxvr00483`）／works URL のいずれか。無ければ省略。
+2. `node management/tools/x-reply-drafts/parse.mjs input.txt > parsed.json`
+3. **Claude Code（MCP）**: `x_targets` を `list_records_for_table`（`handle` で絞る・フィールドは `handle / display_name / type / genres / note / reply_restriction / no_repropose / last_reply_at / status`）→ `targets.json` に保存。`x_replies` を `reply_key / target_post_url / posted_at` で読み戻し → `replies.json`。**MCP の生出力（`records[].cellValuesByFieldId`）のまま保存してよい。**
+4. 作品コードがある行のみ: `node management/tools/x-reply-drafts/knowledge.mjs --sql parsed.json` → 行ごとの SQL。**Claude Code が Supabase MCP `execute_sql` で実行**（read-only）。
+   - `step=hinban` の SQL は `sitemap_works_archive` から content_id 候補を返す。候補が 1 件なら `node knowledge.mjs --key <content_id>` の 3 フロア分を `execute_sql` に流す（`--sql` の `cid` 型と同じ SQL）。複数・0 件なら「解決不能」＝HUMAN が content_id を貼り直す。
+   - `step=cid` の SQL の結果（`[{cache_key, fetched_at, item}]`）を `{"<lineNo>": rows}` の形で `rows.json` に保存 → `node knowledge.mjs --extract rows.json > knowledge.json`。ヒット 0 件の行は知識なしモード（B は台帳の傾向のみ）。
+5. 生成:
+   ```
+   node --env-file=app-concierge/.env.local management/tools/x-reply-drafts/generate.mjs \
+     --parsed parsed.json --targets targets.json --replies replies.json --knowledge knowledge.json --out drafts.json
+   ```
+   - 行ごとに A / B / C の 3 案・ガード結果・`reply_key`・停止理由を出す。**停止（対象外／同日 2 件目／3 日以内／記録済み）の行は API を呼ばない**（裁定 G）。
+   - ガード NG の案だけ最大 2 回再生成。それでも NG なら「一部生成不能」。
+6. **HUMAN**: 案を選んで投稿する（投稿はツールの範囲外）。
+7. 記録 payload: `node management/tools/x-reply-drafts/record.mjs --create drafts.json --pick FANZAdougaX=C --pick honnaka_NN=A --out payload.json`
+   → **Claude Code が Airtable MCP `create_records_for_table`（`x_replies`）で書き込み → `reply_key` で読み戻し（§10）**。payload は書き込み前に URL/@/af_id/vodnavi の混入 0 を機械検査済み（`target_post_url` を除く）。
+8. 投稿後、HUMAN がリプ URL を貼る → `node management/tools/x-reply-drafts/record.mjs --posted --record <x_replies の rec> --target <x_targets の rec> --url https://x.com/vodnavi_jp/status/…`
+   → `reply_post_id` / `posted_at`（snowflake 復元）/ `x_targets.last_reply_at` の update payload → **MCP `update_records_for_table` × 2 → 読み戻し**。
+
+## ガード（`guards.mjs`）
+
+| # | 検査 | 語・値の置き場 |
+|---|---|---|
+| R1 | URL / ドメイン（`https?://` `www.` `xxx.com/jp/co.jp/net/io/me` `t.co`） | コード |
+| R2 | `@` `＠` | コード |
+| R3 | `vodnavi` `ボドナビ` `af_id` `moterist` | コード |
+| R4 | `#` `＃` | コード |
+| R5 | 宣伝語 | `guards.config.json` `R5_promo` |
+| R6 | 容姿・露骨語 | `guards.config.json` `R6_appearance_explicit` |
+| R7 | 出演者名・相手表示名には「さん」 | `ctx.names`（作品知識の `actress[]`・女優本人の `display_name`） |
+| R8 | 字数（既定 80〜140・`R8_chars`）・X 重み ≤280 | `guards.config.json` `R8_chars` |
+| R9 | 数値の出典（B は全数値／全案は「数値＋円・%・割・OFF」）— 出典＝相手投稿本文＋作品知識 JSON | コード（旧 R10 を統合・裁定 D） |
+| R11 | 虚偽の体験主張 | `guards.config.json` `R11_false_experience` |
+
+- モデルの自己申告は証拠にしない。**生成後に必ず純関数で再検査**する（設計書 §4）。
+- `record.mjs` は payload の全文字列に `FORBIDDEN = /https?:|vodnavi|af_id|moterist-\d{3}/i` を再適用する（束1 `followers-update.mjs` と同一）。
+
+## 既知の事実（実装時の実測 2026-09-18）
+
+- 2026-09-18 の実績 6 件（`x_replies`）を現行ガードに通すと **全件 R8（45〜63 字・下限 80 未満）**、#2 Fitch は **R4（`#肉欲の秋`）**、#5 Madonna は **R5（「お気に入り登録」の「登録」）**。ガードを緩めていない。字数下限と語の扱いは CSO 裁定（`guards.config.json` で変更できる）。
+- snowflake 復元は 6 件中 5 件が Airtable 記録値と秒単位で一致。Madonna（`2100938725194977383`）は BigInt 計算で `13:23:20.297Z`、記録値は `13:23:19`（1 秒差・記録側の丸め）。
+- `buildCacheKey` の写しは `pxvr00483` / `snos00334`（videoa・hits 1・filtered=false）で本番の PK と一致。
+- 相手投稿本文は Airtable に保存していない（`x_replies` には `target_post_url` のみ）。公開 oEmbed（`publish.x.com/oembed`）は当該投稿に 403 を返す（2026-09-18 23:24 JST 実測）＝本文は HUMAN が貼る。
