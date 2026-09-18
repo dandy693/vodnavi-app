@@ -7,6 +7,8 @@
 
 ## 0. 要約（CSO 判断用）
 
+> **【2026-09-18 23:3x・裁定反映】本表の「設計上の既定値」は §10-1 の裁定で上書きされた箇所がある（A＝ローカル CLI・D＝価格言及可（出典必須）・G＝2 件目は停止・H＝検証行なし）。実装は §10-1 に従う。**
+
 | 項目 | 設計上の既定値 | 代替 | 裁定 |
 |---|---|---|---|
 | 形態 | **Claude Code スキル**（セッション内で入力を貼る → 作品知識を Supabase MCP で引く → 3 案を生成 → 機械ガード → 出力＋記録 payload） | ローカル CLI（`.env.local` の `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` で生成）。**ただし Supabase の資格情報はローカルに無い（§12 実測・`SUPABASE_*` なし）ため作品知識は MCP で事前エクスポートした JSON を渡す形になる** | **A** |
@@ -126,6 +128,23 @@ management/tools/x-reply-drafts/
 | **F** | 置き場 | `management/tools/x-reply-drafts/` | `.claude/skills/`（未追跡ディレクトリ） |
 | **G** | `reply_key` の衝突 | `YYYYMMDD-<handle>-2` | `target_post_id` を含める（`YYYYMMDD-<handle>-<post_id 下 6 桁>`） |
 | **H** | 検証行の扱い | 削除せず `note` に明記 | 検証後に削除（履歴保全との整合を要確認） |
+
+## 10-1. 【CSO裁定 2026-09-18 23:3x】§10 A〜H の裁定反映（本節が §0・§10 の既定値を上書きする）
+
+| # | 裁定 | 設計への反映 |
+|---|---|---|
+| **A** | **ローカル CLI（node）。Claude Code から呼ぶ。スキル化は不要**——純関数＋node:test の構成が活き、将来の承認ボタン式（Make 連携）にもそのまま流用できるため | §0 の既定値を差し替え。生成は CLI が `.env.local` の `ANTHROPIC_API_KEY` で Anthropic Messages API を呼ぶ（`fetch`・SDK 依存なし・**キーの値は CLI が env から読むだけで出力・ログに載せない**）。作品知識・`x_targets` は Claude Code が MCP で取得して JSON で CLI に渡す（Supabase 資格情報はローカルに無い・§12） |
+| **B** | 設計どおり採用。`buildCacheKey` 再現の PK 照会／品番のみは `sitemap_works_archive` 後方一致／MISS は知識なしモード。**全走査は禁止のまま** | §2 のまま |
+| **C** | 設計案を採用。**加えて「買いました／観ました／購入済み」など事実でない主張を表す語を R に追加**（R11）。**リストは `management/tools/x-reply-drafts/` 配下のファイルに置き、HUMAN が追記できる形にする（コード内定数にしない）** | `guards.config.json` に R5（宣伝語）/ R6（容姿・露骨）/ **R11（虚偽の体験主張）** を外出し。コードは読むだけ |
+| **D** | **価格・セール言及は可。ただし相手投稿本文または cache の payload に出典がある数値のみ**（R9「数値の出典」で担保）。**価格そのものを述べるより「期間・対象を問う」C 型を優先する旨をプロンプトに明記** | R10 を「禁止」から「**出典検査（R9）に統合**」へ変更。R9 の照合元に相手投稿本文を加える。`PROMPT.md` に C 型優先を明記 |
+| **E** | **Airtable PAT は新規発行しない（秘密を増やさない）。ツールは payload JSON を出力し、Claude Code の Airtable MCP で書き込む。書き込み前に payload の URL/@/af_id/vodnavi 混入 0 を機械検査（束1 と同じ）** | `record.mjs` が payload を出力する前に R1〜R3 を payload 全フィールドに再適用（`FORBIDDEN` regex は束1 `followers-update.mjs` と同一） |
+| **F** | **`management/tools/x-reply-drafts/` で承認** | §6 のまま |
+| **G** | **同日同ハンドルの 2 件目は生成を停止して報告。3 日以内再返信禁止の検知として使う。suffix による回避はしない** | `reply_key` は `YYYYMMDD-<handle>` 固定。`x_targets.last_reply_at` が 3 日以内、または同日の `reply_key` が既存なら「停止（理由）」を出力し生成しない |
+| **H** | **node:test は dry-run のみ。Airtable の本番テーブルに検証行を作らない。書き込み経路の疎通確認は既存の `20260918-*` 6 行の読み戻しで代替** | §8-3 を削除。回帰確認は 9/18 の 6 件の読み戻し（read-only）で行う |
+
+- **実装着手＝承認（2026-09-18 23:3x）。着地目標 2026-09-21（月）。** 着地報告には **9/18 の Chrome 抽出 6 件を入力にした dry-run 出力（18 案）** を添付する（CSO が手動下書きと突き合わせて型の妥当性を判定）。
+- **運用（束2 着地まで）**: `posted_at` / `reply_post_id` はチャット側が Airtable MCP で書く運用を継続。
+- **§11 の「TASK_BOARD 追記は未着地」はクローズ**——CSO 訂正（2026-09-18 23:3x）: 22:4x 連絡は「追記済みの報告」ではなく「CTO への追記指示」だった。`27c5c8a` の転記で目的は充足。**指示の読み違い・実害なし。**
 
 ## 11. 併記（事実）
 
