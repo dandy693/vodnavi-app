@@ -1,0 +1,398 @@
+{
+  "generated_at": "2026-09-18T21:33:09.097Z",
+  "today_jst": "20260918",
+  "model": "claude-opus-5",
+  "dry_run": true,
+  "system_prompt_sha256": "20a40beb169004710938c8c72b06770821b319efc48157ace294992f284e627f",
+  "counts": {
+    "lines": 6,
+    "generated": 6,
+    "stopped": 0
+  },
+  "items": [
+    {
+      "lineNo": 2,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2100752031036342529",
+      "targetPostId": "2100752031036342529",
+      "postedAtJst": "2026-09-18 10:01",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:21:33.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-FANZAdougaX",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-FANZAdougaX が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "朝一番で第1弾の告知が並ぶと、全9弾で計4,500作品という規模感が一目で分かって、今日からの予定が立てやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 58,
+              "weight": 109
+            }
+          },
+          "attempts": 1
+        },
+        "B": {
+          "text": "弾ごとに対象を切り替えていく形の告知が続いているので、期間の区切りを追いかける側としては流れが掴みやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 110
+            }
+          },
+          "attempts": 1
+        },
+        "C": {
+          "text": "第2弾への切り替えは第1弾の期間が終わったタイミングになりますか。弾ごとの日程の目安が分かると確認しやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 110
+            }
+          },
+          "attempts": 1
+        }
+      },
+      "usage": {
+        "input_tokens": 370,
+        "output_tokens": 788,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2100906434854895695",
+      "targetPostId": "2100906434854895695",
+      "postedAtJst": "2026-09-18 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:26:03.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-Fitch_official",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Fitch_official が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "秋らしい企画名での告知、季節感があって並びを追う側としては目に留まりますね。告知の出し方が毎回そろっていて見やすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 60,
+              "weight": 120
+            }
+          },
+          "attempts": 1
+        },
+        "B": {
+          "text": "フィッチさんの告知は作品ごとの並べ方が一定で、レーベルの傾向がつかみやすいですね。今回の企画もその流れで追いやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 60,
+              "weight": 120
+            }
+          },
+          "attempts": 1
+        },
+        "C": {
+          "text": "この企画の対象期間はいつまででしょうか。対象になる作品の範囲も分かると、見て回る予定が立てやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 102
+            }
+          },
+          "attempts": 1
+        }
+      },
+      "usage": {
+        "input_tokens": 301,
+        "output_tokens": 814,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2100600690574029265",
+      "targetPostId": "2100600690574029265",
+      "postedAtJst": "2026-09-18 00:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:27:02.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-honnaka_NN",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-honnaka_NN が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。日付が変わった直後の告知は恒例ですね、夜に確認する側としては流れが分かりやすくて助かります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 65,
+              "weight": 130
+            }
+          },
+          "attempts": 1
+        },
+        "B": {
+          "text": "本中さんは企画ものの新作を定期的に出されている印象があります。今回も先行配信からの立ち上がりがどうなるか、追いかけてみます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 62,
+              "weight": 124
+            }
+          },
+          "attempts": 1
+        },
+        "C": {
+          "text": "先行配信は通常配信の何日前からになるのでしょうか。期間が分かると予定を立てやすいので教えていただけると嬉しいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 57,
+              "weight": 114
+            }
+          },
+          "attempts": 1
+        }
+      },
+      "usage": {
+        "input_tokens": 391,
+        "output_tokens": 180,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2100918766158950416",
+      "targetPostId": "2100918766158950416",
+      "postedAtJst": "2026-09-18 21:04",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:25:16.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-kawaii_pr",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-kawaii_pr が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第1弾の締切が9月21日朝9時59分までと時刻まで明記されていると、予定を立てる側としては本当に助かります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 101
+            }
+          },
+          "attempts": 1
+        },
+        "B": {
+          "text": "第1弾は9月21日(月)朝9時59分までと終了時刻まで記載があるので、50％OFFの対象期間を把握しやすいです。弾ごとに区切って告知される形が続いていますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 79,
+              "weight": 144
+            }
+          },
+          "attempts": 2
+        },
+        "C": {
+          "text": "第1弾が9月21日の朝9時59分までとのことですが、第2弾は同じ日の続きで始まる形でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 86
+            }
+          },
+          "attempts": 1
+        }
+      },
+      "usage": {
+        "input_tokens": 938,
+        "output_tokens": 699,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "Madonna_AVinfo",
+      "postUrl": "https://x.com/Madonna_AVinfo/status/2100759316206850326",
+      "targetPostId": "2100759316206850326",
+      "postedAtJst": "2026-09-18 10:30",
+      "target": {
+        "id": "rec81cW6UPEmdwPZQ",
+        "handle": "Madonna_AVinfo",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:23:19.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-Madonna_AVinfo",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Madonna_AVinfo が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "本日先行配信スタートおめでとうございます。午前中に売れ筋の順位まで添えて告知いただけると、追う側としては状況が分かりやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 64,
+              "weight": 128
+            }
+          },
+          "attempts": 1
+        },
+        "B": {
+          "text": "熟女や人妻・主婦の作品が中心のラインナップで、次世代のミセスという打ち出し方を続けているのが、公式の告知からも伝わってきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 63,
+              "weight": 126
+            }
+          },
+          "attempts": 1
+        },
+        "C": {
+          "text": "先行配信から通常配信に切り替わるのは、いつごろの予定でしょうか。配信日が分かると予定を立てやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 102
+            }
+          },
+          "attempts": 1
+        }
+      },
+      "usage": {
+        "input_tokens": 444,
+        "output_tokens": 895,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2100600674639847771",
+      "targetPostId": "2100600674639847771",
+      "postedAtJst": "2026-09-18 00:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:24:04.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-PREMIUM_AV",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-PREMIUM_AV が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "新作の予約開始おめでとうございます。専属デビューからの初VRという節目の告知を、日付が変わったちょうどの時間に見られるのはうれしいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 68,
+              "weight": 134
+            }
+          },
+          "attempts": 1
+        },
+        "B": {
+          "text": "企画ものやお姉さん系の作品が続く中で、VRの新作告知が入るとタイムラインの流れが変わりますね。予約開始のお知らせ、しっかり受け取りました。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 69,
+              "weight": 136
+            }
+          },
+          "attempts": 1
+        },
+        "C": {
+          "text": "予約開始とのことですが、配信開始日はいつ頃の予定でしょうか。和香なつきさんの初VRなので、予定を空けておきたいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 58,
+              "weight": 114
+            }
+          },
+          "attempts": 1
+        }
+      },
+      "usage": {
+        "input_tokens": 407,
+        "output_tokens": 197,
+        "calls": 1
+      }
+    }
+  ]
+}

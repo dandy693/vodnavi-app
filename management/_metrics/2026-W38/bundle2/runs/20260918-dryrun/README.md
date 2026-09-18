@@ -1,4 +1,4 @@
-# 束2 dry-run（2026-09-18 の 6 件・着地報告用）— 状態: **生成は未実行（ANTHROPIC_API_KEY が空）**
+# 束2 dry-run（2026-09-18 の 6 件・着地報告用）— 状態: **生成済み（2026-09-19 06:31:53〜06:33:09 JST・HUMAN がキー配置後）**
 
 | ファイル | 内容 |
 |---|---|
@@ -31,3 +31,17 @@ node --env-file=app-concierge/.env.local management/tools/x-reply-drafts/generat
 - `app-concierge/.env.local` は `.gitignore` の `.env*.local` に一致（`git check-ignore -v` で実測）＝git 管理外。**HUMAN が `ANTHROPIC_API_KEY` の値を置く**（チャット・台帳に載せない）。
 - 配置後は上の 1 コマンドで生成し、`drafts.json` を CSO に提出する（`claude-opus-5`・6 件 × 最大 3 回）。
 - ガードは較正済み（R8 min 40／「登録」は誘導形のみ＋本文引用免除／R4 維持）。生成前に `node --test management/tools/x-reply-drafts/*.test.mjs` が 39/39 であることを確認する。
+
+## 実行結果（2026-09-19 06:31:53〜06:33:09 JST・`claude-opus-5`・`--dry-run --today 2026-09-18`）
+
+| 項目 | 実測 |
+|---|---|
+| 生成 | **6 件すべて `generated`・18 案すべてガード通過**（`drafts.json` / 人が読む形は `drafts.txt`） |
+| API 呼び出し | **7 回**（kawaii_pr の B 案のみ 1 回再生成・他 5 件は 1 回） |
+| トークン | input 2,851 / output 3,573（`usage.input_tokens` / `output_tokens` の合計。system プロンプトの cache 分は本実行の出力に未記録＝以後の実行から `cache_creation_input_tokens` / `cache_read_input_tokens` を記録） |
+| 字数 | 47〜79 字（中央値 60）・X 重み 86〜144 |
+| 知識 | 全件 知識なしモード（投稿に作品コードなし）。B 案は台帳の `type` / `genres` / 本文の範囲 |
+| 停止判定 | `--dry-run` で無効化（全件に「本来は 停止（同日同ハンドル 2 件目）」の警告付き）。**この出力は記録 payload にしない**（`record.mjs --create` が拒否） |
+
+- 再生成 1 回（kawaii_pr B）の 1 回目の案と NG 理由は本実行では未記録（`history` の記録は本実行後に追加）。
+- `generate.log.txt` に stderr の進捗ログ（キー値なし）。

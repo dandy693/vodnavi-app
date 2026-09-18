@@ -205,3 +205,8 @@ management/tools/x-reply-drafts/
 
 - **較正後の回帰（`guards.test.mjs`・9/18 実績 6 件・相手投稿本文を `body` / `sources` に渡す）**: **5/6 が全ガード通過。#2 Fitch のみ R4**（記録のみ）。#5 Madonna の「3,740」「5」は本文に出典があり R9 通過。`node --test` 39/39。
 - **【厳守】較正はガードの意味を変えていない**——R4/R9/R11 は不変。変えたのは「字数の下限」と「相手の語の引用を宣伝と数えない」の 2 点で、いずれも 9/18 の実測に合わせたもの。
+
+### 12-5. 【dry-run 実行・2026-09-19 06:31:53〜06:33:09 JST】9/18 の 6 件 → 18 案（全案ガード通過）
+
+- HUMAN が `ANTHROPIC_API_KEY` を配置（値はチャット・台帳に載せない・`.env.local` は git 管理外）→ `runs/20260918-dryrun/README.md` の 1 コマンドで実行。**6 件 `generated`・18 案すべてガード通過・API 7 回（kawaii_pr の B のみ再生成 1 回）・input 2,851 / output 3,573 トークン・字数 47〜79（中央値 60）。** 全件 知識なしモード（投稿に作品コードなし）。出力 → `runs/20260918-dryrun/drafts.json`（人が読む形 `drafts.txt`）。**型の妥当性の判定は CSO**（手動下書き 6 件との突き合わせ）。
+- ツール側の追加（本実行後）: ガード NG だった案を `drafts[t].history` に残す／`cache_creation_input_tokens` `cache_read_input_tokens` を `usage` に記録。

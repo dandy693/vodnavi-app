@@ -11046,3 +11046,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **品番解決**: HUMAN 側の Chrome 抽出に「リンク先 content_id」列を追加（本日反映・CSO）。ツールは content_id 優先・品番はフォールバック（既存の判定順・README に明記）。
 - **dry-run**: `app-concierge/.env.local` は `.gitignore`（`.env*.local`）で git 管理外＝**HUMAN が `ANTHROPIC_API_KEY` の値を配置後、README の 1 コマンドで 18 案を生成して CSO へ提出**（`claude-opus-5` のまま）。
 - **距離**: 本コミットは直前 READY `10a3c2e` から 2（skip）。
+- 【2026-09-19 00:04 追記・push 後の Vercel state】`f881c4f`（距離 2）＝`dpl_Hfpj3Q2GLCmG4uyiu2q4c8TmZV2U` **CANCELED**（created 1789743780216＝00:03:00 JST・skip 経路・sitemap 不変）。
+
+### 【2026-09-19 06:3x JST】束2 dry-run 実行 — 9/18 の 6 件 → **18 案・全案ガード通過**（HUMAN がキー配置後）
+
+- **実行**: 06:31:53〜06:33:09 JST・`claude-opus-5`・`--dry-run --today 2026-09-18`。**6 件 `generated`・18 案すべてガード通過・API 7 回**（kawaii_pr の B のみ再生成 1 回）・input 2,851 / output 3,573 トークン・字数 47〜79（中央値 60）・全件 知識なしモード。出力 → `bundle2/runs/20260918-dryrun/drafts.json`（`drafts.txt`）。**型の妥当性は CSO 判定。**
+- キーは HUMAN 配置（値はチャット・台帳に載せない）。`.env.local` は `.gitignore`（`.env*.local`）で git 管理外。
+- ツール追加（本実行後・次回から有効）: NG 案の `history`／cache トークンの記録。`node --test` 39/39。
+- **距離**: 本コミットは直前 READY `10a3c2e` から 3（skip）。

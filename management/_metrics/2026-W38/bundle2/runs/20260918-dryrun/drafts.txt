@@ -1,0 +1,55 @@
+model=claude-opus-5 dry_run=true today_jst=20260918 counts={"lines":6,"generated":6,"stopped":0} prompt_sha=20a40beb1690
+
+=== @FANZAdougaX (セール告知系) status=generated replyKey=20260918-FANZAdougaX calls=1 in=370 out=788
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-FANZAdougaX が既存））
+  A chars=58 weight=109 ok=true attempts=1
+     朝一番で第1弾の告知が並ぶと、全9弾で計4,500作品という規模感が一目で分かって、今日からの予定が立てやすいです。
+  B chars=55 weight=110 ok=true attempts=1
+     弾ごとに対象を切り替えていく形の告知が続いているので、期間の区切りを追いかける側としては流れが掴みやすいです。
+  C chars=56 weight=110 ok=true attempts=1
+     第2弾への切り替えは第1弾の期間が終わったタイミングになりますか。弾ごとの日程の目安が分かると確認しやすいです。
+
+=== @Fitch_official (メーカー公式) status=generated replyKey=20260918-Fitch_official calls=1 in=301 out=814
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Fitch_official が既存））
+  A chars=60 weight=120 ok=true attempts=1
+     秋らしい企画名での告知、季節感があって並びを追う側としては目に留まりますね。告知の出し方が毎回そろっていて見やすいです。
+  B chars=60 weight=120 ok=true attempts=1
+     フィッチさんの告知は作品ごとの並べ方が一定で、レーベルの傾向がつかみやすいですね。今回の企画もその流れで追いやすいです。
+  C chars=51 weight=102 ok=true attempts=1
+     この企画の対象期間はいつまででしょうか。対象になる作品の範囲も分かると、見て回る予定が立てやすいです。
+
+=== @honnaka_NN (メーカー公式) status=generated replyKey=20260918-honnaka_NN calls=1 in=391 out=180
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-honnaka_NN が既存））
+  A chars=65 weight=130 ok=true attempts=1
+     先行配信スタートおめでとうございます。日付が変わった直後の告知は恒例ですね、夜に確認する側としては流れが分かりやすくて助かります。
+  B chars=62 weight=124 ok=true attempts=1
+     本中さんは企画ものの新作を定期的に出されている印象があります。今回も先行配信からの立ち上がりがどうなるか、追いかけてみます。
+  C chars=57 weight=114 ok=true attempts=1
+     先行配信は通常配信の何日前からになるのでしょうか。期間が分かると予定を立てやすいので教えていただけると嬉しいです。
+
+=== @kawaii_pr (メーカー公式) status=generated replyKey=20260918-kawaii_pr calls=2 in=938 out=699
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-kawaii_pr が既存））
+  A chars=54 weight=101 ok=true attempts=1
+     第1弾の締切が9月21日朝9時59分までと時刻まで明記されていると、予定を立てる側としては本当に助かります。
+  B chars=79 weight=144 ok=true attempts=2
+     第1弾は9月21日(月)朝9時59分までと終了時刻まで記載があるので、50％OFFの対象期間を把握しやすいです。弾ごとに区切って告知される形が続いていますね。
+  C chars=47 weight=86 ok=true attempts=1
+     第1弾が9月21日の朝9時59分までとのことですが、第2弾は同じ日の続きで始まる形でしょうか。
+
+=== @Madonna_AVinfo (メーカー公式) status=generated replyKey=20260918-Madonna_AVinfo calls=1 in=444 out=895
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Madonna_AVinfo が既存））
+  A chars=64 weight=128 ok=true attempts=1
+     本日先行配信スタートおめでとうございます。午前中に売れ筋の順位まで添えて告知いただけると、追う側としては状況が分かりやすいです。
+  B chars=63 weight=126 ok=true attempts=1
+     熟女や人妻・主婦の作品が中心のラインナップで、次世代のミセスという打ち出し方を続けているのが、公式の告知からも伝わってきます。
+  C chars=51 weight=102 ok=true attempts=1
+     先行配信から通常配信に切り替わるのは、いつごろの予定でしょうか。配信日が分かると予定を立てやすいです。
+
+=== @PREMIUM_AV (メーカー公式) status=generated replyKey=20260918-PREMIUM_AV calls=1 in=407 out=197
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-PREMIUM_AV が既存））
+  A chars=68 weight=134 ok=true attempts=1
+     新作の予約開始おめでとうございます。専属デビューからの初VRという節目の告知を、日付が変わったちょうどの時間に見られるのはうれしいです。
+  B chars=69 weight=136 ok=true attempts=1
+     企画ものやお姉さん系の作品が続く中で、VRの新作告知が入るとタイムラインの流れが変わりますね。予約開始のお知らせ、しっかり受け取りました。
+  C chars=58 weight=114 ok=true attempts=1
+     予約開始とのことですが、配信開始日はいつ頃の予定でしょうか。和香なつきさんの初VRなので、予定を空けておきたいです。

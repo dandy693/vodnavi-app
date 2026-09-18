@@ -213,7 +213,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     warnings: [...(line.warnings ?? [])],
     status: null,
     drafts: {},
-    usage: { input_tokens: 0, output_tokens: 0, calls: 0 },
+    usage: { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, calls: 0 },
   };
   if (!target) item.warnings.push("台帳未登録（x_targets に handle が無い・生成は続行・登録は HUMAN）");
   const stop = checkStop({ line, target, replies, now });
@@ -233,6 +233,8 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     item.usage.calls++;
     item.usage.input_tokens += r.usage?.input_tokens ?? 0;
     item.usage.output_tokens += r.usage?.output_tokens ?? 0;
+    item.usage.cache_creation_input_tokens += r.usage?.cache_creation_input_tokens ?? 0;
+    item.usage.cache_read_input_tokens += r.usage?.cache_read_input_tokens ?? 0;
     if (r.stop_reason === "refusal") {
       item.status = `生成不能（refusal: ${r.stop_details?.category ?? "?"}）`;
       return item;
@@ -250,7 +252,10 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     for (const t of pending) {
       const text = String(obj[t] ?? "").trim();
       const g = guardReply(text, { type: t, names, sources, body: line.body, config });
-      item.drafts[t] = { text, guard: g, attempts: (item.drafts[t]?.attempts ?? 0) + 1 };
+      // ガード NG だった過去の案は history に残す（CSO が再生成の理由を追えるように）
+      const history = [...(item.drafts[t]?.history ?? [])];
+      if (item.drafts[t] && !item.drafts[t].guard.ok) history.push({ text: item.drafts[t].text, failures: item.drafts[t].guard.failures });
+      item.drafts[t] = { text, guard: g, attempts: (item.drafts[t]?.attempts ?? 0) + 1, history };
       if (!g.ok) {
         nextPending.push(t);
         nextReasons[t] = g.failures.map((f) => `${f.rule}: ${f.detail}`).join(" / ");
