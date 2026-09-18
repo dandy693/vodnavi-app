@@ -249,7 +249,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     const nextPending = [];
     for (const t of pending) {
       const text = String(obj[t] ?? "").trim();
-      const g = guardReply(text, { type: t, names, sources, config });
+      const g = guardReply(text, { type: t, names, sources, body: line.body, config });
       item.drafts[t] = { text, guard: g, attempts: (item.drafts[t]?.attempts ?? 0) + 1 };
       if (!g.ok) {
         nextPending.push(t);

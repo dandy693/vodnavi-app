@@ -33,10 +33,17 @@ test("R2/R3/R4: @ ・自社語・#", () => {
   assert.ok(rules(guardReply(OK + "＃tag", { type: "A" })).includes("R4"));
 });
 
-test("R5: 宣伝語（config の語）", () => {
+test("R5: 宣伝語（config の語）・「登録」は誘導形のみ・本文引用は免除（CSO裁定 2026-09-19）", () => {
   assert.ok(rules(guardReply(OK + "詳しくはこちら", { type: "A" })).includes("R5"));
   assert.ok(rules(guardReply(OK + "ぜひチェック", { type: "A" })).includes("R5"));
-  assert.ok(rules(guardReply(OK.slice(0, 90) + "お気に入り登録が増えています。", { type: "A" })).includes("R5"), "「登録」は現行リストで陽性（実装時の実測・裁定待ち）");
+  assert.ok(!rules(guardReply(OK.slice(0, 90) + "お気に入り登録が増えています。", { type: "A" })).includes("R5"), "「登録」単体は陰性");
+  assert.ok(rules(guardReply(OK.slice(0, 90) + "今すぐご登録を。", { type: "A" })).includes("R5"), "誘導形は陽性");
+  assert.ok(rules(guardReply(OK.slice(0, 90) + "登録してください。", { type: "A" })).includes("R5"));
+  // 本文一致で免除: 相手が「クーポン」と書いていれば引用は宣伝ではない
+  const t = OK.slice(0, 90) + "クーポンの期間はいつまでですか。";
+  assert.ok(rules(guardReply(t, { type: "C" })).includes("R5"));
+  assert.ok(!rules(guardReply(t, { type: "C", body: "本日からクーポン配布中" })).includes("R5"));
+  assert.ok(rules(guardReply(t, { type: "C", body: "本日から配布中" })).includes("R5"), "本文に無ければ免除しない");
 });
 
 test("R6: 容姿・露骨語", () => {
@@ -89,20 +96,24 @@ test("checkPayloadForbidden: URL/af_id/vodnavi を再検査（許可キー以外
   assert.equal(checkPayloadForbidden({ t: "普通の文" }).length, 0);
 });
 
-test("2026-09-18 実績 6 件を現行ガードに通す（回帰の実測・結果は台帳に記録する）", () => {
+test("2026-09-18 実績 6 件を較正後ガードに通す（CSO裁定 2026-09-19: R8 min 40・R5 誘導形のみ＋本文引用免除・R4 維持）", () => {
+  // 相手投稿本文（x.com 投稿ページの <title> から転記・runs/20260918-dryrun/input.txt と同一）
+  const bodyMadonna = "#Madonna 本日先行配信スタート‼️✨ ▾お気に入り登録数*3740 ✨本日配信作品/売上げ本数順 1位 ✨動画 売れ筋 5位(09/18) NON TITLE 無名の原石妻 28歳 AV出演。 遅れてきた大本命、次世代ミセス誕生ー。 #宝生みさと #PR";
   const six = [
-    ["C", "第2弾への切り替えは第1弾終了の翌朝10時からでしょうか？ 弾ごとの期間が分かると予定が立てやすいです。"],
-    ["A", "#肉欲の秋 のタグ、季節感があっていいですね。Fitchは朝と夜で1作ずつ出してくるのが分かりやすいです。"],
-    ["A", "先行配信スタートおめでとうございます。本中は0時ちょうどに4作まとめて告知が恒例ですね、深夜に確認する側としては助かります。"],
-    ["C", "第2弾以降にも kawaii* の作品は入りますか？ 弾ごとにレーベルが変わるのか気になっています。"],
-    ["B", "お気に入り登録3,740件で売れ筋5位は、先行配信初日としてはかなり強い数字ですね。今週の動きが気になります。"],
-    ["C", "和香なつきさんの初VR、予約開始おめでとうございます。予約者向けの特典や先行配信はありますか？"],
+    ["C", "第2弾への切り替えは第1弾終了の翌朝10時からでしょうか？ 弾ごとの期間が分かると予定が立てやすいです。", ""],
+    ["A", "#肉欲の秋 のタグ、季節感があっていいですね。Fitchは朝と夜で1作ずつ出してくるのが分かりやすいです。", "#肉欲の秋 🍂【PR】50%OFF🌰 #星明日菜"],
+    ["A", "先行配信スタートおめでとうございます。本中は0時ちょうどに4作まとめて告知が恒例ですね、深夜に確認する側としては助かります。", ""],
+    ["C", "第2弾以降にも kawaii* の作品は入りますか？ 弾ごとにレーベルが変わるのか気になっています。", ""],
+    ["B", "お気に入り登録3,740件で売れ筋5位は、先行配信初日としてはかなり強い数字ですね。今週の動きが気になります。", bodyMadonna],
+    ["C", "和香なつきさんの初VR、予約開始おめでとうございます。予約者向けの特典や先行配信はありますか？", ""],
   ];
-  const results = six.map(([type, text]) => guardReply(text, { type, names: ["和香なつき"], sources: ["お気に入り登録3,740件 売れ筋5位"] }));
-  // 全件 R8（字数下限 80 未満）。#2 は R4、#5 は R5「登録」も付く
-  assert.ok(results.every((r) => rules(r).includes("R8")));
-  assert.ok(rules(results[1]).includes("R4"));
-  assert.ok(rules(results[4]).includes("R5"));
-  assert.ok(!rules(results[5]).includes("R7"));
+  const results = six.map(([type, text, body]) => guardReply(text, { type, names: ["和香なつき"], sources: [body], body }));
   assert.deepEqual(results.map((r) => r.metrics.chars), [52, 53, 62, 50, 55, 47]);
+  // R8 は全件通過（40〜140）。#5 の「登録」は誘導形でなく陰性、数値 3,740 / 5 は本文に出典あり
+  assert.ok(results.every((r) => !rules(r).includes("R8")));
+  assert.deepEqual(rules(results[4]), []);
+  assert.ok(!rules(results[5]).includes("R7"));
+  // #2 のみ R4（相手のハッシュタグを裸で書き写した・投稿済み・実害なしとして記録のみ）
+  assert.deepEqual(rules(results[1]), ["R4"]);
+  assert.ok([0, 2, 3, 5].every((i) => results[i].ok), JSON.stringify(results.map((r) => r.failures)));
 });

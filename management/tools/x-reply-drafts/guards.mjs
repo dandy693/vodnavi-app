@@ -5,6 +5,7 @@
 //   type: "A"|"B"|"C",   // 案の型（R9 の全数値検査は B のみ・価格/割引の数値は全案）
 //   names: string[],     // 出演者名など敬称必須の名前（R7）
 //   sources: string[],   // 数値の出典（相手投稿本文・作品知識 JSON など）（R9）
+//   body?: string,       // 相手投稿本文。R5 のヒット語が本文にそのまま含まれていれば免除（CSO裁定 2026-09-19）
 //   config?: object,     // 省略時は guards.config.json を読む
 // }
 // 戻り値 { ok, failures: [{ rule, detail }], metrics: { chars, weight } }
@@ -111,9 +112,13 @@ export function guardReply(text, ctx = {}) {
   }
   // R4 ハッシュタグ
   if (R4_HASHTAG.test(t)) push("R4", "# を含む");
-  // R5 宣伝語
+  // R5 宣伝語（CSO裁定 2026-09-19: 相手投稿本文にそのまま含まれる語句の引用は免除）
   {
-    const h = listHits(t, cfg.R5_promo);
+    let h = listHits(t, cfg.R5_promo);
+    if (cfg.R5_quote_exempt && ctx.body) {
+      const body = String(ctx.body);
+      h = h.filter((hit) => !body.includes(hit.replace(/（regex: .*）$/, "")));
+    }
     if (h.length) push("R5", `宣伝語: ${h.join("、")}`);
   }
   // R6 容姿・露骨

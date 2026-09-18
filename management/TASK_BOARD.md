@@ -11037,3 +11037,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **本文取得の経路**: 公開 oEmbed（`publish.x.com/oembed`）は 6 件とも HTTP 403（23:24）。Chrome の投稿ページ `<title>` に全文が入る（センシティブ警告で本文領域は非表示でも title は取れる）。
 - **距離**: 本コミットは直前 READY `10a3c2e` から 1（skip）。
 - **次**: HUMAN がキー配置 → dry-run 18 案を添付して着地報告 → CSO が `R8_chars.min` / 「登録」「#」の裁定 → 束3。
+- 【2026-09-18 23:53 追記・push 後の Vercel state】`f4d37f2`（距離 1）＝`dpl_5996vaerSWRc77Vz6ZbXZLtxm5Eu` **CANCELED**（created 1789743147359＝23:52:27 JST・skip 経路・sitemap 不変）。
+
+### 【2026-09-19 00:0x JST・CSO裁定】束2 ガードの較正（R8 min 40／R5「登録」は誘導形のみ＋本文引用免除／R4 維持）・content_id 優先・dry-run はキー配置後
+
+- **反映**: `guards.config.json`（`R8_chars.min=40`・`R5_promo` から「登録」を外し「登録して／ご登録／登録はこちら／登録を」・`R5_quote_exempt: true`）／`guards.mjs`（`ctx.body` にヒット語が含まれれば R5 免除）／`generate.mjs`（`body` を渡す）／`PROMPT.md`（40〜140 字・タグ名を裸で書かない・引用は可）／README・設計書 §12-4。**`node --test` 39/39。**
+- **較正後の回帰**: 9/18 実績 6 件は **5/6 全通過・#2 Fitch のみ R4**（`#肉欲の秋` 引用・投稿済み・実害なし・記録のみ）。
+- **品番解決**: HUMAN 側の Chrome 抽出に「リンク先 content_id」列を追加（本日反映・CSO）。ツールは content_id 優先・品番はフォールバック（既存の判定順・README に明記）。
+- **dry-run**: `app-concierge/.env.local` は `.gitignore`（`.env*.local`）で git 管理外＝**HUMAN が `ANTHROPIC_API_KEY` の値を配置後、README の 1 コマンドで 18 案を生成して CSO へ提出**（`claude-opus-5` のまま）。
+- **距離**: 本コミットは直前 READY `10a3c2e` から 2（skip）。

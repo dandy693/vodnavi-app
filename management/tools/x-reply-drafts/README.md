@@ -3,7 +3,7 @@
 - 設計書: `management/_metrics/2026-W38/bundle2/design-20260918-bin127-bundle2-reply-drafts.md`（§10-1 の CSO裁定 A〜H が正）
 - 形態: **ローカル CLI（node・依存パッケージなし）。Claude Code から呼ぶ。スキル化しない**（裁定 A）
 - 触らないもの: `posts` / Make 5615632 / `x_targets.status`（HUMAN 専権・§26-8）/ FANZA API の新規呼び出し / 本番コード
-- 資格情報: 生成は `app-concierge/.env.local` の `ANTHROPIC_API_KEY` を **環境変数として読むだけ**（値は出力・ログ・payload に載せない）。Airtable PAT は発行しない（裁定 E）。Supabase の資格情報はローカルに無い（§12）ので、Airtable / Supabase の読み書きは **Claude Code の MCP** が行う。
+- 資格情報: 生成は `app-concierge/.env.local`（`.gitignore` の `.env*.local` に一致・git 管理外）の `ANTHROPIC_API_KEY` を **環境変数として読むだけ**（値は出力・ログ・payload に載せない）。値の配置は HUMAN。Airtable PAT は発行しない（裁定 E）。Supabase の資格情報はローカルに無い（§12）ので、Airtable / Supabase の読み書きは **Claude Code の MCP** が行う。
 
 ## ファイル
 
@@ -29,7 +29,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 1. **HUMAN**: 対象投稿を 1 行 1 件で `input.txt` に貼る
    `@ハンドル｜投稿日時｜投稿URL｜本文｜作品コード（任意）`
    - 区切りは全角「｜」（半角「|」も可・混在不可）。本文に「｜」があっても末尾が作品コードでなければ本文として扱う。
-   - 作品コードは 品番（`SONE-682`）／content_id（`pxvr00483`）／works URL のいずれか。無ければ省略。
+   - 作品コードは content_id（`pxvr00483`）／works URL／品番（`SONE-682`）のいずれか。**content_id があればそれを貼る（Chrome 抽出の「リンク先 content_id」列・CSO 2026-09-19）。品番は content_id が無いときのフォールバック**（`sitemap_works_archive` に無い作品は解決できない）。無ければ省略。
 2. `node management/tools/x-reply-drafts/parse.mjs input.txt > parsed.json`
 3. **Claude Code（MCP）**: `x_targets` を `list_records_for_table`（`handle` で絞る・フィールドは `handle / display_name / type / genres / note / reply_restriction / no_repropose / last_reply_at / status`）→ `targets.json` に保存。`x_replies` を `reply_key / target_post_url / posted_at` で読み戻し → `replies.json`。**MCP の生出力（`records[].cellValuesByFieldId`）のまま保存してよい。**
 4. 作品コードがある行のみ: `node management/tools/x-reply-drafts/knowledge.mjs --sql parsed.json` → 行ごとの SQL。**Claude Code が Supabase MCP `execute_sql` で実行**（read-only）。
@@ -56,10 +56,10 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 | R2 | `@` `＠` | コード |
 | R3 | `vodnavi` `ボドナビ` `af_id` `moterist` | コード |
 | R4 | `#` `＃` | コード |
-| R5 | 宣伝語 | `guards.config.json` `R5_promo` |
+| R5 | 宣伝語（「登録」は誘導形のみ）。**ヒット語が相手投稿本文にそのまま含まれていれば免除**（`R5_quote_exempt`・CSO裁定 2026-09-19） | `guards.config.json` `R5_promo` |
 | R6 | 容姿・露骨語 | `guards.config.json` `R6_appearance_explicit` |
 | R7 | 出演者名・相手表示名には「さん」 | `ctx.names`（作品知識の `actress[]`・女優本人の `display_name`） |
-| R8 | 字数（既定 80〜140・`R8_chars`）・X 重み ≤280 | `guards.config.json` `R8_chars` |
+| R8 | 字数（既定 **40〜140**・`R8_chars`・CSO裁定 2026-09-19 で min 80 → 40）・X 重み ≤280 | `guards.config.json` `R8_chars` |
 | R9 | 数値の出典（B は全数値／全案は「数値＋円・%・割・OFF」）— 出典＝相手投稿本文＋作品知識 JSON | コード（旧 R10 を統合・裁定 D） |
 | R11 | 虚偽の体験主張 | `guards.config.json` `R11_false_experience` |
 
@@ -68,7 +68,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 
 ## 既知の事実（実装時の実測 2026-09-18）
 
-- 2026-09-18 の実績 6 件（`x_replies`）を現行ガードに通すと **全件 R8（45〜63 字・下限 80 未満）**、#2 Fitch は **R4（`#肉欲の秋`）**、#5 Madonna は **R5（「お気に入り登録」の「登録」）**。ガードを緩めていない。字数下限と語の扱いは CSO 裁定（`guards.config.json` で変更できる）。
+- 2026-09-18 の実績 6 件（`x_replies`）を設計時のガード（R8 min 80・R5 に「登録」単体）に通すと全件 R8・#2 R4・#5 R5 だった。**CSO裁定 2026-09-19 で較正**（R8 min 40／「登録」は誘導形のみ＋本文引用は免除／R4 維持）→ 較正後は **5/6 が全通過・#2 Fitch のみ R4**（投稿済み・実害なしとして記録のみ。以後タグ名を裸で書かない）。
 - snowflake 復元は 6 件中 5 件が Airtable 記録値と秒単位で一致。Madonna（`2100938725194977383`）は BigInt 計算で `13:23:20.297Z`、記録値は `13:23:19`（1 秒差・記録側の丸め）。
 - `buildCacheKey` の写しは `pxvr00483` / `snos00334`（videoa・hits 1・filtered=false）で本番の PK と一致。
 - 相手投稿本文は Airtable に保存していない（`x_replies` には `target_post_url` のみ）。公開 oEmbed（`publish.x.com/oembed`）は当該投稿に 403 を返す（2026-09-18 23:24 JST 実測）＝本文は HUMAN が貼る。

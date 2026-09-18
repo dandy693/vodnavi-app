@@ -25,3 +25,9 @@ node --env-file=app-concierge/.env.local management/tools/x-reply-drafts/generat
 
 - `--dry-run` は停止判定（同日 2 件目・記録済み URL）を無効化して生成だけ行う。出力に `dry_run: true` が付き、`record.mjs --create` は記録 payload を作らない。
 - 無効なキーでの経路確認は実施済み: `API 401 authentication_error: invalid x-api-key`（キーの値は出力に載らない・課金なし）。
+
+## 追記（CSO裁定 2026-09-19 00:0x）
+
+- `app-concierge/.env.local` は `.gitignore` の `.env*.local` に一致（`git check-ignore -v` で実測）＝git 管理外。**HUMAN が `ANTHROPIC_API_KEY` の値を置く**（チャット・台帳に載せない）。
+- 配置後は上の 1 コマンドで生成し、`drafts.json` を CSO に提出する（`claude-opus-5`・6 件 × 最大 3 回）。
+- ガードは較正済み（R8 min 40／「登録」は誘導形のみ＋本文引用免除／R4 維持）。生成前に `node --test management/tools/x-reply-drafts/*.test.mjs` が 39/39 であることを確認する。

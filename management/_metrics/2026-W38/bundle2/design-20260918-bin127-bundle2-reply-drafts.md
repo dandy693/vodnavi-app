@@ -191,3 +191,17 @@ management/tools/x-reply-drafts/
 | knowledge.mjs ＋ MCP 経路の実走 | 30 分 | 約 10 分 |
 | 9/18 実績 6 件での回帰確認 | 20 分 | テストに同梱（`guards.test.mjs`） |
 | **診断分岐（発生した）** | 項目のみ | **約 10 分**——①Bash ツール経由の heredoc / インライン python が `\u` と `\\` を書き換える（ソースは Write ツールで書く）②`process.exit()` が Windows で libuv assertion（`exitCode` へ）③9/18 本文の取得（oEmbed 403 → Chrome の `<title>` 読み取り） |
+
+### 12-4. 【CSO裁定 2026-09-19 00:0x・着地報告への回答】ガードの較正（緩和ではなく実測への較正）ほか
+
+| # | 裁定 | 反映（コミットで差分を残す） |
+|---|---|---|
+| 1 | **R8 字数 min 80 → 40（max 140 のまま）**——9/18 実績 6 件（47〜62 字）が自然に読める長さだったため設計時の 80 は高すぎた | `guards.config.json` `R8_chars.min=40`／`PROMPT.md` の字数指定を 40〜140 に |
+| 2 | **R5「登録」は語単体でのマッチをやめ誘導形（「登録して」「ご登録」「登録はこちら」「登録を」）に限定。加えて、相手投稿本文に含まれる語句をそのまま引用している場合は R5 を免除（本文一致で免除）**——「お気に入り登録3,740件」は相手の告知の引用であり宣伝ではない | `guards.config.json` の `R5_promo` から「登録」を外し誘導形 4 語を追加・`R5_quote_exempt: true`／`guards.mjs` は `ctx.body` にヒット語が含まれれば免除／`generate.mjs` は `body: line.body` を渡す |
+| 3 | **R4「#」は禁止のまま維持。** 9/18 の Fitch 向けリプ（`#肉欲の秋` 引用）は投稿済み・実害なしとして記録のみ。以後は「のタグ」と書かずタグ名を裸で書かない | `PROMPT.md` 規則 2 に明記 |
+| 4 | **品番解決**: Chrome 抽出の出力に「リンク先 content_id」列を追加（HUMAN 側のプロンプト改訂・本日反映）。ツールは content_id が来たときはそれを優先し、品番後方一致は content_id が無いときのフォールバック。PXVR-483 が archive 窓外だったのは想定内 | 実装は既にこの優先順（`parseWorkCode` が content_id / works URL / 品番の順に判定）。README §手順 1 に明記 |
+| 5 | **dry-run**: `ANTHROPIC_API_KEY` は HUMAN が `app-concierge/.env.local` に配置（値はチャット・台帳に載せない）。配置後に README の 1 コマンドで 18 案を生成し CSO に提出。モデルは `claude-opus-5` のまま（1 日 ≤30 呼び出しの規模） | **`app-concierge/.env.local` は `.gitignore` の `.env*.local` に一致＝git 管理外（`git check-ignore` で実測）**。配置待ち |
+| 6 | 停止判定（6 件とも「同日 2 件目」）は期待どおり／E19 fail-open 2 例目・videoa 400 復帰は記録のみ／`x-post-generator.mjs` 差分は次のデプロイ便で同乗 | — |
+
+- **較正後の回帰（`guards.test.mjs`・9/18 実績 6 件・相手投稿本文を `body` / `sources` に渡す）**: **5/6 が全ガード通過。#2 Fitch のみ R4**（記録のみ）。#5 Madonna の「3,740」「5」は本文に出典があり R9 通過。`node --test` 39/39。
+- **【厳守】較正はガードの意味を変えていない**——R4/R9/R11 は不変。変えたのは「字数の下限」と「相手の語の引用を宣伝と数えない」の 2 点で、いずれも 9/18 の実測に合わせたもの。
