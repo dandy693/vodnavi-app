@@ -8,6 +8,7 @@
 //   body?: string,       // 相手投稿本文。R5 のヒット語が本文にそのまま含まれていれば免除／R14 の具体トークン源（CSO裁定 2026-09-19）
 //   orgNames?: string[], // メーカー・レーベル名（「さん」を付けたら R7 NG・CSO判定 2026-09-19）
 //   hasMultiPostEvidence?: boolean, // 複数投稿の根拠がある入力（R13 免除・config で当面無効）
+//   knowledge?: object,  // 作品知識（knowledge.mjs --extract の 1 件）。B 型はこれが無いと生成不可・あれば事実を 1 つ含む（R14-B）
 //   config?: object,     // 省略時は guards.config.json を読む
 // }
 // 戻り値 { ok, failures: [{ rule, detail }], metrics: { chars, weight } }
@@ -129,6 +130,31 @@ export function hasConcreteFromBody(draft, body, opt = {}, exclude = []) {
   return { ok: false, hit: null };
 }
 
+/** B 型の R14 用: 作品知識から「cache 由来の事実」を候補として取り出す（数値は完全一致・語は含有）。R6 語を含むジャンル名は除く。 */
+export function knowledgeFacts(k, exclude = []) {
+  if (!k || typeof k !== "object") return [];
+  const stems = excludeStems(exclude);
+  const out = [];
+  const addWord = (w) => {
+    if (typeof w !== "string" || !w.trim()) return;
+    if (stems.some((e) => w.includes(e))) return;
+    out.push(w.trim());
+  };
+  if (k.volume != null && String(k.volume).match(/\d+/)) out.push(String(k.volume).match(/\d+/)[0]);
+  if (typeof k.date === "string") {
+    const m = k.date.match(/(\d{4})-(\d{2})-(\d{2})/);
+    if (m) {
+      out.push(`${+m[2]}月${+m[3]}日`);
+      out.push(`${m[1]}年${+m[2]}月${+m[3]}日`);
+      out.push(m[1] + "-" + m[2] + "-" + m[3]);
+    }
+  }
+  for (const key of ["series", "genre", "maker", "label", "director", "actress"]) for (const w of k[key] ?? []) addWord(w);
+  if (k.review?.count != null) out.push(String(k.review.count));
+  if (typeof k.title === "string" && k.title.trim()) addWord(k.title.trim());
+  return Array.from(new Set(out));
+}
+
 function escapeRe(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -230,8 +256,9 @@ export function guardReply(text, ctx = {}) {
   }
   // R13 根拠なし断定語（CSO判定 2026-09-19・癖 3。複数投稿の根拠がある場合の免除は config で当面 false）
   {
-    const h = listHits(t, cfg.R13_unfounded_assertions);
+    let h = listHits(t, cfg.R13_unfounded_assertions);
     const exempt = cfg.R13_exempt_with_evidence && ctx.hasMultiPostEvidence;
+    if (cfg.R13_quote_exempt && ctx.body) h = h.filter((hit) => !String(ctx.body).includes(hit.replace(/（regex: .*）$/, ""))); // 本文にあれば引用（暦語も同じ）
     if (h.length && !exempt) push("R13", `根拠なし断定語: ${h.join("、")}`);
   }
   // R14 具体性（相手投稿本文の具体を 1 つ含む・ヒューリスティック・CSO判定 2026-09-19）
@@ -241,6 +268,22 @@ export function guardReply(text, ctx = {}) {
       const cands = concreteTokens(ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
       push("R14", `相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: ${cands.slice(0, 8).join("、") || "なし"}）`);
     }
+  }
+  // R14-B: B 型は cache 由来の事実を 1 つ含む（知識ありモードのみ生成・CSO判定 2026-09-19 dry-run #3）
+  if (cfg.R14_concreteness?.B_requires_knowledge_fact && (ctx.type ?? "B") === "B") {
+    if (!ctx.knowledge) push("R14", "B 型は作品知識（cache ヒット）があるときだけ生成する（知識なしモードでは A・C のみ）");
+    else {
+      const facts = knowledgeFacts(ctx.knowledge, cfg.R6_appearance_explicit ?? []);
+      const norm = normalizeNumbers(t);
+      const nums = new Set(extractNumbers(t));
+      const hit = facts.find((f) => (/^\d+$/.test(f) ? nums.has(f) : norm.includes(f)));
+      if (!hit) push("R14", `B 型に cache 由来の事実（収録時間・配信日・シリーズ・ジャンル・メーカー・出演者など）が無い（候補: ${facts.slice(0, 8).join("、") || "なし"}）`);
+    }
+  }
+  // R16 日付表記（「09/18」「9/18」を写さず「9月18日」に正規化する・CSO判定 2026-09-19 の PROMPT 規則の機械検査・CTO 追加）
+  if (cfg.R16_date_format) {
+    const m = t.match(/(?:^|[^\d])(\d{1,2}\/\d{1,2})(?!\d)/);
+    if (m) push("R16", `日付の斜線表記: ${m[1]}（「M月D日」で書く）`);
   }
   // R15 メタ言及（告知の形式・並べ方・出し方）
   {

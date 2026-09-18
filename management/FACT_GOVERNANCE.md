@@ -4323,7 +4323,7 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **§4 ④ の着地＝代替**: MCP `create_field` の rollup スキーマに条件付きオプションが無い → **`x_replies.within_30d`（formula・`posted_at` が 30 日以内なら 1）＋ `x_targets.reply_count_30d`（`SUM(values)` over `within_30d`）**。**HUMAN UI には回していない**（裁定 3）。**`NOW()` 依存のため Airtable の再計算タイミングに従う（厳密な瞬時値ではない）。**
   - **投入**: `create_records_for_table` × 5（フィールド ID キー・`typecast` 未使用）。createdTime＝**01:06:45 / 01:11:23 / 01:12:01 / 01:13:15 / 01:13:38 JST**（10/10/10/10/2）。**バッチ 2 の前に 10 件のみ存在を読み戻して重複を排除**（§10）。
   - **読み戻し（01:14 JST・`list_records_for_table`・13 フィールド）**: **42 / 42・seed との機械照合で不一致 0**（`bundle1/x_targets_readback_20260917.tsv` × `x_targets_seed_20260917.batches.byid.json`・priority / type / no_repropose / genres）。**`status` 全件 `候補`・`source` 全件 `Grok調査`・`reply_restriction` 全件 `不明`・`priority` 1: 28 / 2: 9 / 3: 4 / 空 1・`no_repropose` ON 7・稼働候補 35（セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15）＝CSO 追記の内訳と一致。`followers` / `verified_at` / `last_reply_at` / `last_quote_at` は全件空。`reply_count_30d` 全件 0。**
-  - **ビュー「本日の対象」**: **MCP にビュー作成ツールが無いため定義のみ**——`status = 稼働`（`selL5ZBRxnuzpuQFc`）∧ `no_repropose ≠ true` ∧ `reply_restriction ≠ あり`（`sellfceEd25p8HQu6`）∧（`last_reply_at` 空 ∨ 3 日以上前・`Asia/Tokyo`）／ソート `priority` 昇順 → `last_reply_at` 昇順。**現時点の該当 0 件**（`稼働` が 0＝HUMAN 実査前）。**束2 の CLI は `list_records_for_table` の `filters` で同じ集合を取れるためビューに依存しない。** UI でビューを作るかは任意（HUMAN）。
+  - **ビュー「本日の対象」**（**再返信間隔は 2026-09-19 に §26-10 で type 別へ改訂**）: **MCP にビュー作成ツールが無いため定義のみ**——`status = 稼働`（`selL5ZBRxnuzpuQFc`）∧ `no_repropose ≠ true` ∧ `reply_restriction ≠ あり`（`sellfceEd25p8HQu6`）∧（`last_reply_at` 空 ∨ 3 日以上前・`Asia/Tokyo`）／ソート `priority` 昇順 → `last_reply_at` 昇順。**現時点の該当 0 件**（`稼働` が 0＝HUMAN 実査前）。**束2 の CLI は `list_records_for_table` の `filters` で同じ集合を取れるためビューに依存しない。** UI でビューを作るかは任意（HUMAN）。
   - **【厳守】`status=稼働` への遷移は HUMAN の実査後のみ**（§26-8）。**CTO は書いていない。**
   - **【併記・§13 の限界はそのまま】`x_targets` / `x_replies` も Airtable 一層のみ。** `status` を書く箇所をスクリプト 1 箇所に限定（`seed-to-records.mjs` の `STATUS = "候補"`）し読み戻しで検算した——**構造的保証ではなく緩和**（§13）。
 - **【暫定記入・CSO 指示 2026-09-17／CTO 実行 01:4x〜01:5x JST】`followers` を 35 件に記入（§26-8 改訂に基づく暫定値）。全文 → 設計書 §7-6**
@@ -4335,6 +4335,23 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **【併記】9/16 分のうち CSO 追記に投稿日があった 4 件**（`@azusa_hikari_` 9/13 / `@sakuramio_X` 9/16 / `@mio_sakai_` 9/15 / `@5may_itsukaichi` 9/16）は `最終投稿 YYYY-MM-DD（CSO 追記 2026-09-17）` で記し、フラグなし。
   - **【厳守】35 件の `followers` は Grok 暫定値であり実査値ではない。** **`status=稼働` の前提（返信制限の目視）は満たしていない。**
   - **【CSO裁定 2026-09-17・06:4x 反映】CTO 判断 2 点（9/16 分のラベルを取得日 `2026-09-16` で記す／日付未取得を「不明」と同列に扱う）を承認。** **(b) 7 件の最終投稿日を CSO 手元の 9/16 Grok 取得値で補完**（`@Madonna_AVinfo` 09-16 / `@attackers_av` 09-16 / `@wanz_official` 09-13 / `@FalenoEvent` 09-16 / `@sodstarofficial` 09-16 / `@IDEAPOCKETTER` 09-16 / `@shiromine_miu` 09-15＝**全件 7 日以内**）→ `note` を `最終投稿 YYYY-MM-DD（Grok 2026-09-16）` に書き換え「要HUMAN確認」を外した（`update_records_for_table` × 1・`status` / `followers` 不変・payload → `bundle1/x_targets_lastpost_fix_20260917.byid.json`）。**読み戻し: 7 件とも payload と一致／`要HUMAN確認` を含む行＝サーバ側フィルタで 4 件**（`@fanza_meireview` 05-25 / `@PRESTIGE_PR2020` 09-01 / `@Kizukiamane` 09-09・境界 / `@waka_misono` 不明）。**要HUMAN確認は 4 件で確定。**
+
+
+### 26-10. 【CSO判定 2026-09-19・束2 着地】**リプ案生成ツール（`management/tools/x-reply-drafts/`）を条件付き合格とし、2026-09-19 から日次のリプ営業をツール運用（段階②）へ切り替える**
+
+**経緯（実測）**: 2026-09-18 設計承認 → 同日実装（node:test）→ dry-run #1（9/19 06:31・18 案）→ CSO判定「C 6/6・A/B 2/12」→ R12〜R15・PROMPT 改訂 → dry-run #2（欠陥検出）・#3（06:59〜07:01・18 案）→ **CSO判定「A 6/6・C 6/6 合格、B 3/6 不合格 → 条件付き合格」**。設計書 `management/_metrics/2026-W38/bundle2/design-20260918-bin127-bundle2-reply-drafts.md` §10-1・§12-4〜§12-7、実行記録 `bundle2/runs/`。
+
+| 項目 | 確定 |
+|---|---|
+| **B 型（作品知識の補足）** | **知識なしモード（cache MISS・作品コードなし）では生成しない（A・C の 2 案）。知識ありモード（`fanza_response_cache` PK ヒット）でのみ生成し、cache 由来の事実（収録時間・配信日・シリーズ・ジャンル・メーカー・レーベル・監督・出演者・レビュー件数）を 1 つ含むことを R14 の条件に加える。** 理由＝知識なしの B は本文の言い換えか推量にしかならない（dry-run #3: Fitch「通常の半額ですね」・honnaka「時間帯を把握しました」・kawaii「三連休の初日」＝事実誤り） |
+| **ガード** | R8 字数 min **30**（40 → 30。39 字の Madonna A は自然・手動最短 47 字は目安であって下限ではない）／R13 に暦の推定語（三連休・連休・週末・祝日・休日）を追加（本文に無ければ NG）／日付は「9月18日」に正規化し「09/18」を写さない（PROMPT 規則＋R16 機械検査・CTO 追加）／R12 と手動例 2 句の衝突は注記付き掲載のまま |
+| **再返信間隔（運用則の改訂・§26-9「本日の対象」とツールの停止判定に反映）** | **女優本人＝3 日（現行どおり）／メーカー公式・セール告知系・レビュー系＝1 日（同一投稿には 1 回のみ・別投稿なら翌日可）。** 理由＝メーカー公式は 1 日に複数の告知を出す。別の告知に日をまたいで返すのは自然で、3 日空けると稼働 10 件では対象が枯れる。`guards.config.json` `reply_interval_days` |
+| **運用（段階②・2026-09-19 から）** | ① HUMAN: Chrome 抽出（21 時前）→ 出力（`@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id`）を Claude Code に貼る ② CTO: ツール実行 → 案を提示（停止判定に当たった行はその旨表示）③ HUMAN: 選んで投稿 → リプ URL を Claude Code に貼る ④ CTO: `record.mjs` の payload を Airtable MCP で書き込み → 読み戻しを報告。**チャット側（戦略顧問）は日次ループから外れる。週次（木曜）で `x_replies` を読んで型を再判定。** |
+| 不変 | `x_targets.status` は HUMAN 専権（§26-8）／投稿は HUMAN／Airtable PAT は発行しない（設計 §10-1 E）／`posts`・Make・本番コードは不触 |
+
+- **§26-9 の「本日の対象」の定義を本節で上書き**: `status = 稼働` ∧ `no_repropose ≠ true` ∧ `reply_restriction ≠ あり` ∧（`last_reply_at` 空 ∨ **type 別の間隔以上前**＝女優本人 3 日・それ以外 1 日・`Asia/Tokyo` の暦日差）。**旧「3 日以上前」は 2026-09-17〜09-18 の定義として残す（削除しない）。**
+- **【併記・実測】CSO の語リスト（R12/R13）は 9/18 の手動下書き 6 件のうち 4 件にも当たる**（#1 R12・#2 R4+R14・#3 R12+R13・#4 R14。#5 は B 型のため知識なしでは R14）。**手動下書きは文体の基準として PROMPT に原文掲載し、衝突する 2 句は「使わない」と注記した。** 判定は CSO 済み（「現状の注記付き掲載でよい」）。
+- **【併記・Vercel】`52008ab`（2026-09-19 06:35 push）は Vercel にデプロイが作成されなかった。次の push `35384d7`（07:03）は +2 秒で作成（CANCELED・skip 経路）→ 「一過性」で確定（CSO判定 2026-09-19）。原因は追わない。**
 
 ---
 

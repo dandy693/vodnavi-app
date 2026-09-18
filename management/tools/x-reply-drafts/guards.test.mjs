@@ -98,10 +98,33 @@ test("R12: 定型句（CSO判定 2026-09-19・config の語）", () => {
   assert.ok(!rules(guardReply(OK, { type: "A" })).includes("R12"));
 });
 
-test("R13: 根拠なし断定語（当面は免除なし）", () => {
+test("R13: 根拠なし断定語・暦の推定語（本文にあれば引用として免除）", () => {
   assert.ok(rules(guardReply("0時の告知は恒例ですね。" + OK, { type: "A" })).includes("R13"));
   assert.ok(rules(guardReply("毎回まとめて出されている印象があります。" + OK, { type: "A" })).includes("R13"));
   assert.ok(rules(guardReply("定期的に新作が出ますね。" + OK, { type: "A", hasMultiPostEvidence: true })).includes("R13"), "config の R13_exempt_with_evidence=false のため免除されない");
+  assert.ok(rules(guardReply("三連休の初日に終わる日程ですね。" + OK, { type: "A", body: "第1弾は9月21日 朝9時59分まで 先行配信" })).includes("R13"), "本文に無い暦語は NG");
+  assert.ok(!rules(guardReply("三連休の初日に終わる日程ですね。" + OK, { type: "A", body: "三連休の初日 9月19日まで 先行配信" })).includes("R13"), "本文にあれば引用");
+});
+
+test("R14-B: B 型は作品知識が無ければ NG・あれば cache 由来の事実を 1 つ含む", () => {
+  const body = "本日先行配信スタート 第1弾は9月21日まで";
+  const k = { content_id: "sone00682", title: "T", volume: "185", date: "2026-09-16 00:10:00", series: ["ツンデレ彼女"], genre: ["痴女", "単体作品"], maker: ["P-BOX VR"], actress: ["中城葵"], review: { count: 5, average: "5.00" } };
+  assert.ok(rules(guardReply("第1弾は9月21日までなのですね。今週の動きも追いかけます。", { type: "B", body })).includes("R14"), "知識なし");
+  assert.ok(rules(guardReply("第1弾は9月21日までなのですね。今週の動きも追いかけます。", { type: "B", body, knowledge: k })).includes("R14"), "本文の言い換えだけ");
+  assert.ok(!rules(guardReply("第1弾は9月21日までですね。収録185分の単体作品とのことで気になっています。", { type: "B", body, knowledge: k, sources: [body, JSON.stringify(k)] })).includes("R14"), "185分＝cache の事実");
+  assert.ok(!rules(guardReply("9月16日配信のツンデレ彼女シリーズですね。第1弾の期間内に見ておきます。", { type: "B", body, knowledge: k, sources: [body, JSON.stringify(k)] })).includes("R14"), "配信日・シリーズ名");
+  assert.ok(!rules(guardReply("第1弾の対象ですね。9月21日まで確認しておきます。", { type: "A", body, knowledge: k })).includes("R14"), "A/C には R14-B を適用しない");
+});
+
+test("R16: 日付の斜線表記は NG（「9月18日」に正規化・CTO 追加）", () => {
+  assert.ok(rules(guardReply("売れ筋5位は09/18時点の集計でしょうか。更新のタイミングが気になっています。", { type: "C" })).includes("R16"));
+  assert.ok(rules(guardReply("9/18の動きが気になります。" + OK, { type: "A" })).includes("R16"));
+  assert.ok(!rules(guardReply("9月18日の動きが気になります。" + OK, { type: "A" })).includes("R16"));
+});
+
+test("R8: 字数下限は 30（CSO判定 2026-09-19 dry-run #3）", () => {
+  assert.ok(!rules(guardReply("先行配信スタートおめでとうございます。初日から売れ筋5位という滑り出しですね。", { type: "A" })).includes("R8"), "39 字は通る");
+  assert.ok(rules(guardReply("先行配信おめでとうございます。5位ですね。", { type: "A" })).includes("R8"), "21 字は下限未満");
 });
 
 test("R14: 相手投稿本文の具体を 1 つ含む（数値は完全一致・語は本文に含まれること）", () => {
@@ -155,10 +178,12 @@ test("2026-09-18 手動下書き 6 件を R1〜R15 に通す（CSO判定 2026-09
   ];
   const results = six.map(([h, type, text, org]) => guardReply(text, { type, names: ["和香なつき"], orgNames: [org], sources: [bodies[h]], body: bodies[h] }));
   assert.deepEqual(results.map((r) => r.metrics.chars), [52, 53, 62, 50, 55, 47]);
-  // 実測（2026-09-19）: #1 R12（予定が立てやすい）／#2 R4＋R14／#3 R12（助かります）＋R13（恒例）／#4 R14（本文の具体を含まない）／#5・#6 通過
+  // 実測（2026-09-19）: #1 R12（予定が立てやすい）／#2 R4＋R14／#3 R12（助かります）＋R13（恒例）／#4 R14（本文の具体を含まない）
+  // ／#5 R14（B 型は知識ありモードのみ・手動は知識なしで書かれた）／#6 通過
   assert.deepEqual(rules(results[0]), ["R12"]);
   assert.deepEqual(rules(results[1]), ["R4", "R14"]);
   assert.deepEqual(rules(results[2]), ["R12", "R13"]);
   assert.deepEqual(rules(results[3]), ["R14"]);
-  assert.ok(results[4].ok && results[5].ok, JSON.stringify([results[4].failures, results[5].failures]));
+  assert.deepEqual(rules(results[4]), ["R14"]);
+  assert.ok(results[5].ok, JSON.stringify(results[5].failures));
 });

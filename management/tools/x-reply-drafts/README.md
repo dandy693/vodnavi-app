@@ -16,11 +16,23 @@
 | `record.mjs` | `x_replies` / `x_targets` の payload 生成・snowflake → `posted_at` | なし |
 | `PROMPT.md` | system プロンプト（固定・差分レビュー対象） | — |
 | `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
+| `print-drafts.mjs` | `drafts.json` を人が読む形に出す（`node print-drafts.mjs drafts.json`） | なし |
 | `*.test.mjs` | `node --test`（dry-run のみ・API も Airtable も呼ばない・裁定 H） | なし |
 
 ```
 node --test management/tools/x-reply-drafts/*.test.mjs
 ```
+
+## 日次ループ（段階②・CSO判定 2026-09-19・2026-09-19 から）
+
+| 手順 | 担当 | 内容 |
+|---|---|---|
+| 1 | HUMAN | Chrome 抽出（21 時前）→ 出力（`@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id`）を Claude Code に貼る |
+| 2 | CTO | ツール実行（下の手順 2〜5）→ 案を提示。**停止判定に当たった行はその旨を表示**（同一投稿 1 回のみ／同日同ハンドル 1 件／再返信間隔＝女優本人 3 日・それ以外 1 日） |
+| 3 | HUMAN | 案を選んで投稿 → リプ URL を Claude Code に貼る |
+| 4 | CTO | `record.mjs` の payload を Airtable MCP で書き込み → 読み戻しを報告（手順 7〜8） |
+
+チャット側（戦略顧問）は日次ループから外れる。週次（木曜）で `x_replies` を読んで型を再判定。**B 型は知識ありモード（cache ヒット）でのみ生成**（知識なしでは A・C の 2 案）。
 
 ## 手順（1 回分）
 
@@ -58,8 +70,13 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 | R4 | `#` `＃` | コード |
 | R5 | 宣伝語（「登録」は誘導形のみ）。**ヒット語が相手投稿本文にそのまま含まれていれば免除**（`R5_quote_exempt`・CSO裁定 2026-09-19） | `guards.config.json` `R5_promo` |
 | R6 | 容姿・露骨語 | `guards.config.json` `R6_appearance_explicit` |
-| R7 | 出演者名・相手表示名には「さん」 | `ctx.names`（作品知識の `actress[]`・女優本人の `display_name`） |
-| R8 | 字数（既定 **40〜140**・`R8_chars`・CSO裁定 2026-09-19 で min 80 → 40）・X 重み ≤280 | `guards.config.json` `R8_chars` |
+| R7 | 女優名には「さん」／メーカー・レーベル名に「さん」は NG | `ctx.names`（作品知識の `actress[]`・女優本人の `display_name`）／`ctx.orgNames`（それ以外の `display_name`・maker/label） |
+| R8 | 字数（既定 **30〜140**・`R8_chars`・CSO裁定 2026-09-19 で min 80 → 40 → 30）・X 重み ≤280・**文数 ≤2**（`R8_sentences_max`） | `guards.config.json` |
+| R12 | 定型句（追う側としては／予定が立てやすい／助かります など） | `guards.config.json` `R12_stock_phrases` |
+| R13 | 根拠なし断定語（恒例／毎回／一定 など）＋暦の推定語（三連休／連休／週末／祝日／休日）。本文にあれば引用として免除 | `guards.config.json` `R13_unfounded_assertions` |
+| R14 | 具体性: 案に相手投稿本文の具体（数値の完全一致・語の含有）が 1 つ以上。**B 型は作品知識が無ければ NG・あれば cache 由来の事実を 1 つ含む** | `guards.config.json` `R14_concreteness` |
+| R15 | 告知の形式・並べ方・出し方への言及 | `guards.config.json` `R15_meta_mentions` |
+| R16 | 日付の斜線表記（`09/18` `9/18`）＝「9月18日」に正規化する（CTO 追加） | `guards.config.json` `R16_date_format` |
 | R9 | 数値の出典（B は全数値／全案は「数値＋円・%・割・OFF」）— 出典＝相手投稿本文＋作品知識 JSON | コード（旧 R10 を統合・裁定 D） |
 | R11 | 虚偽の体験主張 | `guards.config.json` `R11_false_experience` |
 

@@ -21,7 +21,6 @@ import { FIELDS, replyKeyFor, jstYmd } from "./record.mjs";
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 export const DEFAULT_MODEL = "claude-opus-5";
 export const API_URL = "https://api.anthropic.com/v1/messages";
-const TYPES = ["A", "B", "C"];
 
 /** PROMPT.md の `## SYSTEM` 以下を system プロンプトとして取り出す。 */
 export function loadSystemPrompt(file = path.join(HERE, "PROMPT.md")) {
@@ -93,7 +92,15 @@ export function jstDayDiff(lastIso, now) {
 const normUrl = (u) => String(u ?? "").trim().replace(/^https?:\/\/(www\.)?(twitter\.com|x\.com)\//i, "x.com/").replace(/[?#].*$/, "").replace(/\/$/, "");
 
 /** 裁定 G と dedupe: 生成してよいかを判定する。 */
-export function checkStop({ line, target, replies, now }) {
+/** 再返信間隔（日・JST 暦日差）。CSO判定 2026-09-19: 女優本人 3 日／それ以外（メーカー公式・セール告知系・レビュー系）1 日。config で変更可。 */
+export function replyIntervalDays(target, config) {
+  const tbl = config?.reply_interval_days ?? { 女優本人: 3, default: 1 };
+  const t = target?.type;
+  return t && tbl[t] != null ? tbl[t] : tbl.default ?? 1;
+}
+
+/** 裁定 G と dedupe: 生成してよいかを判定する。同一投稿には 1 回のみ・同日同ハンドルは 1 件のみ・間隔は type 別。 */
+export function checkStop({ line, target, replies, now, config }) {
   if (target?.no_repropose) return "対象外（no_repropose）";
   if (target?.reply_restriction === "あり") return "対象外（reply_restriction=あり）";
   const key = replyKeyFor(line.handle, now);
@@ -102,7 +109,8 @@ export function checkStop({ line, target, replies, now }) {
   if (dup) return `停止（記録済み: 同じ target_post_url が ${dup.reply_key ?? dup.id} に存在）`;
   if (target?.last_reply_at) {
     const diff = jstDayDiff(target.last_reply_at, now);
-    if (diff < 3) return `停止（3 日以内に返信済み: last_reply_at=${target.last_reply_at}・${diff} 日前）`;
+    const min = replyIntervalDays(target, config);
+    if (diff < min) return `停止（再返信間隔 ${min} 日未満: last_reply_at=${target.last_reply_at}・${diff} 日前・type=${target.type ?? "?"}）`;
   }
   return null;
 }
@@ -210,6 +218,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     postedAtJst: line.postedAtJst,
     target: target ? { id: target.id, handle: target.handle, type: target.type, status: target.status, last_reply_at: target.last_reply_at } : null,
     knowledgeMode: knowledge ? "cache" : "none",
+    types: knowledge ? ["A", "B", "C"] : ["A", "C"], // B は知識ありモードのみ（CSO判定 2026-09-19 dry-run #3）
     knowledge: knowledge ? { content_id: knowledge.content_id, title: knowledge.title, fetched_at: knowledge.fetched_at } : null,
     replyKey: replyKeyFor(line.handle, now),
     warnings: [...(line.warnings ?? [])],
@@ -218,7 +227,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     usage: { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, calls: 0 },
   };
   if (!target) item.warnings.push("台帳未登録（x_targets に handle が無い・生成は続行・登録は HUMAN）");
-  const stop = checkStop({ line, target, replies, now });
+  const stop = checkStop({ line, target, replies, now, config });
   if (stop && !dryRun) {
     item.status = stop;
     return item;
@@ -231,7 +240,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
   const orgNames = [...(knowledge?.maker ?? []), ...(knowledge?.label ?? [])];
   if (target && target.type !== "女優本人" && target.display_name) orgNames.push(target.display_name);
   const sources = [line.body, knowledge ? JSON.stringify(knowledge) : ""];
-  let pending = [...TYPES];
+  let pending = [...item.types];
   let retryReasons = null;
   for (let attempt = 0; attempt <= maxRegen && pending.length; attempt++) {
     const r = await gen({ system, user: userPayload({ line, target, knowledge, todayJst, retryReasons, config }), types: pending });
@@ -256,7 +265,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     const nextPending = [];
     for (const t of pending) {
       const text = String(obj[t] ?? "").trim();
-      const g = guardReply(text, { type: t, names, orgNames, sources, body: line.body, config });
+      const g = guardReply(text, { type: t, names, orgNames, sources, body: line.body, knowledge, config });
       // ガード NG だった過去の案は history に残す（CSO が再生成の理由を追えるように）
       const history = [...(item.drafts[t]?.history ?? [])];
       if (item.drafts[t] && !item.drafts[t].guard.ok) history.push({ text: item.drafts[t].text, failures: item.drafts[t].guard.failures });
@@ -269,7 +278,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     pending = nextPending;
     retryReasons = pending.length ? nextReasons : null;
   }
-  const ng = TYPES.filter((t) => !item.drafts[t]?.guard?.ok);
+  const ng = item.types.filter((t) => !item.drafts[t]?.guard?.ok);
   item.status = ng.length ? `一部生成不能（${ng.join("/")} がガード未通過・最大 ${maxRegen} 回再生成後）` : "generated";
   return item;
 }

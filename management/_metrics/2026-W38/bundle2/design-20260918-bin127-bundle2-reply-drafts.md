@@ -229,3 +229,21 @@ management/tools/x-reply-drafts/
 
 **dry-run #3 の実測**: 18/18 ガード通過・API 12 回・字数 40〜56（中央値 48）・2 文以内。再生成 7 案のうち **3 案は字数下限 40 未満のみが理由**（26 / 35 / 39 字。例＝Madonna A「先行配信スタートおめでとうございます。初日から売れ筋5位という滑り出しですね。」39 字）。**下限 40 の扱いは CSO**（手動下書きの最短は 47 字）。
 - **併記（事実）**: kawaii B「三連休の初日に終わる日程です」は本文に無い推量（2026-09-21 は敬老の日＝三連休の最終日。漢数字のため R9 は検出しない）／Madonna A「かなり注目されていますね」は評価語／honnaka B「時間帯を把握しました」・Fitch B「価格として受け止めています」は R12 に無い定型。**判定は CSO。**
+
+### 12-7. 【CSO判定 2026-09-19・dry-run #3】条件付き合格 → 運用切替（段階②）と反映
+
+**判定**: A 6/6（Fitch A は弱いが可）・C 6/6 合格。B 3/6（FANZAdougaX・Madonna・PREMIUM 可／Fitch「通常の半額ですね」＝言い換え・honnaka「時間帯を把握しました」＝不自然・kawaii「三連休の初日」＝事実誤り）で基準 4 未満・不合格。**総合＝条件付き合格。本日からツール運用。**
+
+| 指示 | 反映 |
+|---|---|
+| B 型は知識なしモードでは生成しない（A・C の 2 案）。知識ありモードでは cache 由来の事実を 1 つ含むことを R14 の条件に追加 | `generate.mjs`: `item.types` を knowledge の有無で `["A","C"]` / `["A","B","C"]`（JSON スキーマも同じ）／`guards.mjs` R14-B: `ctx.knowledge` 無し→NG、有り→`knowledgeFacts()`（volume・date「M月D日」・series・genre・maker・label・director・actress・review.count）のいずれかを含む／`PROMPT.md` B の定義を書き換え |
+| R8 min 40 → 30 | `guards.config.json` |
+| R13 に暦の推定語（三連休／連休／週末／祝日／休日）。本文に無ければ NG | `R13_unfounded_assertions` に追加・`R13_quote_exempt: true`（本文にあれば引用） |
+| 日付は「9月18日」に正規化・「09/18」を写さない（プロンプト規則） | `PROMPT.md` 規則 9 ＋ **R16**（機械検査・CTO 追加・config で無効化可） |
+| R12 と手動例の衝突は注記付き掲載でよい | 現状維持 |
+| 再返信間隔: 女優本人 3 日／メーカー公式・セール告知系・レビュー系 1 日（同一投稿 1 回のみ・別投稿なら翌日可） | `guards.config.json` `reply_interval_days`・`generate.mjs` `replyIntervalDays()`・`checkStop` の停止文言を「再返信間隔 N 日未満」に／FACT §26-10（§26-9 の「本日の対象」を上書き） |
+| 運用切替（段階②）: HUMAN Chrome 抽出 → CTO ツール実行・提示 → HUMAN 投稿・URL 貼付 → CTO payload 書込・読み戻し。チャット側は日次ループから外れ、木曜に `x_replies` で型を再判定 | README「日次ループ」・FACT §26-10 |
+| `52008ab` のデプロイ未作成＝一過性で確定 | FACT §26-10 併記・TASK_BOARD |
+
+- `node --test` **46/46**（追加: type 別間隔・知識なしモードの 2 案・R14-B・R13 暦語＋引用免除・R16・R8 min 30）。**手動下書き 6 件の回帰は #5（Madonna B）が R14 に変わる**（B は知識ありモードのみのため）。
+- **【併記・環境】この作業ディレクトリでは `python <file>` が出力も副作用も無く終わる（exit 0/1）。`python - <<'PY'`（stdin）は動く。原因は追わない（記録のみ）。**
