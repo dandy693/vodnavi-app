@@ -11008,3 +11008,13 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
   - **配信の実在（9/18）**: `W11-01 T1改 泉ももか MIMK-271` 21:00 → ポストID `2100917880552341762`（snowflake 21:00:30 JST・X 直接 URL 200 / 148,020 B / 特徴語 8）／`T3 こだわりのフェラ50％OFF 2026-09-18` 22:00 → `2100932937017352262`（22:00:20 JST・200 / 107,834 B / 特徴語 8）＝**9/18 は T3 併走日（2 本）**。`T3_DELIVERY_LOG.md` に Phase 1 後の T3（9/12・13・14・16・18）を追記。
   - **最終配信＝2026-09-18 22:00 T3。承認済 7 件＝9/19〜9/25 各 1 件（21:00）。**
 - **次**: 本コミット → push → state 確認（距離 8＝skip 見込み）→ **束2 設計起案**（入力形式・`target_post_url` キー・reply_post_id 復元を要件に反映）→ 束3。
+- 【2026-09-18 23:04 追記・push 後の Vercel state】`27c5c8a`（距離 8）＝`dpl_DZLs9R8qTEyx4jjiYcbKXNt9G2nb` **CANCELED**（created 1789740228832＝23:03:48 JST・skip 経路・sitemap 不変）。**次の docs コミットは距離 9（skip）、その次が 10（fail-open ビルド・受容済み）。**
+
+### 【2026-09-18 23:05〜23:2x JST】束2 設計起案（リプ案生成ツール）— 起案完了・実装未着手・CSO 裁定待ち
+
+- **設計書** → `management/_metrics/2026-W38/bundle2/design-20260918-bin127-bundle2-reply-drafts.md`。CSO 2026-09-18 の追加要件（入力 1 行形式 `@ハンドル｜投稿日時｜投稿URL｜本文｜作品コード`・複数行・1 行→3 案・`target_post_url` キー・`reply_post_id` は HUMAN のリプ URL から snowflake 復元）を §1・§5 に反映。
+- **実測（read-only・Supabase MCP・23:05〜23:07 JST）**: ①`content_id` の逆引き全走査（`payload->'result'->'items'->0->>'content_id'`）＝**22.16 秒 / 1 件**（`pxvr00483`・hits 1）②**`buildCacheKey` の再現（`{site,service,floor,cid,hits:1}`・`__filtered=false`）で PK 照会＝8〜11 ms・2/2 ヒット**（`pxvr00483` fetched 9/18 10:02 UTC・`snos00334` fetched 9/17 15:14 UTC）。→ 設計の既定値は②。
+- **設計上の既定値**: Claude Code スキル（セッション内・MCP）／作品知識は PK 照会・品番は `sitemap_works_archive` 後方一致・MISS は知識なしモード／ガード R1〜R10（純関数・node:test）／記録は payload 出力＋Airtable MCP 書き込み（PAT 未発行のため CLI 直書きは不可）／置き場 `management/tools/x-reply-drafts/`。**触らない**＝`posts`・Make・`x_targets.status`・FANZA API 新規呼び出し・本番コード。
+- **裁定事項 A〜H**（形態／知識の引き方／NG 語初期リスト／価格・セール言及／書き込み経路／置き場／`reply_key` 衝突／検証行の扱い）→ 設計書 §10。**実装は承認後。**
+- **【併記】`.env.local` には `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` のキー名は存在するが `SUPABASE_*` は無い**（§12 実測どおり・値は見ていない）。ローカル CLI 形態を採る場合、作品知識は MCP 経由のエクスポートが要る。
+- **次**: CSO 裁定 → 束2 実装 → 束3（`post_type`・g8）。**距離＝本コミットで 9（skip）・次で 10（fail-open ビルド・受容済み）。**
