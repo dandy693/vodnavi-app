@@ -15,7 +15,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { isMain } from "./parse.mjs";
-import { guardReply, loadConfig } from "./guards.mjs";
+import { guardReply, loadConfig, hintTokens } from "./guards.mjs";
 import { FIELDS, replyKeyFor, jstYmd } from "./record.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -187,13 +187,15 @@ export function stubGenerator(stub) {
 
 // ---------- 1 行の生成 ----------
 
-function userPayload({ line, target, knowledge, todayJst, retryReasons }) {
+function userPayload({ line, target, knowledge, todayJst, retryReasons, config }) {
   const p = {
-    target: target ? { handle: target.handle, type: target.type, genres: target.genres, note: target.note } : { handle: line.handle, type: null, genres: [], note: "（台帳未登録）" },
+    target: target ? { handle: target.handle, display_name: target.display_name, type: target.type, genres: target.genres, note: target.note } : { handle: line.handle, display_name: null, type: null, genres: [], note: "（台帳未登録）" },
     post: { posted_at_jst: line.postedAtJst, body: line.body },
     knowledge: knowledge ?? null,
     today_jst: todayJst,
   };
+  // R14 の機械検査と同じ抽出で「本文の具体候補」を渡す（数値・日付・企画名・順位のいずれかを 1 つ含める・CSO判定 2026-09-19）
+  p.hints = { concretes_from_body: hintTokens(line.body, config?.R14_concreteness ?? {}, config?.R6_appearance_explicit ?? []) };
   if (retryReasons) p.retry_reasons = retryReasons;
   return JSON.stringify(p, null, 2);
 }
@@ -225,11 +227,14 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
 
   const names = [...(knowledge?.actress ?? [])];
   if (target?.type === "女優本人" && target.display_name) names.push(target.display_name);
+  // メーカー・レーベル名（女優本人以外の display_name・作品知識の maker/label）には「さん」を付けない（R7・CSO判定 2026-09-19）
+  const orgNames = [...(knowledge?.maker ?? []), ...(knowledge?.label ?? [])];
+  if (target && target.type !== "女優本人" && target.display_name) orgNames.push(target.display_name);
   const sources = [line.body, knowledge ? JSON.stringify(knowledge) : ""];
   let pending = [...TYPES];
   let retryReasons = null;
   for (let attempt = 0; attempt <= maxRegen && pending.length; attempt++) {
-    const r = await gen({ system, user: userPayload({ line, target, knowledge, todayJst, retryReasons }), types: pending });
+    const r = await gen({ system, user: userPayload({ line, target, knowledge, todayJst, retryReasons, config }), types: pending });
     item.usage.calls++;
     item.usage.input_tokens += r.usage?.input_tokens ?? 0;
     item.usage.output_tokens += r.usage?.output_tokens ?? 0;
@@ -251,7 +256,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     const nextPending = [];
     for (const t of pending) {
       const text = String(obj[t] ?? "").trim();
-      const g = guardReply(text, { type: t, names, sources, body: line.body, config });
+      const g = guardReply(text, { type: t, names, orgNames, sources, body: line.body, config });
       // ガード NG だった過去の案は history に残す（CSO が再生成の理由を追えるように）
       const history = [...(item.drafts[t]?.history ?? [])];
       if (item.drafts[t] && !item.drafts[t].guard.ok) history.push({ text: item.drafts[t].text, failures: item.drafts[t].guard.failures });

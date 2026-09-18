@@ -7,8 +7,8 @@ import { parseLine } from "./parse.mjs";
 const NOW = new Date("2026-09-21T03:00:00Z"); // JST 9/21 12:00
 const line = parseLine("@FANZAdougaX｜2026-09-21 10:00｜https://x.com/FANZAdougaX/status/2100752031036342529｜第2弾は明日から。｜SONE-682");
 const target = { id: "recEfvfO65s5S0o1f", handle: "FANZAdougaX", type: "セール告知系", genres: [], note: "n", status: "稼働", reply_restriction: "不明", no_repropose: false, last_reply_at: "2026-09-18T13:21:33.000Z" };
-const OK96 =
-  "先行配信の開始おめでとうございます。深夜にまとめて告知される形は、翌朝に確認する側としても予定が立てやすくて助かります。今週の動きも追いかけます。今後の告知も楽しみにしています。";
+// 40〜140 字・2 文・定型句なし。本文「第2弾は明日から。」の具体（第2弾）を含む（R14）
+const OK96 = "第2弾の開始おめでとうございます。今週の動きも追いかけながら、次の告知を楽しみにしています。";
 
 test("normalizeTargets / normalizeReplies は MCP 生出力（cellValuesByFieldId）を受ける", () => {
   const t = normalizeTargets({
@@ -52,7 +52,7 @@ test("generateForLine: stub で 3 案生成 → ガード通過 → generated", 
 });
 
 test("generateForLine: NG 案だけを再生成し、最大 2 回で打ち切る", async () => {
-  const bad = OK96.slice(0, 90) + "ぜひチェックを。";
+  const bad = "ぜひチェックを。" + OK96;
   const gen = stubGenerator([{ A: OK96, B: bad, C: OK96 }, { B: bad }, { B: OK96 }]);
   const item = await generateForLine({ line, target, knowledge: null, replies: [], now: NOW, system: "s", gen });
   assert.equal(item.status, "generated");
@@ -74,12 +74,12 @@ test("generateForLine: refusal は生成不能として記録", async () => {
 
 test("generateForLine: 作品知識があれば B の数値は出典検査に通る／出演者名は敬称必須", async () => {
   const knowledge = { content_id: "sone00682", title: "T", volume: "185", actress: ["瀬戸環奈"], genre: [], fetched_at: "2026-09-18T00:00:00Z" };
-  const b = OK96.slice(0, 80) + "瀬戸環奈さんの作品は収録185分ですね。";
+  const b = "瀬戸環奈さんの第2弾は収録185分ですね。今週の動きも追いかけながら、次の告知を楽しみにしています。";
   const gen = stubGenerator({ A: OK96, B: b, C: OK96 });
   const item = await generateForLine({ line, target, knowledge, replies: [], now: NOW, system: "s", gen });
   assert.equal(item.status, "generated");
   assert.equal(item.knowledgeMode, "cache");
-  const gen2 = stubGenerator({ A: OK96, B: OK96.slice(0, 80) + "瀬戸環奈の作品は収録200分ですね。", C: OK96 });
+  const gen2 = stubGenerator({ A: OK96, B: "瀬戸環奈の第2弾は収録200分ですね。今週の動きも追いかけながら、次の告知を楽しみにしています。", C: OK96 });
   const item2 = await generateForLine({ line, target, knowledge, replies: [], now: NOW, system: "s", gen: gen2, maxRegen: 0 });
   const rules = item2.drafts.B.guard.failures.map((f) => f.rule);
   assert.ok(rules.includes("R7") && rules.includes("R9"));

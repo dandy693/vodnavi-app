@@ -5,7 +5,9 @@
 //   type: "A"|"B"|"C",   // 案の型（R9 の全数値検査は B のみ・価格/割引の数値は全案）
 //   names: string[],     // 出演者名など敬称必須の名前（R7）
 //   sources: string[],   // 数値の出典（相手投稿本文・作品知識 JSON など）（R9）
-//   body?: string,       // 相手投稿本文。R5 のヒット語が本文にそのまま含まれていれば免除（CSO裁定 2026-09-19）
+//   body?: string,       // 相手投稿本文。R5 のヒット語が本文にそのまま含まれていれば免除／R14 の具体トークン源（CSO裁定 2026-09-19）
+//   orgNames?: string[], // メーカー・レーベル名（「さん」を付けたら R7 NG・CSO判定 2026-09-19）
+//   hasMultiPostEvidence?: boolean, // 複数投稿の根拠がある入力（R13 免除・config で当面無効）
 //   config?: object,     // 省略時は guards.config.json を読む
 // }
 // 戻り値 { ok, failures: [{ rule, detail }], metrics: { chars, weight } }
@@ -46,6 +48,85 @@ export function normalizeNumbers(s) {
 /** 本文中の数値トークン（正規化後）。「2026-09-18」「3,740」「50%」「185分」の数字部分。 */
 export function extractNumbers(text) {
   return Array.from(normalizeNumbers(text).matchAll(/\d+(?:\.\d+)?/g), (m) => m[0]);
+}
+
+/** 文数（。！？!? で区切る。末尾の区切りは 1 文として数える）。 */
+export function countSentences(text) {
+  const t = String(text ?? "").trim();
+  if (!t) return 0;
+  const parts = t.split(/[。！？!?]+/).map((s) => s.trim()).filter(Boolean);
+  return parts.length;
+}
+
+const TOKEN_RE = /[一-鿿ァ-ヺーA-Za-z0-9]+/g; // 漢字・カタカナ（「・」は含めない）・英数の連続
+
+/** R6 語の語幹（末尾のひらがなを落とす・2 字以上）。「中出し」→「中出」のように漢字連続トークンと照合するため。 */
+function excludeStems(list) {
+  const out = [];
+  for (const e of list ?? []) {
+    if (typeof e !== "string") continue;
+    const stem = e.replace(/[ぁ-ゖ]+$/u, "");
+    if (Array.from(stem).length >= 2) out.push(stem);
+  }
+  return out;
+}
+
+function tokenize(text, opt = {}, exclude = []) {
+  const minLen = opt.min_token_len ?? 2;
+  const stop = new Set((opt.stoplist ?? []).map((s) => s.toLowerCase()));
+  let b = String(text ?? "");
+  b = b.replace(/https?:\/\/\S+/g, " ").replace(/[@＠][A-Za-z0-9_]+/g, " ").replace(/[#＃][^\s#＃]+/g, " ");
+  b = b.replace(/[️⃣]/g, ""); // 絵文字キーキャップ（5️⃣0️⃣）を素の数字に
+  b = normalizeNumbers(b);
+  const nums = new Set();
+  const words = new Set();
+  const stems = excludeStems(exclude);
+  for (const m of b.matchAll(TOKEN_RE)) {
+    const tok = m[0];
+    if (stems.some((e) => tok.includes(e))) {
+      // R6 語（語幹）を含む連続は語としては落とす。中の数値も落とす（「毎日10発中出し」の 10 を渡さない）が、
+      // 直後が単位（% 円 位 日 月 弾 作 時 分）なら値段・日付・順位なので残す（「フェラ50%OFF」の 50）。
+      for (const n of tok.matchAll(/\d+(?:\.\d+)?/g)) {
+        const after = b.charAt(m.index + n.index + n[0].length);
+        if (/[%円位日月弾作時分]/.test(after)) nums.add(n[0]);
+      }
+      continue;
+    }
+    for (const n of tok.matchAll(/\d+(?:\.\d+)?/g)) nums.add(n[0]);
+    if (/^\d+(?:\.\d+)?$/.test(tok)) continue;
+    if (Array.from(tok).length < minLen) continue;
+    if (stop.has(tok.toLowerCase())) continue;
+    words.add(tok);
+  }
+  return { nums, words, norm: b };
+}
+
+/**
+ * R14 用: 相手投稿本文から「具体候補」を取り出す（ヒューリスティック・CSO判定 2026-09-19）。
+ * URL・@ハンドル・#タグ（裸で書かないため除外）を落とし、数値トークンと 漢字・カタカナ・英数の連続
+ * （min_token_len 以上・stoplist 以外・exclude（R6 語）を含まない）を返す。モデルへの hints にも使う。
+ */
+export function concreteTokens(body, opt = {}, exclude = []) {
+  const { nums, words } = tokenize(body, opt, exclude);
+  return [...nums, ...words];
+}
+
+/** モデルへ渡す具体候補: 数値と、数字・英字を含む語（日付・弾・順位・企画名の形）だけ。漢字だけの断片（作品タイトルの切れ端）は渡さない。 */
+export function hintTokens(body, opt = {}, exclude = []) {
+  const { nums, words } = tokenize(body, opt, exclude);
+  return [...nums, ...[...words].filter((w) => /[0-9A-Za-z]/.test(w))];
+}
+
+/**
+ * R14 判定: 案の側のトークンを取り、(a) 数値トークンが本文の数値トークンと完全一致、または
+ * (b) 語トークン（≥ min_token_len・stoplist/R6 以外）が本文にそのまま含まれる、のどちらかで具体ありとする。
+ */
+export function hasConcreteFromBody(draft, body, opt = {}, exclude = []) {
+  const B = tokenize(body, opt, exclude);
+  const D = tokenize(draft, opt, exclude);
+  for (const n of D.nums) if (B.nums.has(n)) return { ok: true, hit: n };
+  for (const w of D.words) if (B.norm.includes(w)) return { ok: true, hit: w };
+  return { ok: false, hit: null };
 }
 
 function escapeRe(s) {
@@ -126,17 +207,46 @@ export function guardReply(text, ctx = {}) {
     const h = listHits(t, cfg.R6_appearance_explicit);
     if (h.length) push("R6", `容姿・露骨語: ${h.join("、")}`);
   }
-  // R7 敬称（名前が出るなら「名＋さん」）
+  // R7 敬称（女優名が出るなら「名＋さん」／メーカー・レーベル名には付けない・CSO判定 2026-09-19）
   for (const name of ctx.names ?? []) {
     if (!name || !t.includes(name)) continue;
     if (new RegExp(escapeRe(name) + "(?!さん)").test(t)) push("R7", `「${name}」に「さん」が付いていない`);
   }
-  // R8 字数・重み
+  for (const org of ctx.orgNames ?? []) {
+    if (org && t.includes(org + "さん")) push("R7", `メーカー・レーベル名「${org}」に「さん」が付いている`);
+  }
+  // R8 字数・重み・文数
   const chars = charCount(t);
   const weight = xWeight(t);
   const lim = cfg.R8_chars ?? { min: 80, max: 140 };
   if (chars < lim.min || chars > lim.max) push("R8", `字数 ${chars}（${lim.min}〜${lim.max}）`);
   if (weight > 280) push("R8", `X 重み ${weight}（≤280）`);
+  const sentences = countSentences(t);
+  if (cfg.R8_sentences_max && sentences > cfg.R8_sentences_max) push("R8", `文数 ${sentences}（≤${cfg.R8_sentences_max}）`);
+  // R12 定型句（CSO判定 2026-09-19・癖 1）
+  {
+    const h = listHits(t, cfg.R12_stock_phrases);
+    if (h.length) push("R12", `定型句: ${h.join("、")}`);
+  }
+  // R13 根拠なし断定語（CSO判定 2026-09-19・癖 3。複数投稿の根拠がある場合の免除は config で当面 false）
+  {
+    const h = listHits(t, cfg.R13_unfounded_assertions);
+    const exempt = cfg.R13_exempt_with_evidence && ctx.hasMultiPostEvidence;
+    if (h.length && !exempt) push("R13", `根拠なし断定語: ${h.join("、")}`);
+  }
+  // R14 具体性（相手投稿本文の具体を 1 つ含む・ヒューリスティック・CSO判定 2026-09-19）
+  if (cfg.R14_concreteness && ctx.body) {
+    const res = hasConcreteFromBody(t, ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
+    if (!res.ok) {
+      const cands = concreteTokens(ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
+      push("R14", `相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: ${cands.slice(0, 8).join("、") || "なし"}）`);
+    }
+  }
+  // R15 メタ言及（告知の形式・並べ方・出し方）
+  {
+    const h = listHits(t, cfg.R15_meta_mentions);
+    if (h.length) push("R15", `告知の形式への言及: ${h.join("、")}`);
+  }
   // R9 数値の出典（B 案＝全数値／全案＝価格・割引の数値）
   const srcNorm = (ctx.sources ?? []).map(normalizeNumbers).join("\n");
   const missing = (list) => list.filter((n) => !srcNorm.includes(n));

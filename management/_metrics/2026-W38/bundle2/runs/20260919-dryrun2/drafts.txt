@@ -1,0 +1,55 @@
+model=claude-opus-5 dry_run=true today_jst=20260918 counts={"lines":6,"generated":6,"stopped":0} prompt_sha=0402b19cc885
+
+=== @FANZAdougaX (セール告知系) status=generated replyKey=20260918-FANZAdougaX calls=2 in=985 out=794
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-FANZAdougaX が既存））
+  A chars=49 weight=91 ok=true attempts=1
+     キャンペーン第1弾の開催おめでとうございます。全9弾で計4,500作品というのは大きな規模ですね。
+  B chars=62 weight=117 ok=true attempts=1
+     本日から全9弾にわたって対象作品が更新され、計4,500作品が対象とのことですね。第1弾の対象がどこまで並ぶのか見てみます。
+  C chars=48 weight=90 ok=true attempts=2
+     全9弾の対象作品は弾ごとに入れ替わり、計4,500作品はその合計という理解でよろしいでしょうか。
+
+=== @Fitch_official (メーカー公式) status=generated replyKey=20260918-Fitch_official calls=3 in=1183 out=2386
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Fitch_official が既存））
+  A chars=58 weight=110 ok=true attempts=2
+     50%OFFの開始おめでとうございます。星明日菜さんの出演作が対象に入っているのですね、秋の企画として気になります。
+  B chars=51 weight=96 ok=true attempts=3
+     50%OFFですと価格はちょうど半分になりますね。対象がどの作品まで含まれるのかが気になるところです。
+  C chars=55 weight=104 ok=true attempts=2
+     50%OFFの対象になるのは星明日菜さんの作品だけでしょうか、それとも秋の企画に並ぶ作品も同じ価格でしょうか。
+
+=== @honnaka_NN (メーカー公式) status=generated replyKey=20260918-honnaka_NN calls=2 in=901 out=3420
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-honnaka_NN が既存））
+  A chars=56 weight=110 ok=true attempts=1
+     本日先行配信スタートおめでとうございます。10という数字を前面に出したタイトルで、今日からの配信開始なのですね。
+  B chars=51 weight=100 ok=true attempts=1
+     先行配信の開始が本日で、タイトルには10という数字が入っているのですね。今日からの動きを見ていきます。
+  C chars=47 weight=94 ok=true attempts=2
+     東條なつさんの本日スタートの先行配信は、通常配信への切り替えまで何日ほどを予定されていますか。
+
+=== @kawaii_pr (メーカー公式) status=generated replyKey=20260918-kawaii_pr calls=2 in=1145 out=245
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-kawaii_pr が既存））
+  A chars=51 weight=95 ok=true attempts=1
+     第1弾のスタートおめでとうございます。9月21日の朝9時59分までという区切りがはっきりしていますね。
+  B chars=60 weight=108 ok=true attempts=2
+     第1弾は9月21日の朝9時59分までで、50％OFFという区切りなのですね。締めの時間まで明記されているのが分かります。
+  C chars=54 weight=102 ok=true attempts=2
+     第2弾は9月21日の朝10時から切り替わる形でしょうか。対象となるレーベルや作品数もすでに決まっていますか。
+
+=== @Madonna_AVinfo (メーカー公式) status=generated replyKey=20260918-Madonna_AVinfo calls=1 in=556 out=139
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Madonna_AVinfo が既存））
+  A chars=45 weight=89 ok=true attempts=1
+     先行配信スタートおめでとうございます。初日で売上げ本数順1位というのは強い滑り出しですね。
+  B chars=48 weight=85 ok=true attempts=1
+     お気に入り登録3,740件で売れ筋5位という数字が、配信初日の09/18時点で出ているのですね。
+  C chars=42 weight=80 ok=true attempts=1
+     売れ筋5位は9月18日時点の順位とのことですが、先行配信の期間はいつまででしょうか。
+
+=== @PREMIUM_AV (メーカー公式) status=generated replyKey=20260918-PREMIUM_AV calls=3 in=1452 out=1385
+  ! dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-PREMIUM_AV が既存））
+  A chars=46 weight=90 ok=true attempts=1
+     専属の和香なつきさんの初VR、予約開始おめでとうございます。配信の日を楽しみに待っています。
+  B chars=65 weight=126 ok=true attempts=3
+     和香なつきさんの初VR作品が、本日から予約開始という案内ですね。専属として名前が出ている新作がVRで出るのは今回が最初になります。
+  C chars=45 weight=88 ok=true attempts=1
+     予約者向けの特典や先行配信の予定はありますか。初VRということで配信日も気になっています。

@@ -1,0 +1,496 @@
+{
+  "generated_at": "2026-09-18T22:01:35.661Z",
+  "today_jst": "20260918",
+  "model": "claude-opus-5",
+  "dry_run": true,
+  "system_prompt_sha256": "0402b19cc88505e4520d14094c55e697840a03994af2915b781b6532e652c223",
+  "counts": {
+    "lines": 6,
+    "generated": 6,
+    "stopped": 0
+  },
+  "items": [
+    {
+      "lineNo": 2,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2100752031036342529",
+      "targetPostId": "2100752031036342529",
+      "postedAtJst": "2026-09-18 10:01",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:21:33.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-FANZAdougaX",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-FANZAdougaX が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "キャンペーン第1弾の開始おめでとうございます。全9弾で計4,500作品という規模は大きいですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 89
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "第1弾から全9弾にわたって対象作品が更新されるのですね。計4,500作品という数字を見て今日から追ってみます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 103
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第2弾への切り替えは第1弾の期間終了後すぐでしょうか。弾ごとの対象期間が気になっています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 88
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 470,
+        "output_tokens": 151,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2636,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2100906434854895695",
+      "targetPostId": "2100906434854895695",
+      "postedAtJst": "2026-09-18 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:26:03.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-Fitch_official",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Fitch_official が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50%OFFのスタート、おめでとうございます。秋の企画に合わせた価格設定なのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 78
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "50%OFFということは通常の半額ですね。秋の企画に合わせた価格として受け止めています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 82
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "今回の50%OFFは対象がこの1作品だけでしょうか、それとも秋の企画の他作品も含まれるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 93
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 352,
+        "output_tokens": 755,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 2636,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2100600690574029265",
+      "targetPostId": "2100600690574029265",
+      "postedAtJst": "2026-09-18 00:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:27:02.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-honnaka_NN",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-honnaka_NN が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。9月18日の初日からの動きが気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 77
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "本中の新作、本日先行配信スタートなのですね。日付が変わった直後からの配信開始という時間帯を把握しました。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 104
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "先行配信の開始は本日9月18日、日付が変わってすぐのタイミングですね。今日から視聴できるのですね。",
+              "failures": [
+                {
+                  "rule": "R9",
+                  "detail": "出典のない数値（B）: 18"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "本日9月18日からの先行配信ですが、通常配信の開始はいつ頃になりますでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 77
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 885,
+        "output_tokens": 2049,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 5228,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2100918766158950416",
+      "targetPostId": "2100918766158950416",
+      "postedAtJst": "2026-09-18 21:04",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:25:16.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-kawaii_pr",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-kawaii_pr が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第1弾のスタートおめでとうございます。9月21日の朝9時59分までという区切りを覚えておきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 89
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "第1弾は9月21日の朝9時59分まで、50%OFFという区切りなのですね。三連休の初日に終わる日程です。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 91
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第1弾が終わる9月21日朝9時59分のあと、第2弾は同じ日のうちに切り替わりますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 76
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "第2弾の対象作品は第1弾から入れ替わる形でしょうか。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "字数 26（40〜140）"
+                }
+              ]
+            },
+            {
+              "text": "第1弾が9月21日の朝9時59分までとのことですが、第2弾は対象作品や割引率が変わるのでしょうか。",
+              "failures": [
+                {
+                  "rule": "R5",
+                  "detail": "宣伝語: 割引"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1704,
+        "output_tokens": 672,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7820,
+        "calls": 3
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "Madonna_AVinfo",
+      "postUrl": "https://x.com/Madonna_AVinfo/status/2100759316206850326",
+      "targetPostId": "2100759316206850326",
+      "postedAtJst": "2026-09-18 10:30",
+      "target": {
+        "id": "rec81cW6UPEmdwPZQ",
+        "handle": "Madonna_AVinfo",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:23:19.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-Madonna_AVinfo",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-Madonna_AVinfo が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。本日配信作品の売上げ本数順で1位という出だしは、かなり注目されていますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 111
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "先行配信スタートおめでとうございます。初日から売れ筋5位という滑り出しですね。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "字数 39（40〜140）"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "お気に入り登録3,740件で本日配信作品の売上げ本数順1位という数字ですね。09/18の動きが気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 97
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "売れ筋5位は09/18時点の集計でしょうか。更新のタイミングが気になっています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1147,
+        "output_tokens": 189,
+        "cache_creation_input_tokens": 2592,
+        "cache_read_input_tokens": 2636,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2100600674639847771",
+      "targetPostId": "2100600674639847771",
+      "postedAtJst": "2026-09-18 00:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:24:04.000Z"
+      },
+      "knowledgeMode": "none",
+      "knowledge": null,
+      "replyKey": "20260918-PREMIUM_AV",
+      "warnings": [
+        "dry-run: 停止判定を無効化して生成（本来は 停止（同日同ハンドル 2 件目: 20260918-PREMIUM_AV が既存））"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "和香なつきさんの初VR、予約開始おめでとうございます。新作の続報も楽しみにしています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 84
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "和香なつきさんの初VRが予約開始とのことで、同棲がテーマの内容になるのですね。配信日の告知も待っています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 104
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "和香なつきさんの初VRが2SEX収録という構成なんですね。予約開始の告知を確認しました。",
+              "failures": [
+                {
+                  "rule": "R6",
+                  "detail": "容姿・露骨語: SEX"
+                }
+              ]
+            },
+            {
+              "text": "和香なつきさんの初VR、予約開始が本日0時からという告知ですね。専属としての新作を待っていた方も多そうです。",
+              "failures": [
+                {
+                  "rule": "R9",
+                  "detail": "出典のない数値（B）: 0"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "初VRの予約開始にあたって、予約した方向けの特典や先行配信の予定はありますか。配信日もまだこれからでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 108
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "和香なつきさんの初VR、予約者向けの特典や先行配信の予定はありますか？",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "字数 35（40〜140）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1460,
+        "output_tokens": 294,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7842,
+        "calls": 3
+      }
+    }
+  ]
+}
