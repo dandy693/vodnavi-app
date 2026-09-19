@@ -52,6 +52,7 @@ export function normalizeTargets(raw) {
         reply_restriction: cellName(c[F.reply_restriction]),
         no_repropose: !!c[F.no_repropose],
         last_reply_at: c[F.last_reply_at] ?? null,
+        priority: c[F.priority] ?? null,
       };
     }
     const f = r.fields ?? r;
@@ -66,6 +67,7 @@ export function normalizeTargets(raw) {
       reply_restriction: cellName(f.reply_restriction),
       no_repropose: !!f.no_repropose,
       last_reply_at: f.last_reply_at ?? null,
+      priority: f.priority ?? null,
     };
   });
 }
@@ -216,7 +218,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     postUrl: line.postUrl,
     targetPostId: line.targetPostId,
     postedAtJst: line.postedAtJst,
-    target: target ? { id: target.id, handle: target.handle, type: target.type, status: target.status, last_reply_at: target.last_reply_at } : null,
+    target: target ? { id: target.id, handle: target.handle, type: target.type, priority: target.priority ?? null, status: target.status, last_reply_at: target.last_reply_at } : null,
     knowledgeMode: knowledge ? "cache" : "none",
     types: knowledge ? ["A", "B", "C"] : ["A", "C"], // B は知識ありモードのみ（CSO判定 2026-09-19 dry-run #3）
     knowledge: knowledge ? { content_id: knowledge.content_id, title: knowledge.title, fetched_at: knowledge.fetched_at } : null,
@@ -227,6 +229,8 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
     usage: { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, calls: 0 },
   };
   if (!target) item.warnings.push("台帳未登録（x_targets に handle が無い・生成は続行・登録は HUMAN）");
+  // priority 3 は対照用＝抽出には含めるが案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）。件数管理は HUMAN／CTO の運用側で行う。
+  if (target?.priority === 3) item.warnings.push("priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）");
   const stop = checkStop({ line, target, replies, now, config });
   if (stop && !dryRun) {
     item.status = stop;

@@ -17,6 +17,8 @@
 | `PROMPT.md` | system プロンプト（固定・差分レビュー対象） | — |
 | `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
 | `print-drafts.mjs` | `drafts.json` を人が読む形に出す（`node print-drafts.mjs drafts.json`） | なし |
+| `active-targets.mjs` | **抽出対象リストの組み立て**（`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`・priority 昇順・`--urls` で Chrome 抽出用 URL 一覧・CSO 連絡 2026-09-19 22:2x） | なし |
+| `weekly-report.mjs` | **木曜 PDCA 用の x_replies 集計**（priority 別・type 別・件数・`draft_used` 内訳・`got_like` / `got_reply` / `profile_click_delta` の記入状況・`--md` で表） | なし |
 | `*.test.mjs` | `node --test`（dry-run のみ・API も Airtable も呼ばない・裁定 H） | なし |
 
 ```
@@ -27,6 +29,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 
 | 手順 | 担当 | 内容 |
 |---|---|---|
+| **0** | **CTO**（CSO 連絡 2026-09-19 22:2x） | **抽出対象リストを毎回 Airtable から組み立てる**（固定の 20 件リストは使わない）: MCP で `x_targets` を読み戻し → `state/<日付>/targets.json` → `node management/tools/x-reply-drafts/active-targets.mjs state/<日付>/targets.json --urls`。条件＝`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`（2026-09-19 22:3x 時点 35 件＝priority 1: 27 / 2: 4 / 3: 4）。**priority 3 の 4 件（@S1_No1_Style／@shinnakanodream／@mayukiito／@umi_sea_0v0）は抽出に含めるが、案の提示は週 2 件まで（対照用）**——`generate.mjs` が該当行に warning を付ける |
 | 1 | **CTO**（CSO 指示 2026-09-19 08:2x で HUMAN → CTO へ改訂・FACT §26-10-1） | Chrome 抽出（**1 日 2 回＝朝 8 時・21 時前**・窓は**前回抽出以降**・読み取り専用＝投稿・返信・フォロー・いいね・ブックマークをしない）→ `@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id` を `runs/<日付>/input.txt` に置く（本文は台帳に貼らない）。重複はツール側が `target_post_url` で排除 |
 | 2 | CTO | ツール実行（下の手順 2〜5）→ 案を提示。**停止判定に当たった行はその旨を表示**（同一投稿 1 回のみ／同日同ハンドル 1 件／再返信間隔＝女優本人 3 日・それ以外 1 日） |
 | 3 | HUMAN | 案を選んで投稿 → リプ URL を Claude Code に貼る |
@@ -38,7 +41,8 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 
 作業ディレクトリはリポジトリルート。中間ファイルは `management/_metrics/<週>/bundle2/runs/<YYYYMMDD>/` に置く（実験資産は git 管理・§24-11-1）。
 
-1. **HUMAN**: 対象投稿を 1 行 1 件で `input.txt` に貼る
+0. **対象リスト**（CTO）: `x_targets` を MCP で読み戻して `state/<日付>/targets.json` に保存 → `node management/tools/x-reply-drafts/active-targets.mjs state/<日付>/targets.json --urls` の一覧を Chrome 抽出の巡回先にする（`--json` で内訳）。手順 3 の `targets.json` にもこのファイルを使える。
+1. **CTO**（旧: HUMAN・08:2x 改訂）: 対象投稿を 1 行 1 件で `input.txt` に貼る
    `@ハンドル｜投稿日時｜投稿URL｜本文｜作品コード（任意）`
    - 区切りは全角「｜」（半角「|」も可・混在不可）。本文に「｜」があっても末尾が作品コードでなければ本文として扱う。
    - 作品コードは content_id（`pxvr00483`）／works URL／品番（`SONE-682`）のいずれか。**content_id があればそれを貼る（Chrome 抽出の「リンク先 content_id」列・CSO 2026-09-19）。品番は content_id が無いときのフォールバック**（`sitemap_works_archive` に無い作品は解決できない）。無ければ省略。
@@ -60,6 +64,19 @@ node --test management/tools/x-reply-drafts/*.test.mjs
    → **Claude Code が Airtable MCP `create_records_for_table`（`x_replies`）で書き込み → `reply_key` で読み戻し（§10）**。payload は書き込み前に URL/@/af_id/vodnavi の混入 0 を機械検査済み（`target_post_url` を除く）。
 8. 投稿後、HUMAN がリプ URL を貼る → `node management/tools/x-reply-drafts/record.mjs --posted --record <x_replies の rec> --target <x_targets の rec> --url https://x.com/vodnavi_jp/status/…`
    → `reply_post_id` / `posted_at`（snowflake 復元）/ `x_targets.last_reply_at` の update payload → **MCP `update_records_for_table` × 2 → 読み戻し**。
+
+## 木曜 PDCA 集計（`weekly-report.mjs`・CSO 連絡 2026-09-19 22:2x）
+
+9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。
+
+```
+# 1) MCP で x_replies（全フィールド）と x_targets を読み戻して state/<日付>/ に保存
+# 2) 集計（期間は posted_at の JST 暦日・両端含む）
+node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/replies.json --targets state/<日付>/targets.json --since 2026-09-18 --until 2026-09-24 --md
+```
+
+- `x_targets` に紐づかない行は priority 空・type 不明で別行に出る（`unmatched`）。`posted_at` 空の行は期間で落とさず記入状況に出す。
+- 初回の dry demo（9/18〜9/19・10 件）→ `management/_metrics/2026-W38/bundle2/state/20260919-2230/weekly-report-dry-20260919.md`。
 
 ## ガード（`guards.mjs`）
 

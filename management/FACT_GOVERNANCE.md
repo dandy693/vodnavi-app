@@ -4316,6 +4316,7 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **`genres` の初期値**: CSO 例示（マドンナ→熟女／本中・PREMIUM→企画／kawaii*→美少女）を優先し、例示のない先は `fanza_response_cache` の属性系ジャンル上位から概算（設計書 §1-1・§5）。**束2「知識なしモード」の方向づけ用・厳密性は不要**（CSO）。
 - **【停止して報告】不一致の候補 5 件は設計書 §4**（①「保留」を priority 1〜3 で表現できない ②フォロワー目安との乖離＝CSO 指定 ③30 件→42 件＝CSO 指定 ④条件付きロールアップの MCP 可否 ⑤genres の例示と cache の差）。**①は CSO 追記で解消。④は裁定が要る。**
 - **【CSO 追記 2026-09-17（Grok 実査前チェック）を反映・00:5x】** priority 2→1＝`@azusa_hikari_` / `@sakuramio_X` / `@mio_sakai_` / `@5may_itsukaichi`（4 件）／フォロワー目安を「2026-09-16 Grok取得」で note に更新（5 件）／**非稼働 7 件**（`status=候補` のまま・`no_repropose` ON・再提案しない・理由は note）＝`@Miyoshi_style`（7/10 以降投稿なし・表示名「シャドバン中」）/ `@hinako_matsui`（5/19 以降なし）/ `@hosimiyaichika`（8/5 以降なし）/ `@rinrin_dayou`（5/30 以降なし）/ `@piyomaru_cmore`（7/31 引退）/ `@SOFT_ON_DEMAND`（1/20 以降なし）/ `@otona_rank_info`（フォロワー 78・7/13 以降なし＝①「保留」は解消）。**更新後: 投入 42 件＝priority 1: 28 / 2: 9 / 3: 4 / 空 1。うち稼働候補 35 件（セール告知系 3 / レビュー系 3 / メーカー公式 14 / 女優本人 15）＝priority 1: 27 / 2: 4 / 3: 4。「本日の対象」（最終リプから 3 日以上）で 3 日一巡の規模。**
+  - **【訂正・CSO 決定 2026-09-19 22:2x】上の「非稼働 7 件」は「候補・未実査・`no_repropose` ON のまま据え置き」と読む。非稼働ではなく未実査（HUMAN の実査対象から外して据え置いた）。** **HUMAN の x_targets 実査は 2026-09-19 に完了し、稼働 35 件（priority 1: 27 / 2: 4 / 3: 4・全件 `reply_restriction=なし`）・候補 7 件（上記 7・`no_repropose=true`・`reply_restriction=不明`）＝MCP 読み戻し 22:2x〜22:3x JST（`bundle2/state/20260919-2230/targets.json`）。** 旧記述は削除しない（§26-10-2）。
 - **【運用の固定・CSO 追記】返信制限は全件「不明」で投入し HUMAN 実査で埋める（`reply_restriction`＝不明／なし／あり）。認証バッジの有無は台帳に載せない（Grok の認証列は Blue のみ検出のためメーカー公式では信頼しない）。**
 - **【CSO裁定 2026-09-17・束1 設計承認】** 1. 設計書改訂版を承認・作成 → `get_table_schema` → 5 バッチ投入 → 42 件読み戻しの順で実行可 ／ 2. 追加提案フィールド 7 件すべて採用 ／ 3. `reply_count_30d` は MCP で条件付きロールアップを試み、不可なら「単純ロールアップ＋ビュー側フィルタ」で代替（HUMAN の UI 作業には回さない・着地を報告）／ 4. §4 ②③⑤は記録のみで確定 ／ 5. 投入後の報告に読み戻し結果と「本日の対象」のフィルタ定義を含める。
 - **【着地・CTO 実行 2026-09-17 00:5x〜01:15 JST】**（全文 → 設計書 §7）
@@ -4359,6 +4360,21 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **抽出は 1 日 2 回（朝 8 時・21 時前）。窓は「前回抽出以降」**（旧「直近 24 時間」を上書き）。**重複は ツール側が `target_post_url` で排除する**（`checkStop` の「記録済み」判定）。
 - **初回（2026-09-19 午前）の実測**: Chrome 抽出 39 件／20 アカウント（07:3x〜08:2x JST・該当なし 13）→ `checkStop` 全行適用＝**停止 4 件（9/18 に返信済みの target_post_url）・OK 35 件**（`runs/20260919-am/stopcheck_all.json`・本文なし）→ **CSO 指定 3 件のみ生成**（@honnaka_NN `hnvr00191`・@FANZAdougaX MOODYZ 30%OFF・@waka_misono `mngs00081`）。**Madonna 9/18 10:3x〜10:5x の 24 件は「22 時間前で古い」として見送り（CSO）**。**生成 11:55:47〜11:56:54 JST**（セッション中断のため朝 8 時から遅れた）・**claude-opus-5・API 5 回・8 案 全通過**（知識あり 2 行＝A/B/C・知識なし 1 行＝A/C）。**@waka_misono 行は本文が「予約してねん」のみのため、引用元（MOODYZ 公式 9/15・新作情報解禁・特典付き DVD 生写真 1 枚）を本文末尾に［引用元 …］として付した＝CTO 判断・要否は CSO。**
 - **【CSO判定 2026-09-19 12:1x・段階② 初回 3 件】3 件とも投稿可。ただし HUMAN が文面を手直しして投稿し、記録は投稿した本文を正とする**（`record.mjs --create --texts posted.json`）。**ツールの癖 2 点を修正**: ①R12 に「確認しました／把握しました／届いた／受け止め」を追加（報告書調の締めを禁止）②B 型（知識あり）は cache 由来の事実を最大 2 つまで・優先 収録時間 > 配信日 > シリーズ > その他（`B_max_knowledge_facts`・出演者名は数えない）。**女優本人向けの案は「名前＋さん、」で始める**（PROMPT 規則＋R17 機械検査・CTO 追加）／引用投稿は引用元の詳細より本人の一言に応える／**「体験版」→「サンプル動画」に自動置換**（R18・語置換リスト）／**@waka_misono の引用元付記（CTO 判断）は採用＝［引用元 …］方式を継続**。`node --test` 51/51。設計書 §12-8。**午前の 8 案を改訂後ガードに再適用すると honnaka A/B・waka_misono A/B/C が NG（指摘の癖を機械検査で捕捉）＝改訂前の生成物として据え置き・HUMAN が手直しして投稿。**
+
+
+#### 26-10-2. 【CSO 連絡 2026-09-19 22:2x】**x_targets 実査完了（稼働 35）。抽出対象は毎回 Airtable から組み立てる／priority 3 は対照用（提示は週 2 件まで）／9/24 朝に priority 別・type 別の集計を報告**
+
+| 項目 | 確定 |
+|---|---|
+| **x_targets 実査** | **完了。稼働 35 件。** 残り 7 件（`@hinako_matsui`／`@rinrin_dayou`／`@hosimiyaichika`／`@piyomaru_cmore`／`@Miyoshi_style`／`@otona_rank_info`／`@SOFT_ON_DEMAND`）は**候補・未実査・`no_repropose` ON のまま据え置き（CSO 決定・非稼働ではなく未実査）**。§26-9 の「非稼働 7 件」は本項で訂正（削除せず訂正で残す） |
+| **抽出対象の組み立て**（2026-09-20 08:00 以降） | **固定の 20 件リストではなく、Airtable の x_targets から `status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり` を毎回読んで組み立てる**（HUMAN が稼働を増減しても追従）。実装＝`management/tools/x-reply-drafts/active-targets.mjs`（`--urls` で Chrome 抽出用 URL 一覧）。**22:3x の読み戻しで 35 件＝priority 1: 27 / 2: 4 / 3: 4・type 女優本人 15 / メーカー公式 14 / レビュー系 3 / セール告知系 3**（`bundle2/state/20260919-2230/active-targets.*`） |
+| **priority 3（対照用）** | **`@S1_No1_Style`／`@shinnakanodream`／`@mayukiito`／`@umi_sea_0v0` の 4 件は抽出には含めるが、案の提示は週 2 件までに絞る。** `generate.mjs` が該当行に warning「priority 3（対照用）: 案の提示は週 2 件まで」を付ける（機械的な上限カウントは実装していない＝CTO が提示時に数える） |
+| **木曜 PDCA の材料** | **2026-09-24（水）朝の時点で x_replies を priority 別・type 別に集計して報告**（件数・`draft_used` の内訳・`got_like`／`got_reply` の記入状況）。実装＝`weekly-report.mjs --replies … --targets … --since 2026-09-18 --until 2026-09-24 --md`。**dry demo（9/18〜9/19・10 件）＝全件 priority 1・A 4 / B 3 / C 3・got_like 0 / got_reply 0 / profile_click_delta 記入 0**（`state/20260919-2230/weekly-report-dry-20260919.md`）。**x_replies 10 件に priority 2・3 の行は無い** |
+| **本日の実績（CSO 集計）** | **午前 3 件＋夜 1 件＝4 件**（`20260919-honnaka_NN` B／`20260919-FANZAdougaX` A／`20260919-waka_misono` A 手直し／`20260919-Fitch_official` B 手直し・20:15）。x_replies 累計 10 件（9/18 6・9/19 4）。`got_like`／`got_reply`／`profile_click_delta` は全件未記入（フィールドは存在・`airtable-fields.json` に ID を追記） |
+| 不変 | `x_targets.status` は HUMAN 専権（§26-8）／抽出は読み取り専用（§26-10-1）／抽出窓＝前回抽出以降（明朝＝2026-09-19 21:3x JST 以降）／投稿は HUMAN／`posts`・Make・本番コード不触 |
+
+- **【厳守】「稼働 35」は 2026-09-19 22:3x の読み戻し値であり、明朝の抽出前に再度読み戻す**（HUMAN が増減している可能性があるため・本項の「毎回読む」が趣旨）。
+- **【併記】`x_targets` の `display_name`／`type`／`genres`／`note` は 08:3x の読み戻し値を転記したままで、22:3x には再取得していない**（`state/20260919-2230/README.md`）。`type`／`priority` は集計の軸なので、9/24 の集計時には全フィールドを取り直す。
 
 ---
 
