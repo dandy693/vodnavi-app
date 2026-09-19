@@ -1,0 +1,1209 @@
+{
+  "generated_at": "2026-09-19T23:52:58.719Z",
+  "today_jst": "20260920",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "ddf6ef6da6ed3aaa76456493c1ec3535cd17f5b877acdafef1172c9f77932d63",
+  "counts": {
+    "lines": 25,
+    "generated": 13,
+    "stopped": 12
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101401034442871254",
+      "targetPostId": "2101401034442871254",
+      "postedAtJst": "2026-09-20 05:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:30:22.865Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-FANZAdougaX",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50％OFFの作品リスト公開おめでとうございます。4K機材映像の作品も対象に入っているのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 89
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "今回の50％OFF作品リストは、期間中に対象作品が追加されることもあるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 649,
+        "output_tokens": 791,
+        "cache_creation_input_tokens": 3063,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101400956244230529",
+      "targetPostId": "2101400956244230529",
+      "postedAtJst": "2026-09-20 05:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:30:22.865Z"
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-FANZAdougaX",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2101295256860062027",
+      "targetPostId": "2101295256860062027",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:24:04.000Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "prwf00016",
+        "title": "夫婦経営する旅館でオヤジ客の晩酌に呼び出され…朝を迎えても終わらない中出し接待に堕ちた妻 小松空",
+        "fetched_at": "2026-09-19 06:12:30.286+00"
+      },
+      "replyKey": "20260920-PREMIUM_AV",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "5作品を厳選しての紹介、ありがとうございます。それぞれ時間をとって順に見ていきたいところです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 93
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "紹介された5作品のうち、9月11日に配信された一作は収録180分あり、通しで見るとなかなかの長さになりますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 103
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "今回まとめられた5作品は、直近に配信された作品の中から選ばれているのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 844,
+        "output_tokens": 1996,
+        "cache_creation_input_tokens": 3085,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "DMM10sale",
+      "postUrl": "https://x.com/DMM10sale/status/2101431141911933302",
+      "targetPostId": "2101431141911933302",
+      "postedAtJst": "2026-09-20 07:00",
+      "target": {
+        "id": "recGgGiVMfR8Bptcp",
+        "handle": "DMM10sale",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-DMM10sale",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第1弾10円セールの開始おめでとうございます。9月24日23時59分までという区切りがはっきりしていますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 98
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "9月24日23時59分の第1弾終了後、第2弾は間を置かずに始まる予定でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 71
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 510,
+        "output_tokens": 486,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "Aizawa_miyu03",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101295274803290548",
+      "targetPostId": "2101295274803290548",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recld7SvHioWfSb8o",
+        "handle": "Aizawa_miyu03",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-Aizawa_miyu03",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "逢沢みゆさん、今日も2本お疲れさまでした。体調を崩さないと決めて臨まれているのが伝わってきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 95
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "逢沢みゆさん、2本撮りの日は栄養剤のほかに何か決めているルーティンはありますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 424,
+        "output_tokens": 103,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "Aizawa_miyu03",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101308359727276202",
+      "targetPostId": "2101308359727276202",
+      "postedAtJst": "2026-09-19 22:52",
+      "target": {
+        "id": "recld7SvHioWfSb8o",
+        "handle": "Aizawa_miyu03",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-Aizawa_miyu03",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "Aizawa_miyu03",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101438380731183280",
+      "targetPostId": "2101438380731183280",
+      "postedAtJst": "2026-09-20 07:28",
+      "target": {
+        "id": "recld7SvHioWfSb8o",
+        "handle": "Aizawa_miyu03",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-Aizawa_miyu03",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "AViiyone",
+      "postUrl": "https://x.com/AViiyone/status/2101446244841447779",
+      "targetPostId": "2101446244841447779",
+      "postedAtJst": "2026-09-20 08:00",
+      "target": {
+        "id": "recJK4pYv75Fy1Fsz",
+        "handle": "AViiyone",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "ipbz00018",
+        "title": "配信限定:ナチュポケ REC:愛才りあ ハメ撮り IP女優のありのまま解禁",
+        "fetched_at": "2026-09-17 01:02:44.382+00"
+      },
+      "replyKey": "20260920-AViiyone",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "最大500円OFFのクーポン情報、紹介ありがとうございます。値引き幅の大きい回は気になりますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 90
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録119分で、配信開始は2025年12月21日の作品ですね。そこに最大500円OFFが重なる形になるのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 95
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "最大500円OFFのクーポンは、対象になる作品や使える期間はどのあたりまででしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 80
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 762,
+        "output_tokens": 844,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3085,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "karin_kitaoka_",
+      "postUrl": "https://x.com/karin_kitaoka_/status/2101317010445725908",
+      "targetPostId": "2101317010445725908",
+      "postedAtJst": "2026-09-19 23:26",
+      "target": {
+        "id": "recMrhIc4oQ6hpG2o",
+        "handle": "karin_kitaoka_",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-karin_kitaoka_",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "北岡果林さん、Lvアップおめでとうございます。明日18時からのゲスト出勤、足元の悪い中でも和やかな時間になりますように。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 60,
+              "weight": 116
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "北岡果林さん、明日18時からのゲスト出勤は何時ごろまでのご予定でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 37,
+              "weight": 72
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 510,
+        "output_tokens": 588,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 10,
+      "handle": "ran_tpowers",
+      "postUrl": "https://x.com/ran_tpowers/status/2101358261991833629",
+      "targetPostId": "2101358261991833629",
+      "postedAtJst": "2026-09-20 02:10",
+      "target": {
+        "id": "recUTLt9vfrI2Kcf6",
+        "handle": "ran_tpowers",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-ran_tpowers",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "菊乃らんさん、深夜にリプを返してくださるとのこと、ありがとうございます。お時間の許す範囲で、どうか無理なさらないでくださいね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 63,
+              "weight": 126
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "菊乃らんさん、リプを返されるのは、今回はどのあたりの投稿まで遡って見てくださる予定でしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 94
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "菊乃らんさん、今夜のリプ返しはどのくらいの時間まで続けられるご予定でしょうか。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: リプ）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 642,
+        "output_tokens": 1765,
+        "cache_creation_input_tokens": 3041,
+        "cache_read_input_tokens": 3063,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 11,
+      "handle": "sakuramio_X",
+      "postUrl": "https://x.com/sakuramio_X/status/2101314609441558578",
+      "targetPostId": "2101314609441558578",
+      "postedAtJst": "2026-09-19 23:16",
+      "target": {
+        "id": "recLjDdc7R8Q5Hi1Q",
+        "handle": "sakuramio_X",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-sakuramio_X",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "桜みおさん、スマホが落とし物コーナーで見つかったのは何よりです。車の室内灯の消し忘れも、うっかりしやすいところですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 59,
+              "weight": 118
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "桜みおさん、落とし物コーナーで見つかったスマホも、室内灯で上がってしまった車のバッテリーも、もう元通りになりましたか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 59,
+              "weight": 118
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 453,
+        "output_tokens": 657,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 12,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101310452185837743",
+      "targetPostId": "2101310452185837743",
+      "postedAtJst": "2026-09-19 23:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-shirot_AV_chosa",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "栗山莉緒さんの出演作の紹介、ありがとうございます。画像1枚からでも気になる作品が増えました。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 91
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "栗山莉緒さんのこの出演作で、画像1枚のほかにサンプル動画の紹介も予定されていますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 83
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 341,
+        "output_tokens": 1859,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 13,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101295386069807527",
+      "targetPostId": "2101295386069807527",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-shirot_AV_chosa",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 12 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 14,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295258672009530",
+      "targetPostId": "2101295258672009530",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "miab00677",
+        "title": "ドリームウーマンVol.101 逢沢みゆ",
+        "fetched_at": "2026-09-19 17:02:31.401+00"
+      },
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "ドリームウーマンVol.101、逢沢みゆさんの登場おめでとうございます。シリーズの新作が出ると知って楽しみになりました。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 60,
+              "weight": 113
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "ドリームウーマンVol.101の告知ありがとうございます。シリーズがここまで続いている番号だと、節目の重みを感じます。",
+              "failures": [
+                {
+                  "rule": "R13",
+                  "detail": "根拠なし断定語: 続いている"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "ドリームウーマンVol.101は収録時間185分ですね。シリーズ作としてはかなり長めなので、通して見る時間を作りたいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 61,
+              "weight": 112
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "ドリームウーマンVol.101は収録185分で、配信は9月11日開始なのですね。シリーズものとしてのボリュームがしっかりあります。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 185、9月11日、ドリームウーマン"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "ドリームウーマンVol.101はシリーズとしてどのくらいの間隔で新作が出ているのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1517,
+        "output_tokens": 1226,
+        "cache_creation_input_tokens": 3063,
+        "cache_read_input_tokens": 3085,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 15,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295255526248592",
+      "targetPostId": "2101295255526248592",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 16,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295253898846546",
+      "targetPostId": "2101295253898846546",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 17,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295263197638893",
+      "targetPostId": "2101295263197638893",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 18,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295259984785699",
+      "targetPostId": "2101295259984785699",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 19,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295251369697340",
+      "targetPostId": "2101295251369697340",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 20,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101302799137218862",
+      "targetPostId": "2101302799137218862",
+      "postedAtJst": "2026-09-19 22:30",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "ipzz00902",
+        "title": "DIGITAL CHANNEL DC145 長浜みつり 初ぶっかけ解禁",
+        "fetched_at": "2026-09-19 23:27:57.347+00"
+      },
+      "replyKey": "20260920-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "5か月ぶりのデジタルチャンネル、告知おめでとうございます。次の登場を待っていた方も多そうですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 95
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "5か月ぶりのデジタルチャンネルとのことで、収録時間は163分、シリーズはDIGITAL CHANNELですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 91
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "5か月ぶりのデジタルチャンネルということは、今後も同じ間隔での展開を予定されているのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 95
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 739,
+        "output_tokens": 155,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3085,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 21,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101302801259512124",
+      "targetPostId": "2101302801259512124",
+      "postedAtJst": "2026-09-19 22:30",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260920-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 20 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 22,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101310362536845691",
+      "targetPostId": "2101310362536845691",
+      "postedAtJst": "2026-09-19 23:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 20 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 23,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101295251583574364",
+      "targetPostId": "2101295251583574364",
+      "postedAtJst": "2026-09-19 22:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 20 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 24,
+      "handle": "shiromine_miu",
+      "postUrl": "https://x.com/shiromine_miu/status/2101318808346747019",
+      "targetPostId": "2101318808346747019",
+      "postedAtJst": "2026-09-19 23:33",
+      "target": {
+        "id": "recHRnE8hlXY0CsX5",
+        "handle": "shiromine_miu",
+        "type": "女優本人",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-shiromine_miu",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "白峰ミウさん、配信お疲れさまでした。20時過ぎからのバトルまで一気に駆け抜けた夜でしたね、おやすみなさい。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 104
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "白峰ミウさん、次回のバイオ配信も19時15分ごろの開始になりそうでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 38,
+              "weight": 72
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 502,
+        "output_tokens": 574,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 25,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2101296147122028831",
+      "targetPostId": "2101296147122028831",
+      "postedAtJst": "2026-09-19 22:03",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-S1_No1_Style",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "蒼井すずさんの嬉しいご報告、明日20時とのことですね。楽しみにお待ちしています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 78
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "明日20時のご報告は、蒼井すずさんの新作の配信や予約に関する内容でしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 38,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 411,
+        "output_tokens": 1334,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    }
+  ]
+}

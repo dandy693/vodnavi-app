@@ -1,0 +1,157 @@
+model=claude-opus-5 dry_run=false today_jst=20260920 counts={"lines":25,"generated":13,"stopped":12} prompt_sha=ddf6ef6da6ed
+
+=== @FANZAdougaX (セール告知系) status=generated replyKey=20260920-FANZAdougaX calls=1 in=649 out=791
+  A chars=48 weight=89 ok=true attempts=1
+     50％OFFの作品リスト公開おめでとうございます。4K機材映像の作品も対象に入っているのですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=42 weight=79 ok=true attempts=1
+     今回の50％OFF作品リストは、期間中に対象作品が追加されることもあるのでしょうか。
+
+=== @FANZAdougaX (セール告知系) status=停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-FANZAdougaX calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @PREMIUM_AV (メーカー公式) status=generated replyKey=20260920-PREMIUM_AV calls=1 in=844 out=1996
+  A chars=47 weight=93 ok=true attempts=1
+     5作品を厳選しての紹介、ありがとうございます。それぞれ時間をとって順に見ていきたいところです。
+  B chars=55 weight=103 ok=true attempts=1
+     紹介された5作品のうち、9月11日に配信された一作は収録180分あり、通しで見るとなかなかの長さになりますね。
+  C chars=40 weight=79 ok=true attempts=1
+     今回まとめられた5作品は、直近に配信された作品の中から選ばれているのでしょうか。
+
+=== @DMM10sale (セール告知系) status=generated replyKey=20260920-DMM10sale calls=1 in=510 out=486
+  A chars=54 weight=98 ok=true attempts=1
+     第1弾10円セールの開始おめでとうございます。9月24日23時59分までという区切りがはっきりしていますね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=71 ok=true attempts=1
+     9月24日23時59分の第1弾終了後、第2弾は間を置かずに始まる予定でしょうか。
+
+=== @Aizawa_miyu03 (女優本人) status=generated replyKey=20260920-Aizawa_miyu03 calls=1 in=424 out=103
+  A chars=48 weight=95 ok=true attempts=1
+     逢沢みゆさん、今日も2本お疲れさまでした。体調を崩さないと決めて臨まれているのが伝わってきます。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=79 ok=true attempts=1
+     逢沢みゆさん、2本撮りの日は栄養剤のほかに何か決めているルーティンはありますか。
+
+=== @Aizawa_miyu03 (女優本人) status=停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-Aizawa_miyu03 calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @Aizawa_miyu03 (女優本人) status=停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-Aizawa_miyu03 calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @AViiyone (レビュー系) status=generated replyKey=20260920-AViiyone calls=1 in=762 out=844
+  A chars=48 weight=90 ok=true attempts=1
+     最大500円OFFのクーポン情報、紹介ありがとうございます。値引き幅の大きい回は気になりますね。
+  B chars=56 weight=95 ok=true attempts=1
+     収録119分で、配信開始は2025年12月21日の作品ですね。そこに最大500円OFFが重なる形になるのですね。
+  C chars=43 weight=80 ok=true attempts=1
+     最大500円OFFのクーポンは、対象になる作品や使える期間はどのあたりまででしょうか。
+
+=== @karin_kitaoka_ (女優本人) status=generated replyKey=20260920-karin_kitaoka_ calls=1 in=510 out=588
+  A chars=60 weight=116 ok=true attempts=1
+     北岡果林さん、Lvアップおめでとうございます。明日18時からのゲスト出勤、足元の悪い中でも和やかな時間になりますように。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=37 weight=72 ok=true attempts=1
+     北岡果林さん、明日18時からのゲスト出勤は何時ごろまでのご予定でしょうか。
+
+=== @ran_tpowers (女優本人) status=generated replyKey=20260920-ran_tpowers calls=2 in=642 out=1765
+  A chars=63 weight=126 ok=true attempts=1
+     菊乃らんさん、深夜にリプを返してくださるとのこと、ありがとうございます。お時間の許す範囲で、どうか無理なさらないでくださいね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=47 weight=94 ok=true attempts=2
+     菊乃らんさん、リプを返されるのは、今回はどのあたりの投稿まで遡って見てくださる予定でしょうか？
+
+=== @sakuramio_X (女優本人) status=generated replyKey=20260920-sakuramio_X calls=1 in=453 out=657
+  A chars=59 weight=118 ok=true attempts=1
+     桜みおさん、スマホが落とし物コーナーで見つかったのは何よりです。車の室内灯の消し忘れも、うっかりしやすいところですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=59 weight=118 ok=true attempts=1
+     桜みおさん、落とし物コーナーで見つかったスマホも、室内灯で上がってしまった車のバッテリーも、もう元通りになりましたか。
+
+=== @shirot_AV_chosa (レビュー系) status=generated replyKey=20260920-shirot_AV_chosa calls=1 in=341 out=1859
+  A chars=46 weight=91 ok=true attempts=1
+     栗山莉緒さんの出演作の紹介、ありがとうございます。画像1枚からでも気になる作品が増えました。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=42 weight=83 ok=true attempts=1
+     栗山莉緒さんのこの出演作で、画像1枚のほかにサンプル動画の紹介も予定されていますか。
+
+=== @shirot_AV_chosa (レビュー系) status=停止（同日同ハンドル 2 件目: 本バッチ内 12 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-shirot_AV_chosa calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @MOODYZ_official (メーカー公式) status=generated replyKey=20260920-MOODYZ_official calls=2 in=1517 out=1226
+  A chars=60 weight=113 ok=true attempts=2
+     ドリームウーマンVol.101、逢沢みゆさんの登場おめでとうございます。シリーズの新作が出ると知って楽しみになりました。
+  B chars=61 weight=112 ok=true attempts=2
+     ドリームウーマンVol.101は収録時間185分ですね。シリーズ作としてはかなり長めなので、通して見る時間を作りたいです。
+  C chars=46 weight=85 ok=true attempts=1
+     ドリームウーマンVol.101はシリーズとしてどのくらいの間隔で新作が出ているのでしょうか。
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 14 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @IDEAPOCKETTER (メーカー公式) status=generated replyKey=20260920-IDEAPOCKETTER calls=1 in=739 out=155
+  A chars=48 weight=95 ok=true attempts=1
+     5か月ぶりのデジタルチャンネル、告知おめでとうございます。次の登場を待っていた方も多そうですね。
+  B chars=55 weight=91 ok=true attempts=1
+     5か月ぶりのデジタルチャンネルとのことで、収録時間は163分、シリーズはDIGITAL CHANNELですね。
+  C chars=48 weight=95 ok=true attempts=1
+     5か月ぶりのデジタルチャンネルということは、今後も同じ間隔での展開を予定されているのでしょうか。
+
+=== @IDEAPOCKETTER (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 20 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-IDEAPOCKETTER calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @IDEAPOCKETTER (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 20 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-IDEAPOCKETTER calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @IDEAPOCKETTER (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 20 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-IDEAPOCKETTER calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @shiromine_miu (女優本人) status=generated replyKey=20260920-shiromine_miu calls=1 in=502 out=574
+  A chars=53 weight=104 ok=true attempts=1
+     白峰ミウさん、配信お疲れさまでした。20時過ぎからのバトルまで一気に駆け抜けた夜でしたね、おやすみなさい。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=38 weight=72 ok=true attempts=1
+     白峰ミウさん、次回のバイオ配信も19時15分ごろの開始になりそうでしょうか。
+
+=== @S1_No1_Style (メーカー公式) status=generated replyKey=20260920-S1_No1_Style calls=1 in=411 out=1334
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=40 weight=78 ok=true attempts=1
+     蒼井すずさんの嬉しいご報告、明日20時とのことですね。楽しみにお待ちしています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=38 weight=74 ok=true attempts=1
+     明日20時のご報告は、蒼井すずさんの新作の配信や予約に関する内容でしょうか？

@@ -1,0 +1,281 @@
+{
+  "_note": "generate.mjs の checkStop を全行に適用（API 呼び出しなし・本文は含めない）",
+  "today": "2026-09-20",
+  "rows": [
+    {
+      "lineNo": 1,
+      "handle": "FANZAdougaX",
+      "postedAtJst": "2026-09-20 05:00",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101401034442871254",
+      "type": "セール告知系",
+      "status": "稼働",
+      "last_reply_at": "2026-09-19T03:30:22.865Z",
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 2,
+      "handle": "FANZAdougaX",
+      "postedAtJst": "2026-09-20 05:00",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101400956244230529",
+      "type": "セール告知系",
+      "status": "稼働",
+      "last_reply_at": "2026-09-19T03:30:22.865Z",
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 3,
+      "handle": "PREMIUM_AV",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2101295256860062027",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-18T13:24:04.000Z",
+      "work": "prwf00016",
+      "stop": null
+    },
+    {
+      "lineNo": 4,
+      "handle": "DMM10sale",
+      "postedAtJst": "2026-09-20 07:00",
+      "postUrl": "https://x.com/DMM10sale/status/2101431141911933302",
+      "type": "セール告知系",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 5,
+      "handle": "Aizawa_miyu03",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101295274803290548",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 6,
+      "handle": "Aizawa_miyu03",
+      "postedAtJst": "2026-09-19 22:52",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101308359727276202",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 7,
+      "handle": "Aizawa_miyu03",
+      "postedAtJst": "2026-09-20 07:28",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101438380731183280",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 8,
+      "handle": "AViiyone",
+      "postedAtJst": "2026-09-20 08:00",
+      "postUrl": "https://x.com/AViiyone/status/2101446244841447779",
+      "type": "レビュー系",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "ipbz00018",
+      "stop": null
+    },
+    {
+      "lineNo": 9,
+      "handle": "karin_kitaoka_",
+      "postedAtJst": "2026-09-19 23:26",
+      "postUrl": "https://x.com/karin_kitaoka_/status/2101317010445725908",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 10,
+      "handle": "ran_tpowers",
+      "postedAtJst": "2026-09-20 02:10",
+      "postUrl": "https://x.com/ran_tpowers/status/2101358261991833629",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 11,
+      "handle": "sakuramio_X",
+      "postedAtJst": "2026-09-19 23:16",
+      "postUrl": "https://x.com/sakuramio_X/status/2101314609441558578",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 12,
+      "handle": "shirot_AV_chosa",
+      "postedAtJst": "2026-09-19 23:00",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101310452185837743",
+      "type": "レビュー系",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "jur00190",
+      "stop": null
+    },
+    {
+      "lineNo": 13,
+      "handle": "shirot_AV_chosa",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101295386069807527",
+      "type": "レビュー系",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "dejo006",
+      "stop": null
+    },
+    {
+      "lineNo": 14,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295258672009530",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "miab00677",
+      "stop": null
+    },
+    {
+      "lineNo": 15,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295255526248592",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 16,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295253898846546",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "mida00812",
+      "stop": null
+    },
+    {
+      "lineNo": 17,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295263197638893",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "mida00780",
+      "stop": null
+    },
+    {
+      "lineNo": 18,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295259984785699",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 19,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101295251369697340",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 20,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-19 22:30",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101302799137218862",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 21,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-19 22:30",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101302801259512124",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "IPZZ-902",
+      "stop": null
+    },
+    {
+      "lineNo": 22,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-19 23:00",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101310362536845691",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 23,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-19 22:00",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101295251583574364",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 24,
+      "handle": "shiromine_miu",
+      "postedAtJst": "2026-09-19 23:33",
+      "postUrl": "https://x.com/shiromine_miu/status/2101318808346747019",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 25,
+      "handle": "S1_No1_Style",
+      "postedAtJst": "2026-09-19 22:03",
+      "postUrl": "https://x.com/S1_No1_Style/status/2101296147122028831",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    }
+  ]
+}

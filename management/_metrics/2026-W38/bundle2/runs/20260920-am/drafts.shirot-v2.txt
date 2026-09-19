@@ -1,0 +1,13 @@
+model=claude-opus-5 dry_run=false today_jst=20260920 counts={"lines":2,"generated":1,"stopped":1} prompt_sha=ddf6ef6da6ed
+
+=== @shirot_AV_chosa (レビュー系) status=generated replyKey=20260920-shirot_AV_chosa calls=2 in=650 out=1552
+  A chars=57 weight=114 ok=true attempts=2
+     朝から濃厚、という書き出しの紹介はいいですね。どんな場面についてのレビューなのか、続きの投稿も楽しみにしています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=53 weight=106 ok=true attempts=2
+     朝から濃厚という一文は、レビュー本文のどのあたりから引かれたものでしょうか。前後の流れも読んでみたいです。
+
+=== @shirot_AV_chosa (レビュー系) status=停止（同日同ハンドル 2 件目: 本バッチ内 12 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-shirot_AV_chosa calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)

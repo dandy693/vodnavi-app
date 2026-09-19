@@ -1,0 +1,5 @@
+rows.json = Supabase MCP execute_sql（read-only）の結果を lineNo キーで保存したもの（2026-09-20 08:5x JST）。
+- ヒット: 3 prwf00016 / 8 ipbz00018 / 14 miab00677 / 16 mida00812 / 17 mida00780 / 21 ipzz00902（品番 IPZZ-902 → sitemap_works_archive で content_id 解決 → PK ヒット）。
+- 20 は 21 と同じ作品（IDEAPOCKETTER 22:30 の 2 投稿＝「デジタルチャンネルに長浜みつり登場」と IPZZ-902 のリンク）のため同じ行を転記（CTO 判断）。
+- ミス: 12 jur00190（Madonna・shirot のカード）/ 13 dejo006（amateur フロア・ツールは videoa/nikkatsu/anime の 3 キーのみ照会）。
+- item は imageURL / sampleImageURL / sampleMovieURL / affiliateURL / URL を落として転記（束2 ガード: URL・af_id を渡さない）。

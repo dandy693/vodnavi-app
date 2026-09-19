@@ -1,0 +1,4 @@
+[generate] line 12 @shirot_AV_chosa knowledge=none ...
+[generate]   → generated (calls=2 in=650 out=1552)
+[generate] line 13 @shirot_AV_chosa → 停止（同日同ハンドル 2 件目・本バッチ内）
+[generate] wrote management/_metrics/2026-W38/bundle2/runs/20260920-am/drafts.shirot-v2.json

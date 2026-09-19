@@ -322,6 +322,9 @@ export async function main(argv = process.argv.slice(2)) {
   const dryRun = a["dry-run"] === true;
 
   const items = [];
+  // 同日同ハンドルは 1 件のみ（checkStop は x_replies の既存行しか見ないため、同一バッチ内の 2 行目以降はここで止める・API を呼ばない）。
+  // 入力の並び順＝優先順（先に書いた行を生成する）。全行を生成したいときは --all-lines。
+  const generatedHandles = new Map();
   for (const line of parsed.lines ?? []) {
     if (!line.ok) {
       items.push({ lineNo: line.lineNo, status: `解析不能: ${line.error}`, warnings: line.warnings ?? [] });
@@ -330,8 +333,21 @@ export async function main(argv = process.argv.slice(2)) {
     if (a.only && line.handle.toLowerCase() !== String(a.only).toLowerCase()) continue;
     const target = targets.find((t) => t.handle.toLowerCase() === line.handle.toLowerCase()) ?? null;
     const knowledge = knowledgeMap[String(line.lineNo)] ?? knowledgeMap[line.handle] ?? null;
+    const hk = line.handle.toLowerCase();
+    if (!a["all-lines"] && generatedHandles.has(hk)) {
+      items.push({
+        lineNo: line.lineNo, handle: line.handle, postUrl: line.postUrl, targetPostId: line.targetPostId, postedAtJst: line.postedAtJst,
+        target: target ? { id: target.id, handle: target.handle, type: target.type, priority: target.priority ?? null, status: target.status, last_reply_at: target.last_reply_at } : null,
+        knowledgeMode: knowledge ? "cache" : "none", replyKey: replyKeyFor(line.handle, now), warnings: [...(line.warnings ?? [])],
+        status: `停止（同日同ハンドル 2 件目: 本バッチ内 ${generatedHandles.get(hk)} 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）`,
+        drafts: {}, usage: { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, calls: 0 },
+      });
+      process.stderr.write(`[generate] line ${line.lineNo} @${line.handle} → 停止（同日同ハンドル 2 件目・本バッチ内）\n`);
+      continue;
+    }
     process.stderr.write(`[generate] line ${line.lineNo} @${line.handle} knowledge=${knowledge ? "cache" : "none"} ...\n`);
     const item = await generateForLine({ line, target, knowledge, replies, now, system, gen, maxRegen, config, dryRun });
+    if (!/^(停止|対象外|生成不能)/.test(String(item.status ?? ""))) generatedHandles.set(hk, line.lineNo);
     process.stderr.write(`[generate]   → ${item.status} (calls=${item.usage?.calls ?? 0} in=${item.usage?.input_tokens ?? 0} out=${item.usage?.output_tokens ?? 0})\n`);
     items.push(item);
   }

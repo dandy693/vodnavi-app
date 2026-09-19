@@ -11138,3 +11138,15 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **台帳**: README（比較の手順・列名検出・TZ の扱い）／FACT §26-10-2 に CSO 連絡 2026-09-20 の bullet（①承認 ②列追加 ③いいね 0 は想定内・型と運用不変）。
 - **距離**: 本コミットは直前 READY `4b1e389` から 6（`2c7e6f7` が 5）＝skip 想定。
 - 【2026-09-20 02:1x 追記・push 後の Vercel state】`3491265`（距離 6・push 02:09:0x JST）＝`dpl_3Rech2vcH5UdZszBZYZs4J76GGvx` **CANCELED**（created 1789837746343＝02:09:06 JST・skip 経路・閾値 10 と整合）。**次の docs push は距離 7・8・9 まで skip、10 で fail-open ビルド（§22-8-1-1-f・受容済み）。**
+
+## 2026-09-20 08:0x〜08:5x — 束2 段階② 朝の抽出（窓＝9/19 21:3x 以降・対象＝x_targets 稼働 35＝`active-targets.mjs`）: 該当 13 アカウント 30 投稿・該当なし 22 → 生成 13 行 31 案 全通過（同日同ハンドル 2 件目以降 12 行は本バッチ内で停止）
+- **対象**: 08:0x MCP 読み戻し 42 件 → `active-targets.mjs` **35**（priority 1: 27 / 2: 4 / 3: 4）。固定 20 件リストは不使用（CSO 連絡 9/19 22:2x）。
+- **抽出（08:1x〜08:4x JST・読み取りのみ・Chrome 連携 tab 1 本）**: プロフィール直読み 35 件。該当＝FANZAdougaX 2・PREMIUM_AV 1・DMM10sale 1・Aizawa_miyu03 3・AViiyone 1(＋30 分間隔の同型連投は未採取)・karin_kitaoka_ 1・ran_tpowers 1・sakuramio_X 1・shirot_AV_chosa 4・MOODYZ_official 6・IDEAPOCKETTER 4・shiromine_miu 1・S1_No1_Style 1。**該当なし 22**。本文は投稿ページの `get_page_text`（絵文字は落ちる）・リンクは Location のみで追跡（遮断ホスト不到達）。
+- **【併記・実測】X の検索（`from:` OR 検索・最新）はプロフィールに実在する投稿を返さないことがある**（FANZAdougaX 05:00 の 2 件が検索結果に無い）→ 以後は検索を使わずプロフィール直読み。**新規対象 15 件は本 run が初回抽出**＝9/19 21:30 以前の投稿は窓外として未採取。
+- **停止判定**: x_replies 既存との照合＝25 行 OK。**`generate.mjs` に「同一バッチ内の同日同ハンドル 2 件目以降は生成しない（`--all-lines` で解除）」を追加** → 12 行停止（API 不呼出）。
+- **知識**: Supabase MCP（read-only）PK ヒット 6（prwf00016 / ipbz00018 / miab00677 / mida00812 / mida00780 / ipzz00902＝IPZZ-902 を archive で解決）・ミス 2（jur00190 / dejo006）。
+- **生成**: 08:49:44〜08:52:58 JST・claude-opus-5・API 16 回・**13 行 31 案 全通過**（知識あり 4 行 A/B/C・知識なし 9 行 A/C）。**12 行目（shirot）は本文欄の CTO 注記「（画像 1 枚・スレッド返信…）」が案に混入 → 注記を外して再生成（`drafts.shirot-v2.json`・2 案）**。README に「本文欄に注記を入れない」を追記。
+- **priority 3**: S1_No1_Style 1 件を提示（今週 1 / 2・手動カウント）。
+- **記録** → `management/_metrics/2026-W38/bundle2/runs/20260920-am/`（README・input・parsed・targets・replies・stopcheck_all・knowledge・drafts・log）。`node --test` 58/58。
+- **次**: HUMAN が案を選んで投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。21 時前の再抽出（窓＝08:4x 以降）。
+- **距離**: 本コミットは直前 READY `4b1e389` から 7＝skip 想定（9 まで skip・10 で fail-open）。

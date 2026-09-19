@@ -1,0 +1,13 @@
+select 3 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('ee660e16fd0a6ba2031e06cffa7cced42c0bb228d8aaeb58a5e1ba312a5cdd8b','b9b7e4e717593fc85b89ca9d9e99b748cb164ad5346be460e3c8c7feed1c55aa','30063b5b8c04362be3c127c382d85b0dd5c856e73a91461298c2228a15be059a')
+union all
+select 8 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('e0531ea8f969b2d8762762e8f62fe5d31a5066284dd573db8cffb10c1c5af87d','a291a600deee4c7ce124cc329e3edcb2d90d43679d89f349e2c557c08544fd54','6b77d4552703d0f656b17d8b9269903b24ccef5a27a2c9e0895eb6338ade921d')
+union all
+select 12 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('63ae0f9fa128da8e9ec0ad190c31cc0038b1ac3c72235c46dae55192518083a4','920e7b8b08ec091ca889eca78c9f0161becadc44b84368e6df0750f67e904a25','5c8e311597487dbea2573bbd9224bf6da701efcc874a7aa8947472c2fb35d5e5')
+union all
+select 13 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('1f7e73d7d50d8d94c7376011427f2ebc1a9c74e6eba5538419c68eb3689c7fff','46ce965bd8800e4d869cb0eb14e59c5dff4ece48b31ce424d3456bca0f55151c','7aedafeb42e343f6c0a584f3d0b754682f18e2d32f444443302c8fda0c791e46')
+union all
+select 14 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('cb577162927eadb029cf68f991bc44cbac2666cd7dd0f2ed671f9ca164ee7cc0','98991bf757a145b9fdd3fbfd77caaec0ab9a796e26bb79264b00a74f7b69c4ec','05d05695b21879b5e0ebf786ac2405d52d92597691a9839f0b140a46784f4af5')
+union all
+select 16 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('c55c97fa6b52a683de93e2c963305bfaed3c25912acbc81abfa3c0202f018c61','94f98d6fb26a9c3005dd99d172148b1c22dcd5ce9fe69fad597c213832f391d2','e060d74cb23d48f2d7707911b57b78bcfd70b657ba266512fe63a1e88904affc')
+union all
+select 17 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('39e80f127e1fc4a281bc7288934651c3451a4c97fc86cbed6994e265a0b71e50','af9aec12ebcbb65e6812d462b083b7f397468cd3423e85c714af4cf2e2b52050','49dd1c4ee284a70f44dc989bb31e8a724abda7211cdb2470d262914199ff50be');
