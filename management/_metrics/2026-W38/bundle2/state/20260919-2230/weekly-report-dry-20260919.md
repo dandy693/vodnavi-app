@@ -1,25 +1,26 @@
 期間: 2026-09-18 〜 2026-09-19（posted_at の JST 暦日・両端含む）
+反応（likes / replies / views）は reactions.json（X 投稿ページの読み取り）から。Airtable の got_like / got_reply は「取得済み・0」と「未取得」を区別しないため「反応 取得済」列で見る。profile_click_delta は投稿ページから取れないため常に未取得。
 
-| 区分 | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 |
-|---|---|---|---|---|---|
-| **合計** | 10 | A 4 / B 3 / C 3 | 0 | 0 | 0 |
-| priority 1 | 10 | A 4 / B 3 / C 3 | 0 | 0 | 0 |
-| type セール告知系 | 2 | A 1 / B 0 / C 1 | 0 | 0 | 0 |
-| type メーカー公式 | 7 | A 2 / B 3 / C 2 | 0 | 0 | 0 |
-| type 女優本人 | 1 | A 1 / B 0 / C 0 | 0 | 0 | 0 |
+| 区分 | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 | 反応 取得済 | likes / replies 合計 | views 合計 |
+|---|---|---|---|---|---|---|---|---|
+| **合計** | 10 | A 4 / B 3 / C 3 | 0 | 0 | 0 | 10（未取得 0） | 0 / 0 | 123（中央値 7.5） |
+| priority 1 | 10 | A 4 / B 3 / C 3 | 0 | 0 | 0 | 10（未取得 0） | 0 / 0 | 123（中央値 7.5） |
+| type セール告知系 | 2 | A 1 / B 0 / C 1 | 0 | 0 | 0 | 2（未取得 0） | 0 / 0 | 42（中央値 21） |
+| type メーカー公式 | 7 | A 2 / B 3 / C 2 | 0 | 0 | 0 | 7（未取得 0） | 0 / 0 | 58（中央値 6） |
+| type 女優本人 | 1 | A 1 / B 0 / C 0 | 0 | 0 | 0 | 1（未取得 0） | 0 / 0 | 23（中央値 23） |
 
-| priority｜type | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 |
-|---|---|---|---|---|---|
-| 1｜セール告知系 | 2 | A 1 / B 0 / C 1 | 0 | 0 | 0 |
-| 1｜メーカー公式 | 7 | A 2 / B 3 / C 2 | 0 | 0 | 0 |
-| 1｜女優本人 | 1 | A 1 / B 0 / C 0 | 0 | 0 | 0 |
+| priority｜type | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 | 反応 取得済 | likes / replies 合計 | views 合計 |
+|---|---|---|---|---|---|---|---|---|
+| 1｜セール告知系 | 2 | A 1 / B 0 / C 1 | 0 | 0 | 0 | 2（未取得 0） | 0 / 0 | 42（中央値 21） |
+| 1｜メーカー公式 | 7 | A 2 / B 3 / C 2 | 0 | 0 | 0 | 7（未取得 0） | 0 / 0 | 58（中央値 6） |
+| 1｜女優本人 | 1 | A 1 / B 0 / C 0 | 0 | 0 | 0 | 1（未取得 0） | 0 / 0 | 23（中央値 23） |
 
-| 対象 | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 |
-|---|---|---|---|---|---|
-| @FANZAdougaX | 2 | A 1 / B 0 / C 1 | 0 | 0 | 0 |
-| @Fitch_official | 2 | A 1 / B 1 / C 0 | 0 | 0 | 0 |
-| @honnaka_NN | 2 | A 1 / B 1 / C 0 | 0 | 0 | 0 |
-| @Madonna_AVinfo | 1 | A 0 / B 1 / C 0 | 0 | 0 | 0 |
-| @PREMIUM_AV | 1 | A 0 / B 0 / C 1 | 0 | 0 | 0 |
-| @kawaii_pr | 1 | A 0 / B 0 / C 1 | 0 | 0 | 0 |
-| @waka_misono | 1 | A 1 / B 0 / C 0 | 0 | 0 | 0 |
+| 対象 | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 | 反応 取得済 | likes / replies 合計 | views 合計 |
+|---|---|---|---|---|---|---|---|---|
+| @FANZAdougaX | 2 | A 1 / B 0 / C 1 | 0 | 0 | 0 | 2（未取得 0） | 0 / 0 | 42（中央値 21） |
+| @Fitch_official | 2 | A 1 / B 1 / C 0 | 0 | 0 | 0 | 2（未取得 0） | 0 / 0 | 24（中央値 12） |
+| @honnaka_NN | 2 | A 1 / B 1 / C 0 | 0 | 0 | 0 | 2（未取得 0） | 0 / 0 | 13（中央値 6.5） |
+| @Madonna_AVinfo | 1 | A 0 / B 1 / C 0 | 0 | 0 | 0 | 1（未取得 0） | 0 / 0 | 6（中央値 6） |
+| @PREMIUM_AV | 1 | A 0 / B 0 / C 1 | 0 | 0 | 0 | 1（未取得 0） | 0 / 0 | 6（中央値 6） |
+| @kawaii_pr | 1 | A 0 / B 0 / C 1 | 0 | 0 | 0 | 1（未取得 0） | 0 / 0 | 9（中央値 9） |
+| @waka_misono | 1 | A 1 / B 0 / C 0 | 0 | 0 | 0 | 1（未取得 0） | 0 / 0 | 23（中央値 23） |

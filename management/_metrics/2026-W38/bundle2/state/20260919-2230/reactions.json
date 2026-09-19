@@ -1,0 +1,17 @@
+{
+ "_source": "X 投稿ページ（https://x.com/vodnavi_jp/status/<reply_post_id>）を CSO ログイン済み Chrome 連携で読み取り（get_page_text＝表示回数・find＝返信/リポスト/いいね/ブックマークの aria-label）。読み取りのみ・操作なし。取得窓 2026-09-19 22:4x〜22:5x JST（date 実測: 記録時 22:56:01）（10 件・逐次）。CSO 指示 2026-09-19 22:5x。",
+ "_notes": "likes / replies / reposts / views は 10 件すべて取得。bookmarks は find が返した 5 件のみ 0・他は未取得（null）。profile_click_delta（プロフィールクリック）は投稿ページから取得できないため未取得＝Airtable は空のまま。views は x_replies に note 欄が無いため Airtable には書かず本ファイルに記録（CSO 指示: profile_click_delta に流用しない）。Airtable には got_like / got_reply を false（取得済み・0）で書き込み（22:5x・読み戻し 10 件）＝チェックボックスは false と空を区別しないため「取得済み」の証跡は本ファイルの fetched。",
+ "fetched_window_jst": "2026-09-19 22:4x〜22:5x",
+ "by_reply_post_id": {
+  "2100938278275064225": { "reply_key": "20260918-FANZAdougaX", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": null, "views": 7, "fetched": true },
+  "2100938911816224853": { "reply_key": "20260918-PREMIUM_AV", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": 0, "views": 6, "fetched": true },
+  "2100939657118937355": { "reply_key": "20260918-honnaka_NN", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": 0, "views": 8, "fetched": true },
+  "2100939213181206773": { "reply_key": "20260918-kawaii_pr", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": 0, "views": 9, "fetched": true },
+  "2100938725194977383": { "reply_key": "20260918-Madonna_AVinfo", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": null, "views": 6, "fetched": true },
+  "2100939409021702654": { "reply_key": "20260918-Fitch_official", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": 0, "views": 20, "fetched": true },
+  "2101150478033936813": { "reply_key": "20260919-honnaka_NN", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": null, "views": 5, "fetched": true },
+  "2101152087572959295": { "reply_key": "20260919-waka_misono", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": null, "views": 23, "fetched": true },
+  "2101151890495172961": { "reply_key": "20260919-FANZAdougaX", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": 0, "views": 35, "fetched": true },
+  "2101292922088091657": { "reply_key": "20260919-Fitch_official", "likes": 0, "replies": 0, "reposts": 0, "bookmarks": null, "views": 4, "fetched": true }
+ }
+}

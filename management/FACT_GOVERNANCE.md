@@ -4375,6 +4375,11 @@ gtag('config', 'G-GG7JV9MJRW', {
 
 - **【厳守】「稼働 35」は 2026-09-19 22:3x の読み戻し値であり、明朝の抽出前に再度読み戻す**（HUMAN が増減している可能性があるため・本項の「毎回読む」が趣旨）。
 - **【併記】`x_targets` の `display_name`／`type`／`genres`／`note` は 08:3x の読み戻し値を転記したままで、22:3x には再取得していない**（`state/20260919-2230/README.md`）。`type`／`priority` は集計の軸なので、9/24 の集計時には全フィールドを取り直す。
+- **【CSO 指示 2026-09-19 22:5x・反応の補完】9/24 朝の集計の前段として、x_replies の各 `reply_post_id` を読み取り専用で開き（CSO ログイン済み Chrome 連携・操作なし）いいね数・返信の有無・表示回数を取得して `got_like`／`got_reply` を Airtable MCP で埋める。取得できない項目は空のまま＝集計で「未取得」。`weekly-report.mjs` は補完後に実行。priority 3 の「週 2 件まで」は CTO の手動カウントで可（実装不要）。**
+  - **初回実測（2026-09-19 22:4x〜22:5x JST・10 件）**: **全件 いいね 0／返信 0／リポスト 0**。**表示回数 4〜35（合計 123・中央値 7.5）**＝9/18 分（投稿後約 33 時間）7 / 6 / 8 / 9 / 6 / 20、9/19 12:xx 分（約 10.5 時間）5 / 23 / 35、9/19 21:50 分（約 1 時間）4。生カウント → `bundle2/state/20260919-2230/reactions.json`。
+  - **Airtable**: `got_like`／`got_reply` を 10 件に `false`（取得済み・0）で書き込み → 読み戻し 10 件。**`profile_click_delta` は投稿ページから取得できないため空のまま（未取得）**。**表示回数は `x_replies` に note 欄が無いため Airtable には書かず `reactions.json` のみ**（CSO 指示: `profile_click_delta` に流用しない）。
+  - **【併記・構造】Airtable の `got_like`／`got_reply` はチェックボックスで、`false` は空と同じ表現になる＝「取得済み・0」と「未取得」を Airtable 側では区別できない。** 区別は `reactions.json` の有無で行い、`weekly-report.mjs --reactions` が「反応 取得済（未取得 n）」「likes / replies 合計」「views 合計（中央値）」の列を出す（`node --test` 56/56）。
+  - **【厳守】反応は累積するため、9/24 朝の集計時に同じ手順で再取得してから集計する。** 本記録の値は取得時点（投稿後 1〜33 時間）のスナップショット。
 
 ---
 

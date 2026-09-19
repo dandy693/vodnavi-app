@@ -78,3 +78,29 @@ test("aggregate: 期間なしなら全件", () => {
   assert.equal(agg.total.count, 5);
   assert.equal(agg.by_priority["3"].count, 1);
 });
+
+test("aggregate --reactions: 取得済み件数・likes/replies/views を reactions.json から数え、無い行は未取得", () => {
+  const reactions = {
+    by_reply_post_id: {
+      "1": { likes: 0, replies: 0, reposts: 0, views: 7, fetched: true },
+      "2": { likes: 2, replies: 1, reposts: 0, views: 35, fetched: true },
+      // "3" は未取得（reactions に無い）
+    },
+  };
+  const agg = aggregate({ replies: REPLIES, targets: TARGETS, reactions, since: "2026-09-18", until: "2026-09-24" });
+  assert.equal(agg.reactions_source, "reactions.json");
+  assert.equal(agg.total.count, 4);
+  assert.equal(agg.total.reactions_fetched, 2, "4 件中 2 件のみ取得済み");
+  assert.equal(agg.total.likes_sum, 2);
+  assert.equal(agg.total.replies_sum, 1);
+  assert.equal(agg.total.views_sum, 42);
+  assert.equal(agg.total.views_median, 21);
+  assert.equal(agg.by_type["女優本人"].reactions_fetched, 0, "r3 は未取得");
+  assert.equal(agg.by_type["女優本人"].views_median, null);
+  const md = toMarkdown(agg);
+  assert.ok(md.includes("反応 取得済"));
+  assert.ok(md.includes("| **合計** | 4 | A 2 / B 1 / C 1 | 1 | 1 | 1 | 2（未取得 2） | 2 / 1 | 42（中央値 21） |"), md);
+  // reactions 無しなら列も出ない
+  const md0 = toMarkdown(aggregate({ replies: REPLIES, targets: TARGETS }));
+  assert.ok(!md0.includes("反応 取得済"));
+});

@@ -18,7 +18,7 @@
 | `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
 | `print-drafts.mjs` | `drafts.json` を人が読む形に出す（`node print-drafts.mjs drafts.json`） | なし |
 | `active-targets.mjs` | **抽出対象リストの組み立て**（`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`・priority 昇順・`--urls` で Chrome 抽出用 URL 一覧・CSO 連絡 2026-09-19 22:2x） | なし |
-| `weekly-report.mjs` | **木曜 PDCA 用の x_replies 集計**（priority 別・type 別・件数・`draft_used` 内訳・`got_like` / `got_reply` / `profile_click_delta` の記入状況・`--md` で表） | なし |
+| `weekly-report.mjs` | **木曜 PDCA 用の x_replies 集計**（priority 別・type 別・件数・`draft_used` 内訳・`got_like` / `got_reply` / `profile_click_delta` の記入状況・`--reactions reactions.json` で反応の取得済み件数・likes / replies / views・`--md` で表） | なし |
 | `*.test.mjs` | `node --test`（dry-run のみ・API も Airtable も呼ばない・裁定 H） | なし |
 
 ```
@@ -70,13 +70,19 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。
 
 ```
+# 0) 反応の補完（CSO 指示 2026-09-19 22:5x）: x_replies の各 reply_post_id を Chrome 連携で読み取り専用で開き
+#    （https://x.com/vodnavi_jp/status/<id>・get_page_text＝表示回数・find＝返信/リポスト/いいねの aria-label）
+#    → state/<日付>/reactions.json に生カウントを記録 → got_like / got_reply を Airtable MCP で書き込み（取得済み・0 は false）→ 読み戻し。
+#    profile_click_delta は投稿ページから取れない＝空のまま（未取得）。表示回数は x_replies に note 欄が無いため Airtable に書かず reactions.json のみ。
 # 1) MCP で x_replies（全フィールド）と x_targets を読み戻して state/<日付>/ に保存
-# 2) 集計（期間は posted_at の JST 暦日・両端含む）
-node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/replies.json --targets state/<日付>/targets.json --since 2026-09-18 --until 2026-09-24 --md
+# 2) 集計（期間は posted_at の JST 暦日・両端含む・--reactions を付けると「反応 取得済（未取得 n）」「likes / replies 合計」「views 合計（中央値）」列が出る）
+node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/replies.json --targets state/<日付>/targets.json --reactions state/<日付>/reactions.json --since 2026-09-18 --until 2026-09-24 --md
 ```
 
 - `x_targets` に紐づかない行は priority 空・type 不明で別行に出る（`unmatched`）。`posted_at` 空の行は期間で落とさず記入状況に出す。
-- 初回の dry demo（9/18〜9/19・10 件）→ `management/_metrics/2026-W38/bundle2/state/20260919-2230/weekly-report-dry-20260919.md`。
+- **Airtable の `got_like` / `got_reply` はチェックボックスで「取得済み・0」と「未取得」を区別できない。** 区別は `reactions.json` の有無（`--reactions` の「反応 取得済」列）で見る。`reactions.json` に無い行＝未取得。
+- 初回（9/18〜9/19・10 件・反応は 2026-09-19 22:4x〜22:5x 取得）→ `management/_metrics/2026-W38/bundle2/state/20260919-2230/weekly-report-dry-20260919.md`＝全件 priority 1・A 4 / B 3 / C 3・likes 0 / replies 0・views 合計 123（中央値 7.5）。
+- priority 3（対照）の「提示は週 2 件まで」は CTO の手動カウント（実装不要・CSO 2026-09-19 22:5x）。
 
 ## ガード（`guards.mjs`）
 

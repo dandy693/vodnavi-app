@@ -11122,3 +11122,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **明朝 2026-09-20 08:00**: MCP で x_targets を読み戻し → `active-targets.mjs --urls`（固定 20 件リストは使わない）→ 抽出窓＝2026-09-19 21:3x JST 以降 → ツール（改訂ガード）→ 提示（priority 3 は週 2 件まで）→ HUMAN 投稿 → `--texts` 記録。**9/24 朝**: 全フィールドで x_replies / x_targets を取り直し `weekly-report.mjs --since 2026-09-18 --until 2026-09-24 --md` を報告。
 - **距離**: 本コミットは直前 READY `4b1e389` から 2（`70ef495` が 1・CANCELED）＝skip 想定。
 - 【2026-09-19 22:4x 追記・push 後の Vercel state】`77d23bc`（距離 2・push 22:41:5x JST）＝`dpl_8QmjAxSXu5BdoKzLZ4wAb8aLDBG2` **CANCELED**（created 1789825314428＝22:41:54 JST・skip 経路・閾値 10 と整合）。
+
+## 2026-09-19 22:4x〜23:0x — CSO 指示 22:5x（反応の補完）: x_replies 10 件の reply_post_id を読み取り専用で開き いいね/返信/表示回数を取得 → got_like/got_reply を Airtable に書き込み（全件 0）→ 読み戻し → reactions.json に生カウント → weekly-report.mjs に --reactions を追加して再集計
+- **取得（22:4x〜22:5x JST・Chrome 連携 tab 1 本・読み取りのみ・CSO ログイン済み @vodnavi_jp・`get_page_text`＝表示回数／`find`＝返信・リポスト・いいね・ブックマークの aria-label）**: 10 件すべて **いいね 0 / 返信 0 / リポスト 0**（ブックマーク 0 は find が返した 5 件のみ・他は未取得）。**表示回数**＝9/18 分 FANZAdougaX 7 / PREMIUM_AV 6 / honnaka 8 / kawaii 9 / Madonna 6 / Fitch 20（投稿後約 33 時間）／9/19 分 honnaka 5 / waka_misono 23 / FANZAdougaX 35（約 10.5 時間）／Fitch 20:15 分 4（約 1 時間）＝**合計 123・中央値 7.5**。→ `bundle2/state/20260919-2230/reactions.json`。
+- **Airtable（22:5x）**: `update_records_for_table` × 1（10 件・`got_like` `fldvTCPxXU4ydY7O7` / `got_reply` `fldm3bUI9JpPqGH4u` ＝ `false`）→ `list_records_for_table` 読み戻し 10 件（checkbox false は応答に現れず＝空と同表現・`profile_click_delta` `fldFlFQpFuxNigy2Z` は全件空のまま＝投稿ページから取得不能・未取得）。**表示回数は x_replies に note 欄が無いため Airtable には書かない**（CSO: profile_click_delta に流用しない）。
+- **実装**: `weekly-report.mjs --reactions reactions.json`（取得済み件数・未取得 n・likes / replies 合計・views 合計と中央値・reactions 無しなら列も出ない）＋テスト 1 件 → **`node --test` 56/56**。再集計 → `state/20260919-2230/weekly-report-dry-20260919.md`（10 件・反応 取得済 10・未取得 0・likes 0 / replies 0・views 123）。
+- **台帳**: README（木曜 PDCA 集計の手順 0＝反応の補完・checkbox の限界・priority 3 は手動カウント）／state README／FACT §26-10-2 に CSO 指示 22:5x と初回実測の bullet。
+- **次**: 9/24 朝＝同手順で反応を再取得（累積するため）→ x_replies / x_targets 全フィールド読み戻し → `weekly-report.mjs --reactions --since 2026-09-18 --until 2026-09-24 --md` を報告。明朝 08:00 の抽出は `active-targets.mjs --urls`（窓＝9/19 21:3x 以降）。
+- **距離**: 本コミットは直前 READY `4b1e389` から 4（`70ef495` 1・`77d23bc` 2・`9bc5af3` 3）＝skip 想定。
