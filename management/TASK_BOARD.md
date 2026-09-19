@@ -11072,3 +11072,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **反映**: `generate.mjs`（知識なし＝A・C の 2 案／type 別の再返信間隔＝女優本人 3 日・それ以外 1 日）／`guards.mjs`（R14-B: B は cache 由来の事実必須／R13 暦語＋本文引用免除／R16 日付表記）／`guards.config.json`（R8 min 30・`reply_interval_days`）／`PROMPT.md`／README「日次ループ」／**FACT §26-10 新設（§26-9「本日の対象」を type 別間隔で上書き）**／設計書 §12-7。`node --test` **46/46**。
 - **`52008ab` のデプロイ未作成＝一過性で確定**（07:05 追記のとおり・原因は追わない）。
 - **距離**: 本コミットは直前 READY `10a3c2e` から 5（skip）。
+- 【2026-09-19 07:19 追記・push 後の Vercel state】`4fc5b19`（距離 5・push 07:17:54 JST）＝`dpl_8daMrVwE2fn8gWDR4JCskA1Fa3bg` **CANCELED**（created 1789769876315＝07:17:56 JST・push +2 秒・skip 経路・sitemap 不変）。次の docs コミットは距離 6。
+
+## 2026-09-19 12:0x — 束2 段階② 初回実行（CSO 指示 08:2x）: CTO 抽出 39 件 → 停止判定 4／OK 35 → CSO 指定 3 件を生成（8 案 全通過）／運用則改訂＝CTO の X 読み取り許可・抽出 1 日 2 回・窓は前回抽出以降（FACT §26-10-1）
+- **運用則（CSO 指示 2026-09-19 08:2x・FACT §26-10-1 に登録）**: CTO による X の読み取り（CSO ログイン済みブラウザ・読み取り専用・投稿／返信／フォロー／いいね／ブックマークなし）を許可。本文はツール入力と scratchpad に留め台帳に貼らない。抽出は 1 日 2 回（朝 8 時・21 時前）・窓は「前回抽出以降」。README 手順①を HUMAN → CTO に改訂（旧記述は残置）。
+- **抽出（07:3x〜08:2x JST・Chrome 連携 tab 1 本・読み取りのみ）**: 20 アカウント／該当 39 件（FANZAdougaX 7・Madonna 24・PREMIUM_AV 1・kawaii_pr 1・Fitch 4・honnaka_NN 1・waka_misono 1）／該当なし 13。リンク先 content_id は `al.fanza` の `lurl` と `t.co → rcv.ixd → x.gd` の Location ヘッダで機械取得（`video.dmm` / `tv` / `premium` へは未到達）。FANZAdougaX 7 件は全件キャンペーン一覧宛て＝cid なし。境界例（記録のみ）: @5may_itsukaichi 9/18 07:37 の配信リリース投稿は取得時点で 24 時間 24 分前＝窓外／@saki_seino ZONE イベント・@mio_sakai_ 4 件・@Aizawa_miyu03 写真展は作品・発売への言及なし。
+- **停止判定（`checkStop` を 39 行に適用・API なし・`runs/20260919-am/stopcheck_all.json`）**: 停止 4（FANZAdougaX 2100752031036342529 / Madonna 2100759316206850326 / kawaii_pr 2100918766158950416 / Fitch 2100906434854895695＝いずれも 9/18 の返信済み target_post_url）／OK 35。再返信間隔（メーカー公式・セール告知系 1 日）は 9/18 → 9/19 で全件通過。@waka_misono は `last_reply_at` 空。
+- **生成（CSO 指定 3 件のみ・Madonna 24 件は「古い」で見送り）**: `x_targets` 42 件・`x_replies` 6 件を MCP 読み戻し → Supabase PK 照会 2 件ヒット（hnvr00191 / mngs00081・videoa）→ `generate.mjs` 11:55:47〜11:56:54 JST（セッション中断で朝 8 時から遅延）・claude-opus-5・API 5 回・in 3,591 / out 3,704・**8 案 全通過**（honnaka A/B/C・waka_misono A/B/C・FANZAdougaX A/C＝知識なし）。字数 41〜60。@waka_misono 行は本文末尾に引用元の要点を［引用元 …］で付した（CTO 判断・要否は CSO）。記録 → `management/_metrics/2026-W38/bundle2/runs/20260919-am/`。
+- **次**: HUMAN が案を選んで投稿 → リプ URL → `record.mjs` payload → Airtable MCP 書き込み → 読み戻し。21 時前に再抽出（窓＝08:00 以降）→ 同手順。
+- **距離**: 本コミットは直前 READY `10a3c2e` から 6（skip 想定）。

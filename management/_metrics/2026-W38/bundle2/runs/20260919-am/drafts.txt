@@ -1,0 +1,24 @@
+model=claude-opus-5 dry_run=false today_jst=20260919 counts={"lines":3,"generated":3,"stopped":0} prompt_sha=a55125d116c2
+
+=== @FANZAdougaX (セール告知系) status=generated replyKey=20260919-FANZAdougaX calls=2 in=1048 out=1787
+  A chars=58 weight=115 ok=true attempts=2
+     キャンペーンの開始おめでとうございます。全国8位の新体操選手だった成瀬花奈さんのデビュー作が並ぶのは目が離せません。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=48 weight=96 ok=true attempts=2
+     成瀬花奈さんのデビュー作は、キャンペーンビデオ作品リストの対象に最初から入っている形でしょうか？
+
+=== @honnaka_NN (メーカー公式) status=generated replyKey=20260919-honnaka_NN calls=1 in=831 out=1460
+  A chars=56 weight=105 ok=true attempts=1
+     新作の配信開始おめでとうございます。1対1というかたちのVR作品が9月19日に届いたこと、しっかり確認しました。
+  B chars=60 weight=111 ok=true attempts=1
+     1対1のVR新作は収録92分で、監督はこあら太郎（わ）なのですね。レーベルが本中-VRであることもあわせて確認しました。
+  C chars=46 weight=88 ok=true attempts=1
+     1対1のVR新作は本日の配信開始とのことですが、体験版の公開や続編の予定は決まっていますか。
+
+=== @waka_misono (女優本人) status=generated replyKey=20260919-waka_misono calls=2 in=1712 out=457
+  A chars=59 weight=111 ok=true attempts=1
+     新作情報の解禁おめでとうございます。9月15日の告知にあった特典付きDVDの生写真1枚という内容も気になるところです。
+  B chars=47 weight=81 ok=true attempts=1
+     9月15日に解禁された特典付きDVDの新作、配信は10月16日で収録は130分とのことですね。
+  C chars=41 weight=75 ok=true attempts=2
+     9月15日に解禁された特典付きDVDの生写真1枚は、配信版にも付く形になりますか。

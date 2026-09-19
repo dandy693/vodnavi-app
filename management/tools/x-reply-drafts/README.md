@@ -27,7 +27,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 
 | 手順 | 担当 | 内容 |
 |---|---|---|
-| 1 | HUMAN | Chrome 抽出（21 時前）→ 出力（`@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id`）を Claude Code に貼る |
+| 1 | **CTO**（CSO 指示 2026-09-19 08:2x で HUMAN → CTO へ改訂・FACT §26-10-1） | Chrome 抽出（**1 日 2 回＝朝 8 時・21 時前**・窓は**前回抽出以降**・読み取り専用＝投稿・返信・フォロー・いいね・ブックマークをしない）→ `@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id` を `runs/<日付>/input.txt` に置く（本文は台帳に貼らない）。重複はツール側が `target_post_url` で排除 |
 | 2 | CTO | ツール実行（下の手順 2〜5）→ 案を提示。**停止判定に当たった行はその旨を表示**（同一投稿 1 回のみ／同日同ハンドル 1 件／再返信間隔＝女優本人 3 日・それ以外 1 日） |
 | 3 | HUMAN | 案を選んで投稿 → リプ URL を Claude Code に貼る |
 | 4 | CTO | `record.mjs` の payload を Airtable MCP で書き込み → 読み戻しを報告（手順 7〜8） |
