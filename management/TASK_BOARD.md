@@ -11137,3 +11137,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **未提供**: HUMAN の X Analytics CSV はまだ無い。9/24 朝までに `state/<日付>/own_posts.csv` に置く（列名・TZ は初回に実測して README を確定）。
 - **台帳**: README（比較の手順・列名検出・TZ の扱い）／FACT §26-10-2 に CSO 連絡 2026-09-20 の bullet（①承認 ②列追加 ③いいね 0 は想定内・型と運用不変）。
 - **距離**: 本コミットは直前 READY `4b1e389` から 6（`2c7e6f7` が 5）＝skip 想定。
+- 【2026-09-20 02:1x 追記・push 後の Vercel state】`3491265`（距離 6・push 02:09:0x JST）＝`dpl_3Rech2vcH5UdZszBZYZs4J76GGvx` **CANCELED**（created 1789837746343＝02:09:06 JST・skip 経路・閾値 10 と整合）。**次の docs push は距離 7・8・9 まで skip、10 で fail-open ビルド（§22-8-1-1-f・受容済み）。**
