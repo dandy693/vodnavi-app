@@ -11121,3 +11121,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **台帳**: README（日次ループ 手順 0＝対象リストを毎回組み立てる・手順 1 の担当 CTO・木曜 PDCA 集計の節）／FACT §26-9 に訂正 bullet（非稼働 → 候補・未実査）・**§26-10-2 新設**（実査完了・組み立て条件・priority 3 ルール・9/24 集計・本日実績 4 件）。
 - **明朝 2026-09-20 08:00**: MCP で x_targets を読み戻し → `active-targets.mjs --urls`（固定 20 件リストは使わない）→ 抽出窓＝2026-09-19 21:3x JST 以降 → ツール（改訂ガード）→ 提示（priority 3 は週 2 件まで）→ HUMAN 投稿 → `--texts` 記録。**9/24 朝**: 全フィールドで x_replies / x_targets を取り直し `weekly-report.mjs --since 2026-09-18 --until 2026-09-24 --md` を報告。
 - **距離**: 本コミットは直前 READY `4b1e389` から 2（`70ef495` が 1・CANCELED）＝skip 想定。
+- 【2026-09-19 22:4x 追記・push 後の Vercel state】`77d23bc`（距離 2・push 22:41:5x JST）＝`dpl_8QmjAxSXu5BdoKzLZ4wAb8aLDBG2` **CANCELED**（created 1789825314428＝22:41:54 JST・skip 経路・閾値 10 と整合）。
