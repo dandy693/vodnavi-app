@@ -1,0 +1,77 @@
+{
+ "_source": "Airtable MCP list_records_for_table x_replies 2026-09-19 21:4x JST・全 9 件",
+ "records": [
+  {
+   "id": "rec1fqChrGPQXGNmQ",
+   "fields": {
+    "reply_key": "20260918-FANZAdougaX",
+    "target_post_url": "https://x.com/FANZAdougaX/status/2100752031036342529",
+    "posted_at": "2026-09-18T13:21:33.000Z"
+   }
+  },
+  {
+   "id": "recB0chKStqPLLxSq",
+   "fields": {
+    "reply_key": "20260918-PREMIUM_AV",
+    "target_post_url": "https://x.com/PREMIUM_AV/status/2100600674639847771",
+    "posted_at": "2026-09-18T13:24:04.000Z"
+   }
+  },
+  {
+   "id": "recCIlOizxhxDvuHY",
+   "fields": {
+    "reply_key": "20260918-honnaka_NN",
+    "target_post_url": "https://x.com/honnaka_NN/status/2100600690574029265",
+    "posted_at": "2026-09-18T13:27:02.000Z"
+   }
+  },
+  {
+   "id": "recKkp3j62z30mk2P",
+   "fields": {
+    "reply_key": "20260918-kawaii_pr",
+    "target_post_url": "https://x.com/kawaii_pr/status/2100918766158950416",
+    "posted_at": "2026-09-18T13:25:16.000Z"
+   }
+  },
+  {
+   "id": "recLmwOTEyzli3858",
+   "fields": {
+    "reply_key": "20260918-Madonna_AVinfo",
+    "target_post_url": "https://x.com/Madonna_AVinfo/status/2100759316206850326",
+    "posted_at": "2026-09-18T13:23:19.000Z"
+   }
+  },
+  {
+   "id": "recMKmBxtJ01OrAeb",
+   "fields": {
+    "reply_key": "20260918-Fitch_official",
+    "target_post_url": "https://x.com/Fitch_official/status/2100906434854895695",
+    "posted_at": "2026-09-18T13:26:03.000Z"
+   }
+  },
+  {
+   "id": "recMWf5qzahKX7iti",
+   "fields": {
+    "reply_key": "20260919-honnaka_NN",
+    "target_post_url": "https://x.com/honnaka_NN/status/2100967587974946947",
+    "posted_at": "2026-09-19T03:24:46.108Z"
+   }
+  },
+  {
+   "id": "receBnEZCXDjgMI29",
+   "fields": {
+    "reply_key": "20260919-waka_misono",
+    "target_post_url": "https://x.com/waka_misono/status/2100886634472579127",
+    "posted_at": "2026-09-19T03:31:09.852Z"
+   }
+  },
+  {
+   "id": "recgaV8o604O21uWk",
+   "fields": {
+    "reply_key": "20260919-FANZAdougaX",
+    "target_post_url": "https://x.com/FANZAdougaX/status/2101038688033771558",
+    "posted_at": "2026-09-19T03:30:22.865Z"
+   }
+  }
+ ]
+}

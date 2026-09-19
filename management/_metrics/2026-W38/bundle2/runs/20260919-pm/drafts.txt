@@ -1,0 +1,24 @@
+model=claude-opus-5 dry_run=false today_jst=20260919 counts={"lines":3,"generated":3,"stopped":0} prompt_sha=ddf6ef6da6ed
+
+=== @DMM10sale (セール告知系) status=generated replyKey=20260919-DMM10sale calls=1 in=412 out=1365
+  A chars=50 weight=97 ok=true attempts=1
+     本日から300円に切り替わったのですね。気になっていた作品を落ち着いて見直すいい機会になりそうです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=45 weight=87 ok=true attempts=1
+     本日300円に切り替わったものは、期間や対象がどこまでなのか分かるタイミングはありますか？
+
+=== @Fitch_official (メーカー公式) status=generated replyKey=20260919-Fitch_official calls=1 in=899 out=118
+  A chars=45 weight=84 ok=true attempts=1
+     50%OFFのお知らせありがとうございます。秋の企画に合わせた一本として気になっています。
+  B chars=40 weight=63 ok=true attempts=1
+     50%OFF対象のこの作品、収録150分で配信は2023年12月15日でしたね。
+  C chars=35 weight=63 ok=true attempts=1
+     50%OFFは今回どの期間まで続きますか。対象は1作品だけでしょうか。
+
+=== @Fitch_official (メーカー公式) status=generated replyKey=20260919-Fitch_official calls=2 in=1757 out=539
+  A chars=46 weight=86 ok=true attempts=1
+     50%OFFのお知らせありがとうございます。秋の企画として動き出しているのが伝わってきます。
+  B chars=43 weight=70 ok=true attempts=1
+     50%OFF対象の作品は収録160分で、2022年9月16日配信のシリーズ作品ですね。
+  C chars=48 weight=90 ok=true attempts=2
+     50%OFFの対象は今回の作品だけでしょうか、それとも同じ期間で他のタイトルも対象になりますか？

@@ -11098,3 +11098,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **X 実在（§13-5・直接 URL・12:34 JST）**: 3 件とも HTTP 200（100,746〜126,530 B）／対照の無効 ID 404（34,749 B）。本文の一致は SPA シェルのため未検証（投稿前の HUMAN 目視が正）。
 - **段階② の型別実績（累計 9 件）**: 9/18 手動 A 2・B 1・C 3／9/19 ツール A 2・B 1。
 - **次**: 21 時前に再抽出（窓＝08:00 以降）→ 同手順。
+- 【2026-09-19 12:3x 追記・push 後の Vercel state】`017a506`（距離 8・push 12:35:3x JST）＝`dpl_29jifuZBhPvswLrte29sTjGnkoB9` **CANCELED**（created 1789788939067＝12:35:39 JST・skip 経路・想定どおり）。
+
+## 2026-09-19 21:4x — 束2 段階② 2 回目（21 時前・窓＝08:00 以降）: CTO 抽出 9 件／該当なし 17 → 停止 4（FANZAdougaX 同日 2 件目）→ 3 件を生成（改訂後ガード・8 案 全通過）
+- **抽出（21:10〜21:3x JST・Chrome 連携 tab 1 本・読み取りのみ・CSO ログイン済み @vodnavi_jp）**: 20 アカウント／該当 9 件（FANZAdougaX 4＝30%OFF 3 件＋50%OFF 作品リスト 1 件・DMM10sale 1＝MGS動画 300円の引用・Fitch 4＝#肉欲の秋 50%OFF 2 件＋一覧カード 2 件）／該当なし 17。リンク先 content_id: Fitch `jufe00525` / `juny00075`（al.fanza lurl）／FANZAdougaX 4 件は t.co→rcv.ixd→x.gd の Location でキャンペーン一覧（cid なし）。**境界（記録のみ）**: @PREMIUM_AV「#PREMIUM週末5本」小松空 5 作品厳選シリーズ 4 件（prwf00015 / 00012 / 00011 / 00010・5 種に該当せず）／@saki_seino「今日はイベントありがとう」／@Aizawa_miyu03 写真展 残り 2 日／@nao_satsuki・@karin_kitaoka_・@mio_sakai_ は私生活。**Madonna は本日 10:3x の新規告知なし（最新 9/18 10:59）。**
+- **停止判定**: FANZAdougaX 4 件＝停止（同日同ハンドル 2 件目・`20260919-FANZAdougaX` が既存）／DMM10sale・Fitch 4 件＝OK（Fitch は 9/18 返信から 1 日）。**生成対象は 3 件**（DMM10sale・Fitch jufe00525・Fitch juny00075。Fitch の一覧カード 2 件は同一キャンペーンの再掲＝CTO 判断で外した）。
+- **生成**: Supabase PK 2 件ヒット（jufe00525 / juny00075・campaign こだわりのフェラ50％OFF 〜9/21 09:59:59）→ `generate.mjs` 21:39:43〜21:40:19 JST・claude-opus-5・API 4 回・**8 案 全通過**（DMM10sale A/C・Fitch A/B/C × 2）。再生成 1 回（Fitch juny C 初回 R8 24 字）。R17/R18 の発火なし（女優本人の対象なし・「体験版」なし）。**Fitch 2 件は同一 reply_key（20260919-Fitch_official）＝記録できるのは 1 件。** 記録 → `management/_metrics/2026-W38/bundle2/runs/20260919-pm/`。
+- **次**: HUMAN が投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。翌朝 8 時に再抽出（窓＝21:3x 以降）。
+- **距離**: 本コミットは直前 READY `10a3c2e` から 9（skip 想定・次の docs push は距離 10＝fail-open ビルド）。

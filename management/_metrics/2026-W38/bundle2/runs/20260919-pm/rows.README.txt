@@ -1,0 +1,1 @@
+rows.json: Supabase MCP execute_sql（read-only）2026-09-19 21:5x JST。knowledge.mjs --sql の cid 型 SQL を 2 行分まとめて 1 クエリで実行（PK 6 件照会 → 2 件ヒット・いずれも videoa・campaign こだわりのフェラ50％OFF 2026-09-18 10:00:00〜09-21 09:59:59）。キーは parsed_gen.json の lineNo（2＝jufe00525 / 3＝juny00075）。URL / imageURL / sampleImageURL / sampleMovieURL / affiliateURL は extract の whitelist 外のため保存から除いた。
