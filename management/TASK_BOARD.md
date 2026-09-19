@@ -11089,3 +11089,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **回帰（午前の 8 案・API なし）**: FANZAdougaX A/C 通過／honnaka A＝R12・B＝R12＋R14 上限（3 つ）・C 通過／waka_misono A/B/C＝R17。指摘の癖は機械検査で捕捉できる形。午前の drafts.json は改訂前の生成物として据え置き（HUMAN が手直しして投稿）。
 - **次**: HUMAN の投稿本文 3 件＋リプ URL を受領 → `posted.json` → `record.mjs --create --texts` → MCP 書き込み → `--posted` → 読み戻し。21 時前に再抽出（窓＝08:00 以降）。
 - **距離**: 本コミットは直前 READY `10a3c2e` から 7（skip 想定）。
+- 【2026-09-19 12:2x 追記・push 後の Vercel state】`ed8fb98`（距離 7・push 12:17:1x JST）＝`dpl_6pfaeRKNB9Zqm8PbxyGmjiSN68ko` **CANCELED**（created 1789787836160＝12:17:16 JST・skip 経路・想定どおり）。
+
+## 2026-09-19 12:35 — 束2 段階② 初回 3 件の記録（手順 7〜8）: x_replies 3 件作成・reply_post_id / posted_at・x_targets.last_reply_at 更新・読み戻し一致・X 直接 URL 200×3（対照 404）
+- **HUMAN 投稿（案の型・リプ ID・snowflake 復元 JST）**: honnaka_NN=B `2101150478033936813` 12:24:46 ／ FANZAdougaX=A `2101151890495172961` 12:30:22 ／ waka_misono=A（手直し・「美園和花さん、」始まり・配信 10月16日） `2101152087572959295` 12:31:09。記録は投稿した本文を正とする（`posted.json`・`record.mjs --create --texts`・手直しは waka_misono のみ＝`text_overridden_for`）。
+- **書き込み（Airtable MCP）**: `create_records_for_table` x_replies 3 件（12:33:50 JST・`recgaV8o604O21uWk` / `recMWf5qzahKX7iti` / `receBnEZCXDjgMI29`）→ `update_records_for_table` x_replies（reply_post_id / posted_at）× 3・x_targets（last_reply_at）× 3。payload は禁止トークン検査（URL/af_id/vodnavi）通過。
+- **読み戻し（別読み・§10）**: x_replies `20260919-*` 3 件が payload と全項目一致（reply_key / target / target_post_url / reply_text / draft_used / reply_post_id / posted_at）。x_targets 3 件の `last_reply_at` が posted_at と一致・`status` 稼働・`reply_restriction` なし 不変。x_replies は計 9 件（9/18 6 ＋ 9/19 3）。
+- **X 実在（§13-5・直接 URL・12:34 JST）**: 3 件とも HTTP 200（100,746〜126,530 B）／対照の無効 ID 404（34,749 B）。本文の一致は SPA シェルのため未検証（投稿前の HUMAN 目視が正）。
+- **段階② の型別実績（累計 9 件）**: 9/18 手動 A 2・B 1・C 3／9/19 ツール A 2・B 1。
+- **次**: 21 時前に再抽出（窓＝08:00 以降）→ 同手順。
