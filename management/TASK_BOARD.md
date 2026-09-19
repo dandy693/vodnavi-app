@@ -11130,3 +11130,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **台帳**: README（木曜 PDCA 集計の手順 0＝反応の補完・checkbox の限界・priority 3 は手動カウント）／state README／FACT §26-10-2 に CSO 指示 22:5x と初回実測の bullet。
 - **次**: 9/24 朝＝同手順で反応を再取得（累積するため）→ x_replies / x_targets 全フィールド読み戻し → `weekly-report.mjs --reactions --since 2026-09-18 --until 2026-09-24 --md` を報告。明朝 08:00 の抽出は `active-targets.mjs --urls`（窓＝9/19 21:3x 以降）。
 - **距離**: 本コミットは直前 READY `4b1e389` から 4（`70ef495` 1・`77d23bc` 2・`9bc5af3` 3）＝skip 想定。
+- 【2026-09-19 23:0x 追記・push 後の Vercel state】`7eb12db`（距離 4・push 23:00:1x JST）＝`dpl_7bghPtb79zAvknzEKaEmuim1S7Kh` **CANCELED**（created 1789826412853＝23:00:12 JST・skip 経路・閾値 10 と整合）。
