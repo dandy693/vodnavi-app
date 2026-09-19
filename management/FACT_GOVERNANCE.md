@@ -4380,6 +4380,7 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **Airtable**: `got_like`／`got_reply` を 10 件に `false`（取得済み・0）で書き込み → 読み戻し 10 件。**`profile_click_delta` は投稿ページから取得できないため空のまま（未取得）**。**表示回数は `x_replies` に note 欄が無いため Airtable には書かず `reactions.json` のみ**（CSO 指示: `profile_click_delta` に流用しない）。
   - **【併記・構造】Airtable の `got_like`／`got_reply` はチェックボックスで、`false` は空と同じ表現になる＝「取得済み・0」と「未取得」を Airtable 側では区別できない。** 区別は `reactions.json` の有無で行い、`weekly-report.mjs --reactions` が「反応 取得済（未取得 n）」「likes / replies 合計」「views 合計（中央値）」の列を出す（`node --test` 56/56）。
   - **【厳守】反応は累積するため、9/24 朝の集計時に同じ手順で再取得してから集計する。** 本記録の値は取得時点（投稿後 1〜33 時間）のスナップショット。
+- **【CSO 連絡 2026-09-20】①反応の補完手順（`reactions.json` で取得済／未取得を区別）を承認。②木曜の `weekly-report` に「リプの表示回数中央値」と「同期間の自投稿インプレッション中央値（X Analytics CSV・HUMAN 提供）」を並べる列を追加＝`--own-posts own_posts.csv`（x_replies の `reply_post_id` と一致する行＝リプ自身は自投稿から除外・列名は tolerant 検出・TZ 無しは JST）。**比較は観測のみ。判定基準（2026-10-12・自投稿の中央値 ≥ 50・§26-2）は変えない。** ③**2 日分・いいね 0 は想定内として記録。型や運用の変更はしない。** `node --test` 58/58。**CSV の列名と TZ は HUMAN の初回提供時に実測して確定する（現時点は未提供）。**
 
 ---
 

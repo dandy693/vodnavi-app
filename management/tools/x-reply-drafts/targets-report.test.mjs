@@ -104,3 +104,49 @@ test("aggregate --reactions: 取得済み件数・likes/replies/views を reacti
   const md0 = toMarkdown(aggregate({ replies: REPLIES, targets: TARGETS }));
   assert.ok(!md0.includes("反応 取得済"));
 });
+
+test("own-posts: X Analytics CSV（旧形式 +0000）を tolerant に読み、リプ自身を除外し、期間内の中央値を出す（観測のみ）", async () => {
+  const { parseCsv, parseTimeJst, normalizeOwnPosts, ownPostsStats } = await import("./weekly-report.mjs");
+  // 旧 Twitter Analytics 形式（UTC・+0000）。2 行目は本文に改行とカンマを含む
+  const csv = '\uFEFF"Tweet id","Tweet permalink","Tweet text","time","impressions","engagements"\n' +
+    '"9001","https://x.com/vodnavi_jp/status/9001","本文, カンマ\n改行あり","2026-09-18 12:00 +0000","120","3"\n' +
+    '"9002","https://x.com/vodnavi_jp/status/9002","本文2","2026-09-19 12:00 +0000","40","1"\n' +
+    '"1","https://x.com/vodnavi_jp/status/1","リプ自身","2026-09-18 13:21 +0000","7","0"\n' +
+    '"9003","https://x.com/vodnavi_jp/status/9003","期間外","2026-09-25 12:00 +0000","999","9"\n' +
+    '"9004","https://x.com/vodnavi_jp/status/9004","imp 空","2026-09-19 13:00 +0000","",""\n';
+  assert.equal(parseCsv(csv).length, 6);
+  assert.equal(parseTimeJst("2026-09-18 12:00 +0000").toISOString(), "2026-09-18T12:00:00.000Z");
+  assert.equal(parseTimeJst("2026-09-18 21:00").toISOString(), "2026-09-18T12:00:00.000Z", "TZ 無しは JST");
+  assert.equal(parseTimeJst("2026/9/18 21:00").toISOString(), "2026-09-18T12:00:00.000Z");
+  assert.equal(parseTimeJst("no date"), null);
+  const norm = normalizeOwnPosts(csv);
+  assert.deepEqual(norm.columns, { id: "Tweet id", time: "time", impressions: "impressions" });
+  const st = ownPostsStats(norm, { since: "2026-09-18", until: "2026-09-24", excludeIds: new Set(["1"]) });
+  assert.equal(st.excluded_replies, 1);
+  assert.equal(st.n, 2, "9001 / 9002（期間外 9003・imp 空 9004 は除く）");
+  assert.equal(st.no_impressions, 1);
+  assert.equal(st.impressions_median, 80);
+  assert.equal(st.impressions_sum, 160);
+  // aggregate に通すと比較表が出る（判定は書かない）
+  const agg = aggregate({ replies: REPLIES, targets: TARGETS, ownPosts: csv, since: "2026-09-18", until: "2026-09-24" });
+  assert.equal(agg.own_posts.n, 2);
+  assert.equal(agg.own_posts.excluded_replies, 1, "REPLIES の reply_post_id=1 が除外される");
+  const md = toMarkdown(agg);
+  assert.ok(md.includes("| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 1 件を除外） | 2 | 80 | 160 |"), md);
+  assert.ok(md.includes("観測のみ"));
+  assert.ok(!/推奨|判定:/.test(md));
+});
+
+test("own-posts: 新形式（Post id / Date・TZ 無し＝JST）と JSON 形式", async () => {
+  const { normalizeOwnPosts, ownPostsStats } = await import("./weekly-report.mjs");
+  const csv = "Date,Post id,Post text,Impressions,Likes\r\n2026-09-18 21:00,9001,本文,\"1,234\",2\r\n2026-09-19 22:30,9002,本文2,50,0\r\n";
+  const norm = normalizeOwnPosts(csv);
+  assert.deepEqual(norm.columns, { id: "Post id", time: "Date", impressions: "Impressions" });
+  assert.equal(norm.posts[0].impressions, 1234, "桁区切りカンマを除去");
+  const st = ownPostsStats(norm, { since: "2026-09-19", until: "2026-09-19" });
+  assert.equal(st.n, 1);
+  assert.equal(st.impressions_median, 50);
+  const j = ownPostsStats(normalizeOwnPosts([{ id: 9001, time: "2026-09-18T21:00:00+09:00", impressions: 10 }, { id: 9002, time: "2026-09-18T22:00:00+09:00", impressions: 30 }]), {});
+  assert.equal(j.n, 2);
+  assert.equal(j.impressions_median, 20);
+});

@@ -11131,3 +11131,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **次**: 9/24 朝＝同手順で反応を再取得（累積するため）→ x_replies / x_targets 全フィールド読み戻し → `weekly-report.mjs --reactions --since 2026-09-18 --until 2026-09-24 --md` を報告。明朝 08:00 の抽出は `active-targets.mjs --urls`（窓＝9/19 21:3x 以降）。
 - **距離**: 本コミットは直前 READY `4b1e389` から 4（`70ef495` 1・`77d23bc` 2・`9bc5af3` 3）＝skip 想定。
 - 【2026-09-19 23:0x 追記・push 後の Vercel state】`7eb12db`（距離 4・push 23:00:1x JST）＝`dpl_7bghPtb79zAvknzEKaEmuim1S7Kh` **CANCELED**（created 1789826412853＝23:00:12 JST・skip 経路・閾値 10 と整合）。
+
+## 2026-09-20 02:0x〜02:2x — CSO 連絡 2026-09-20 を反映: 反応補完手順（reactions.json）承認／weekly-report に「リプ表示回数中央値 vs 同期間の自投稿インプレッション中央値（X Analytics CSV・HUMAN 提供）」の比較を追加（観測のみ・判定基準不変）／2 日分・いいね 0 は想定内として記録・型と運用は変更しない
+- **実装**: `weekly-report.mjs --own-posts own_posts.csv|.json`——`parseCsv`（BOM / CRLF / 引用符内の改行・カンマ）・`parseTimeJst`（`+0000` 明記は UTC・TZ 無しは JST・`YYYY/M/D` 可）・`normalizeOwnPosts`（列名 tolerant 検出＝id `Tweet id`/`Post id`・日時 `time`/`Date`・`impressions`/`Impressions`）・`ownPostsStats`（期間＝JST 暦日・x_replies の `reply_post_id` と一致する行を除外・インプレッション空／日時不能の件数を併記）。Markdown 末尾に比較表「リプの表示回数（取得済みのみ）n / 中央値 / 合計」「自投稿のインプレッション（リプ自身 n 件を除外）n / 中央値 / 合計」と見出しに「観測のみ・判定基準 10/12＝自投稿の中央値 ≥ 50 は変えない」を固定。テスト 2 件追加 → **`node --test` 58/58**。CLI 経路は scratchpad のサンプル CSV で確認（サンプルはコミットしない）。
+- **未提供**: HUMAN の X Analytics CSV はまだ無い。9/24 朝までに `state/<日付>/own_posts.csv` に置く（列名・TZ は初回に実測して README を確定）。
+- **台帳**: README（比較の手順・列名検出・TZ の扱い）／FACT §26-10-2 に CSO 連絡 2026-09-20 の bullet（①承認 ②列追加 ③いいね 0 は想定内・型と運用不変）。
+- **距離**: 本コミットは直前 READY `4b1e389` から 6（`2c7e6f7` が 5）＝skip 想定。
