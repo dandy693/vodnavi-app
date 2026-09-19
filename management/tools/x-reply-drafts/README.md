@@ -55,7 +55,8 @@ node --test management/tools/x-reply-drafts/*.test.mjs
    - 行ごとに A / B / C の 3 案・ガード結果・`reply_key`・停止理由を出す。**停止（対象外／同日 2 件目／3 日以内／記録済み）の行は API を呼ばない**（裁定 G）。
    - ガード NG の案だけ最大 2 回再生成。それでも NG なら「一部生成不能」。
 6. **HUMAN**: 案を選んで投稿する（投稿はツールの範囲外）。
-7. 記録 payload: `node management/tools/x-reply-drafts/record.mjs --create drafts.json --pick FANZAdougaX=C --pick honnaka_NN=A --out payload.json`
+7. 記録 payload: `node management/tools/x-reply-drafts/record.mjs --create drafts.json --pick FANZAdougaX=C --pick honnaka_NN=A [--texts posted.json] --out payload.json`
+   - **HUMAN が文面を手直しして投稿した場合、記録は投稿した本文を正とする**（CSO判定 2026-09-19 12:1x）: `posted.json` に `{"<handle>": "投稿した本文"}` を置いて `--texts` で渡す（`draft_used` は選んだ型のまま・payload の `text_overridden_for` に手直しした handle が出る）。
    → **Claude Code が Airtable MCP `create_records_for_table`（`x_replies`）で書き込み → `reply_key` で読み戻し（§10）**。payload は書き込み前に URL/@/af_id/vodnavi の混入 0 を機械検査済み（`target_post_url` を除く）。
 8. 投稿後、HUMAN がリプ URL を貼る → `node management/tools/x-reply-drafts/record.mjs --posted --record <x_replies の rec> --target <x_targets の rec> --url https://x.com/vodnavi_jp/status/…`
    → `reply_post_id` / `posted_at`（snowflake 復元）/ `x_targets.last_reply_at` の update payload → **MCP `update_records_for_table` × 2 → 読み戻し**。
@@ -72,11 +73,13 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 | R6 | 容姿・露骨語 | `guards.config.json` `R6_appearance_explicit` |
 | R7 | 女優名には「さん」／メーカー・レーベル名に「さん」は NG | `ctx.names`（作品知識の `actress[]`・女優本人の `display_name`）／`ctx.orgNames`（それ以外の `display_name`・maker/label） |
 | R8 | 字数（既定 **30〜140**・`R8_chars`・CSO裁定 2026-09-19 で min 80 → 40 → 30）・X 重み ≤280・**文数 ≤2**（`R8_sentences_max`） | `guards.config.json` |
-| R12 | 定型句（追う側としては／予定が立てやすい／助かります など） | `guards.config.json` `R12_stock_phrases` |
+| R12 | 定型句（追う側としては／予定が立てやすい／助かります など）＋**報告書調の締め（確認しました／把握しました／届いた／受け止め・CSO判定 2026-09-19 12:1x）** | `guards.config.json` `R12_stock_phrases` |
 | R13 | 根拠なし断定語（恒例／毎回／一定 など）＋暦の推定語（三連休／連休／週末／祝日／休日）。本文にあれば引用として免除 | `guards.config.json` `R13_unfounded_assertions` |
-| R14 | 具体性: 案に相手投稿本文の具体（数値の完全一致・語の含有）が 1 つ以上。**B 型は作品知識が無ければ NG・あれば cache 由来の事実を 1 つ含む** | `guards.config.json` `R14_concreteness` |
+| R14 | 具体性: 案に相手投稿本文の具体（数値の完全一致・語の含有）が 1 つ以上。**B 型は作品知識が無ければ NG・あれば cache 由来の事実を 1 つ含む・最大 2 つまで**（`B_max_knowledge_facts`・種別ごとに数える・配信日の表記ゆれは 1 つ・出演者名は数えない・優先 収録時間 > 配信日 > シリーズ > その他・CSO判定 2026-09-19 12:1x） | `guards.config.json` `R14_concreteness` |
 | R15 | 告知の形式・並べ方・出し方への言及 | `guards.config.json` `R15_meta_mentions` |
 | R16 | 日付の斜線表記（`09/18` `9/18`）＝「9月18日」に正規化する（CTO 追加） | `guards.config.json` `R16_date_format` |
+| R17 | 女優本人向けの案は「<表示名>さん、」で始める（CSO判定 2026-09-19 12:1x の PROMPT 規則の機械検査・CTO 追加） | `guards.config.json` `R17_actress_greeting` |
+| R18 | 語置換（ガードではない）: 「体験版」→「サンプル動画」を生成直後に自動置換し `drafts.json` の `replacements` に記録（CSO判定 2026-09-19 12:1x） | `guards.config.json` `R18_word_replacements` |
 | R9 | 数値の出典（B は全数値／全案は「数値＋円・%・割・OFF」）— 出典＝相手投稿本文＋作品知識 JSON | コード（旧 R10 を統合・裁定 D） |
 | R11 | 虚偽の体験主張 | `guards.config.json` `R11_false_experience` |
 

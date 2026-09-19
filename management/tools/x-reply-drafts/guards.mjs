@@ -8,9 +8,12 @@
 //   body?: string,       // 相手投稿本文。R5 のヒット語が本文にそのまま含まれていれば免除／R14 の具体トークン源（CSO裁定 2026-09-19）
 //   orgNames?: string[], // メーカー・レーベル名（「さん」を付けたら R7 NG・CSO判定 2026-09-19）
 //   hasMultiPostEvidence?: boolean, // 複数投稿の根拠がある入力（R13 免除・config で当面無効）
-//   knowledge?: object,  // 作品知識（knowledge.mjs --extract の 1 件）。B 型はこれが無いと生成不可・あれば事実を 1 つ含む（R14-B）
+//   knowledge?: object,  // 作品知識（knowledge.mjs --extract の 1 件）。B 型はこれが無いと生成不可・あれば事実を 1〜B_max_knowledge_facts 個含む（R14-B）
+//   targetType?: string, // 対象アカウントの type（"女優本人" のとき R17＝「<displayName>さん、」で始める・CSO判定 2026-09-19 12:1x）
+//   displayName?: string,// 対象アカウントの表示名（R17）
 //   config?: object,     // 省略時は guards.config.json を読む
 // }
+// 語置換（R18・「体験版」→「サンプル動画」）はガードではなく applyReplacements(text, cfg) で生成直後に行う。
 // 戻り値 { ok, failures: [{ rule, detail }], metrics: { chars, weight } }
 
 import fs from "node:fs";
@@ -130,29 +133,70 @@ export function hasConcreteFromBody(draft, body, opt = {}, exclude = []) {
   return { ok: false, hit: null };
 }
 
-/** B 型の R14 用: 作品知識から「cache 由来の事実」を候補として取り出す（数値は完全一致・語は含有）。R6 語を含むジャンル名は除く。 */
-export function knowledgeFacts(k, exclude = []) {
+/**
+ * B 型の R14 用: 作品知識から「cache 由来の事実」を種別ごとに取り出す（数値は完全一致・語は含有）。R6 語を含むジャンル名は除く。
+ * 返り値は [{ cat, key, values }]。配信日は表記ゆれ（9月19日／2026年9月19日／2026-09-19）を 1 つの事実として束ねる。
+ */
+export function knowledgeFactGroups(k, exclude = []) {
   if (!k || typeof k !== "object") return [];
   const stems = excludeStems(exclude);
-  const out = [];
-  const addWord = (w) => {
-    if (typeof w !== "string" || !w.trim()) return;
-    if (stems.some((e) => w.includes(e))) return;
-    out.push(w.trim());
-  };
-  if (k.volume != null && String(k.volume).match(/\d+/)) out.push(String(k.volume).match(/\d+/)[0]);
+  const groups = [];
+  const word = (w) => (typeof w === "string" && w.trim() && !stems.some((e) => w.includes(e)) ? w.trim() : null);
+  if (k.volume != null && String(k.volume).match(/\d+/)) groups.push({ cat: "volume", key: "volume", values: [String(k.volume).match(/\d+/)[0]] });
   if (typeof k.date === "string") {
     const m = k.date.match(/(\d{4})-(\d{2})-(\d{2})/);
-    if (m) {
-      out.push(`${+m[2]}月${+m[3]}日`);
-      out.push(`${m[1]}年${+m[2]}月${+m[3]}日`);
-      out.push(m[1] + "-" + m[2] + "-" + m[3]);
+    if (m) groups.push({ cat: "date", key: "date", values: [`${+m[2]}月${+m[3]}日`, `${m[1]}年${+m[2]}月${+m[3]}日`, m[1] + "-" + m[2] + "-" + m[3]] });
+  }
+  for (const key of ["series", "genre", "maker", "label", "director", "actress"]) {
+    for (const w of k[key] ?? []) {
+      const v = word(w);
+      if (v) groups.push({ cat: key, key: `${key}:${v}`, values: [v] });
     }
   }
-  for (const key of ["series", "genre", "maker", "label", "director", "actress"]) for (const w of k[key] ?? []) addWord(w);
-  if (k.review?.count != null) out.push(String(k.review.count));
-  if (typeof k.title === "string" && k.title.trim()) addWord(k.title.trim());
-  return Array.from(new Set(out));
+  if (k.review?.count != null) groups.push({ cat: "review", key: "review", values: [String(k.review.count)] });
+  if (typeof k.title === "string" && word(k.title)) groups.push({ cat: "title", key: "title", values: [k.title.trim()] });
+  return groups;
+}
+
+/** 互換: 事実候補のフラットな配列（従来の knowledgeFacts）。 */
+export function knowledgeFacts(k, exclude = []) {
+  return Array.from(new Set(knowledgeFactGroups(k, exclude).flatMap((g) => g.values)));
+}
+
+/** 案に含まれる cache 由来の事実（種別ごと・配信日の表記ゆれは 1 つ）。 */
+export function knowledgeFactHits(text, k, exclude = []) {
+  const norm = normalizeNumbers(text);
+  const nums = new Set(extractNumbers(text));
+  const hits = [];
+  const seen = new Set(); // 同じ語が series と label の両方にある（例: 本中-VR）ときは 1 つに数える
+  for (const g of knowledgeFactGroups(k, exclude)) {
+    const v = g.values.find((f) => (/^\d+$/.test(f) ? nums.has(f) : norm.includes(f)));
+    if (v && !seen.has(v)) {
+      seen.add(v);
+      hits.push({ cat: g.cat, key: g.key, value: v });
+    }
+  }
+  // 短い語が長い語に含まれる（例: maker「本中」⊂ label「本中-VR」）ときは長い語だけを数える
+  return hits.filter((h) => !hits.some((o) => o !== h && o.value.length > h.value.length && o.value.includes(h.value)));
+}
+
+/**
+ * R18: 語置換（CSO判定 2026-09-19 12:1x「体験版」→「サンプル動画」）。ガードではなく生成直後の自動置換。
+ * 返り値 { text, applied: [{from, to, count}] }。
+ */
+export function applyReplacements(text, cfg) {
+  const table = cfg?.R18_word_replacements ?? {};
+  let out = String(text ?? "");
+  const applied = [];
+  for (const [from, to] of Object.entries(table)) {
+    if (!from || typeof to !== "string") continue;
+    const count = out.split(from).length - 1;
+    if (count > 0) {
+      out = out.split(from).join(to);
+      applied.push({ from, to, count });
+    }
+  }
+  return { text: out, applied };
 }
 
 function escapeRe(s) {
@@ -270,15 +314,25 @@ export function guardReply(text, ctx = {}) {
     }
   }
   // R14-B: B 型は cache 由来の事実を 1 つ含む（知識ありモードのみ生成・CSO判定 2026-09-19 dry-run #3）
+  //        かつ最大 B_max_knowledge_facts 個まで（CSO判定 2026-09-19 12:1x・監督名・レーベル名の羅列はデータの読み上げ）。
+  //        上限の数え方＝種別ごと（配信日の表記ゆれは 1 つ）・出演者名は「名前＋さん」の呼びかけに使うため数えない。
   if (cfg.R14_concreteness?.B_requires_knowledge_fact && (ctx.type ?? "B") === "B") {
     if (!ctx.knowledge) push("R14", "B 型は作品知識（cache ヒット）があるときだけ生成する（知識なしモードでは A・C のみ）");
     else {
-      const facts = knowledgeFacts(ctx.knowledge, cfg.R6_appearance_explicit ?? []);
-      const norm = normalizeNumbers(t);
-      const nums = new Set(extractNumbers(t));
-      const hit = facts.find((f) => (/^\d+$/.test(f) ? nums.has(f) : norm.includes(f)));
-      if (!hit) push("R14", `B 型に cache 由来の事実（収録時間・配信日・シリーズ・ジャンル・メーカー・出演者など）が無い（候補: ${facts.slice(0, 8).join("、") || "なし"}）`);
+      const hits = knowledgeFactHits(t, ctx.knowledge, cfg.R6_appearance_explicit ?? []);
+      if (!hits.length) {
+        const facts = knowledgeFacts(ctx.knowledge, cfg.R6_appearance_explicit ?? []);
+        push("R14", `B 型に cache 由来の事実（収録時間・配信日・シリーズ・ジャンル・メーカー・出演者など）が無い（候補: ${facts.slice(0, 8).join("、") || "なし"}）`);
+      }
+      const max = cfg.R14_concreteness.B_max_knowledge_facts;
+      const counted = hits.filter((h) => h.cat !== "actress");
+      if (max != null && counted.length > max) push("R14", `B 型の cache 由来の事実が ${counted.length} 個（最大 ${max}・優先: 収録時間 > 配信日 > シリーズ > その他）: ${counted.map((h) => h.value).join("、")}`);
     }
+  }
+  // R17 女優本人向けの案は「<表示名>さん、」で始める（CSO判定 2026-09-19 12:1x の PROMPT 規則の機械検査・CTO 追加）
+  if (cfg.R17_actress_greeting && ctx.targetType === "女優本人" && ctx.displayName) {
+    const re = new RegExp("^" + escapeRe(String(ctx.displayName).trim()) + "さん[、，]");
+    if (!re.test(t)) push("R17", `女優本人向けの案は「${String(ctx.displayName).trim()}さん、」で始める`);
   }
   // R16 日付表記（「09/18」「9/18」を写さず「9月18日」に正規化する・CSO判定 2026-09-19 の PROMPT 規則の機械検査・CTO 追加）
   if (cfg.R16_date_format) {

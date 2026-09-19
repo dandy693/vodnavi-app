@@ -4,7 +4,8 @@
 // Airtable PAT は発行しない（裁定 E）。本ファイルはネットワークに触れない。
 //
 // CLI:
-//   node record.mjs --create drafts.json --pick FANZAdougaX=C [--pick honnaka_NN=A ...] [--out payload.json]
+//   node record.mjs --create drafts.json --pick FANZAdougaX=C [--pick honnaka_NN=A ...] [--texts posted.json] [--out payload.json]
+//     --texts: { "<handle>": "実際に投稿した本文" }。HUMAN が文面を手直しして投稿した場合、記録は投稿した本文を正とする（CSO判定 2026-09-19 12:1x）。draft_used は --pick の型のまま。
 //   node record.mjs --posted --record recXXX --target recYYY --url https://x.com/vodnavi_jp/status/NNN [--out payload.json]
 //   node record.mjs --snowflake <id>
 
@@ -110,22 +111,28 @@ if (isMain(import.meta.url)) {
     const drafts = JSON.parse(fs.readFileSync(a.create, "utf8"));
     if (drafts.dry_run) throw new Error("dry-run の出力（停止判定を無効化して生成したもの）は記録 payload にしない");
     const picks = Object.fromEntries(a.picks.map((p) => p.split("=")));
+    // 投稿した本文を正とする（HUMAN が手直しした場合）。無いハンドルは案の本文をそのまま使う。
+    const texts = a.texts ? JSON.parse(fs.readFileSync(a.texts, "utf8")) : {};
     const records = [];
+    const overridden = [];
     for (const item of drafts.items ?? []) {
       const pick = picks[item.handle];
       if (!pick) continue;
       if (item.status !== "generated") throw new Error(`${item.handle} は生成済みではない（status=${item.status}）`);
       const d = item.drafts?.[pick];
       if (!d || !d.guard?.ok) throw new Error(`${item.handle} の ${pick} 案はガード未通過または存在しない`);
-      const p = buildCreatePayload({ replyKey: item.replyKey, targetRecordId: item.target?.id, targetPostUrl: item.postUrl, replyText: d.text, draftUsed: pick });
+      const posted = typeof texts[item.handle] === "string" ? texts[item.handle].trim() : null;
+      if (posted != null && !posted) throw new Error(`${item.handle} の --texts が空`);
+      if (posted != null && posted !== d.text) overridden.push(item.handle);
+      const p = buildCreatePayload({ replyKey: item.replyKey, targetRecordId: item.target?.id, targetPostUrl: item.postUrl, replyText: posted ?? d.text, draftUsed: pick });
       records.push(...p.records);
     }
     if (!records.length) throw new Error("--pick で選ばれた案がない");
-    out = { tableId: FIELDS.x_replies.tableId, count: records.length, records };
+    out = { tableId: FIELDS.x_replies.tableId, count: records.length, ...(overridden.length ? { text_overridden_for: overridden } : {}), records };
   } else if (a.posted) {
     out = buildPostedPayload({ recordId: a.record, targetRecordId: a.target, replyUrl: a.url });
   } else {
-    process.stderr.write("usage: node record.mjs --create drafts.json --pick <handle>=<A|B|C> [--out f] | --posted --record rec… --target rec… --url … [--out f] | --snowflake <id>\n");
+    process.stderr.write("usage: node record.mjs --create drafts.json --pick <handle>=<A|B|C> [--texts posted.json] [--out f] | --posted --record rec… --target rec… --url … [--out f] | --snowflake <id>\n");
     process.exit(2);
   }
   const text = JSON.stringify(out, null, 2) + "\n";

@@ -1,7 +1,7 @@
 // R1〜R15 の陽性・陰性（設計書 §8-1・CSO裁定 2026-09-19・CSO判定 2026-09-19）。語リストは guards.config.json の現行値で検査する。
 import test from "node:test";
 import assert from "node:assert/strict";
-import { guardReply, xWeight, charCount, normalizeNumbers, checkPayloadForbidden, countSentences, hasConcreteFromBody, hintTokens } from "./guards.mjs";
+import { guardReply, xWeight, charCount, normalizeNumbers, checkPayloadForbidden, countSentences, hasConcreteFromBody, hintTokens, applyReplacements, knowledgeFactHits, loadConfig } from "./guards.mjs";
 
 // 40〜140 字・2 文・数字なし・定型句なしの無害な本文（47 字）
 const OK = "先行配信の開始おめでとうございます。今週の動きも追いかけながら、次の告知を楽しみにしています。";
@@ -186,4 +186,41 @@ test("2026-09-18 手動下書き 6 件を R1〜R15 に通す（CSO判定 2026-09
   assert.deepEqual(rules(results[3]), ["R14"]);
   assert.deepEqual(rules(results[4]), ["R14"]);
   assert.ok(results[5].ok, JSON.stringify(results[5].failures));
+});
+
+test("R12: 報告書調の締め（確認しました／把握しました／届いた／受け止め・CSO判定 2026-09-19 12:1x）", () => {
+  assert.ok(rules(guardReply("1対1というかたちのVR作品が9月19日に出たこと、しっかり確認しました。", { type: "A" })).includes("R12"));
+  assert.ok(rules(guardReply("配信の時間帯を把握しました。9月19日の新作、楽しみにしています。", { type: "A" })).includes("R12"));
+  assert.ok(rules(guardReply("9月19日の新作が届いたのを見て、次の告知も楽しみにしています。", { type: "A" })).includes("R12"));
+  assert.ok(!rules(guardReply("9月19日の新作配信おめでとうございます。次の告知も楽しみにしています。", { type: "A" })).includes("R12"));
+});
+
+test("R14-B 上限: cache 由来の事実は最大 2 つ（種別ごと・配信日の表記ゆれは 1 つ・出演者名は数えない）", () => {
+  const body = "新作配信開始！ 1対1のプログラム";
+  const k = { content_id: "hnvr00191", title: "T", volume: "92", date: "2026-09-19 00:00:51", series: ["本中-VR"], genre: ["単体作品"], maker: ["本中"], label: ["本中-VR"], director: ["こあら太郎（わ）"], actress: ["鈴の家りん"] };
+  const src = [body, JSON.stringify(k)];
+  const three = "1対1のVR新作は収録92分で9月19日配信、監督はこあら太郎（わ）なのですね。";
+  const hits = knowledgeFactHits(three, k);
+  assert.deepEqual(hits.map((h) => h.cat), ["volume", "date", "director"]);
+  assert.ok(rules(guardReply(three, { type: "B", body, knowledge: k, sources: src })).includes("R14"), "3 つは NG");
+  assert.ok(!rules(guardReply("1対1のVR新作は収録92分で、配信は9月19日なのですね。", { type: "B", body, knowledge: k, sources: src })).includes("R14"), "2 つは OK");
+  assert.ok(!rules(guardReply("鈴の家りんさんの1対1のVR新作は収録92分で、配信は9月19日とのことですね。", { type: "B", body, knowledge: k, sources: src, names: ["鈴の家りん"] })).includes("R14"), "出演者名は上限に数えない");
+  assert.equal(knowledgeFactHits("配信は2026年9月19日、9月19日ですね。", k).filter((h) => h.cat === "date").length, 1, "配信日の表記ゆれは 1 つ");
+  assert.ok(!rules(guardReply(three, { type: "A", body, knowledge: k, sources: src })).includes("R14"), "A/C には上限を適用しない");
+});
+
+test("R17: 女優本人向けの案は「<表示名>さん、」で始める（CTO 追加の機械検査）", () => {
+  const body = "予約してねん ［引用元 MOODYZ公式 9月15日の投稿: 新作情報解禁！］";
+  const ctx = { type: "A", body, targetType: "女優本人", displayName: "美園和花", names: ["美園和花"] };
+  assert.ok(rules(guardReply("新作の予約開始おめでとうございます。9月15日の告知から楽しみにしていました。", ctx)).includes("R17"));
+  assert.ok(!rules(guardReply("美園和花さん、新作の予約開始おめでとうございます。9月15日の告知から楽しみにしていました。", ctx)).includes("R17"));
+  assert.ok(!rules(guardReply("新作の予約開始おめでとうございます。9月15日の告知から楽しみにしていました。", { ...ctx, targetType: "メーカー公式", displayName: "MOODYZ", names: [] })).includes("R17"), "女優本人以外には適用しない");
+});
+
+test("R18: 語置換（体験版 → サンプル動画・ガードではなく生成直後の置換）", () => {
+  const r = applyReplacements("1対1のVR新作は本日の配信開始とのことですが、体験版の公開は決まっていますか。", loadConfig());
+  assert.equal(r.text.includes("サンプル動画"), true);
+  assert.equal(r.text.includes("体験版"), false);
+  assert.deepEqual(r.applied, [{ from: "体験版", to: "サンプル動画", count: 1 }]);
+  assert.deepEqual(applyReplacements("置換の対象語を含まない文。", loadConfig()).applied, []);
 });

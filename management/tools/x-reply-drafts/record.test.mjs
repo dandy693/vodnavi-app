@@ -57,3 +57,24 @@ test("buildPostedPayload: reply_post_id / posted_at / last_reply_at", () => {
   assert.equal(p.x_targets.records[0].fields[T.last_reply_at], p.posted_at);
   assert.throws(() => buildPostedPayload({ recordId: "rec1fqChrGPQXGNmQ", targetRecordId: "recEfvfO65s5S0o1f", replyUrl: "https://x.com/vodnavi_jp" }), /status id/);
 });
+
+test("--create --texts: 投稿した本文を正として記録（HUMAN 手直し・CSO判定 2026-09-19 12:1x）", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const os = await import("node:os");
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "xrd-"));
+  const drafts = { dry_run: false, items: [{ handle: "honnaka_NN", replyKey: "20260919-honnaka_NN", postUrl: "https://x.com/honnaka_NN/status/2100967587974946947", status: "generated", target: { id: "rec0nGddlSPhwOqcI" }, drafts: { A: { text: "案の本文です。9月19日の配信開始おめでとうございます。", guard: { ok: true, failures: [] } } } }] };
+  const dp = path.join(dir, "drafts.json"); fs.writeFileSync(dp, JSON.stringify(drafts));
+  const tp = path.join(dir, "texts.json"); fs.writeFileSync(tp, JSON.stringify({ honnaka_NN: "手直しした本文です。9月19日の配信開始おめでとうございます。" }));
+  const here = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
+  const out = JSON.parse(execFileSync(process.execPath, [path.join(here, "record.mjs"), "--create", dp, "--pick", "honnaka_NN=A", "--texts", tp], { encoding: "utf8" }));
+  assert.equal(out.count, 1);
+  assert.deepEqual(out.text_overridden_for, ["honnaka_NN"]);
+  const f = out.records[0].fields;
+  assert.equal(f["fldbKfB0mpR9wMS2g"], "手直しした本文です。9月19日の配信開始おめでとうございます。");
+  assert.equal(f["fldeXo1Hzlb5xytfv"], "A");
+  const out2 = JSON.parse(execFileSync(process.execPath, [path.join(here, "record.mjs"), "--create", dp, "--pick", "honnaka_NN=A"], { encoding: "utf8" }));
+  assert.equal(out2.text_overridden_for, undefined);
+  assert.equal(out2.records[0].fields["fldbKfB0mpR9wMS2g"], "案の本文です。9月19日の配信開始おめでとうございます。");
+});

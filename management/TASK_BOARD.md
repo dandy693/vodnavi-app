@@ -11081,3 +11081,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **生成（CSO 指定 3 件のみ・Madonna 24 件は「古い」で見送り）**: `x_targets` 42 件・`x_replies` 6 件を MCP 読み戻し → Supabase PK 照会 2 件ヒット（hnvr00191 / mngs00081・videoa）→ `generate.mjs` 11:55:47〜11:56:54 JST（セッション中断で朝 8 時から遅延）・claude-opus-5・API 5 回・in 3,591 / out 3,704・**8 案 全通過**（honnaka A/B/C・waka_misono A/B/C・FANZAdougaX A/C＝知識なし）。字数 41〜60。@waka_misono 行は本文末尾に引用元の要点を［引用元 …］で付した（CTO 判断・要否は CSO）。記録 → `management/_metrics/2026-W38/bundle2/runs/20260919-am/`。
 - **次**: HUMAN が案を選んで投稿 → リプ URL → `record.mjs` payload → Airtable MCP 書き込み → 読み戻し。21 時前に再抽出（窓＝08:00 以降）→ 同手順。
 - **距離**: 本コミットは直前 READY `10a3c2e` から 6（skip 想定）。
+- 【2026-09-19 12:0x 追記・push 後の Vercel state】`b9dd16b`（距離 6・push 11:59:1x JST）＝`dpl_2k47gh4EF84Gn4SFVB49Dbb1uihS` **CANCELED**（created 1789786757915＝11:59:17 JST・skip 経路・想定どおり）。
+
+## 2026-09-19 12:3x — CSO判定（12:1x・段階② 初回 3 件）を反映: 3 件とも投稿可（HUMAN 手直し・記録は投稿本文が正）／R12 に報告書調 4 語／B 型は cache 事実 最大 2（優先 収録時間>配信日>シリーズ）／女優本人は「名前＋さん、」始まり（PROMPT＋R17）／「体験版」→「サンプル動画」自動置換（R18）／record.mjs --texts／node:test 51/51
+- **判定の転記**: 3 件とも投稿可・HUMAN が文面を手直しして投稿・記録は投稿した本文を正とする／癖 1（R12 追加: 確認しました／把握しました／届いた／受け止め）／癖 2（B 型は cache 由来の事実 最大 2・優先順位 収録時間 > 配信日 > シリーズ > その他）／女優本人向けは「名前＋さん、」で始め、引用投稿は引用元の詳細より本人の一言に応える／「体験版」→「サンプル動画」／@waka_misono の引用元付記は採用・［引用元 …］方式継続／21 時前の再抽出は予定どおり。
+- **反映**: `guards.config.json`（R12 +4 語・`B_max_knowledge_facts=2`・`B_fact_priority`・`R17_actress_greeting`・`R18_word_replacements`）／`guards.mjs`（`knowledgeFactGroups` / `knowledgeFactHits`＝種別ごと・表記ゆれ 1 つ・series/label 同語 1 つ・短い語⊂長い語は長い語のみ・出演者名は上限に数えない／R14-B 上限／R17／`applyReplacements`）／`generate.mjs`（R18 をガード前に適用し `replacements` を記録・`targetType` / `displayName` を ctx へ）／`PROMPT.md`（B 役割 1〜2 つ＋優先順位・規則 6 追記・規則 11 体験版・敬称節に女優本人「名前＋さん、」と引用投稿の扱い）／`record.mjs`（`--texts posted.json`・`text_overridden_for`）／README（手順 1・7・ガード表 R12/R14/R17/R18）／設計書 §12-8／FACT §26-10-1 追記。**`node --test` 51/51**（+5）。
+- **回帰（午前の 8 案・API なし）**: FANZAdougaX A/C 通過／honnaka A＝R12・B＝R12＋R14 上限（3 つ）・C 通過／waka_misono A/B/C＝R17。指摘の癖は機械検査で捕捉できる形。午前の drafts.json は改訂前の生成物として据え置き（HUMAN が手直しして投稿）。
+- **次**: HUMAN の投稿本文 3 件＋リプ URL を受領 → `posted.json` → `record.mjs --create --texts` → MCP 書き込み → `--posted` → 読み戻し。21 時前に再抽出（窓＝08:00 以降）。
+- **距離**: 本コミットは直前 READY `10a3c2e` から 7（skip 想定）。
