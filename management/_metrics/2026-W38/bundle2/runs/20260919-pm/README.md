@@ -7,3 +7,10 @@
 - `rows.json` → `knowledge.json`: Supabase PK 6 件照会 → 2 件ヒット（jufe00525 / juny00075・videoa・fetched 2026-09-18 21:32 UTC・campaign こだわりのフェラ50％OFF 〜9/21 09:59:59）。
 - 生成: `generate.mjs`（dry-run なし・改訂後ガード R12+4 語 / R14-B 上限 2 / R17 / R18）21:39:43〜21:40:19 JST・claude-opus-5・API 4 回・8 案 全通過 → `drafts.json` / `drafts.txt` / `generate.log.txt`。
 - 以後: HUMAN が投稿 → リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し（本 README に追記）。
+
+## 記録（2026-09-19 21:5x JST・読み戻しのみ）
+
+- HUMAN 判断: Fitch 20:15（2101268822665945232・jufe00525）に案B を手直しして投稿。DMM10sale と Fitch 10:15 は見送り。
+- 記録はチャット側（CSO）が Airtable に直接書き込み（CTO は書いていない）: x_replies `recxGuuN1g88fY53w`（createdTime 21:51:40 JST）＝reply_key `20260919-Fitch_official` / target `rec4XV4eU5UQUntIZ` / target_post_url 2101268822665945232 / draft_used B / reply_post_id `2101292922088091657` / posted_at `2026-09-19T12:50:47.000Z`。x_targets `@Fitch_official` の last_reply_at＝`2026-09-19T12:50:47.000Z`。
+- CTO の照合（21:54 JST）: snowflake 復元 `12:50:47.417Z` と記録値（秒丸め）一致／X 直接 URL HTTP 200（100,518 B）・対照 404。reply_text は投稿した本文（手直し）。
+- 本日の x_replies 累計 10 件（9/18 6・9/19 4）。翌朝 8 時の抽出窓＝21:3x 以降。

@@ -11106,3 +11106,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **生成**: Supabase PK 2 件ヒット（jufe00525 / juny00075・campaign こだわりのフェラ50％OFF 〜9/21 09:59:59）→ `generate.mjs` 21:39:43〜21:40:19 JST・claude-opus-5・API 4 回・**8 案 全通過**（DMM10sale A/C・Fitch A/B/C × 2）。再生成 1 回（Fitch juny C 初回 R8 24 字）。R17/R18 の発火なし（女優本人の対象なし・「体験版」なし）。**Fitch 2 件は同一 reply_key（20260919-Fitch_official）＝記録できるのは 1 件。** 記録 → `management/_metrics/2026-W38/bundle2/runs/20260919-pm/`。
 - **次**: HUMAN が投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。翌朝 8 時に再抽出（窓＝21:3x 以降）。
 - **距離**: 本コミットは直前 READY `10a3c2e` から 9（skip 想定・次の docs push は距離 10＝fail-open ビルド）。
+- 【2026-09-19 21:4x 追記・push 後の Vercel state】`87491bf`（距離 9・push 21:42:0x JST）＝`dpl_HwfEXAx8fPJAv4C2sR13YTKPkhtb` **CANCELED**（created 1789821725673＝21:42:05 JST・skip 経路）。
+
+## 2026-09-19 21:5x — 本日終了: 2 回目は Fitch 20:15（案B 手直し）1 件を投稿・記録はチャット側（CSO）が Airtable へ直接書き込み → CTO 読み戻し一致 / DMM10sale・Fitch 10:15 は見送り / 明朝 8 時の抽出窓＝21:3x 以降
+- **読み戻し（別読み・21:5x JST）**: x_replies `20260919-Fitch_official`（`recxGuuN1g88fY53w`・createdTime 21:51:40）＝target `rec4XV4eU5UQUntIZ` / target_post_url `Fitch_official/status/2101268822665945232` / draft_used B / reply_post_id `2101292922088091657` / posted_at `12:50:47Z`（＝21:50:47 JST・snowflake 復元 `12:50:47.417Z` と秒単位で一致）。x_targets `@Fitch_official` last_reply_at＝同値・status 稼働。X 直接 URL 200（100,518 B）／対照 404。reply_text は HUMAN が手直しした本文（記録は投稿本文が正・CSO判定 12:1x どおり）。
+- **段階② 初日の実績**: 抽出 2 回（07:3x〜08:2x・21:10〜21:3x）／生成 6 件・16 案（全通過）／投稿 4 件（honnaka B・FANZAdougaX A・waka_misono A 手直し・Fitch B 手直し）／x_replies 累計 10 件（9/18 6・9/19 4）。**記録の書き込み主体は 3 件＝CTO（MCP）・1 件＝CSO（チャット側）**——どちらも読み戻しで一致を確認済み。
+- **【併記】本コミットは直前 READY `10a3c2e` から距離 10＝E19 の fail-open 経路でビルドが走る想定（§22-8-1-1-f・CSO 受容済み）。push 後に state と sitemap `lastmod` を確認して追記する。**
