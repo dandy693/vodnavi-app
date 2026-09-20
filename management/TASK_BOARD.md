@@ -11208,3 +11208,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **offset（E27）**: FACT §28-2 に裁定 bullet。NOTES の E 表を更新（実装着地 11/15 撤回・実装は cohort 再構築の必要が生じた時点・残余＝設計案 A＋12 月前の実測＝2026-11 中 1 回・read-only）。
 - **Vercel**: E19 fail-open 4 例目・sitemap 全損なしは記録のみ（追加対応なし）。
 - **距離**: 本コミットは直前 READY `267a533` から 2（`ca7f55a` が 1）＝skip 想定。
+- 【2026-09-21 03:4x 追記・push 後の Vercel state】`8ce5a28`（距離 2・push 03:47:3x JST）＝`dpl_J1RMSSHuYt1DvpTYPvxTM2Q6TSBA` **CANCELED**（created 1789930056290＝03:47:36 JST・skip 経路）。`ca7f55a`（距離 1）＝`dpl_HXkzPp3mApE2AemU8s7q41FyTqp5` CANCELED（03:42:42 JST）。閾値 10 と整合。次の docs push は距離 3（skip）。
