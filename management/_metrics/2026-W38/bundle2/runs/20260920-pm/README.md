@@ -43,3 +43,17 @@
 - リンク解決は `curl -s -o /dev/null -w '%{http_code} %{redirect_url}'` の 1 ホップのみ（t.co → al.dmm.co.jp / al.fanza.co.jp の `lurl` から content_id を読んだ。`video.dmm.co.jp` へは到達していない）。
 - x_replies の反応（likes 等）は本 run では取得していない（9/24 朝に再取得）。
 - 画像は本ブラウザ環境で描画されない（Aizawa の 2 枚は黒表示）。作品の特定は本文・リンク・スレッド返信からのみ行った。
+
+## 投稿と記録（2026-09-20 21:37〜21:43 JST・HUMAN 投稿 4 件）
+
+| # | reply_key | 型 | 手直し | reply_post_id | posted_at（snowflake・JST） | x_replies rec | x_targets last_reply_at |
+|---|---|---|---|---|---|---|---|
+| 1 | `20260920-Fitch_official` | B | **あり**（本文は投稿文を正とする・`text_overridden_for`） | `2101652024261841381` | 21:37:44 | `recTYezDasb2cTwaT` | `rec4XV4eU5UQUntIZ` → 2026-09-20T12:37:44.047Z |
+| 2 | `20260920-Aizawa_miyu03` | C | なし | `2101652266273153150` | 21:38:41 | `recZPc8aGD6aCQwRz` | `recld7SvHioWfSb8o` → 12:38:41.747Z |
+| 3 | `20260920-FalenoEvent` | A | なし | `2101652351027417222` | 21:39:01 | `recbvFoQg0PMeNDgD` | `recByvjAnovkOIiu3` → 12:39:01.954Z |
+| 4 | `20260920-S1_No1_Style` | A | なし | `2101652588454416580` | 21:39:58 | `recJCqaVX3xBujdG7` | `recItkceKqz7rPmzD` → 12:39:58.561Z |
+
+- `record.mjs --create drafts.json --pick … --texts posted.json`（`payload_create.json`・4 件・`text_overridden_for: ["Fitch_official"]`）→ MCP `create_records_for_table`（createdTime 21:42:28 JST）→ `--posted` × 4（`payload_posted_{fitch,aizawa,faleno,s1}.json`）→ `update_records_for_table` × 2（x_replies 4・x_targets 4）→ **読み戻し: x_replies `20260920-*` 4 件（reply_key / target / target_post_url / reply_text / draft_used / reply_post_id / posted_at）・x_targets 4 件の `last_reply_at` が payload と一致**。X 直接 URL は 4 件とも HTTP 200（99,516〜128,494 B）・対照 `1111111111111111111` は 404（21:43:34）。
+- **x_replies 累計 18 件**（9/18 6・9/19 4・9/20 8＝朝 4＋夜 4）。**priority 3 の週カウント＝1 / 2**（S1_No1_Style・今週初）。
+- **CSO判定（夜）**: @5may_itsukaichi（ファンからの贈り物）・@shirot_AV_chosa は見送り。**絞り込みの補足＝「作品に触れる」は作品名・出演作・発売・配信・セール・作品イベントに限り、ファンからの贈り物・交流の投稿は含めない**（ツール README 手順 0 ④に追記）。
+- 反応（likes 等）は本 run では取得していない（9/24 朝に累積で再取得）。

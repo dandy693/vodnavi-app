@@ -11172,3 +11172,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **次**: HUMAN が案を選んで投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。明朝 8 時の抽出（窓＝本日 21:2x 以降）。
 - **距離**: 本コミットは直前 READY `75c72bd` から 2（`148a59e` が 1）＝skip 想定。
 - 【2026-09-20 21:3x 追記・push 後の Vercel state】`e7b99af`（距離 2・push 21:31:0x JST）＝`dpl_Dd7gosjeW5DpPLGrpipZzdf2DDmi` **CANCELED**（created 1789907473030＝21:31:13 JST・skip 経路・閾値 10 と整合）。`148a59e`（距離 1）も `dpl_9ut3o6gnrgg2Smxj7ztdJeGgSLwa` CANCELED。次の docs push は距離 3（skip）。
+
+## 2026-09-20 21:4x — 投稿完了 4 件（Fitch_official B 手直し／Aizawa_miyu03 C／FalenoEvent A／S1_No1_Style A）を記録 → 読み戻し一致／CSO判定（5may・shirot は見送り・「作品に触れる」の補足＝ファンからの贈り物・交流は含めない）
+- **記録**: `record.mjs --create --texts`（4 件・`text_overridden_for: Fitch_official`＝投稿文を正とする）→ MCP 作成（createdTime 21:42:28 JST）→ `--posted` × 4 → `reply_post_id`／`posted_at`（snowflake 21:37:44 / 21:38:41 / 21:39:01 / 21:39:58）／`x_targets.last_reply_at` 更新 → **読み戻し: x_replies `20260920-*` 4 件・x_targets 4 件が payload と一致**。X 直接 URL 4 件 200・対照 404（21:43:34）。**x_replies 累計 18 件（9/18 6・9/19 4・9/20 8）。priority 3 の週カウント 1 / 2（S1_No1_Style）。**
+- **CSO判定を反映**: ツール README 手順 0 ④（「作品に触れる」は作品名・出演作・発売・配信・セール・作品イベントに限る／ファンからの贈り物・交流は含めない）・FACT §26-10-2 に bullet 2 本（夜の実測・CSO判定）・run README「投稿と記録」節。
+- **次**: 明朝 8 時の抽出（窓＝本日 21:2x 以降・補足を適用）。9/24 朝に反応の再取得（累積・18 件）→ `weekly-report.mjs --reactions --own-posts`。
+- **距離**: 本コミットは直前 READY `75c72bd` から 4（`148a59e` 1・`e7b99af` 2・`99ce976` 3）＝skip 想定。
