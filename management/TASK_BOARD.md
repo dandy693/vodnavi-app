@@ -11171,3 +11171,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **記録** → `management/_metrics/2026-W38/bundle2/runs/20260920-pm/`（README・profiles・input・parsed・targets・replies・stopcheck_all・knowledge_*・rows・drafts・log）。
 - **次**: HUMAN が案を選んで投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。明朝 8 時の抽出（窓＝本日 21:2x 以降）。
 - **距離**: 本コミットは直前 READY `75c72bd` から 2（`148a59e` が 1）＝skip 想定。
+- 【2026-09-20 21:3x 追記・push 後の Vercel state】`e7b99af`（距離 2・push 21:31:0x JST）＝`dpl_Dd7gosjeW5DpPLGrpipZzdf2DDmi` **CANCELED**（created 1789907473030＝21:31:13 JST・skip 経路・閾値 10 と整合）。`148a59e`（距離 1）も `dpl_9ut3o6gnrgg2Smxj7ztdJeGgSLwa` CANCELED。次の docs push は距離 3（skip）。
