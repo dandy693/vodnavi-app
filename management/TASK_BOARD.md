@@ -11215,3 +11215,13 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **本日の朝の抽出は 06:2x に着手**（06:00 から遅れ・窓＝9/20 21:2x 以降）。
 - **距離**: 本コミットは直前 READY `267a533` から 4（`5811c0d` が 3）＝skip 想定。
 - 【2026-09-21 06:2x 追記・push 後の Vercel state】`f3080ce`（距離 4・push 06:20:1x JST）＝`dpl_9XsYz47AowCd6pvf5Yr2zMqn38sJ` **CANCELED**（created 1789939217307＝06:20:17 JST・skip 経路）。`5811c0d`（距離 3）＝`dpl_ATDRsG4AfeRSBT73Sj43qgjZsQyK` CANCELED（03:48:10 JST）。閾値 10 と整合。次の docs push は距離 5（skip）。
+
+## 2026-09-21 07:0x — 束2 段階② 朝の抽出・生成（06:00 起点の初回・着手 06:2x）: 稼働 34 プロフィール直読み → 窓内 8 アカウント 12 投稿（除外 2＝FANZA 外）→ 入力 9 行 → 停止判定 全 OK・バッチ内停止 2 → 知識 8/8 ヒット → 生成 6 行 16 案（attackers B は R14 で生成不能）→ 提示
+- 窓＝9/20 21:00 JST 以降（cutoff `2101642528158646272`）。対象＝06:22 の x_targets 読み戻し 42 件（稼働 34／候補 8）。抽出 06:2x〜06:5x（センシティブ警告クリック 8）。
+- 絞り込み: ①私生活等 0 件（女優本人に窓内投稿なし）／③フロア外 2 件除外（@DMM10sale の MGS動画 300 円引用・@shirot_AV_chosa 23:00 の mgstage.com リンク）。**両件とも「FANZA 外」を③（動画フロア外）に含めて除外＝CTO 判断・要否は CSO**。
+- 作品コード: al.fanza.co.jp の lurl から 6・ideapocket.com から 1・t.co → al.dmm.co.jp の Location（1 ホップ）から 1（1sdhs00044）。@FANZAdougaX は rcv.ixd.dmm.com のクリックトラッカー（303）＝追わず作品コードなし。
+- 停止判定: 9 行 OK（9/20 に返信済みの 5 ハンドルは 1 日間隔で暦日が変わったため）。バッチ内 2 件目停止＝PREMIUM_AV 21:00（pred00891）・MOODYZ_official 平野楓（mida00812・配信 10/2）。
+- 生成: 07:02:05〜07:05:37・claude-opus-5・API 13 回・input 9,999 / output 13,822 / cache_read 27,677 / cache_creation 12,230。知識あり 5 行（A/B/C・attackers は A/C）＋知識なし 1 行（FANZAdougaX A/C）。**priority 3 の @S1_No1_Style（VR 新作 sivr00507）を生成＝提示すれば今週 2 / 2**。
+- 案と事実の突合で気づいた点（判定は CSO）: IDEAPOCKETTER A「配信開始おめでとう」（投稿に記述なし・配信日 8/28）／MOODYZ A「新作配信おめでとう」（投稿は【PR】＋作品名のみ）／FANZAdougaX A「今夜のうちに」（投稿 05:00・期限 同日 09:59）・C「第4弾」（本文に無い）。
+- 記録 → `management/_metrics/2026-W38/bundle2/runs/20260921-am/`（README / profiles / input / parsed / targets / replies 18 / stopcheck / knowledge_* / rows / drafts / generate.log）。
+- **距離**: 本コミットは直前 READY `267a533` から 6（`a3cc106` が 5）＝skip 想定。

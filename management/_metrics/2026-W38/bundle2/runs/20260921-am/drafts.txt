@@ -1,0 +1,67 @@
+model=claude-opus-5 dry_run=false today_jst=20260921 counts={"lines":9,"generated":6,"stopped":3} prompt_sha=ddf6ef6da6ed
+
+=== @attackers_av (メーカー公式) status=一部生成不能（B がガード未通過・最大 2 回再生成後） replyKey=20260921-attackers_av calls=3 in=2630 out=2275
+  A chars=52 weight=96 ok=true attempts=1
+     新作配信開始おめでとうございます。8KVRでの梓ヒカリさん出演作が9月21日0時にスタートしたのですね。
+  B chars=57 weight=105 ok=false attempts=3 NG=[{"rule":"R14","detail":"B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 88、9月21日、8KVR"}]
+     8KVRの新作、収録は88分あるんですね。9月21日の配信開始なので、まとまった時間を取って見る形になりそうです。
+  C chars=33 weight=62 ok=true attempts=1
+     8KVRの新作は、サンプル動画の公開も同じタイミングになりますか？
+
+=== @PREMIUM_AV (メーカー公式) status=generated replyKey=20260921-PREMIUM_AV calls=2 in=1636 out=1972
+  A chars=46 weight=91 ok=true attempts=1
+     5作品を厳選しての特集、ありがとうございます。まとめて並ぶと作品ごとの違いが見えてきますね。
+  B chars=48 weight=89 ok=true attempts=2
+     5作品の厳選なんですね。9月11日に配信された田村香奈さんの作品は154分と、長めの収録でした。
+  C chars=37 weight=73 ok=true attempts=1
+     今回の5作品は、配信日の新しい順など何か基準を設けて選ばれたのでしょうか？
+
+=== @PREMIUM_AV (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260921-PREMIUM_AV calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @FANZAdougaX (セール告知系) status=generated replyKey=20260921-FANZAdougaX calls=2 in=796 out=1071
+  A chars=54 weight=104 ok=true attempts=2
+     第3弾の開催おめでとうございます。朝9時59分までという区切りなら、今夜のうちにリストを眺めておきたいです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=45 weight=85 ok=true attempts=1
+     第3弾が朝9時59分までということは、第4弾の対象リストが出るのも同じ日のうちでしょうか。
+
+=== @shirot_AV_chosa (レビュー系) status=generated replyKey=20260921-shirot_AV_chosa calls=1 in=730 out=1161
+  A chars=52 weight=103 ok=true attempts=1
+     Sクラスという紹介の言い回しが目を引きますね。こうして一言でまとめてくださる投稿、ありがとうございます。
+  B chars=45 weight=79 ok=true attempts=1
+     Sクラスと紹介されているこちらは、収録90分で配信日は2023年12月13日の作品ですね。
+  C chars=40 weight=79 ok=true attempts=1
+     Sクラスと紹介する作品は、レビューの評価が高いものから選ばれているのでしょうか？
+
+=== @MOODYZ_official (メーカー公式) status=generated replyKey=20260921-MOODYZ_official calls=2 in=1772 out=2778
+  A chars=50 weight=100 ok=true attempts=2
+     泉ももかさんの新作配信おめでとうございます。一生懸命という言葉がタイトルに入るのは珍しく感じました。
+  B chars=49 weight=92 ok=true attempts=2
+     収録135分、配信は9月11日の作品ですね。一生懸命という語がタイトルに含まれる並びは珍しいです。
+  C chars=45 weight=90 ok=true attempts=2
+     タイトルに一生懸命とある長さですが、泉ももかさんのサンプル動画の公開はこれからでしょうか。
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 6 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260921-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @IDEAPOCKETTER (メーカー公式) status=generated replyKey=20260921-IDEAPOCKETTER calls=2 in=1729 out=2543
+  A chars=48 weight=96 ok=true attempts=2
+     パーフェクトボディの告知ありがとうございます。坂井美桜さんの新作、配信開始おめでとうございます。
+  B chars=44 weight=82 ok=true attempts=2
+     パーフェクトボディと紹介されているこの作品は収録121分で、配信開始は8月28日ですね。
+  C chars=46 weight=92 ok=true attempts=2
+     パーフェクトボディとして紹介されている作品ですが、サンプル動画が公開される予定はありますか？
+
+=== @S1_No1_Style (メーカー公式) status=generated replyKey=20260921-S1_No1_Style calls=1 in=706 out=2022
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=52 weight=99 ok=true attempts=1
+     新作配信開始おめでとうございます。9月21日スタートのVR作品ということで、今日から視聴できるのですね。
+  B chars=46 weight=85 ok=true attempts=1
+     新作配信開始ですね。収録時間は67分で、S1 VRのシリーズに入る一本という構成なのですね。
+  C chars=47 weight=92 ok=true attempts=1
+     新作配信開始とのことですが、VR作品のサンプル動画は配信開始と同じタイミングで公開されますか？

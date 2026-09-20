@@ -1,0 +1,699 @@
+{
+  "generated_at": "2026-09-20T22:05:37.883Z",
+  "today_jst": "20260921",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "ddf6ef6da6ed3aaa76456493c1ec3535cd17f5b877acdafef1172c9f77932d63",
+  "counts": {
+    "lines": 9,
+    "generated": 6,
+    "stopped": 3
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "attackers_av",
+      "postUrl": "https://x.com/attackers_av/status/2101692866636734862",
+      "targetPostId": "2101692866636734862",
+      "postedAtJst": "2026-09-21 00:20",
+      "target": {
+        "id": "recGCCpEJDzLNEkLo",
+        "handle": "attackers_av",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "atvr00073",
+        "title": "【VR】『治療法はセックスです』失恋して傷ついた心を癒してくれる美少女ナースに精子を搾り取られた僕。8KVR 梓ヒカリ",
+        "fetched_at": "2026-09-20 02:53:53.649+00"
+      },
+      "replyKey": "20260921-attackers_av",
+      "warnings": [],
+      "status": "一部生成不能（B がガード未通過・最大 2 回再生成後）",
+      "drafts": {
+        "A": {
+          "text": "新作配信開始おめでとうございます。8KVRでの梓ヒカリさん出演作が9月21日0時にスタートしたのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "8KVRの新作、収録は88分あるんですね。9月21日の配信開始なので、まとまった時間を取って見る形になりそうです。",
+          "guard": {
+            "ok": false,
+            "failures": [
+              {
+                "rule": "R14",
+                "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 88、9月21日、8KVR"
+              }
+            ],
+            "metrics": {
+              "chars": 57,
+              "weight": 105
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "8KVRの新作、収録は88分で配信開始は9月21日0時なのですね。梓ヒカリさんの出演作でこの尺というのは気になります。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 88、9月21日、8KVR"
+                }
+              ]
+            },
+            {
+              "text": "8KVRの新作で、収録は88分なんですね。VR専用でこの長さだと一本を通してじっくり見る作りになりそうです。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 88、8KVR、VR専用"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "8KVRの新作は、サンプル動画の公開も同じタイミングになりますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 33,
+              "weight": 62
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 2630,
+        "output_tokens": 2275,
+        "cache_creation_input_tokens": 6126,
+        "cache_read_input_tokens": 3041,
+        "calls": 3
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2101657639122088057",
+      "targetPostId": "2101657639122088057",
+      "postedAtJst": "2026-09-20 22:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:14:05.269Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "pred00898",
+        "title": "オヤジ客も絶倫ギンギン！チ○ポバカになるまでベロキスPtoM！恥ずかしい衣装で全力ご奉仕イキまくり中出しエステ 田村香奈",
+        "fetched_at": "2026-09-20 13:00:46.609+00"
+      },
+      "replyKey": "20260921-PREMIUM_AV",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "5作品を厳選しての特集、ありがとうございます。まとめて並ぶと作品ごとの違いが見えてきますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 91
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "5作品の厳選なんですね。9月11日に配信された田村香奈さんの作品は154分と、長めの収録でした。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 89
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "厳選5作品のうち、9月11日配信のエステ作品は収録時間154分ですね。配信から日が浅い一本です。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 154、9月11日、エステ"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "今回の5作品は、配信日の新しい順など何か基準を設けて選ばれたのでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 37,
+              "weight": 73
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1636,
+        "output_tokens": 1972,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6126,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2101642545239638328",
+      "targetPostId": "2101642545239638328",
+      "postedAtJst": "2026-09-20 21:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:14:05.269Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260921-PREMIUM_AV",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101763380378054879",
+      "targetPostId": "2101763380378054879",
+      "postedAtJst": "2026-09-21 05:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:13:16.988Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-FANZAdougaX",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第3弾の開催おめでとうございます。朝9時59分までという区切りなら、今夜のうちにリストを眺めておきたいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 104
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "第3弾のスタートおめでとうございます。50%OFFが朝9時59分までという区切りなので、今朝のうちに眺めておきたくなりますね。",
+              "failures": [
+                {
+                  "rule": "R9",
+                  "detail": "出典のない価格・割引の数値: 50"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "第3弾が朝9時59分までということは、第4弾の対象リストが出るのも同じ日のうちでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 796,
+        "output_tokens": 1071,
+        "cache_creation_input_tokens": 6104,
+        "cache_read_input_tokens": 0,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101657809708613792",
+      "targetPostId": "2101657809708613792",
+      "postedAtJst": "2026-09-20 22:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "1sdhs00044",
+        "title": "ルックス、エロ、性格、全てSクラスな高級愛人と中出し。れい",
+        "fetched_at": "2026-09-20 05:32:26.791+00"
+      },
+      "replyKey": "20260921-shirot_AV_chosa",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "Sクラスという紹介の言い回しが目を引きますね。こうして一言でまとめてくださる投稿、ありがとうございます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 103
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "Sクラスと紹介されているこちらは、収録90分で配信日は2023年12月13日の作品ですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "Sクラスと紹介する作品は、レビューの評価が高いものから選ばれているのでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 730,
+        "output_tokens": 1161,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3085,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101657643408630180",
+      "targetPostId": "2101657643408630180",
+      "postedAtJst": "2026-09-20 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:14:39.708Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "mida00786",
+        "title": "お兄ちゃんがエロ本片手に一生懸命おちんちんをコスっていたのを目撃したあの時から性に目覚めた妹と汗だくで中出ししまくったあの夏の日のあやまち 泉ももか",
+        "fetched_at": "2026-09-20 05:49:20.549+00"
+      },
+      "replyKey": "20260921-MOODYZ_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "泉ももかさんの新作配信おめでとうございます。一生懸命という言葉がタイトルに入るのは珍しく感じました。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 100
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "泉ももかさんの新作告知、おめでとうございます。9月の単体作品として気になっている方も多そうですね。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: 目覚、一生懸命、コス、目撃）"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "収録135分、配信は9月11日の作品ですね。一生懸命という語がタイトルに含まれる並びは珍しいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 49,
+              "weight": 92
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "泉ももかさんの今作は9月11日の配信で、収録時間は135分あるようですね。腰を据えて見る長さです。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: 目覚、一生懸命、コス、目撃）"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "タイトルに一生懸命とある長さですが、泉ももかさんのサンプル動画の公開はこれからでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 90
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "泉ももかさんの次回作も、同じMOODYZ DIVAのレーベルからの配信を予定されていますか？",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: 目覚、一生懸命、コス、目撃）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1772,
+        "output_tokens": 2778,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6170,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101657638899732951",
+      "targetPostId": "2101657638899732951",
+      "postedAtJst": "2026-09-20 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:14:39.708Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260921-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 6 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101657643387584935",
+      "targetPostId": "2101657643387584935",
+      "postedAtJst": "2026-09-20 22:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:15:33.799Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "ipzz00947",
+        "title": "お局女上司に仕組まれ大嫌いなセクハラ部長と出張先相部屋… 高温多湿の汗だく絶倫SEXで快楽堕ちしたスリム巨乳社員 坂井美桜",
+        "fetched_at": "2026-09-20 17:05:22.219+00"
+      },
+      "replyKey": "20260921-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "パーフェクトボディの告知ありがとうございます。坂井美桜さんの新作、配信開始おめでとうございます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 96
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "坂井美桜さんの新作、配信おめでとうございます。8月28日スタートの単体作品として気になっていました。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: パーフェクトボディ）"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "パーフェクトボディと紹介されているこの作品は収録121分で、配信開始は8月28日ですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 82
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "収録121分で、配信開始は8月28日ですね。ドラマ仕立ての単体作品という構成が気になります。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: パーフェクトボディ）"
+                },
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 4 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 121、8月28日、単体作品、ドラマ"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "パーフェクトボディとして紹介されている作品ですが、サンプル動画が公開される予定はありますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 92
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "8月28日配信のこの作品ですが、今後同じ座組での続編が出る予定はありますか？",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: パーフェクトボディ）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1729,
+        "output_tokens": 2543,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6170,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2101693118378860710",
+      "targetPostId": "2101693118378860710",
+      "postedAtJst": "2026-09-21 00:21",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T12:39:58.561Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "sivr00507",
+        "title": "【VR】精子を浴びて、笑顔でよろこぶ ぶっかけ天使メイド 初美なのか",
+        "fetched_at": "2026-09-20 06:02:19.741+00"
+      },
+      "replyKey": "20260921-S1_No1_Style",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "新作配信開始おめでとうございます。9月21日スタートのVR作品ということで、今日から視聴できるのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 99
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "新作配信開始ですね。収録時間は67分で、S1 VRのシリーズに入る一本という構成なのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "新作配信開始とのことですが、VR作品のサンプル動画は配信開始と同じタイミングで公開されますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 92
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 706,
+        "output_tokens": 2022,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3085,
+        "calls": 1
+      }
+    }
+  ]
+}

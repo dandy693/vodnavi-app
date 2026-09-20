@@ -1,0 +1,4 @@
+rows.json = Supabase MCP execute_sql（read-only）2026-09-21 06:59 JST の結果を転記（knowledge_union.sql・PK 3 キー×8 行）。
+- ヒット 8/8: line 1 atvr00073（fetched 2026-09-20 02:53 UTC）/ line 2 pred00898（09-20 13:00）/ line 3 pred00891（09-17 05:02）/ line 5 1sdhs00044（09-20 05:32・campaign「みんなのお気に入り30％OFF」date_end 2026-09-20 23:59:59＝取得時点で終了済み）/ line 6 mida00786（09-20 05:49）/ line 7 mida00812（09-14 01:21・date 2026-10-02＝配信前）/ line 8 ipzz00947（09-20 17:05）/ line 9 sivr00507（09-20 06:02）
+- line 4 FANZAdougaX は作品コードなし（セール一覧リンク。みなと羽琉作品の cid は投稿から取得不能）→ 知識なしモード
+- item から URL / imageURL / affiliateURL / sampleImageURL / sampleMovieURL / tachiyomi を SQL 側で除いて転記（af_id・URL を持ち込まない）
