@@ -11192,3 +11192,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 受領内容: FANZA TV 新規無料登録 2,750 円表示＝報酬UP 対象／期間 9/12〜10/22 23:59（TV Plus 対象外）／他の料率は台帳 v3 と一致・変更なし／通販（アダルト）サービス新規「---」＝停止済みで確定（中止予定日未取得 → 停止済みに訂正）。
 - **照合**: 上記 4 点は 2026-09-20 22:0x に CSO 指示の「記録のみ」欄から §5-3-1 へ転記済みの内容と一致。**§5-3-1 の「HUMAN 確認 2026-09-21（CSO 転記）」は本メッセージで HUMAN 直接の確認として裏づけられた**（本文の変更なし・出典ラベルのみ本エントリで補強）。
 - **距離**: 本コミットは直前 READY `75c72bd` から 8（`5f77bcf` が 7）＝skip 想定。**次の docs push は 9（skip）・その次が 10＝fail-open ビルド（受容済み）。**
+- 【2026-09-21 03:2x 追記・push 後の Vercel state】`975c9b6`（距離 8・push 03:25:1x JST）＝`dpl_HKzJkaaQDWT2cgCKnnWhgUjESTz1` **CANCELED**（created 1789928720876＝03:25:20 JST・skip 経路）。`5f77bcf`（距離 7）＝`dpl_2pKgN1uodCw4bPjkm386dhpRuM9t` CANCELED（22:10:59 JST）。閾値 10 と整合。**本追記の push が距離 9（skip）・次の docs push が 10＝fail-open ビルド（§22-8-1-1-f・受容済み）。**
