@@ -11186,3 +11186,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **台帳**: FACT §5-3-1（FANZA TV 新規 ¥2,750＝2026-09-12〜10-22 23:59・TV Plus 対象外・「一部アフィリエイターは対象外」注記・HUMAN 確認 9/21 で 2,750 表示＝対象・通販アダルト「---」＝停止済みで確定・他の料率は v3 と一致）／§28（28-1 取り下げ・28-2 offset・28-3 参加規約改定 2026-09-01 を外部依存として登録・電書ブログパーツ終了／インボイス機能停止は影響なし＝CSO 判定・リポジトリのブログパーツ参照 0）。
 - **記録** → `management/_metrics/2026-W38/research-20260920-dmm-notices-gsiro027-offset.md`。
 - **距離**: 本コミットは直前 READY `75c72bd` から 6（`cf1f80f` が 5）＝skip 想定。
+- 【2026-09-20 22:1x 追記・push 後の Vercel state】`4d281ab`（距離 6・push 22:10:2x JST）＝`dpl_AVcgbZdimL3oSt4tTXnuuibskHf5` **CANCELED**（created 1789909831537＝22:10:31 JST・skip 経路）。`cf1f80f`（距離 5）＝`dpl_6S4VQgL1ssEuZm2K1iF4jAKnMGEf` CANCELED（21:45:36 JST）。閾値 10 と整合。次の docs push は距離 7（skip・9 まで skip・10 で fail-open）。
