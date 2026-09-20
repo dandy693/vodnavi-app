@@ -30,7 +30,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 | 手順 | 担当 | 内容 |
 |---|---|---|
 | **0** | **CTO**（CSO 連絡 2026-09-19 22:2x） | **抽出対象リストを毎回 Airtable から組み立てる**（固定の 20 件リストは使わない）: MCP で `x_targets` を読み戻し → `state/<日付>/targets.json` → `node management/tools/x-reply-drafts/active-targets.mjs state/<日付>/targets.json --urls`。条件＝`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`（2026-09-19 22:3x 時点 35 件＝priority 1: 27 / 2: 4 / 3: 4）。**priority 3 の 4 件（@S1_No1_Style／@shinnakanodream／@mayukiito／@umi_sea_0v0）は抽出に含めるが、案の提示は週 2 件まで（対照用）**——`generate.mjs` が該当行に warning を付ける |
-| 1 | **CTO**（CSO 指示 2026-09-19 08:2x で HUMAN → CTO へ改訂・FACT §26-10-1） | Chrome 抽出（**1 日 2 回＝朝 8 時・21 時前**・窓は**前回抽出以降**・読み取り専用＝投稿・返信・フォロー・いいね・ブックマークをしない）→ `@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id` を `runs/<日付>/input.txt` に置く（本文は台帳に貼らない）。重複はツール側が `target_post_url` で排除 |
+| 1 | **CTO**（CSO 指示 2026-09-19 08:2x で HUMAN → CTO へ改訂・FACT §26-10-1） | Chrome 抽出（**1 日 2 回＝朝 06:00・21 時前**（**CSO 決定 2026-09-21 で 08:00 → 06:00 へ変更**）・窓は**前回抽出以降**＝夜 21 時前 → 翌朝 06:00・読み取り専用＝投稿・返信・フォロー・いいね・ブックマークをしない）→ `@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id` を `runs/<日付>/input.txt` に置く（本文は台帳に貼らない）。重複はツール側が `target_post_url` で排除 |
 | 2 | CTO | ツール実行（下の手順 2〜5）→ 案を提示。**停止判定に当たった行はその旨を表示**（同一投稿 1 回のみ／同日同ハンドル 1 件／再返信間隔＝女優本人 3 日・それ以外 1 日） |
 | 3 | HUMAN | 案を選んで投稿 → リプ URL を Claude Code に貼る |
 | 4 | CTO | `record.mjs` の payload を Airtable MCP で書き込み → 読み戻しを報告（手順 7〜8） |
@@ -72,7 +72,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 
 ## 木曜 PDCA 集計（`weekly-report.mjs`・CSO 連絡 2026-09-19 22:2x）
 
-9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。
+9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。**集計の起点は朝の抽出と同じ 06:00**（CSO 決定 2026-09-21・反応の補完 → 集計の順で 06:00 から）。
 
 ```
 # 0) 反応の補完（CSO 指示 2026-09-19 22:5x）: x_replies の各 reply_post_id を Chrome 連携で読み取り専用で開き

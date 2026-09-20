@@ -11209,3 +11209,8 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **Vercel**: E19 fail-open 4 例目・sitemap 全損なしは記録のみ（追加対応なし）。
 - **距離**: 本コミットは直前 READY `267a533` から 2（`ca7f55a` が 1）＝skip 想定。
 - 【2026-09-21 03:4x 追記・push 後の Vercel state】`8ce5a28`（距離 2・push 03:47:3x JST）＝`dpl_J1RMSSHuYt1DvpTYPvxTM2Q6TSBA` **CANCELED**（created 1789930056290＝03:47:36 JST・skip 経路）。`ca7f55a`（距離 1）＝`dpl_HXkzPp3mApE2AemU8s7q41FyTqp5` CANCELED（03:42:42 JST）。閾値 10 と整合。次の docs push は距離 3（skip）。
+
+## 2026-09-21 06:2x — CSO決定: 束2 朝の抽出を 08:00 → 06:00 に変更（窓＝前回抽出以降のまま・木曜 PDCA 集計も 06:00 起点）→ README・ROUTINE §3-2（新設）・FACT §26-10-1 を更新
+- README 手順 0（1 日 2 回＝朝 06:00・21 時前）と木曜 PDCA 節（集計起点 06:00）／ROUTINE に「3-2. 束2 リプ営業の日次ループ」を新設（抽出 06:00・21 時前・窓・対象の組み立て・絞り込み・記録・集計起点）／FACT §26-10-1 に決定の bullet（旧「朝 8 時」は訂正として残置）。
+- **本日の朝の抽出は 06:2x に着手**（06:00 から遅れ・窓＝9/20 21:2x 以降）。
+- **距離**: 本コミットは直前 READY `267a533` から 4（`5811c0d` が 3）＝skip 想定。
