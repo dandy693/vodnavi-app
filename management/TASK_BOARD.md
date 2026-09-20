@@ -11187,3 +11187,8 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **記録** → `management/_metrics/2026-W38/research-20260920-dmm-notices-gsiro027-offset.md`。
 - **距離**: 本コミットは直前 READY `75c72bd` から 6（`cf1f80f` が 5）＝skip 想定。
 - 【2026-09-20 22:1x 追記・push 後の Vercel state】`4d281ab`（距離 6・push 22:10:2x JST）＝`dpl_AVcgbZdimL3oSt4tTXnuuibskHf5` **CANCELED**（created 1789909831537＝22:10:31 JST・skip 経路）。`cf1f80f`（距離 5）＝`dpl_6S4VQgL1ssEuZm2K1iF4jAKnMGEf` CANCELED（21:45:36 JST）。閾値 10 と整合。次の docs push は距離 7（skip・9 まで skip・10 で fail-open）。
+
+## 2026-09-21 03:2x — HUMAN確認（2026-09-21・affiliate.dmm.com 報酬料率）を受領: FACT §5-3-1 の記載と全項目一致・差分なし（追記なし）
+- 受領内容: FANZA TV 新規無料登録 2,750 円表示＝報酬UP 対象／期間 9/12〜10/22 23:59（TV Plus 対象外）／他の料率は台帳 v3 と一致・変更なし／通販（アダルト）サービス新規「---」＝停止済みで確定（中止予定日未取得 → 停止済みに訂正）。
+- **照合**: 上記 4 点は 2026-09-20 22:0x に CSO 指示の「記録のみ」欄から §5-3-1 へ転記済みの内容と一致。**§5-3-1 の「HUMAN 確認 2026-09-21（CSO 転記）」は本メッセージで HUMAN 直接の確認として裏づけられた**（本文の変更なし・出典ラベルのみ本エントリで補強）。
+- **距離**: 本コミットは直前 READY `75c72bd` から 8（`5f77bcf` が 7）＝skip 想定。**次の docs push は 9（skip）・その次が 10＝fail-open ビルド（受容済み）。**
