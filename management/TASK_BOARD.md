@@ -11214,3 +11214,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - README 手順 0（1 日 2 回＝朝 06:00・21 時前）と木曜 PDCA 節（集計起点 06:00）／ROUTINE に「3-2. 束2 リプ営業の日次ループ」を新設（抽出 06:00・21 時前・窓・対象の組み立て・絞り込み・記録・集計起点）／FACT §26-10-1 に決定の bullet（旧「朝 8 時」は訂正として残置）。
 - **本日の朝の抽出は 06:2x に着手**（06:00 から遅れ・窓＝9/20 21:2x 以降）。
 - **距離**: 本コミットは直前 READY `267a533` から 4（`5811c0d` が 3）＝skip 想定。
+- 【2026-09-21 06:2x 追記・push 後の Vercel state】`f3080ce`（距離 4・push 06:20:1x JST）＝`dpl_9XsYz47AowCd6pvf5Yr2zMqn38sJ` **CANCELED**（created 1789939217307＝06:20:17 JST・skip 経路）。`5811c0d`（距離 3）＝`dpl_ATDRsG4AfeRSBT73Sj43qgjZsQyK` CANCELED（03:48:10 JST）。閾値 10 と整合。次の docs push は距離 5（skip）。
