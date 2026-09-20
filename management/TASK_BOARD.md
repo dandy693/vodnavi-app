@@ -11178,3 +11178,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **CSO判定を反映**: ツール README 手順 0 ④（「作品に触れる」は作品名・出演作・発売・配信・セール・作品イベントに限る／ファンからの贈り物・交流は含めない）・FACT §26-10-2 に bullet 2 本（夜の実測・CSO判定）・run README「投稿と記録」節。
 - **次**: 明朝 8 時の抽出（窓＝本日 21:2x 以降・補足を適用）。9/24 朝に反応の再取得（累積・18 件）→ `weekly-report.mjs --reactions --own-posts`。
 - **距離**: 本コミットは直前 READY `75c72bd` から 4（`148a59e` 1・`e7b99af` 2・`99ce976` 3）＝skip 想定。
+- 【2026-09-20 21:4x 追記・push 後の Vercel state】`d25fd1b`（距離 4・push 21:45:0x JST）＝`dpl_7cLTqUgfzM7uJoXruhZYijixfVFo` **CANCELED**（created 1789908309813＝21:45:09 JST・skip 経路）。`99ce976`（距離 3）＝`dpl_WVShgDHq2hK51DvrrtCnN58ZnqfC` CANCELED（21:31:39 JST）。閾値 10 と整合。次の docs push は距離 5（skip）。
