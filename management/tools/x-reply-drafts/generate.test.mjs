@@ -7,8 +7,8 @@ import { parseLine } from "./parse.mjs";
 const NOW = new Date("2026-09-21T03:00:00Z"); // JST 9/21 12:00
 const line = parseLine("@FANZAdougaX｜2026-09-21 10:00｜https://x.com/FANZAdougaX/status/2100752031036342529｜第2弾は明日から。｜SONE-682");
 const target = { id: "recEfvfO65s5S0o1f", handle: "FANZAdougaX", type: "セール告知系", genres: [], note: "n", status: "稼働", reply_restriction: "不明", no_repropose: false, last_reply_at: "2026-09-18T13:21:33.000Z" };
-// 40〜140 字・2 文・定型句なし。本文「第2弾は明日から。」の具体（第2弾）を含む（R14）
-const OK96 = "第2弾の開始おめでとうございます。今週の動きも追いかけながら、次の告知を楽しみにしています。";
+// 40〜140 字・2 文・定型句なし。本文「第2弾は明日から。」の具体（第2弾）を含む（R14）。祝福語は入れない（R14-A: 知識なし・postedAtJst ありでは A 型の「おめでと」が NG・2026-09-21）
+const OK96 = "第2弾は明日からなのですね。今週の動きも追いかけながら、次の告知を楽しみにしています。";
 
 test("normalizeTargets / normalizeReplies は MCP 生出力（cellValuesByFieldId）を受ける", () => {
   const t = normalizeTargets({

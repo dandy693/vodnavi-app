@@ -38,3 +38,21 @@
 - 案の本文と投稿・cache の事実の突合（CTO が読んで気づいた点・判定は CSO）: @IDEAPOCKETTER A「新作、配信開始おめでとう」＝投稿本文に配信開始の記述なし・cache の配信日は 8/28（B は 8月28日 と正しく記述）／@MOODYZ_official A「新作配信おめでとう」＝投稿本文は【PR】＋作品名のみ・配信日 9/11／@FANZAdougaX A「今夜のうちにリストを眺めて」＝投稿 05:00・期限は同日 09:59（時間軸が合わない）・C「第4弾」＝本文に無い（R13 の語リスト外）。
 - x_replies の反応（likes 等）は本 run では取得していない（9/24 朝に累積で再取得）。
 - 画像は本ブラウザ環境で描画されない。作品の特定は本文・リンク・スレッド返信からのみ行った。
+
+## 投稿と記録（2026-09-21 07:22〜08:03 JST・HUMAN 投稿 7 件／記録 08:08〜08:10）
+
+| # | reply_key | 型 | 手直し | reply_post_id | posted_at（snowflake・JST） | x_replies rec | x_targets last_reply_at |
+|---|---|---|---|---|---|---|---|
+| 1 | `20260921-attackers_av` | A | なし | `2101799195137200513` | 07:22:32 | `recIcT6hLLbXbE7Jb` | `recGCCpEJDzLNEkLo` → 2026-09-20T22:22:32.318Z |
+| 2 | `20260921-PREMIUM_AV` | C | なし | `2101799357008040412` | 07:23:10 | `recXOW0tChnz7TEc9` | `recHwHcrfE8LFcRdW` → 22:23:10.911Z |
+| 3 | `20260921-FANZAdougaX` | A | **あり**（`text_overridden_for`） | `2101799431620477291` | 07:23:28 | `recDUvC3rzBqtYf6z` | `recEfvfO65s5S0o1f` → 22:23:28.700Z |
+| 4 | `20260921-shirot_AV_chosa` | C | なし | `2101799614290796558` | 07:24:12 | `recTWxdUifMOVXNCf` | `recPYIDdkQ7EC0w0q` → 22:24:12.252Z |
+| 5 | `20260921-MOODYZ_official` | B | **あり** | `2101809200032788851` | 08:02:17 | `rec5Mu9X5RqBm2obw` | `recuIj1YV4CmsxgJN` → 23:02:17.671Z |
+| 6 | `20260921-IDEAPOCKETTER` | B | なし | `2101809432481161224` | 08:03:13 | `recAGVCP4e5mhHasV` | `rec3EWHDnA1tnjPzL` → 23:03:13.091Z |
+| 7 | `20260921-S1_No1_Style` | A | なし | `2101809530401444081` | 08:03:36 | `recwx4kIDrcai15L3` | `recItkceKqz7rPmzD` → 23:03:36.437Z |
+
+- `record.mjs --create drafts.json --pick … --texts posted.json`（`payload_create.json`・7 件・`text_overridden_for: ["FANZAdougaX","MOODYZ_official"]`）→ 事前に `search_records` で `20260921-` の既存行 0 件を確認 → MCP `create_records_for_table`（createdTime 08:08:51 JST）→ `--posted` × 7（`payload_posted_*.json`）→ `update_records_for_table` × 2（x_replies 7・x_targets 7）→ **読み戻し: x_replies `20260921-*` 7 件（reply_key / target / target_post_url / reply_text / draft_used / reply_post_id / posted_at）・x_targets 7 件の `last_reply_at` が payload と一致**。X 直接 URL は 7 件とも HTTP 200（99,843〜101,100 B）・対照 `1111111111111111111` は 404（08:10:06〜08:10:15）。
+- **x_replies 累計 25 件**（9/18 6・9/19 4・9/20 8・9/21 7）。**priority 3 の週カウント＝今週 1 / 2**（CSO判定: 週は月〜日。9/20（日）の S1 は先週分）。
+- **`record.mjs` の改修**: `--create` が「一部生成不能」の行（attackers_av＝A OK・B NG）を拒否したため、選んだ型がガード通過なら記録できるよう改修（`node --test` で追加検査）。
+- **CSO判定（2026-09-21 朝）の反映**: ③フロア外に「FANZA 外（MGS 等）」を含める CTO 判断を採用（README）／A 型の祝福は cache 配信日が投稿日から 3 日以内のみ＝**R14-A**／「今夜」「今日中」「次弾」「第N弾」を **R13** に追加（本文に無ければ NG）。**改訂後ガードを本日の 16 案に再適用: FANZAdougaX A（R13 今夜＋R14-A）・C（R13 第4弾）・MOODYZ A（R14-A・差 9 日）・IDEAPOCKETTER A（R14-A・差 23 日）が NG＝報告した 4 点と一致。attackers_av A・S1 A（差 0 日）は通過。** 設計書 §12-9。
+- 反応（likes 等）は本 run では取得していない（9/24 朝に累積で再取得）。

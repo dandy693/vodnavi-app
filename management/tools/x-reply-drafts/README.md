@@ -42,7 +42,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 作業ディレクトリはリポジトリルート。中間ファイルは `management/_metrics/<週>/bundle2/runs/<YYYYMMDD>/` に置く（実験資産は git 管理・§24-11-1）。
 
 0. **対象リスト**（CTO）: `x_targets` を MCP で読み戻して `state/<日付>/targets.json` に保存 → `node management/tools/x-reply-drafts/active-targets.mjs state/<日付>/targets.json --urls` の一覧を Chrome 抽出の巡回先にする（`--json` で内訳）。手順 3 の `targets.json` にもこのファイルを使える。
-   - **抽出段階の絞り込み（CSO判定 2026-09-20 朝）**: ①**女優本人・レビュー系**は「作品・発売・配信・セール・ランキング・作品イベント」に触れている投稿のみ該当。**私生活・配信お礼・出勤告知・雑談は抽出段階で除外し、除外した件数だけ報告する**（本文は台帳に貼らない）。②**動画フロア外（FANZAブックス・同人・ゲーム）の告知は除外。** ③メーカー公式・セール告知系は従来どおり（告知は基本すべて該当）。④**【補足・CSO判定 2026-09-20 夜】「作品に触れる」は作品名・出演作・発売・配信・セール・作品イベントに限る。ファンからの贈り物・交流の投稿（例: 「データをいただいた」「メッセージが入っていた」）は含めない**（9/20 夜の @5may_itsukaichi・@shirot_AV_chosa は見送り）。
+   - **抽出段階の絞り込み（CSO判定 2026-09-20 朝）**: ①**女優本人・レビュー系**は「作品・発売・配信・セール・ランキング・作品イベント」に触れている投稿のみ該当。**私生活・配信お礼・出勤告知・雑談は抽出段階で除外し、除外した件数だけ報告する**（本文は台帳に貼らない）。②**動画フロア外（FANZAブックス・同人・ゲーム）の告知は除外。FANZA 外（MGS動画 等）のセール・作品も同じく除外**（CSO判定 2026-09-21 朝・9/21 朝の @DMM10sale「MGS動画 300 円」引用・@shirot_AV_chosa の mgstage.com リンクは除外）。 ③メーカー公式・セール告知系は従来どおり（告知は基本すべて該当）。④**【補足・CSO判定 2026-09-20 夜】「作品に触れる」は作品名・出演作・発売・配信・セール・作品イベントに限る。ファンからの贈り物・交流の投稿（例: 「データをいただいた」「メッセージが入っていた」）は含めない**（9/20 夜の @5may_itsukaichi・@shirot_AV_chosa は見送り）。
    - **抽出はプロフィール直読み**（navigate → `find` timestamp → scroll → `find`・センシティブ警告は「プロフィールを表示する」を押す＝表示切替のみ）。**X の検索（`from:` OR・最新）はプロフィールに実在する投稿を返さないことがある**（2026-09-20 実測: FANZAdougaX 05:00 の 2 件が検索に出ない）ため使わない。窓の判定は snowflake ID（`(id >> 22) + 1288834974657` ms）。
 1. **CTO**（旧: HUMAN・08:2x 改訂）: 対象投稿を 1 行 1 件で `input.txt` に貼る
    `@ハンドル｜投稿日時｜投稿URL｜本文｜作品コード（任意）`
@@ -87,7 +87,7 @@ node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/
 - `x_targets` に紐づかない行は priority 空・type 不明で別行に出る（`unmatched`）。`posted_at` 空の行は期間で落とさず記入状況に出す。
 - **Airtable の `got_like` / `got_reply` はチェックボックスで「取得済み・0」と「未取得」を区別できない。** 区別は `reactions.json` の有無（`--reactions` の「反応 取得済」列）で見る。`reactions.json` に無い行＝未取得。
 - 初回（9/18〜9/19・10 件・反応は 2026-09-19 22:4x〜22:5x 取得）→ `management/_metrics/2026-W38/bundle2/state/20260919-2230/weekly-report-dry-20260919.md`＝全件 priority 1・A 4 / B 3 / C 3・likes 0 / replies 0・views 合計 123（中央値 7.5）。
-- priority 3（対照）の「提示は週 2 件まで」は CTO の手動カウント（実装不要・CSO 2026-09-19 22:5x）。
+- priority 3（対照）の「提示は週 2 件まで」は CTO の手動カウント（実装不要・CSO 2026-09-19 22:5x）。**週は月〜日で数える**（CSO判定 2026-09-21 朝。9/20（日）の S1_No1_Style は先週分・9/21（月）の S1_No1_Style で今週 1 / 2）。
 - **自投稿との比較（CSO 連絡 2026-09-20・観測のみ）**: HUMAN が X Analytics（Premium）の投稿別 CSV を `state/<日付>/own_posts.csv` に置く → `--own-posts state/<日付>/own_posts.csv` で「リプの表示回数中央値」と「同期間の自投稿インプレッション中央値」を並べる比較表が末尾に出る。**判定基準（10/12・自投稿の中央値 ≥ 50・§26-2）は変えない。** 列名は tolerant に検出（id＝`Tweet id`/`Post id`・日時＝`time`/`Date`・インプレッション＝`impressions`/`Impressions`）し、使用した列名を出力に併記する。x_replies の `reply_post_id` と一致する行（リプ自身）は自投稿から除外。**TZ 表記の無い日時は JST として扱う＝初回の HUMAN 提供 CSV で列名と TZ を実測して確定する**（旧 Twitter Analytics 形式は `+0000`＝UTC 明記）。
 
 ## ガード（`guards.mjs`）
@@ -103,8 +103,8 @@ node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/
 | R7 | 女優名には「さん」／メーカー・レーベル名に「さん」は NG | `ctx.names`（作品知識の `actress[]`・女優本人の `display_name`）／`ctx.orgNames`（それ以外の `display_name`・maker/label） |
 | R8 | 字数（既定 **30〜140**・`R8_chars`・CSO裁定 2026-09-19 で min 80 → 40 → 30）・X 重み ≤280・**文数 ≤2**（`R8_sentences_max`） | `guards.config.json` |
 | R12 | 定型句（追う側としては／予定が立てやすい／助かります など）＋**報告書調の締め（確認しました／把握しました／届いた／受け止め・CSO判定 2026-09-19 12:1x）** | `guards.config.json` `R12_stock_phrases` |
-| R13 | 根拠なし断定語（恒例／毎回／一定 など）＋暦の推定語（三連休／連休／週末／祝日／休日）。本文にあれば引用として免除 | `guards.config.json` `R13_unfounded_assertions` |
-| R14 | 具体性: 案に相手投稿本文の具体（数値の完全一致・語の含有）が 1 つ以上。**B 型は作品知識が無ければ NG・あれば cache 由来の事実を 1 つ含む・最大 2 つまで**（`B_max_knowledge_facts`・種別ごとに数える・配信日の表記ゆれは 1 つ・出演者名は数えない・優先 収録時間 > 配信日 > シリーズ > その他・CSO判定 2026-09-19 12:1x） | `guards.config.json` `R14_concreteness` |
+| R13 | 根拠なし断定語（恒例／毎回／一定 など）＋暦の推定語（三連休／連休／週末／祝日／休日）＋**投稿時刻・本文にない時間表現・次弾の推定（今夜／今日中／次弾／第N弾・CSO判定 2026-09-21 朝）**。本文にあれば引用として免除（regex は全マッチを 1 箇所ずつ判定＝本文が「第3弾」なら「第4弾」だけ NG） | `guards.config.json` `R13_unfounded_assertions` |
+| R14 | 具体性: 案に相手投稿本文の具体（数値の完全一致・語の含有）が 1 つ以上。**R14-A（CSO判定 2026-09-21 朝）: A 型の祝福（「おめでと」）は cache の配信日（`knowledge.date`）が投稿日から 3 日以内のときのみ許可。それ以外の A 型は祝福ではなく本文の具体 1 つへの一言**（`A_congrats_window_days`・`postedAtJst` を渡さない呼び出しでは検査しない）。**B 型は作品知識が無ければ NG・あれば cache 由来の事実を 1 つ含む・最大 2 つまで**（`B_max_knowledge_facts`・種別ごとに数える・配信日の表記ゆれは 1 つ・出演者名は数えない・優先 収録時間 > 配信日 > シリーズ > その他・CSO判定 2026-09-19 12:1x） | `guards.config.json` `R14_concreteness` |
 | R15 | 告知の形式・並べ方・出し方への言及 | `guards.config.json` `R15_meta_mentions` |
 | R16 | 日付の斜線表記（`09/18` `9/18`）＝「9月18日」に正規化する（CTO 追加） | `guards.config.json` `R16_date_format` |
 | R17 | 女優本人向けの案は「<表示名>さん、」で始める（CSO判定 2026-09-19 12:1x の PROMPT 規則の機械検査・CTO 追加） | `guards.config.json` `R17_actress_greeting` |

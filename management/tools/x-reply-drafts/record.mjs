@@ -116,12 +116,14 @@ if (isMain(import.meta.url)) {
     const records = [];
     const overridden = [];
     // 同一ハンドルが複数行あるとき（同日同ハンドル 2 件目以降は停止・2026-09-20）は生成済みの行を使う。停止行しか無ければエラー。
+    // 「一部生成不能」（一部の型だけガード未通過）の行も、選んだ型がガード通過なら記録できる（2026-09-21・attackers_av の B のみ R14 NG で A を投稿した実例）。
+    const isUsable = (s) => s === "generated" || /^一部生成不能/.test(String(s ?? ""));
     const seen = new Set();
     for (const item of drafts.items ?? []) {
       const pick = picks[item.handle];
       if (!pick) continue;
-      if (item.status !== "generated") {
-        const alt = (drafts.items ?? []).find((x) => x.handle === item.handle && x.status === "generated");
+      if (!isUsable(item.status)) {
+        const alt = (drafts.items ?? []).find((x) => x.handle === item.handle && isUsable(x.status));
         if (alt) continue; // 生成済みの行で処理する
         throw new Error(`${item.handle} は生成済みではない（status=${item.status}）`);
       }

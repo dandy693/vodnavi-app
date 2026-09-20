@@ -271,7 +271,7 @@ export async function generateForLine({ line, target, knowledge, replies, now, s
       // R18 語置換（「体験版」→「サンプル動画」・CSO判定 2026-09-19 12:1x）はガードの前に適用し、置換した語を記録する
       const rep = applyReplacements(String(obj[t] ?? "").trim(), config);
       const text = rep.text;
-      const g = guardReply(text, { type: t, names, orgNames, sources, body: line.body, knowledge, targetType: target?.type ?? null, displayName: target?.display_name ?? null, config });
+      const g = guardReply(text, { type: t, names, orgNames, sources, body: line.body, knowledge, targetType: target?.type ?? null, displayName: target?.display_name ?? null, postedAtJst: line.postedAtJst ?? null, config });
       // ガード NG だった過去の案は history に残す（CSO が再生成の理由を追えるように）
       const history = [...(item.drafts[t]?.history ?? [])];
       if (item.drafts[t] && !item.drafts[t].guard.ok) history.push({ text: item.drafts[t].text, failures: item.drafts[t].guard.failures });

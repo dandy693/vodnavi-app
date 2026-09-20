@@ -78,3 +78,18 @@ test("--create --texts: 投稿した本文を正として記録（HUMAN 手直�
   assert.equal(out2.text_overridden_for, undefined);
   assert.equal(out2.records[0].fields["fldbKfB0mpR9wMS2g"], "案の本文です。9月19日の配信開始おめでとうございます。");
 });
+
+test("--create: 「一部生成不能」の行でも、選んだ型がガード通過なら記録できる（2026-09-21・attackers_av の実例）", async () => {
+  const { execFileSync } = await import("node:child_process");
+  const os = await import("node:os");
+  const fs = await import("node:fs");
+  const path = await import("node:path");
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), "xrd-"));
+  const item = { handle: "attackers_av", replyKey: "20260921-attackers_av", postUrl: "https://x.com/attackers_av/status/2101692866636734862", status: "一部生成不能（B がガード未通過・最大 2 回再生成後）", target: { id: "recGCCpEJDzLNEkLo" }, drafts: { A: { text: "新作配信開始おめでとうございます。8KVRでの梓ヒカリさん出演作が9月21日0時にスタートしたのですね。", guard: { ok: true, failures: [] } }, B: { text: "x", guard: { ok: false, failures: [{ rule: "R14" }] } } } };
+  const dp = path.join(dir, "drafts.json"); fs.writeFileSync(dp, JSON.stringify({ dry_run: false, items: [item] }));
+  const here = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, "$1"));
+  const out = JSON.parse(execFileSync(process.execPath, [path.join(here, "record.mjs"), "--create", dp, "--pick", "attackers_av=A"], { encoding: "utf8" }));
+  assert.equal(out.count, 1);
+  assert.equal(out.records[0].fields["fldeXo1Hzlb5xytfv"], "A");
+  assert.throws(() => execFileSync(process.execPath, [path.join(here, "record.mjs"), "--create", dp, "--pick", "attackers_av=B"], { encoding: "utf8", stdio: "pipe" }), /ガード未通過/);
+});

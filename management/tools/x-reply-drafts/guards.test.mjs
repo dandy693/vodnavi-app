@@ -180,10 +180,11 @@ test("2026-09-18 手動下書き 6 件を R1〜R15 に通す（CSO判定 2026-09
   assert.deepEqual(results.map((r) => r.metrics.chars), [52, 53, 62, 50, 55, 47]);
   // 実測（2026-09-19）: #1 R12（予定が立てやすい）／#2 R4＋R14／#3 R12（助かります）＋R13（恒例）／#4 R14（本文の具体を含まない）
   // ／#5 R14（B 型は知識ありモードのみ・手動は知識なしで書かれた）／#6 通過
-  assert.deepEqual(rules(results[0]), ["R12"]);
+  // 追記（2026-09-21・CSO判定「第N弾」を R13 に追加）: #1・#4 の「第2弾」は本文（第1弾のみ）に無いため R13 も当たる（手動下書きは参考例のまま・PROMPT の注記どおり使わない）
+  assert.deepEqual(rules(results[0]), ["R12", "R13"]);
   assert.deepEqual(rules(results[1]), ["R4", "R14"]);
   assert.deepEqual(rules(results[2]), ["R12", "R13"]);
-  assert.deepEqual(rules(results[3]), ["R14"]);
+  assert.deepEqual(rules(results[3]), ["R13", "R14"]);
   assert.deepEqual(rules(results[4]), ["R14"]);
   assert.ok(results[5].ok, JSON.stringify(results[5].failures));
 });
@@ -223,4 +224,35 @@ test("R18: 語置換（体験版 → サンプル動画・ガードではなく�
   assert.equal(r.text.includes("体験版"), false);
   assert.deepEqual(r.applied, [{ from: "体験版", to: "サンプル動画", count: 1 }]);
   assert.deepEqual(applyReplacements("置換の対象語を含まない文。", loadConfig()).applied, []);
+});
+
+test("R13（CSO判定 2026-09-21）: 投稿時刻・本文にない時間表現・次弾の推定（今夜／今日中／次弾／第N弾）は本文に無ければ NG・本文にあれば免除", () => {
+  const body = "第3弾は朝9:59まで‼️ こだわりのフェラ5️⃣0️⃣％OFF作品リスト✨ 💋交わる体液、濃密セックス 完全ノーカットスペシャル みなと羽琉 @S1_No1_Style";
+  const a = guardReply("第3弾の開催おめでとうございます。朝9時59分までという区切りなら、今夜のうちにリストを眺めておきたいです。", { type: "A", body });
+  assert.ok(a.failures.some((f) => f.rule === "R13" && /今夜/.test(f.detail)), "「今夜」は本文に無い → R13");
+  const c = guardReply("第3弾が朝9時59分までということは、第4弾の対象リストが出るのも同じ日のうちでしょうか。", { type: "C", body });
+  assert.ok(c.failures.some((f) => f.rule === "R13" && /第4弾/.test(f.detail)), "「第4弾」は本文に無い → R13");
+  const ok = guardReply("第3弾は朝9時59分までなのですね。弾ごとの対象が入れ替わるので、朝のうちにリストを見ておきます。", { type: "A", body });
+  assert.ok(!ok.failures.some((f) => f.rule === "R13"), "「第3弾」は本文にあるので免除");
+  assert.ok(rules(guardReply("次弾のリストも同じ時間に出るのでしょうか。", { type: "C", body })).includes("R13"), "「次弾」");
+  assert.ok(rules(guardReply("今日中にリストを見ておきます。9時59分までですね。", { type: "A", body })).includes("R13"), "「今日中」");
+});
+
+test("R14-A（CSO判定 2026-09-21）: A 型の祝福は cache 配信日が投稿日から 3 日以内のときのみ。postedAtJst 無しでは検査しない", () => {
+  const body = "パーフェクトボディ💎✨ #坂井美桜 @mio_sakai_ #PR";
+  const kOld = { content_id: "ipzz00947", date: "2026-08-28 00:00:19", volume: "121" };
+  const kNew = { content_id: "atvr00073", date: "2026-09-21 00:00:17", volume: "88" };
+  const text = "パーフェクトボディの告知ありがとうございます。坂井美桜さんの新作、配信開始おめでとうございます。";
+  const ng = guardReply(text, { type: "A", body, knowledge: kOld, postedAtJst: "2026-09-20 22:00", names: ["坂井美桜"] });
+  assert.ok(ng.failures.some((f) => f.rule === "R14" && /祝福/.test(f.detail) && /差 23 日/.test(f.detail)), "配信日 8/28・投稿 9/20＝差 23 日 → NG");
+  const noK = guardReply(text, { type: "A", body, knowledge: null, postedAtJst: "2026-09-20 22:00", names: ["坂井美桜"] });
+  assert.ok(noK.failures.some((f) => f.rule === "R14" && /配信日が無い/.test(f.detail)), "作品知識なし → NG");
+  const ok = guardReply("新作配信開始おめでとうございます。8KVRでの梓ヒカリさん出演作が9月21日0時にスタートしたのですね。", { type: "A", body: "【PR】 #アタッカーズ #VR 新作配信開始！ 8KVR 動画 @azusa_hikari_ #梓ヒカリ", knowledge: kNew, postedAtJst: "2026-09-21 00:20", names: ["梓ヒカリ"] });
+  assert.ok(!ok.failures.some((f) => f.rule === "R14" && /祝福/.test(f.detail)), "配信日 9/21・投稿 9/21＝差 0 日 → 許可");
+  const noDate = guardReply(text, { type: "A", body, knowledge: kOld, names: ["坂井美桜"] });
+  assert.ok(!noDate.failures.some((f) => f.rule === "R14" && /祝福/.test(f.detail)), "postedAtJst 無し（単体テスト等）は検査しない");
+  const bType = guardReply("配信開始おめでとうございます。収録121分で配信日は8月28日ですね。", { type: "B", body, knowledge: kOld, postedAtJst: "2026-09-20 22:00", sources: ["121 8月28日 2026-08-28"] });
+  assert.ok(!bType.failures.some((f) => f.rule === "R14" && /祝福/.test(f.detail)), "A 型以外には適用しない");
+  const noCongrats = guardReply("パーフェクトボディという紹介の一言が目を引きますね。坂井美桜さんの作品、収録は121分なのですね。", { type: "A", body, knowledge: kOld, postedAtJst: "2026-09-20 22:00", names: ["坂井美桜"] });
+  assert.ok(!noCongrats.failures.some((f) => f.rule === "R14" && /祝福/.test(f.detail)), "祝福語が無ければ対象外");
 });

@@ -11,6 +11,7 @@
 //   knowledge?: object,  // 作品知識（knowledge.mjs --extract の 1 件）。B 型はこれが無いと生成不可・あれば事実を 1〜B_max_knowledge_facts 個含む（R14-B）
 //   targetType?: string, // 対象アカウントの type（"女優本人" のとき R17＝「<displayName>さん、」で始める・CSO判定 2026-09-19 12:1x）
 //   displayName?: string,// 対象アカウントの表示名（R17）
+//   postedAtJst?: string,// 相手投稿の投稿日時（"YYYY-MM-DD HH:mm" JST）。R14-A（A 型の祝福は cache 配信日が投稿日から 3 日以内のときのみ・CSO判定 2026-09-21）
 //   config?: object,     // 省略時は guards.config.json を読む
 // }
 // 語置換（R18・「体験版」→「サンプル動画」）はガードではなく applyReplacements(text, cfg) で生成直後に行う。
@@ -199,6 +200,17 @@ export function applyReplacements(text, cfg) {
   return { text: out, applied };
 }
 
+/** R14-A 用: "YYYY-MM-DD…" 2 つの暦日差（絶対値・日）。どちらかが日付として読めなければ null。 */
+export function calendarDayDiff(a, b) {
+  const d = (v) => {
+    const m = String(v ?? "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+    return m ? Date.UTC(+m[1], +m[2] - 1, +m[3]) : null;
+  };
+  const x = d(a), y = d(b);
+  if (x == null || y == null) return null;
+  return Math.abs(Math.round((x - y) / 86400000));
+}
+
 function escapeRe(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -209,8 +221,11 @@ function matchesEntry(text, entry) {
     return text.includes(entry) ? entry : null;
   }
   if (entry && typeof entry.regex === "string") {
-    const m = text.match(new RegExp(entry.regex, entry.flags ?? ""));
-    return m ? `${m[0]}（regex: ${entry.regex}）` : null;
+    // 全マッチを返す（「第3弾…第4弾」のように同じ regex が複数箇所に当たるとき、本文引用の免除は 1 箇所ずつ判定する・2026-09-21）
+    const flags = (entry.flags ?? "").includes("g") ? entry.flags : (entry.flags ?? "") + "g";
+    const found = Array.from(text.matchAll(new RegExp(entry.regex, flags)), (m) => m[0]);
+    const uniq = [...new Set(found)];
+    return uniq.length ? uniq.map((f) => `${f}（regex: ${entry.regex}）`) : null;
   }
   return null;
 }
@@ -219,7 +234,8 @@ function listHits(text, list) {
   const hits = [];
   for (const e of list ?? []) {
     const h = matchesEntry(text, e);
-    if (h) hits.push(h);
+    if (Array.isArray(h)) hits.push(...h);
+    else if (h) hits.push(h);
   }
   return hits;
 }
@@ -327,6 +343,18 @@ export function guardReply(text, ctx = {}) {
       const max = cfg.R14_concreteness.B_max_knowledge_facts;
       const counted = hits.filter((h) => h.cat !== "actress");
       if (max != null && counted.length > max) push("R14", `B 型の cache 由来の事実が ${counted.length} 個（最大 ${max}・優先: 収録時間 > 配信日 > シリーズ > その他）: ${counted.map((h) => h.value).join("、")}`);
+    }
+  }
+  // R14-A: A 型の祝福（おめでと）は cache の配信日が投稿日から A_congrats_window_days 日以内のときだけ許可（CSO判定 2026-09-21 朝）。
+  // それ以外の A 型は祝福ではなく本文の具体 1 つへの一言。ctx.postedAtJst が無ければ検査しない（generate.mjs は常に渡す）。
+  if ((ctx.type ?? "B") === "A" && ctx.postedAtJst && cfg.R14_concreteness?.A_congrats_window_days != null) {
+    const phrases = cfg.R14_concreteness.A_congrats_phrases ?? ["おめでと"];
+    const hit = listHits(t, phrases);
+    if (hit.length) {
+      const win = cfg.R14_concreteness.A_congrats_window_days;
+      const diff = calendarDayDiff(ctx.knowledge?.date, ctx.postedAtJst);
+      if (diff == null) push("R14", `A 型の祝福（${hit.join("、")}）は cache の配信日が投稿日から ${win} 日以内のときのみ（作品知識に配信日が無い＝祝福ではなく本文の具体 1 つへの一言にする）`);
+      else if (diff > win) push("R14", `A 型の祝福（${hit.join("、")}）は cache の配信日が投稿日から ${win} 日以内のときのみ（配信日 ${String(ctx.knowledge.date).slice(0, 10)}・投稿日 ${String(ctx.postedAtJst).slice(0, 10)}・差 ${diff} 日）`);
     }
   }
   // R17 女優本人向けの案は「<表示名>さん、」で始める（CSO判定 2026-09-19 12:1x の PROMPT 規則の機械検査・CTO 追加）

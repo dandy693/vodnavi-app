@@ -11225,3 +11225,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 案と事実の突合で気づいた点（判定は CSO）: IDEAPOCKETTER A「配信開始おめでとう」（投稿に記述なし・配信日 8/28）／MOODYZ A「新作配信おめでとう」（投稿は【PR】＋作品名のみ）／FANZAdougaX A「今夜のうちに」（投稿 05:00・期限 同日 09:59）・C「第4弾」（本文に無い）。
 - 記録 → `management/_metrics/2026-W38/bundle2/runs/20260921-am/`（README / profiles / input / parsed / targets / replies 18 / stopcheck / knowledge_* / rows / drafts / generate.log）。
 - **距離**: 本コミットは直前 READY `267a533` から 6（`a3cc106` が 5）＝skip 想定。
+- 【2026-09-21 07:0x 追記・push 後の Vercel state】`35f2424`（距離 6・push 07:08:01 JST）＝`dpl_3hmyDHin44JPj7cTTiApp6cANLuQ` **CANCELED**（created 1789942083625＝07:08:03 JST・skip 経路）。`a3cc106`（距離 5）＝`dpl_6DhYGV5dD35eZw4Aj8PrQJRQhBjB` CANCELED（06:20:55 JST）。閾値 10 と整合。次の docs push は距離 7（skip）。
+
+## 2026-09-21 08:1x — 束2 段階② 朝の投稿 7 件を記録（HUMAN 投稿 07:22〜08:03）→ x_replies 作成 7・reply_post_id／posted_at／last_reply_at 更新・読み戻し一致（累計 25）／CSO判定（朝）を反映: ③に FANZA 外を含める・priority 3 の週は月〜日（本日 1/2）・R14-A（A 型の祝福は配信日 3 日以内のみ）・R13 に 今夜／今日中／次弾／第N弾／`record.mjs` の一部生成不能行の扱いを修正
+- `record.mjs --create --texts`（`text_overridden_for` FANZAdougaX / MOODYZ_official）→ 既存 `20260921-` 0 件を確認 → `create_records_for_table`（08:08:51 JST）→ `--posted` × 7 → `update_records_for_table` × 2 → 読み戻し x_replies 7・x_targets 7 が payload と一致。X 直接 URL 7 件 200（99,843〜101,100 B）・対照 404（08:10:06〜15）。
+- **`record.mjs` 欠陥（CTO 検出）**: 「一部生成不能（B のみ NG）」の行の A を記録できなかった → 選んだ型がガード通過なら記録できるよう修正・テスト追加。
+- **ガード改訂**: R14-A（`A_congrats_window_days=3`・`postedAtJst` × `knowledge.date` の暦日差・知識なしでは祝福不可）／R13 に「今夜」「今日中」「次弾」「第N弾（regex）」／`listHits` の regex を全マッチ判定へ（旧実装は最初のマッチのみ＝「第3弾…第4弾」で第4弾が免除されていた）／PROMPT の A 型定義と規則 7 を改訂／README 手順 0 ②・priority 3 注記・R13/R14 行。`node --test` 61/61（手動下書き回帰の期待値更新: #1・#4 に R13 追加）。
+- **回帰（朝の 16 案に再適用）**: FANZAdougaX A（R13 今夜＋R14-A）・C（R13 第4弾）・MOODYZ A（R14-A 差 9 日）・IDEAPOCKETTER A（R14-A 差 23 日）＝NG／attackers_av A・S1 A（差 0 日）＝通過／他 10 案 不変。朝の drafts.json は改訂前の生成物として据え置き。
+- 記録 → `runs/20260921-am/README.md`（投稿と記録）・設計書 §12-9・FACT §26-10-2（実測 bullet＋CSO判定 bullet）。
+- **距離**: 本コミットは直前 READY `267a533` から 7（`35f2424` が 6）＝skip 想定。
