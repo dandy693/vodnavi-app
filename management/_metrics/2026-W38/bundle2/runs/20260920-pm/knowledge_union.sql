@@ -1,0 +1,5 @@
+select 1 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('aa01e0f66b500b20617ca7083c3fbd93a3115b3854ec50c5e503e23aa9d381a2', '5acaed0588c91cef94d740807c2c70d232e84bd74634b355e62f50febe049b74', '986355f0e10fd16ef1301c5cef9f956b826e47582c81f5f224755882c0b7e718')
+union all
+select 2 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('aeda17d97ea65320eb6194b0279b1353b20f742d39e28f9d3ac4c58b2c6c54a4', '2c046a4498ff787e7babf8478151d21454ee1f3f576ccc6383797c29992bb7d3', 'd948773233b09f394577904c6bb096712079f5f09eddc3271170136beae25c1c')
+union all
+select 5 as line_no, cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('c326807b6a5006f6fae9d4f44c158ff0b5833ee284ad26321e7a2c7302df3dd9', '9f4a7af27bbe6d552ebfde18d75994b04ab049c85e51fcc08dfd423faf6f1747', '2d4eab1cf0290a661bd6b66c401f8d3aeb1b15de9eda623807299f32cb7b174e')

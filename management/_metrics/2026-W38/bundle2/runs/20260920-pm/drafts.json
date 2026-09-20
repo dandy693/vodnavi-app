@@ -1,0 +1,751 @@
+{
+  "generated_at": "2026-09-20T12:28:43.157Z",
+  "today_jst": "20260920",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "ddf6ef6da6ed3aaa76456493c1ec3535cd17f5b877acdafef1172c9f77932d63",
+  "counts": {
+    "lines": 15,
+    "generated": 6,
+    "stopped": 9
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2101631211248714203",
+      "targetPostId": "2101631211248714203",
+      "postedAtJst": "2026-09-20 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T12:50:47.000Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "jufe00559",
+        "title": "美しい人妻のねっとり甘い接吻と高級ランジェリーSEX 田舎育ちの僕を誘惑する都会暮らしの叔父の妻 黒木奈美",
+        "fetched_at": "2026-09-20 05:46:56.213+00"
+      },
+      "replyKey": "20260920-Fitch_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50%OFFの実施おめでとうございます。秋の企画として作品が並んでいくのが楽しみです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 80
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録146分の作品が50%OFFの対象とのことで、2024年6月14日配信の一本ですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 72
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "50%OFFの対象は今回の一作のみでしょうか、それとも他のタイトルも含まれるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 84
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 791,
+        "output_tokens": 1117,
+        "cache_creation_input_tokens": 3085,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2101480216350876096",
+      "targetPostId": "2101480216350876096",
+      "postedAtJst": "2026-09-20 10:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T12:50:47.000Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260920-Fitch_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2101631214197318027",
+      "targetPostId": "2101631214197318027",
+      "postedAtJst": "2026-09-20 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T12:50:47.000Z"
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-Fitch_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2101480219412750586",
+      "targetPostId": "2101480219412750586",
+      "postedAtJst": "2026-09-20 10:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T12:50:47.000Z"
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-Fitch_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101642685895557527",
+      "targetPostId": "2101642685895557527",
+      "postedAtJst": "2026-09-20 21:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-shirot_AV_chosa",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "沢北みなみさんの出演作の紹介、ありがとうございます。どんな感想が寄せられているのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "沢北みなみさんのこの作品には、今どのくらいのレビューが集まっていますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 36,
+              "weight": 72
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 307,
+        "output_tokens": 639,
+        "cache_creation_input_tokens": 3063,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "5may_itsukaichi",
+      "postUrl": "https://x.com/5may_itsukaichi/status/2101479854365655172",
+      "targetPostId": "2101479854365655172",
+      "postedAtJst": "2026-09-20 10:13",
+      "target": {
+        "id": "rec1fN2VM1pI5l2vf",
+        "handle": "5may_itsukaichi",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-5may_itsukaichi",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "五日市芽依さん、いただいたデータにメッセージまで入っていたとのこと、素敵なやり取りですね。こうして言葉が届くのは励みになりますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 65,
+              "weight": 130
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "五日市芽依さん、痴女女将のお知らせありがとうございます。メッセージ入りのデータをいただけたというお話、あたたかいやり取りですね。",
+              "failures": [
+                {
+                  "rule": "R6",
+                  "detail": "容姿・露骨語: 痴女"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "五日市芽依さん、いただいたデータはサブのアカウントのほうで見られるようになりますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 84
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "五日市芽依さん、いただいた痴女女将のデータは、いつ頃どちらで見られるようになりそうでしょうか。",
+              "failures": [
+                {
+                  "rule": "R6",
+                  "detail": "容姿・露骨語: 痴女"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 856,
+        "output_tokens": 2659,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6126,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "Aizawa_miyu03",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101468874290200609",
+      "targetPostId": "2101468874290200609",
+      "postedAtJst": "2026-09-20 09:29",
+      "target": {
+        "id": "recld7SvHioWfSb8o",
+        "handle": "Aizawa_miyu03",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-Aizawa_miyu03",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "逢沢みゆさん、迷っている人に2つ挙げてくださってありがとうございます。毎シーンで男優さんたちから感想と評価があったというお話が気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 70,
+              "weight": 139
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "逢沢みゆさん、今回挙げてくださった2つは、どちらから先に観ると楽しめそうでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 83
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 400,
+        "output_tokens": 1237,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "FalenoEvent",
+      "postUrl": "https://x.com/FalenoEvent/status/2101548857025048995",
+      "targetPostId": "2101548857025048995",
+      "postedAtJst": "2026-09-20 14:47",
+      "target": {
+        "id": "recByvjAnovkOIiu3",
+        "handle": "FalenoEvent",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-FalenoEvent",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "イベント終了お疲れさまでした。雨の中での開催、次回は10月15日の平日開催とのことで楽しみです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 92
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "10月15日の平日イベントは、参加受付の開始はいつ頃になりますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 33,
+              "weight": 62
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 430,
+        "output_tokens": 87,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "FalenoEvent",
+      "postUrl": "https://x.com/FalenoEvent/status/2101505711465468382",
+      "targetPostId": "2101505711465468382",
+      "postedAtJst": "2026-09-20 11:56",
+      "target": {
+        "id": "recByvjAnovkOIiu3",
+        "handle": "FalenoEvent",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260920-FalenoEvent",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 8 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 10,
+      "handle": "sodstarofficial",
+      "postUrl": "https://x.com/sodstarofficial/status/2101612335484018937",
+      "targetPostId": "2101612335484018937",
+      "postedAtJst": "2026-09-20 19:00",
+      "target": {
+        "id": "recNeii0IxsmSm4Sb",
+        "handle": "sodstarofficial",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-sodstarofficial",
+      "warnings": [],
+      "status": "一部生成不能（A/C がガード未通過・最大 2 回再生成後）",
+      "drafts": {
+        "A": {
+          "text": "催○術がテーマの新作、告知おめでとうございます。どんな展開になる作品なのか、続報を待っています。",
+          "guard": {
+            "ok": false,
+            "failures": [
+              {
+                "rule": "R14",
+                "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+              }
+            ],
+            "metrics": {
+              "chars": 48,
+              "weight": 96
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "めいちゃんの新しい企画の告知、おめでとうございます。続報が出てくるのを楽しみに待っています。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            },
+            {
+              "text": "催○術をかけられるという予告、楽しみですね。どんな展開になっていくのか、続報を待っています。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "催○術をテーマにした今回の作品は、配信開始の時期はいつ頃を予定されていますか。",
+          "guard": {
+            "ok": false,
+            "failures": [
+              {
+                "rule": "R14",
+                "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+              }
+            ],
+            "metrics": {
+              "chars": 39,
+              "weight": 78
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "めいちゃんが出演する今回の企画、配信や予約の開始時期はいつ頃になりそうでしょうか。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            },
+            {
+              "text": "催○術をテーマにした今回の作品は、配信開始や予約の開始がいつ頃になる予定でしょうか。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1178,
+        "output_tokens": 2457,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 9189,
+        "calls": 3
+      }
+    },
+    {
+      "lineNo": 11,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101612468044959751",
+      "targetPostId": "2101612468044959751",
+      "postedAtJst": "2026-09-20 19:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:13:16.988Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-FANZAdougaX",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260920-FANZAdougaX が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 12,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2101627440766636335",
+      "targetPostId": "2101627440766636335",
+      "postedAtJst": "2026-09-20 20:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:14:05.269Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-PREMIUM_AV",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260920-PREMIUM_AV が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 13,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101619890344092012",
+      "targetPostId": "2101619890344092012",
+      "postedAtJst": "2026-09-20 19:30",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:14:39.708Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260920-MOODYZ_official が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 14,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101635741034119253",
+      "targetPostId": "2101635741034119253",
+      "postedAtJst": "2026-09-20 20:33",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T00:15:33.799Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260920-IDEAPOCKETTER が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 15,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2101631211336823097",
+      "targetPostId": "2101631211336823097",
+      "postedAtJst": "2026-09-20 20:15",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260920-S1_No1_Style",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "デビュー記念のイベントツアー決定おめでとうございます。10月9日の千葉と埼玉から始まるのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 93
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "10月17日から18日の福岡は、両日とも即売会が行われる形でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 35,
+              "weight": 64
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 420,
+        "output_tokens": 88,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3063,
+        "calls": 1
+      }
+    }
+  ]
+}

@@ -1,0 +1,171 @@
+{
+  "_note": "generate.mjs の checkStop を全行に適用（API 呼び出しなし・本文は含めない）",
+  "today": "2026-09-20",
+  "rows": [
+    {
+      "lineNo": 1,
+      "handle": "Fitch_official",
+      "postedAtJst": "2026-09-20 20:15",
+      "postUrl": "https://x.com/Fitch_official/status/2101631211248714203",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-19T12:50:47.000Z",
+      "work": "jufe00559",
+      "stop": null
+    },
+    {
+      "lineNo": 2,
+      "handle": "Fitch_official",
+      "postedAtJst": "2026-09-20 10:15",
+      "postUrl": "https://x.com/Fitch_official/status/2101480216350876096",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-19T12:50:47.000Z",
+      "work": "jufd00922",
+      "stop": null
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postedAtJst": "2026-09-20 20:15",
+      "postUrl": "https://x.com/Fitch_official/status/2101631214197318027",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-19T12:50:47.000Z",
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 4,
+      "handle": "Fitch_official",
+      "postedAtJst": "2026-09-20 10:15",
+      "postUrl": "https://x.com/Fitch_official/status/2101480219412750586",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-19T12:50:47.000Z",
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 5,
+      "handle": "shirot_AV_chosa",
+      "postedAtJst": "2026-09-20 21:00",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2101642685895557527",
+      "type": "レビュー系",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": "pppe00127",
+      "stop": null
+    },
+    {
+      "lineNo": 6,
+      "handle": "5may_itsukaichi",
+      "postedAtJst": "2026-09-20 10:13",
+      "postUrl": "https://x.com/5may_itsukaichi/status/2101479854365655172",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 7,
+      "handle": "Aizawa_miyu03",
+      "postedAtJst": "2026-09-20 09:29",
+      "postUrl": "https://x.com/Aizawa_miyu03/status/2101468874290200609",
+      "type": "女優本人",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 8,
+      "handle": "FalenoEvent",
+      "postedAtJst": "2026-09-20 14:47",
+      "postUrl": "https://x.com/FalenoEvent/status/2101548857025048995",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 9,
+      "handle": "FalenoEvent",
+      "postedAtJst": "2026-09-20 11:56",
+      "postUrl": "https://x.com/FalenoEvent/status/2101505711465468382",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 10,
+      "handle": "sodstarofficial",
+      "postedAtJst": "2026-09-20 19:00",
+      "postUrl": "https://x.com/sodstarofficial/status/2101612335484018937",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    },
+    {
+      "lineNo": 11,
+      "handle": "FANZAdougaX",
+      "postedAtJst": "2026-09-20 19:00",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101612468044959751",
+      "type": "セール告知系",
+      "status": "稼働",
+      "last_reply_at": "2026-09-20T00:13:16.988Z",
+      "work": null,
+      "stop": "停止（同日同ハンドル 2 件目: 20260920-FANZAdougaX が既存）"
+    },
+    {
+      "lineNo": 12,
+      "handle": "PREMIUM_AV",
+      "postedAtJst": "2026-09-20 20:00",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2101627440766636335",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-20T00:14:05.269Z",
+      "work": "pred00881",
+      "stop": "停止（同日同ハンドル 2 件目: 20260920-PREMIUM_AV が既存）"
+    },
+    {
+      "lineNo": 13,
+      "handle": "MOODYZ_official",
+      "postedAtJst": "2026-09-20 19:30",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101619890344092012",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-20T00:14:39.708Z",
+      "work": null,
+      "stop": "停止（同日同ハンドル 2 件目: 20260920-MOODYZ_official が既存）"
+    },
+    {
+      "lineNo": 14,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-20 20:33",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2101635741034119253",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": "2026-09-20T00:15:33.799Z",
+      "work": null,
+      "stop": "停止（同日同ハンドル 2 件目: 20260920-IDEAPOCKETTER が既存）"
+    },
+    {
+      "lineNo": 15,
+      "handle": "S1_No1_Style",
+      "postedAtJst": "2026-09-20 20:15",
+      "postUrl": "https://x.com/S1_No1_Style/status/2101631211336823097",
+      "type": "メーカー公式",
+      "status": "稼働",
+      "last_reply_at": null,
+      "work": null,
+      "stop": null
+    }
+  ]
+}

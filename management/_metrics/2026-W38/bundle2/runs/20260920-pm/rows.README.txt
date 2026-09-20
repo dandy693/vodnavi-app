@@ -1,0 +1,5 @@
+rows.json = Supabase MCP execute_sql（read-only）2026-09-20 21:3x JST の結果を転記（knowledge_union.sql・PK 3 キー×3 行）。
+- ヒット: line 1 jufe00559（fetched 2026-09-20 05:46 UTC）/ line 2 jufd00922（fetched 2026-09-19 01:45 UTC）
+- MISS: line 5 pppe00127（3 フロアとも cache に無し → 知識なしモード）
+- line 12 pred00881 は停止行（同日 reply_key 既存）のため照会していない
+- item から URL / imageURL / affiliateURL / sampleImageURL / sampleMovieURL / tachiyomi を SQL 側で除いて転記（af_id・URL を持ち込まない）

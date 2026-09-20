@@ -1,0 +1,92 @@
+model=claude-opus-5 dry_run=false today_jst=20260920 counts={"lines":15,"generated":6,"stopped":9} prompt_sha=ddf6ef6da6ed
+
+=== @Fitch_official (メーカー公式) status=generated replyKey=20260920-Fitch_official calls=1 in=791 out=1117
+  A chars=43 weight=80 ok=true attempts=1
+     50%OFFの実施おめでとうございます。秋の企画として作品が並んでいくのが楽しみです。
+  B chars=44 weight=72 ok=true attempts=1
+     収録146分の作品が50%OFFの対象とのことで、2024年6月14日配信の一本ですね。
+  C chars=45 weight=84 ok=true attempts=1
+     50%OFFの対象は今回の一作のみでしょうか、それとも他のタイトルも含まれるのでしょうか。
+
+=== @Fitch_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-Fitch_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @Fitch_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-Fitch_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @Fitch_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-Fitch_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @shirot_AV_chosa (レビュー系) status=generated replyKey=20260920-shirot_AV_chosa calls=1 in=307 out=639
+  A chars=48 weight=96 ok=true attempts=1
+     沢北みなみさんの出演作の紹介、ありがとうございます。どんな感想が寄せられているのか気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=36 weight=72 ok=true attempts=1
+     沢北みなみさんのこの作品には、今どのくらいのレビューが集まっていますか。
+
+=== @5may_itsukaichi (女優本人) status=generated replyKey=20260920-5may_itsukaichi calls=2 in=856 out=2659
+  A chars=65 weight=130 ok=true attempts=2
+     五日市芽依さん、いただいたデータにメッセージまで入っていたとのこと、素敵なやり取りですね。こうして言葉が届くのは励みになりますね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=42 weight=84 ok=true attempts=2
+     五日市芽依さん、いただいたデータはサブのアカウントのほうで見られるようになりますか。
+
+=== @Aizawa_miyu03 (女優本人) status=generated replyKey=20260920-Aizawa_miyu03 calls=1 in=400 out=1237
+  A chars=70 weight=139 ok=true attempts=1
+     逢沢みゆさん、迷っている人に2つ挙げてくださってありがとうございます。毎シーンで男優さんたちから感想と評価があったというお話が気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=42 weight=83 ok=true attempts=1
+     逢沢みゆさん、今回挙げてくださった2つは、どちらから先に観ると楽しめそうでしょうか？
+
+=== @FalenoEvent (メーカー公式) status=generated replyKey=20260920-FalenoEvent calls=1 in=430 out=87
+  A chars=48 weight=92 ok=true attempts=1
+     イベント終了お疲れさまでした。雨の中での開催、次回は10月15日の平日開催とのことで楽しみです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=33 weight=62 ok=true attempts=1
+     10月15日の平日イベントは、参加受付の開始はいつ頃になりますか。
+
+=== @FalenoEvent (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 8 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260920-FalenoEvent calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== @sodstarofficial (メーカー公式) status=一部生成不能（A/C がガード未通過・最大 2 回再生成後） replyKey=20260920-sodstarofficial calls=3 in=1178 out=2457
+  A chars=48 weight=96 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     催○術がテーマの新作、告知おめでとうございます。どんな展開になる作品なのか、続報を待っています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=39 weight=78 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     催○術をテーマにした今回の作品は、配信開始の時期はいつ頃を予定されていますか。
+
+=== @FANZAdougaX (セール告知系) status=停止（同日同ハンドル 2 件目: 20260920-FANZAdougaX が既存） replyKey=20260920-FANZAdougaX calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== @PREMIUM_AV (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260920-PREMIUM_AV が既存） replyKey=20260920-PREMIUM_AV calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260920-MOODYZ_official が既存） replyKey=20260920-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== @IDEAPOCKETTER (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260920-IDEAPOCKETTER が既存） replyKey=20260920-IDEAPOCKETTER calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== @S1_No1_Style (メーカー公式) status=generated replyKey=20260920-S1_No1_Style calls=1 in=420 out=88
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=48 weight=93 ok=true attempts=1
+     デビュー記念のイベントツアー決定おめでとうございます。10月9日の千葉と埼玉から始まるのですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=35 weight=64 ok=true attempts=1
+     10月17日から18日の福岡は、両日とも即売会が行われる形でしょうか。

@@ -11159,3 +11159,15 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **次**: 21 時前の再抽出（窓＝08:4x 以降・新基準で絞り込み・除外件数を報告・S1 の 20:00 本告知を含む）。
 - **距離**: 本コミットは直前 READY `4b1e389` から 9＝skip 想定。**次の docs push が距離 10＝fail-open ビルド（受容済み）。**
 - 【2026-09-20 09:2x 追記・push 後の Vercel state／距離ラベルの訂正】`75c72bd` は直前 READY `4b1e389` から **距離 10**（`git rev-list --count` 実測。上の「639a535＝距離 7」「本コミット＝距離 9」は 1 つ小さく書いていた＝**639a535 は 8・5c4624c は 9・75c72bd が 10**）→ `dpl_2xBHGYyNMnk9aj3NbMvTZhaMqbYv` **BUILDING → READY**（buildingAt 09:21:03・ready 09:22:10 JST）＝**E19 fail-open 経路の 3 例目**（§22-8-1-1-f・CSO 受容済み）。**sitemap 再生成: root `lastmod` `2026-09-20T00:21:32.389Z`＝09:21:32 JST（buildingAt +29 秒）・`<loc>` 2,594 / works 1,200（videoa 400 / anime 400 / nikkatsu 400）/ genres 200 / actresses 1,177 / articles 8＝全損なし。** ビルドログは未取得（distance 10 の fail-open ログ行は 9/17 に取得済みの様式・受容済みのため追わない）。次の docs push は距離 1（skip）。
+
+## 2026-09-20 20:4x〜21:3x — 束2 段階② 夜の抽出（窓＝本日 08:40 以降・対象＝x_targets 稼働 34＝`active-targets.mjs`・新基準で絞り込み）: 窓内 16 アカウント 38 件以上 → 除外 13（私生活等 10・フロア外 3）→ 入力 15 行 → 生成 6 行 13 案 全通過・生成不能 1・停止 9
+- **対象**: 20:4x MCP 読み戻し 42 件（差分＝@AViiyone status=候補・no_repropose=true は HUMAN 変更／last_reply_at 4 件＝朝の投稿）→ `active-targets.mjs` **34**（priority 1: 26 / 2: 4 / 3: 4）。
+- **抽出（20:5x〜21:2x JST・読み取りのみ・プロフィール直読み・検索不使用）**: 34/34 読了。窓（snowflake > `2101456301061046272`＝08:40 JST）内の投稿があったのは 16 アカウント。**CSO判定 9/20 朝の絞り込みを適用＝女優本人・レビュー系の私生活／配信お礼／雑談 10 件除外**（Aizawa 2・mio_sakai_ 4・shiromine_miu 2・umi_sea_0v0 1・waka_misono 1）**・動画フロア外 3 件除外**（Aizawa 写真展 1・MOODYZ 電子書籍 1・games 1）。本文は台帳に貼らない。
+- **入力・停止**: `input.txt` 15 行（本文欄は投稿本文のみ・注記なし。shirot の 21:00 投稿は動画のみのためスレッド返信文を本文に使用）。x_replies 14 件との照合＝**同日 reply_key 既存で停止 4**（FANZAdougaX / PREMIUM_AV / MOODYZ / IDEAPOCKETTER＝朝に返信済み・最新 1 件のみ入力）・Fitch は 9/19 返信済みだが 1 日間隔で OK。本バッチ内の同日同ハンドル 2 件目以降 5 行停止（Fitch 3・FalenoEvent 1）。
+- **知識**: Supabase MCP PK ヒット 2（jufe00559 / jufd00922＝campaign「こだわりのフェラ50％OFF」date_end 9/21 09:59:59）・MISS 1（pppe00127）。「痴女女将」（5may）・「めいちゃん 催○術」（sodstar）は title／actress 検索でも該当なし。
+- **生成**: 21:26:28〜21:28:43 JST・claude-opus-5・API 10 回（in 4,382 / out 8,284 / cache_read 24,504）・**6 行 13 案 全通過**（知識あり 1 行＝Fitch A/B/C・知識なし 5 行＝shirot / 5may / Aizawa / FalenoEvent / S1 の A/C）・**一部生成不能 1**（sodstarofficial＝本文に具体が無く A/C とも R14・再生成 2 回）。
+- **priority 3**: @S1_No1_Style の 20:15 本告知（蒼井すずデビュー記念イベントツアー）を生成・提示（CSO判定 9/20 朝）。提示で今週 1 / 2（手動カウント）。
+- **【併記】画像は本ブラウザ環境で描画されない**（Aizawa の「この２つ観てほしい」の 2 枚は黒表示＝作品の特定不能・知識なしで生成）。センシティブ警告の「プロフィールを表示する」は 9 アカウントで要クリック・うち 5 は 2〜3 回目で着地（§10）。
+- **記録** → `management/_metrics/2026-W38/bundle2/runs/20260920-pm/`（README・profiles・input・parsed・targets・replies・stopcheck_all・knowledge_*・rows・drafts・log）。
+- **次**: HUMAN が案を選んで投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。明朝 8 時の抽出（窓＝本日 21:2x 以降）。
+- **距離**: 本コミットは直前 READY `75c72bd` から 2（`148a59e` が 1）＝skip 想定。
