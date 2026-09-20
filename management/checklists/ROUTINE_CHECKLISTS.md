@@ -39,6 +39,7 @@
 ### 📌 規約・E-E-A-T防衛
 - [ ] **法務表現一斉パトロール**: 「絶対」「最安」「業界No.1」などの根拠なき誇大表現がライターによって混入されていないか、サイト内検索で一括スクリーニング。
 - [ ] **著者・編集ポリシーページの生存**: `vodnavi.jp/authors` ページおよび編集ポリシー（E-E-A-Tのコア）のリンクがフッター等から正常にクローラーへ露出しているか確認。
+- [ ] **DMM アフィリエイトお知らせの監視 → 掲載取り下げ依頼の検索 → 除外**（CSO 指示 2026-09-21・FACT §28-1）: affiliate.dmm.com のお知らせ（取り下げ依頼・API 仕様変更・料率）を HUMAN が月次で確認し、取り下げ依頼があれば CTO が content_id（と女優名）で **9 範囲**（リポジトリ／git 履歴／`sitemap_works_archive`／`sitemap_cohort`／`fanza_response_cache`／`price_history`・`article_products`／配信中 sitemap 3 本／Vercel Runtime Logs 24h／Airtable `posts`）を read-only で検索 → 該当があれば除外手順（archive・cohort・cache の行削除＝HUMAN 枠／sitemap 除外／404・410 は denylist＝本番コード変更）を設計 → **CSO 承認後に実施 → 読み戻し**。**本番ページの直接取得は cache への書き込みを伴うため行わない。**
 
 ---
 

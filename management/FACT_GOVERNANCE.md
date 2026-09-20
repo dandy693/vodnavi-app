@@ -160,6 +160,20 @@
 - **TV Plus の未確認事項は「追加手続きの実画面URL」のみ**（`url-builder.ts` の `TVPLUS_ADD_TARGET` 禁則解除に必要）。料金の矛盾は台帳照合で解決済み。
 - **`premium.dmm.co.jp` は遮断ドメイン**（2026-08-06 権限モード変更後の再確認でも `This site is not allowed due to safety restrictions.`）＝実画面URLの確認は **HUMAN 実査枠**。
 
+#### 5-3-1. 【訂正・CSO 指示 2026-09-21／HUMAN 実画面 2026-09-21】**報酬UP（FANZA TV 新規無料登録 ¥2,750）の期間＝2026-09-12〜2026-10-22 23:59。TV Plus は対象外**
+
+| 項目 | 確定 |
+|---|---|
+| **FANZA TV 新規無料登録** | **報酬UP 期間中＝¥2,750（2026-09-12〜2026-10-22 23:59）**。上表の「報酬UPキャンペーン 継続中・**終了日記載なし**」は本項で訂正（削除せず残す）。**基本料率 ¥2,200（2026-08-11 実測）は不変**＝期間外は ¥2,200 |
+| **TV Plus 初回登録** | **報酬UP の対象外**（¥2,200 のまま） |
+| **注記（DMM 告知の原文趣旨）** | **「一部アフィリエイターは単価UP対象外」**。自アカウントが対象かは **HUMAN が管理画面で確認する**（CSO 指示時点＝未確認）→ **HUMAN 確認 2026-09-21（affiliate.dmm.com 報酬料率画面・CSO 転記）: FANZA TV 新規無料登録が 2,750 円表示＝報酬UP 対象** |
+| 他の料率 | **台帳 v3 と一致・変更なし** |
+| **通販（アダルト）サービス新規** | **「---」表示＝停止済みで確定**（上表の「2026-07-23 の停止告知が実行済み」を追認。「中止予定日未取得」の旧記述は「停止済み」へ訂正） |
+| 時点注記 | **記事・投稿の時点注記のルールに影響なし**（既に「2026年○月時点」の様式） |
+
+- **【厳守】§5-3 の「12 月 10 万円に必要なサービス新規 約 45 件/月」は基本料率 ¥2,200 での算術であり、報酬UP 期間（〜10/22）中のみ ¥2,750 で約 37 件/月になる。** **期間限定のため目標算術の基準は ¥2,200 のまま変えない。**
+- 記録の全文 → `management/_metrics/2026-W38/research-20260920-dmm-notices-gsiro027-offset.md` §3。
+
 ### 5-2. 見放題作品数と判別方法（**CSO/HUMAN 実査確定 2026-08-11**・実画面スクリーンショット）
 - **実確認日 2026-08-11 / 実施者 CSO（HUMAN）/ 根拠＝`tv.dmm.co.jp` および `video.dmm.co.jp` の実画面**
 - **作品数（確定値）**: FANZA TV（DMMプレミアム 550円）＝**2,287作品** / Plus限定＝**101,383作品** / **合計 103,670作品**。LP表記は「2,300作品以上」「毎月120〜150作品更新」
@@ -4433,3 +4447,31 @@ gtag('config', 'G-GG7JV9MJRW', {
 - Google カレンダーに期限通知（2027-08-30 頃）を登録。
 - 旧トークン 2 件（§27-2）の削除完了。
 - X Premium 加入（未完なら今週中）／`x_targets` 初期 30 件の登録（束1 のテーブル新設後）。 → **【2026-09-17 更新】X Premium は 9/16 加入済み（§26-7・実請求額の追記が残）。`x_targets` は CTO が 42 件を `status=候補` で投入済み（§26-9）。HUMAN 残＝稼働候補 35 件の X 画面実査（`followers` / `verified_at` / `reply_restriction`）→ `status=稼働`。**
+
+---
+
+## 28. DMM アフィリエイトのお知らせ対応（**CSO 指示 2026-09-21・受領 2026-09-20 22:0x JST**）
+
+> 記録の全文 → `management/_metrics/2026-W38/research-20260920-dmm-notices-gsiro027-offset.md`。**本節は事実と登録のみ。判断・推奨は書かない。**
+
+### 28-1. 掲載取り下げ依頼（2026-09-07 付・content_id `gsiro027`・amateur）— **調査 9 範囲すべてで該当なし**
+
+- **範囲（read-only・2026-09-20 21:58〜22:1x JST）**: ①リポジトリ作業ツリー（`grep`・`gsiro` 接頭辞含む）②git 全履歴（`log -S`）③`sitemap_works_archive` ④`sitemap_cohort` ⑤`fanza_response_cache`（108,135 行・cid/list の `items` 包含）⑥`price_history` / `article_products` ⑦配信中 sitemap 3 本（`sitemap.xml` 2,594 / `sitemap-archive.xml` 4,029 / `sitemap-cohort-1.xml` 5,000・`videoc`／`amateur` パスも 0）⑧Vercel Runtime Logs（production・全文 `gsiro`・**24h のみ有効。それ以前は保持期間の応答で判別不能**）⑨Airtable `posts`（X 投稿）。**全件 0。**
+- **出演女優**: 指示に名前が無く、当方のデータに作品が無いため**特定不能**。名前が判明した場合は `/actresses/{id}`・M-07 フッターの実名・`ACTRESS_LAST_POSTED` を追加検査する。
+- **【構造】当サイトは FANZA の `videoc`（素人）フロアを cid 照会しない**（UI の `amateur` は `apiFloor=videoa`＋`injectKeyword=素人`）。`videoc` を走査するのは `/sale` の rank 上位 4 ページのみ（⑤⑥で 0）。**`/works/{floor}/gsiro027` は動的ルートのため、FANZA の videoa が当該 cid を返す場合に限り 200 になりうる**——FANZA 側の状態は本調査では照会していない。
+- **【CTO 判断・要否は CSO】本番ページの直接取得は行っていない**——`GET /works/…/gsiro027` は FANZA API の `cid=` 照会と `fanza_response_cache` への upsert（応答が空でも）を発生させ、**取り下げ対象のデータを当サイト側へ新たに書き込む副作用**になるため。代替＝Runtime Logs の検索（⑧）。
+- **該当があった場合の削除手順（雛形・実施は CSO 承認後）**: ①9 範囲の検索 ②`sitemap_works_archive` の行削除（→ `sitemap-archive.xml` は次回生成で除外・**Supabase MCP は read-only のため HUMAN 枠**）③`sitemap_cohort` の行削除 ④`fanza_response_cache` の cid 行＋`list` 包含行の削除（list はページ単位＝同ページの他作品も次回取得まで MISS） ⑤`price_history` / editorial JSON / Airtable `posts` ⑥本体 `sitemap.xml` は API 窓由来＝FANZA が取り下げ済みなら自然に落ちる・落ちなければ denylist（本番コード変更）⑦動的ルートは `items` 空 → 404（E6①）・**410 や API 応答に依らない遮断は denylist を要する（本番コード変更）**⑧読み戻し（§10）・GSC の URL 削除は HUMAN 枠。
+- **定常手順**: `ROUTINE_CHECKLISTS.md` §2「規約・E-E-A-T防衛」に 1 行（お知らせの監視 → 上記 9 範囲の検索 → 除外の設計 → CSO 承認 → 実施 → 読み戻し）。
+
+### 28-2. FANZA API の offset 上限 50,000 → 5,000（2026-09-16 告知・12 月適用）— **E27 登録**
+
+- **棚卸し（read-only・作業ツリー `cf1f80f`）**: ランタイム（トップ一覧 最大 1,471／genres・actresses 1／sitemap 窓 301／`/sale` 301／コンシェルジュ 1／cid 単品 1）・定常スクリプト（`generate-t1` 201／`snapshot-sale-prices` 2,001／healthcheck・guard 1）・研究用（`pick3` 301）は**全件 5,000 未満**。**5,001 以上に到達したのは `build-cohort-1.mjs`（2026-08-21・`sort=-price` offset 49,901・一回性）のみ。** 告知対象のうち女優／ジャンル／メーカー／シリーズ／作者検索 API を offset 付きで呼ぶコードは **0 箇所**。
+- **設計案 A（主案・起案のみ）**: **floor × 配信日範囲（`gte_date`／`lte_date`）で `total_count ≤ 4,900` になるまで二分割し、各範囲を `sort=date`・offset 1〜4,901（hits 100）で走査する。** 分割軸が互いに素で漏れが無い（`date` は 100% 保有）。価格帯の層化はローカル分類へ。案 B（ジャンル＝重複・網羅性なし）／C（メーカー＝大手で 5,000 超・A に帰着）／D（keyword＝名称の事前知識）は併記。
+- **未確認（12 月前に実測）**: 5,001 指定時の API 応答／`total_count` 上限の変化。
+- **E27**: 起案 2026-10 中・**着地 2026-11 中**（実装は CSO 承認後・対象は C1 系の悉皆走査のみ）。
+
+### 28-3. 外部依存の登録
+
+- **2026-09-01 DMM アフィリエイト参加規約改定**（`terms.dmm.com/affiliate_web_service/`）＝**外部依存として登録**（内容の要旨は未転記・読み込みは HUMAN／CSO）。
+- **電書ブログパーツ終了・インボイス機能停止＝VODNAVI に影響なし（CSO 判定）。** 併記: リポジトリに DMM ブログパーツの参照は 0 件（2026-09-20 22:1x・`grep`）。
+
