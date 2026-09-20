@@ -11151,3 +11151,10 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **次**: HUMAN が案を選んで投稿 → 本文＋リプ URL → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。21 時前の再抽出（窓＝08:4x 以降）。
 - **距離**: 本コミットは直前 READY `4b1e389` から 7＝skip 想定（9 まで skip・10 で fail-open）。
 - 【2026-09-20 08:5x 追記・push 後の Vercel state】`639a535`（距離 7・push 08:55:4x JST）＝`dpl_F8JiTxSwdSShSzh137uZRLhpnYJD` **CANCELED**（created 1789862151262＝08:55:51 JST・skip 経路）。次の docs push は距離 8（記録 push で 9・その次が 10＝fail-open）。
+
+## 2026-09-20 09:1x — 投稿完了 4 件（FANZAdougaX A／PREMIUM_AV B／MOODYZ_official B／IDEAPOCKETTER A・手直しなし）を記録 → 読み戻し一致／CSO判定（見送り 9・抽出の絞り込み強化・フロア外除外・@AViiyone は HUMAN が候補＋no_repropose へ・S1 は夜に本告知を拾う・priority 3 週カウント未消費）
+- **記録**: `record.mjs --create --texts`（4 件・本文は案と同一）→ MCP 作成（createdTime 09:18:24 JST）→ `--posted` × 4 → `reply_post_id`／`posted_at`（snowflake 09:13:16 / 09:14:05 / 09:14:39 / 09:15:33）／`x_targets.last_reply_at` 更新 → **読み戻し: x_replies `20260920-*` 4 件・x_targets 4 件が payload と一致**。X 直接 URL 4 件 200・対照 404。**x_replies 累計 14 件（9/18 6・9/19 4・9/20 4）。**
+- **修正**: `record.mjs --create` が停止行（同日同ハンドル 2 件目）に当たってエラー → 生成済みの行を使うよう修正（`node --test` 58/58）。
+- **CSO判定を反映**: README（抽出段階の絞り込み＝女優本人・レビュー系は作品・発売・配信・セール・ランキング・作品イベントのみ／私生活・配信お礼・出勤告知・雑談は除外し件数のみ報告／動画フロア外は除外）・FACT §26-10-2 に bullet。@AViiyone の `status`／`no_repropose` は HUMAN 専権のため CTO は触っていない（09:19 読み戻し時点で `稼働`・未設定）。
+- **次**: 21 時前の再抽出（窓＝08:4x 以降・新基準で絞り込み・除外件数を報告・S1 の 20:00 本告知を含む）。
+- **距離**: 本コミットは直前 READY `4b1e389` から 9＝skip 想定。**次の docs push が距離 10＝fail-open ビルド（受容済み）。**

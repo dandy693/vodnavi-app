@@ -115,10 +115,18 @@ if (isMain(import.meta.url)) {
     const texts = a.texts ? JSON.parse(fs.readFileSync(a.texts, "utf8")) : {};
     const records = [];
     const overridden = [];
+    // 同一ハンドルが複数行あるとき（同日同ハンドル 2 件目以降は停止・2026-09-20）は生成済みの行を使う。停止行しか無ければエラー。
+    const seen = new Set();
     for (const item of drafts.items ?? []) {
       const pick = picks[item.handle];
       if (!pick) continue;
-      if (item.status !== "generated") throw new Error(`${item.handle} は生成済みではない（status=${item.status}）`);
+      if (item.status !== "generated") {
+        const alt = (drafts.items ?? []).find((x) => x.handle === item.handle && x.status === "generated");
+        if (alt) continue; // 生成済みの行で処理する
+        throw new Error(`${item.handle} は生成済みではない（status=${item.status}）`);
+      }
+      if (seen.has(item.handle)) continue;
+      seen.add(item.handle);
       const d = item.drafts?.[pick];
       if (!d || !d.guard?.ok) throw new Error(`${item.handle} の ${pick} 案はガード未通過または存在しない`);
       const posted = typeof texts[item.handle] === "string" ? texts[item.handle].trim() : null;

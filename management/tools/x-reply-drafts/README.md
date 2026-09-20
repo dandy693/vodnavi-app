@@ -42,6 +42,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 作業ディレクトリはリポジトリルート。中間ファイルは `management/_metrics/<週>/bundle2/runs/<YYYYMMDD>/` に置く（実験資産は git 管理・§24-11-1）。
 
 0. **対象リスト**（CTO）: `x_targets` を MCP で読み戻して `state/<日付>/targets.json` に保存 → `node management/tools/x-reply-drafts/active-targets.mjs state/<日付>/targets.json --urls` の一覧を Chrome 抽出の巡回先にする（`--json` で内訳）。手順 3 の `targets.json` にもこのファイルを使える。
+   - **抽出段階の絞り込み（CSO判定 2026-09-20 朝）**: ①**女優本人・レビュー系**は「作品・発売・配信・セール・ランキング・作品イベント」に触れている投稿のみ該当。**私生活・配信お礼・出勤告知・雑談は抽出段階で除外し、除外した件数だけ報告する**（本文は台帳に貼らない）。②**動画フロア外（FANZAブックス・同人・ゲーム）の告知は除外。** ③メーカー公式・セール告知系は従来どおり（告知は基本すべて該当）。
    - **抽出はプロフィール直読み**（navigate → `find` timestamp → scroll → `find`・センシティブ警告は「プロフィールを表示する」を押す＝表示切替のみ）。**X の検索（`from:` OR・最新）はプロフィールに実在する投稿を返さないことがある**（2026-09-20 実測: FANZAdougaX 05:00 の 2 件が検索に出ない）ため使わない。窓の判定は snowflake ID（`(id >> 22) + 1288834974657` ms）。
 1. **CTO**（旧: HUMAN・08:2x 改訂）: 対象投稿を 1 行 1 件で `input.txt` に貼る
    `@ハンドル｜投稿日時｜投稿URL｜本文｜作品コード（任意）`
@@ -58,6 +59,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
      --parsed parsed.json --targets targets.json --replies replies.json --knowledge knowledge.json --out drafts.json
    ```
    - 行ごとに A / B / C の 3 案・ガード結果・`reply_key`・停止理由を出す。**停止（対象外／同日 2 件目／3 日以内／記録済み）の行は API を呼ばない**（裁定 G）。
+   - `record.mjs --create` は同一ハンドルが複数行あるとき生成済みの行を使う（停止行は読み飛ばす・2026-09-20）。
    - **同一バッチ内の同日同ハンドル 2 件目以降も生成しない**（`checkStop` は x_replies の既存行しか見ないため・2026-09-20 追加）。**入力の並び順＝優先順**（先に書いた行を生成）。全行を生成したいときは `--all-lines`。
    - **本文欄に CTO の注記（「（画像 1 枚・スレッド返信…）」等）を入れない**——案に混入する（2026-09-20 12 行目で実発生・注記を外して再生成した）。補足は作品コード欄か README に書く。
    - ガード NG の案だけ最大 2 回再生成。それでも NG なら「一部生成不能」。
