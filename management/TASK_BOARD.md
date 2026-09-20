@@ -11202,3 +11202,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **記録** → `research-20260920-dmm-notices-gsiro027-offset.md` §4。
 - **距離**: 本コミットは直前 READY `75c72bd` から **10**＝**fail-open ビルド想定**（§22-8-1-1-f・受容済み）。push 後に state と sitemap `lastmod`・件数を実測。
 - 【2026-09-21 03:4x 追記・push 後の Vercel state】`267a533`（**距離 10**・push 03:40:3x JST）＝`dpl_79E15iQVG77iNCyerMF5XBeeVNn4` **BUILDING → READY**（created 03:40:36・buildingAt 03:40:37・ready 03:41:45 JST）＝**E19 fail-open 経路の 4 例目**（§22-8-1-1-f・受容済み）。`a9e181b`（距離 9）＝`dpl_HpM1aL7iAHWXqcYFx5gYr8XuRdWb` CANCELED（03:26:09 JST）。**sitemap 再生成: root `lastmod` `2026-09-20T18:41:06.383Z`＝03:41:06 JST（buildingAt +29 秒）・`<loc>` 2,594 / works 1,200（videoa 400 / anime 400 / nikkatsu 400）/ genres 200 / actresses 1,177 / articles 8＝全損なし・前回（9/20 09:21）と同数。** ビルドログは未取得（受容済み・追わない）。**直前 READY は `267a533` に更新＝次の docs push は距離 1（skip）。**
+
+## 2026-09-21 04:0x — CSO裁定（第1報／第2報への回答）を反映: gsiro027＝該当なし承認・§28-1 でクローズ（女優は特定不能・空 cache 行は放置で確定・週次手順採用）／offset＝「影響なし・根拠あり」で確定・設計案 A 採用・E27 の実装期限 11/15 は撤回（cohort 再構築時に紐づけ・残すのは設計案 A と 11 月中 1 回の read-only 実測）
+- **gsiro027**: FACT §28-1 にクローズ bullet（13 範囲 0 件・本番 404・FANZA API 0 件／**作品 ID のみ・女優は特定不能（お知らせに記載なし）**／副作用の空 cache 行は削除不要／週次 §1 の定常手順を採用）。
+- **offset（E27）**: FACT §28-2 に裁定 bullet。NOTES の E 表を更新（実装着地 11/15 撤回・実装は cohort 再構築の必要が生じた時点・残余＝設計案 A＋12 月前の実測＝2026-11 中 1 回・read-only）。
+- **Vercel**: E19 fail-open 4 例目・sitemap 全損なしは記録のみ（追加対応なし）。
+- **距離**: 本コミットは直前 READY `267a533` から 2（`ca7f55a` が 1）＝skip 想定。
