@@ -93,3 +93,24 @@
 - 他の料率は台帳 v3 と一致・変更なし。**通販（アダルト）サービス新規「---」＝停止済みで確定**（「中止予定日未取得」→「停止済み」に訂正）。
 - 2026-09-01 参加規約改定（`terms.dmm.com/affiliate_web_service/`）＝外部依存として 1 行登録。**電書ブログパーツ終了・インボイス機能停止＝VODNAVI に影響なし（CSO 判定の転記）。** 併記: リポジトリ（app-concierge / site-brand / site-moterist）に DMM ブログパーツの参照は 0 件（`grep -i blogparts|ブログパーツ|widget.dmm`・2026-09-20 22:1x）。
 - 記事・投稿の時点注記のルールは不変（「2026年○月時点」の様式のまま）。
+
+## 4. 【追記 2026-09-21 03:36〜03:45 JST・CSO 指示 2026-09-21 朝】gsiro027 の追加調査／offset の実運用ログ実測
+
+### 4-1. gsiro027（追加 4 範囲＋本番 HTTP）
+
+| # | 範囲 | 方法 | 結果 |
+|---|---|---|---|
+| 10 | **FANZA API `cid=gsiro027`**（ローカル照会・`scratchpad/fanza_cid_probe.mjs`・当サイト cache へ書かない） | `floor=videoc` / `floor=videoa`・`hits=1` | **両フロア `result_count 0`**（HTTP 200・status 200）。**対照 `miab00677`＝videoa で 1 件**（女優 ID 1088602・画像あり）＝判別力あり |
+| 11 | **本番 `app.vodnavi.jp`**（03:37:17〜19 JST・`curl`） | `/works/amateur/gsiro027`・`/works/videoa/gsiro027`・`/works/videoc/gsiro027` | **404 / 404 / 404**（対照 `/works/videoa/miab00677` 200）。E6①（API 正常応答・該当なし）＝404 |
+| 12 | Supabase `editorial_articles`（18 行）／`internal_links` | 行 JSON 文字列 `ilike '%gsiro%'` | **0 / 0** |
+| 13 | `article_products`・`price_history`（再照会） | 同上 | **0 / 0** |
+| — | **actresses 配下** | — | **実施不能**: 女優の名前・ID が指示・当方データ・FANZA API 応答のいずれにも無い |
+
+- **副作用の記録**: 本番 GET により `fanza_response_cache` に **1 行**（`cache_key 4904f39747b9ee1cba05a7852dc1d5f706562316a155a4cd4f22f7272414970f`・videoa・`kind=cid`・`items` 空・`result_count 0`・`fetched_at 2026-09-20 18:37:19.443+00`）が生成された。取得前の同キー照会は 0 行（03:36）。3 パスは `FANZA_FLOORS` の正規化で同一キーに集約。**作品データは含まない**。7 日ローリングで消える。**即時削除は HUMAN 枠・要否は CSO。**
+- **結論**: **10 範囲＋本番 3 パス＋FANZA API 2 フロアで該当なし。除外手順の実施対象なし。**
+
+### 4-2. offset の実運用ログ実測（CSO 指示 2）
+
+- 直近 30 日のリクエストログは存在しない（Vercel Runtime Logs は 24h 保持）。**代替＝`fanza_response_cache` `kind='list'` の `result.first_position`**（FANZA API 応答に含まれる「指定した offset」）。
+- **27,269 行・2026-09-14 03:46〜2026-09-21 03:37 JST（7 日）**: **max `first_position` = 841**（＝トップ一覧 page 29・`(29−1)×30+1`）・**1,000 超 0 行・5,000 超 0 行**・`total_count` 最大 50,000。
+- **→ ランタイムが実際に指定した offset の 7 日最大は 841。** 30 日は取得不能（保持期間）。

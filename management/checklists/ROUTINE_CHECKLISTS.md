@@ -16,6 +16,9 @@
 - [ ] **5つの盾・生存テスト**: 年齢確認ゲート（proxy.ts エッジハンドラー。Next.js 16 で middleware→proxy.ts に rename 済・src/middleware.ts は新規作成しない）が `app.vodnavi.jp` で健全に動作し、18歳未満のアクセスを遮断するかブラウザのシークレットモードでテスト。
 - [ ] **GA4クロスドメイン linker 検証**: `vodnavi.jp` から `app.vodnavi.jp/concierge` へ遷移した際、URLに `_gl=` パラメータが正常に付与され、クッキーが引き継がれているかを検証。
 
+### 📌 規約・取り下げ対応（**週次**・CSO 指示 2026-09-21・FACT §28-1）
+- [ ] **DMM アフィリエイトお知らせの週次確認 → 掲載取り下げ依頼の content_id 検索 → 除外**: affiliate.dmm.com のお知らせ（取り下げ依頼・API 仕様変更・料率）を HUMAN が週次で確認し、取り下げ依頼があれば CTO が content_id（と女優名・ID）で **10 範囲**（リポジトリ／git 履歴／`sitemap_works_archive`／`sitemap_cohort`／`fanza_response_cache`／`price_history`・`article_products`・`editorial_articles`・`internal_links`／配信中 sitemap 3 本／Vercel Runtime Logs 24h／Airtable `posts`／FANZA API の `cid=` 照会（videoc・videoa・ローカル））を read-only で検索 → 本番 `/works/{floor}/{cid}`・`/actresses/{id}` の HTTP ステータスを取得（**cache 行が 1 つ生成される副作用を記録し、削除は HUMAN 枠**）→ 該当があれば除外手順（archive・cohort・cache の行削除＝HUMAN 枠／sitemap 除外／404・410 は denylist＝本番コード変更／記事内リンク削除）を設計 → **CSO 承認後に実施 → 読み戻し** → FACT §28-1 に「依頼日・cid・調査日・結果」を登録。
+
 ### 📌 DB更新監視
 - [ ] **API生存確認**: FANZA商品情報APIの同期ログを確認。エラーによる作品データの欠損や、Vercelのビルドエラー（インクリメンタル生成失敗）が起きていないか。
 - [ ] **VODNAVI_SILENT_DEATH_GUARD の発生確認**: Vercel Runtime Errors（`get_runtime_errors` / projectId `prj_42GkXv2njAJTxYbmDoLdP8JoZbkx`・teamId `team_xZz5NtMS95tDQ2Vde65faOzc`・`since: "7d"`）で `VODNAVI_SILENT_DEATH_GUARD` グループの件数を確認。**報告するのは「1日1,000件を超えるバーストが再発した場合」のみ**。それ未満はスパイク型の既知事象として記録・報告とも不要（`FACT_GOVERNANCE.md` §7）。**`users` は実ユーザー数ではない**（§6）。
@@ -39,7 +42,6 @@
 ### 📌 規約・E-E-A-T防衛
 - [ ] **法務表現一斉パトロール**: 「絶対」「最安」「業界No.1」などの根拠なき誇大表現がライターによって混入されていないか、サイト内検索で一括スクリーニング。
 - [ ] **著者・編集ポリシーページの生存**: `vodnavi.jp/authors` ページおよび編集ポリシー（E-E-A-Tのコア）のリンクがフッター等から正常にクローラーへ露出しているか確認。
-- [ ] **DMM アフィリエイトお知らせの監視 → 掲載取り下げ依頼の検索 → 除外**（CSO 指示 2026-09-21・FACT §28-1）: affiliate.dmm.com のお知らせ（取り下げ依頼・API 仕様変更・料率）を HUMAN が月次で確認し、取り下げ依頼があれば CTO が content_id（と女優名）で **9 範囲**（リポジトリ／git 履歴／`sitemap_works_archive`／`sitemap_cohort`／`fanza_response_cache`／`price_history`・`article_products`／配信中 sitemap 3 本／Vercel Runtime Logs 24h／Airtable `posts`）を read-only で検索 → 該当があれば除外手順（archive・cohort・cache の行削除＝HUMAN 枠／sitemap 除外／404・410 は denylist＝本番コード変更）を設計 → **CSO 承認後に実施 → 読み戻し**。**本番ページの直接取得は cache への書き込みを伴うため行わない。**
 
 ---
 

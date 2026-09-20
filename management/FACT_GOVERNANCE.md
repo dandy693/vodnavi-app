@@ -4461,14 +4461,23 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **【構造】当サイトは FANZA の `videoc`（素人）フロアを cid 照会しない**（UI の `amateur` は `apiFloor=videoa`＋`injectKeyword=素人`）。`videoc` を走査するのは `/sale` の rank 上位 4 ページのみ（⑤⑥で 0）。**`/works/{floor}/gsiro027` は動的ルートのため、FANZA の videoa が当該 cid を返す場合に限り 200 になりうる**——FANZA 側の状態は本調査では照会していない。
 - **【CTO 判断・要否は CSO】本番ページの直接取得は行っていない**——`GET /works/…/gsiro027` は FANZA API の `cid=` 照会と `fanza_response_cache` への upsert（応答が空でも）を発生させ、**取り下げ対象のデータを当サイト側へ新たに書き込む副作用**になるため。代替＝Runtime Logs の検索（⑧）。
 - **該当があった場合の削除手順（雛形・実施は CSO 承認後）**: ①9 範囲の検索 ②`sitemap_works_archive` の行削除（→ `sitemap-archive.xml` は次回生成で除外・**Supabase MCP は read-only のため HUMAN 枠**）③`sitemap_cohort` の行削除 ④`fanza_response_cache` の cid 行＋`list` 包含行の削除（list はページ単位＝同ページの他作品も次回取得まで MISS） ⑤`price_history` / editorial JSON / Airtable `posts` ⑥本体 `sitemap.xml` は API 窓由来＝FANZA が取り下げ済みなら自然に落ちる・落ちなければ denylist（本番コード変更）⑦動的ルートは `items` 空 → 404（E6①）・**410 や API 応答に依らない遮断は denylist を要する（本番コード変更）**⑧読み戻し（§10）・GSC の URL 削除は HUMAN 枠。
-- **定常手順**: `ROUTINE_CHECKLISTS.md` §2「規約・E-E-A-T防衛」に 1 行（お知らせの監視 → 上記 9 範囲の検索 → 除外の設計 → CSO 承認 → 実施 → 読み戻し）。
+- **定常手順**: `ROUTINE_CHECKLISTS.md` §1（**週次**・CSO 指示 2026-09-21 朝で月次から週次へ移設）「規約・取り下げ対応」に 1 行（お知らせの週次確認 → content_id 検索 → 除外の設計 → CSO 承認 → 実施 → 読み戻し）。
+- **【追加調査・CSO 指示 2026-09-21 朝・実測 03:36〜03:38 JST】**
+  - **FANZA API `cid=gsiro027`（ローカル照会・当サイトの cache には書かない）**: `floor=videoc` → `result_count 0`／`floor=videoa` → `result_count 0`（HTTP 200・status 200）。**対照 `miab00677` は videoa で 1 件（女優 ID・画像あり）**＝API は判別力あり。**→ FANZA 側で当該 cid は返らない（取り下げ済みと整合・作品情報・出演女優・画像は API からも取得不能）。**
+  - **本番 HTTP ステータス（03:37:17〜19 JST・CSO 指示による直接取得）**: `/works/amateur/gsiro027` **404**／`/works/videoa/gsiro027` **404**／`/works/videoc/gsiro027` **404**（対照 `/works/videoa/miab00677` 200）。E6① どおり「API 正常応答・該当なし」＝404（500 ではない）。
+  - **副作用（記録・削除は HUMAN 枠）**: 上記の取得で `fanza_response_cache` に **1 行**が生成された——`cache_key 4904f397…970f`（videoa・`kind=cid`・`items` 空・`result_count 0`・`fetched_at 2026-09-20 18:37:19+00`）。3 パスとも `videoa` の同一キーに正規化されるため 1 行のみ。**作品データは含まない。** 7 日ローリングで自然消滅する（§26-5）。即時削除するかは CSO 裁定（MCP は read-only のため HUMAN 実行）。
+  - **追加した範囲**: `editorial_articles`（18 行・行 JSON 文字列に `gsiro` 0）／`internal_links`（0）／`article_products`・`price_history`（再照会 0）。**リポジトリの記事 md（`site-brand/03_content`・`management/`）は 2026-09-20 の `grep` に含まれており 0。**
+  - **出演女優（名前・ID・画像）**: 指示に記載が無く、当方データにも FANZA API 応答にも当該作品が無いため**特定不能**。**`/actresses/{id}` の HTTP ステータス確認は対象 ID が無く実施不能**。DMM のお知らせ本文に女優名があれば HUMAN 転記で追加検査する。
+  - **登録（CSO 指示 5）**: **2026-09-07 掲載取り下げ依頼・content_id `gsiro027`（amateur）・調査日 2026-09-20 21:58〜22:1x JST ＋ 2026-09-21 03:36〜03:38 JST・結果＝該当なし（10 範囲・本番 404・FANZA API 0 件）。除外手順の実施対象なし。**
 
 ### 28-2. FANZA API の offset 上限 50,000 → 5,000（2026-09-16 告知・12 月適用）— **E27 登録**
 
 - **棚卸し（read-only・作業ツリー `cf1f80f`）**: ランタイム（トップ一覧 最大 1,471／genres・actresses 1／sitemap 窓 301／`/sale` 301／コンシェルジュ 1／cid 単品 1）・定常スクリプト（`generate-t1` 201／`snapshot-sale-prices` 2,001／healthcheck・guard 1）・研究用（`pick3` 301）は**全件 5,000 未満**。**5,001 以上に到達したのは `build-cohort-1.mjs`（2026-08-21・`sort=-price` offset 49,901・一回性）のみ。** 告知対象のうち女優／ジャンル／メーカー／シリーズ／作者検索 API を offset 付きで呼ぶコードは **0 箇所**。
 - **設計案 A（主案・起案のみ）**: **floor × 配信日範囲（`gte_date`／`lte_date`）で `total_count ≤ 4,900` になるまで二分割し、各範囲を `sort=date`・offset 1〜4,901（hits 100）で走査する。** 分割軸が互いに素で漏れが無い（`date` は 100% 保有）。価格帯の層化はローカル分類へ。案 B（ジャンル＝重複・網羅性なし）／C（メーカー＝大手で 5,000 超・A に帰着）／D（keyword＝名称の事前知識）は併記。
 - **未確認（12 月前に実測）**: 5,001 指定時の API 応答／`total_count` 上限の変化。
-- **E27**: 起案 2026-10 中・**着地 2026-11 中**（実装は CSO 承認後・対象は C1 系の悉皆走査のみ）。
+- **実運用ログの実測（CSO 指示 2026-09-21 朝・2）**: 直近 30 日分のリクエストログは存在しない（Vercel Runtime Logs の保持は 24h・§28-1 ⑧）。代替＝`fanza_response_cache` の `kind='list'` 27,269 行（保持 7 日・**2026-09-14 03:46〜09-21 03:37 JST**）の `result.first_position`（＝API に指定した offset）: **最大 841**（トップ一覧 page 29）・**1,000 超 0 行・5,000 超 0 行**・`total_count` 最大 50,000。**→ ランタイムが 7 日間に指定した offset の最大は 841。**
+- **設計の制約（CSO 指示 3）**: **総在庫数を減らさないこと**——案 A は日付範囲の分割であり母集団は不変（各範囲の `total_count` の和＝分割前の件数を読み戻しで検算する）。
+- **E27（期限は CSO 指示 2026-09-21 朝で確定）**: **設計 2026-10-15・実装着地 2026-11-15**（実装は CSO 承認後・対象は C1 系の悉皆走査のみ）。
 
 ### 28-3. 外部依存の登録
 

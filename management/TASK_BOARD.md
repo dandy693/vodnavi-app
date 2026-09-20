@@ -11193,3 +11193,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **照合**: 上記 4 点は 2026-09-20 22:0x に CSO 指示の「記録のみ」欄から §5-3-1 へ転記済みの内容と一致。**§5-3-1 の「HUMAN 確認 2026-09-21（CSO 転記）」は本メッセージで HUMAN 直接の確認として裏づけられた**（本文の変更なし・出典ラベルのみ本エントリで補強）。
 - **距離**: 本コミットは直前 READY `75c72bd` から 8（`5f77bcf` が 7）＝skip 想定。**次の docs push は 9（skip）・その次が 10＝fail-open ビルド（受容済み）。**
 - 【2026-09-21 03:2x 追記・push 後の Vercel state】`975c9b6`（距離 8・push 03:25:1x JST）＝`dpl_HKzJkaaQDWT2cgCKnnWhgUjESTz1` **CANCELED**（created 1789928720876＝03:25:20 JST・skip 経路）。`5f77bcf`（距離 7）＝`dpl_2pKgN1uodCw4bPjkm386dhpRuM9t` CANCELED（22:10:59 JST）。閾値 10 と整合。**本追記の push が距離 9（skip）・次の docs push が 10＝fail-open ビルド（§22-8-1-1-f・受容済み）。**
+
+## 2026-09-21 03:36〜03:5x — CSO指示（2026-09-21 朝）: gsiro027 の追加調査（FANZA API 2 フロア 0 件・本番 3 パス 404・editorial_articles／internal_links 0・女優は特定不能）＝該当なしで確定・FACT §28-1 に登録／ROUTINE を週次へ移設／offset の実運用実測（cache 7 日・max first_position 841）・E27 期限＝設計 10/15・着地 11/15
+- **gsiro027**: ①FANZA API `cid=` ローカル照会（cache 不書込）＝videoc 0 / videoa 0（対照 `miab00677` 1 件）②**本番 `/works/amateur|videoa|videoc/gsiro027`＝404 × 3**（03:37:17〜19・対照 200）③`editorial_articles`（18 行）／`internal_links`／`article_products`／`price_history`＝0 ④`actresses` 配下＝女優の名前・ID が指示・当方データ・API 応答に無く**実施不能**。**→ 昨夜の 9 範囲と合わせ該当なしで確定。除外手順の実施対象なし。**
+- **副作用（CSO 指示による本番取得）**: `fanza_response_cache` に空の cid 行 1 件（`4904f397…970f`・videoa・items 空・18:37:19Z）が生成。作品データなし・7 日で自然消滅。**即時削除は HUMAN 枠・要否は CSO。**
+- **台帳**: FACT §28-1 に「2026-09-07 取り下げ依頼 gsiro027・調査日 9/20 21:58〜／9/21 03:36〜・結果＝該当なし」を登録。ROUTINE の定常手順を月次 §2 から**週次 §1「規約・取り下げ対応」へ移設**（10 範囲＋FANZA API 照会＋本番 HTTP＋cache 副作用の記録を明記）。
+- **offset**: 30 日分のリクエストログは存在しない（Runtime Logs 24h）→ `fanza_response_cache` `kind='list'` 27,269 行（9/14 03:46〜9/21 03:37）の `first_position` **最大 841**・1,000 超 0・5,000 超 0。**E27 期限＝設計 2026-10-15・実装着地 2026-11-15**（NOTES・FACT §28-2 に反映・「総在庫数を減らさない」を設計制約に追記）。
+- **記録** → `research-20260920-dmm-notices-gsiro027-offset.md` §4。
+- **距離**: 本コミットは直前 READY `75c72bd` から **10**＝**fail-open ビルド想定**（§22-8-1-1-f・受容済み）。push 後に state と sitemap `lastmod`・件数を実測。
