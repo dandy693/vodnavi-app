@@ -18,6 +18,8 @@
 | `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
 | `print-drafts.mjs` | `drafts.json` を人が読む形に出す（`node print-drafts.mjs drafts.json`） | なし |
 | `active-targets.mjs` | **抽出対象リストの組み立て**（`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`・priority 昇順・`--urls` で Chrome 抽出用 URL 一覧・CSO 連絡 2026-09-19 22:2x） | なし |
+| `quote.mjs` / `PROMPT-Q.md` | **引用ポスト（基盤D・CSO 指示 2026-09-21 夜）**: 朝・夜の抽出結果のうち「知識あり（cache ヒット＝content_id 確定）」∧「メーカー公式・女優本人」∧「発売・配信開始・予約開始の投稿」から引用向き 1〜2 件を別枠で提示（案 Q1・Q2＝一言 40〜80 字 ＋ works 詳細 URL）。提示前に works ページの HTTP 200 を確認 | **Anthropic API ＋ works ページ GET**（app.vodnavi.jp のみ） |
+| `ga4-quote-sessions.mjs` | 引用ポスト経由の計測: GA4 Data API で `utm_medium=quote` のセッション（`hostName=app.vodnavi.jp`・utm_content＝ハンドル別・landingPage 別・日別）を出す。木曜集計に `weekly-report.mjs --ga4-quote` で添付 | **GA4 Data API**（read-only・鍵は §3） |
 | `weekly-report.mjs` | **木曜 PDCA 用の x_replies 集計**（priority 別・type 別・件数・`draft_used` 内訳・`got_like` / `got_reply` / `profile_click_delta` の記入状況・`--reactions reactions.json` で反応の取得済み件数・likes / replies / views・`--own-posts own_posts.csv` で自投稿インプレッション中央値との比較（観測のみ）・`--md` で表） | なし |
 | `*.test.mjs` | `node --test`（dry-run のみ・API も Airtable も呼ばない・裁定 H） | なし |
 
@@ -70,6 +72,25 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 8. 投稿後、HUMAN がリプ URL を貼る → `node management/tools/x-reply-drafts/record.mjs --posted --record <x_replies の rec> --target <x_targets の rec> --url https://x.com/vodnavi_jp/status/…`
    → `reply_post_id` / `posted_at`（snowflake 復元）/ `x_targets.last_reply_at` の update payload → **MCP `update_records_for_table` × 2 → 読み戻し**。
 
+## 引用ポスト（基盤D・CSO 指示 2026-09-21 夜・2026-09-22 朝の抽出から提示）
+
+- **位置づけ**: テスト枠を消費しない「基盤D」。1 日 1〜2 件。リプ営業と同じ台帳（`x_targets` / `x_replies`）を使う。**引用元＝メーカー公式・女優本人の「発売日・配信開始・予約開始」の投稿に限る**（セール・ランキング・イベントは引用しない）。**直リンク投稿 1 日 1 件上限（af_id 006）とは別枠。ただし works ページへのリンク投稿は T1改（21:00・1 件）と合わせて 1 日 3 件まで＝引用は 1 日 2 件を上限に数える。**
+- **文面の型**: 一言（40〜80 字・作品の属性＝「この作品は〇〇系」「収録〇〇分・配信〇月〇日」）＋ 改行 ＋ `https://app.vodnavi.jp/works/<floor>/<content_id>?utm_source=x&utm_medium=quote&utm_content=<ハンドル>`。誘導語は不可（R5）・女優本人の引用は「名前＋さん、」で始める（R17）・容姿・内容の露骨な言及は不可（R6・R7）。**直接アフィリエイト URL は使わない**（自サイトリンク＝#PR は現行設計どおり不要・法務観点の未決はそのまま）。**URL はモデルが書かずツールが付ける**（`PROMPT-Q.md`）。
+- **手順（朝・夜のリプ生成の直後に同じ中間ファイルで）**:
+  ```
+  node --env-file=app-concierge/.env.local management/tools/x-reply-drafts/quote.mjs --parsed parsed.json --targets targets.json --replies replies.json --knowledge knowledge.json --out quotes.json
+  ```
+  1. 候補選定＝知識あり ∧ type ∈ {メーカー公式, 女優本人} ∧ 本文に発売/配信開始/予約開始の語 ∧ セール/ランキング/イベントの語なし（`guards.config.json` `Q_quote`・HUMAN 編集可）。
+  2. 停止判定＝`no_repropose`／同日同ハンドルの引用 2 件目（`YYYYMMDD-Q-<handle>` が既存）／**同一投稿にリプ＋引用の両方はしない**（`target_post_url` が x_replies に既存＝リプ済みの投稿は引用しない・引用済みの投稿はリプしない。`generate.mjs` の停止判定も同じ URL 重複で止まる）。
+  3. 提示上限＝`max_per_run`（2）− 本日記録済みの Q 件数。入力順に先頭から。上限外は「提示上限外」で API を呼ばない。
+  4. **works ページの HTTP 200 を確認してから生成**（GET・リダイレクトは追わない・200 以外は「停止（works ページが HTTP …）」で提示しない。例＝2026-09-21 17:48 の dry-run で `mida00812`（配信 10/2）が 500＝上流 400・E6①）。
+  5. 生成 Q1・Q2 → 一言のガード（type=Q）→ URL 付与 → 全文ガード（`guardQuoteFull`）。NG の型だけ最大 2 回再生成。
+  6. **HUMAN**: 引用ボタン → 一言 → URL の順で投稿。投稿後「@ハンドル｜Q1/Q2（手直し有無）｜引用ポストURL｜本文」を貼る。
+  7. 記録: `node management/tools/x-reply-drafts/record.mjs --create quotes.json --pick <handle>=Q1 [--texts posted.json] --replies replies.json --out payload_q.json` → `draft_used="Q"`・`reply_key=YYYYMMDD-Q-<handle>`・`reply_text`＝一言＋URL（手直し時も URL は 1 本そのまま）。**初回の Q 書き込みは `draft_used` に選択肢 Q が無いため MCP `create_records_for_table` を `typecast: true` で 1 回だけ実行**（MCP に選択肢追加ツールが無い・作成後 `get_table_schema` で選択肢 ID を読み戻し `airtable-fields.json` に記す）。以後は typecast なし。
+  8. 投稿後: `node management/tools/x-reply-drafts/record.mjs --posted --quote --record <x_replies rec> --target <x_targets rec> --url https://x.com/vodnavi_jp/status/…` → `reply_post_id` / `posted_at` / **`x_targets.last_quote_at`**（`last_reply_at` は触らない）→ MCP × 2 → 読み戻し。
+- **計測**: GA4 は `utm_medium=quote` のセッション（`node management/tools/x-reply-drafts/ga4-quote-sessions.mjs --since … --until … --out ga4_quote.json` → `weekly-report.mjs --ga4-quote ga4_quote.json`）。X Analytics では引用ポストは「自投稿」として集計（判定指標の中央値に含める・テキスト投稿の一種）＝`weekly-report.mjs --own-posts` は `draft_used=Q` の `reply_post_id` を自投稿から除外しない（A/B/C のリプ自身だけ除外）。
+- dry-run（記録しない）: `--dry-run`（停止判定を無効化）／`--no-http`（HTTP 確認を省略・テスト用）／`--stub stub.json`（API を呼ばない）。`print` は `node -e` で `quotes.json` を読む（着地報告は `runs/<日付>/README.md`）。
+
 ## 木曜 PDCA 集計（`weekly-report.mjs`・CSO 連絡 2026-09-19 22:2x）
 
 9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。**集計の起点は朝の抽出と同じ 06:00**（CSO 決定 2026-09-21・反応の補完 → 集計の順で 06:00 から）。
@@ -88,6 +109,7 @@ node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/
 - **Airtable の `got_like` / `got_reply` はチェックボックスで「取得済み・0」と「未取得」を区別できない。** 区別は `reactions.json` の有無（`--reactions` の「反応 取得済」列）で見る。`reactions.json` に無い行＝未取得。
 - 初回（9/18〜9/19・10 件・反応は 2026-09-19 22:4x〜22:5x 取得）→ `management/_metrics/2026-W38/bundle2/state/20260919-2230/weekly-report-dry-20260919.md`＝全件 priority 1・A 4 / B 3 / C 3・likes 0 / replies 0・views 合計 123（中央値 7.5）。
 - priority 3（対照）の「提示は週 2 件まで」は CTO の手動カウント（実装不要・CSO 2026-09-19 22:5x）。**週は月〜日で数える**（CSO判定 2026-09-21 朝。9/20（日）の S1_No1_Style は先週分・9/21（月）の S1_No1_Style で今週 1 / 2）。
+- **引用ポスト（Q）の扱い**: `draft_used` 内訳に `Q` 列が出る。`--own-posts` の除外は A/B/C のリプ自身だけ（Q は自投稿に含める）。`--ga4-quote ga4_quote.json` で `utm_medium=quote` のセッション表を末尾に添付する（CSO 指示 2026-09-21 夜）。
 - **自投稿との比較（CSO 連絡 2026-09-20・観測のみ）**: HUMAN が X Analytics（Premium）の投稿別 CSV を `state/<日付>/own_posts.csv` に置く → `--own-posts state/<日付>/own_posts.csv` で「リプの表示回数中央値」と「同期間の自投稿インプレッション中央値」を並べる比較表が末尾に出る。**判定基準（10/12・自投稿の中央値 ≥ 50・§26-2）は変えない。** 列名は tolerant に検出（id＝`Tweet id`/`Post id`・日時＝`time`/`Date`・インプレッション＝`impressions`/`Impressions`）し、使用した列名を出力に併記する。x_replies の `reply_post_id` と一致する行（リプ自身）は自投稿から除外。**TZ 表記の無い日時は JST として扱う＝初回の HUMAN 提供 CSV で列名と TZ を実測して確定する**（旧 Twitter Analytics 形式は `+0000`＝UTC 明記）。
 
 ## ガード（`guards.mjs`）
@@ -109,7 +131,8 @@ node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/
 | R16 | 日付の斜線表記（`09/18` `9/18`）＝「9月18日」に正規化する（CTO 追加） | `guards.config.json` `R16_date_format` |
 | R17 | 女優本人向けの案は「<表示名>さん、」で始める（CSO判定 2026-09-19 12:1x の PROMPT 規則の機械検査・CTO 追加） | `guards.config.json` `R17_actress_greeting` |
 | R18 | 語置換（ガードではない）: 「体験版」→「サンプル動画」を生成直後に自動置換し `drafts.json` の `replacements` に記録（CSO判定 2026-09-19 12:1x） | `guards.config.json` `R18_word_replacements` |
-| R9 | 数値の出典（B は全数値／全案は「数値＋円・%・割・OFF」）— 出典＝相手投稿本文＋作品知識 JSON | コード（旧 R10 を統合・裁定 D） |
+| R9 | 数値の出典（B・Q は全数値／全案は「数値＋円・%・割・OFF」）— 出典＝相手投稿本文＋作品知識 JSON | コード（旧 R10 を統合・裁定 D） |
+| **Q 型**（引用ポストの一言・`quote.mjs` のみ） | R1〜R18 をそのまま適用したうえで: R8 は `R8_chars_Q`（40〜80）／本文の具体（R14）は不要／**cache 由来の事実 1〜3 個**（`Q_quote.max_knowledge_facts`・B の 2 とは別枠・dry-run 2026-09-21 で 2 だと埋め文が出た）／全数値に出典（R9）／女優本人は「<表示名>さん、」（R17）。**`guardQuoteFull`**＝全文（一言＋改行＋URL）に対し「自サイト works 詳細 URL 1 本だけを末尾に許す」R1 の例外（URL 以外に URL/@/vodnavi/# が無いこと・X 重みは URL を 23 として ≤280） | `guards.config.json` `R8_chars_Q` / `Q_quote` |
 | R11 | 虚偽の体験主張 | `guards.config.json` `R11_false_experience` |
 
 - モデルの自己申告は証拠にしない。**生成後に必ず純関数で再検査**する（設計書 §4）。

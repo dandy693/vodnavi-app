@@ -13,7 +13,8 @@
 // --own-posts own_posts.csv（任意・CSO 連絡 2026-09-20）: X Analytics の投稿別 CSV（HUMAN 提供・Premium）。
 //   同期間の「自投稿インプレッション中央値」を「リプの表示回数中央値」と並べる（観測のみ・判定基準 10/12＝自投稿の中央値 ≥ 50 は変えない）。
 //   列名は揺れるため tolerant に検出する: id＝/(post|tweet)\s*id/i・日時＝/^(time|date|created|posted)/i・インプレッション＝/impression/i。
-//   x_replies の reply_post_id と一致する行（＝リプ自身）は自投稿から除外する。タイムゾーン表記の無い日時は JST として扱う。
+//   x_replies の reply_post_id と一致する行（＝リプ自身・draft_used A/B/C）は自投稿から除外する。引用ポスト（Q）は自投稿に含める。タイムゾーン表記の無い日時は JST として扱う。
+// --ga4-quote ga4_quote.json（任意・CSO 指示 2026-09-21 夜）: ga4-quote-sessions.mjs の出力（utm_medium=quote のセッション）を末尾に添付する。
 //   .json でもよい: [{ id, time, impressions }] または { posts: [...] }。
 
 import fs from "node:fs";
@@ -62,12 +63,12 @@ export function normalizeRepliesFull(raw) {
 }
 
 function bucket() {
-  return { count: 0, draft_used: { A: 0, B: 0, C: 0, "空": 0 }, got_like: 0, got_reply: 0, profile_click_delta_filled: 0, no_post_id: 0, reactions_fetched: 0, likes_sum: 0, replies_sum: 0, views_sum: 0, views: [] };
+  return { count: 0, draft_used: { A: 0, B: 0, C: 0, Q: 0, "空": 0 }, got_like: 0, got_reply: 0, profile_click_delta_filled: 0, no_post_id: 0, reactions_fetched: 0, likes_sum: 0, replies_sum: 0, views_sum: 0, views: [] };
 }
 
 function add(b, r, rx) {
   b.count++;
-  const d = ["A", "B", "C"].includes(r.draft_used) ? r.draft_used : "空";
+  const d = ["A", "B", "C", "Q"].includes(r.draft_used) ? r.draft_used : "空"; // Q＝引用ポスト（基盤D・CSO 指示 2026-09-21 夜）
   b.draft_used[d]++;
   if (r.got_like) b.got_like++;
   if (r.got_reply) b.got_reply++;
@@ -212,7 +213,7 @@ export function normalizeReactions(raw) {
  * 集計本体。since / until は JST の YYYY-MM-DD（両端含む・省略可）。
  * 返り値 { period, total, by_priority, by_type, by_priority_type, by_target, unmatched }
  */
-export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null }) {
+export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null }) {
   const T = normalizeTargets(targets);
   const RX = normalizeReactions(reactions);
   const byId = new Map(T.map((t) => [t.id, t]));
@@ -248,14 +249,16 @@ export function aggregate({ replies, targets, reactions = null, ownPosts = null,
     delete b.views;
   }
   if (ownPosts != null) {
-    const replyIds = new Set(normalizeRepliesFull(replies).map((r) => r.reply_post_id).filter(Boolean).map(String));
+    // 自投稿から除外するのはリプ自身（A/B/C）だけ。引用ポスト（Q）は「自投稿」として集計に含める（判定指標の中央値にも入る・CSO 指示 2026-09-21 夜）。
+    const replyIds = new Set(normalizeRepliesFull(replies).filter((r) => r.draft_used !== "Q").map((r) => r.reply_post_id).filter(Boolean).map(String));
     out.own_posts = ownPostsStats(normalizeOwnPosts(ownPosts), { since, until, excludeIds: replyIds });
   }
+  if (ga4Quote != null) out.ga4_quote = ga4Quote; // ga4-quote-sessions.mjs の出力（utm_medium=quote のセッション）をそのまま添付
   return out;
 }
 
 function fmtBucket(b, withRx) {
-  const base = `${b.count} | A ${b.draft_used.A} / B ${b.draft_used.B} / C ${b.draft_used.C}${b.draft_used["空"] ? ` / 空 ${b.draft_used["空"]}` : ""} | ${b.got_like} | ${b.got_reply} | ${b.profile_click_delta_filled}`;
+  const base = `${b.count} | A ${b.draft_used.A} / B ${b.draft_used.B} / C ${b.draft_used.C}${b.draft_used.Q ? ` / Q ${b.draft_used.Q}` : ""}${b.draft_used["空"] ? ` / 空 ${b.draft_used["空"]}` : ""} | ${b.got_like} | ${b.got_reply} | ${b.profile_click_delta_filled}`;
   const rx = withRx ? ` | ${b.reactions_fetched}（未取得 ${b.count - b.reactions_fetched}） | ${b.likes_sum} / ${b.replies_sum} | ${b.views_sum}（中央値 ${b.views_median ?? "—"}）` : "";
   return base + rx + (b.no_post_id ? ` | reply_post_id 空 ${b.no_post_id}` : "");
 }
@@ -289,12 +292,21 @@ export function toMarkdown(agg) {
     L.push("| 比較（観測のみ・判定基準 10/12＝自投稿の中央値 ≥ 50 は変えない） | n | 中央値 | 合計 |");
     L.push("|---|---|---|---|");
     L.push(`| リプの表示回数（reactions.json・取得済みのみ） | ${agg.total.reactions_fetched} | ${agg.total.views_median ?? "—"} | ${agg.total.views_sum} |`);
-    L.push(`| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 ${op.excluded_replies} 件を除外） | ${op.n} | ${op.impressions_median ?? "—"} | ${op.impressions_sum} |`);
+    L.push(`| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 ${op.excluded_replies} 件を除外・引用ポスト Q は自投稿に含める） | ${op.n} | ${op.impressions_median ?? "—"} | ${op.impressions_sum} |`);
     const notes = [];
     if (op.unparsed_time) notes.push(`日時を解釈できず期間判定から外した行 ${op.unparsed_time}`);
     if (op.no_impressions) notes.push(`インプレッション列が空の行 ${op.no_impressions}`);
     if (op.columns) notes.push(`使用した列: id=${op.columns.id ?? "（無し）"} / 日時=${op.columns.time ?? "（無し）"} / インプレッション=${op.columns.impressions ?? "（無し）"}`);
     if (notes.length) L.push("", notes.join("／"));
+  }
+  if (agg.ga4_quote) {
+    const g = agg.ga4_quote;
+    L.push("");
+    L.push(`| GA4 utm_medium=quote（引用ポスト経由・hostName=app.vodnavi.jp・${g.period?.startDate ?? "?"}〜${g.period?.endDate ?? "?"}） | セッション | ユーザー | PV |`);
+    L.push("|---|---|---|---|");
+    L.push(`| 合計 | ${g.total?.sessions ?? 0} | ${g.total?.users ?? 0} | ${g.total?.pageviews ?? 0} |`);
+    for (const r of g.by_content ?? []) L.push(`| utm_content=${r.content} | ${r.sessions} | ${r.users} | ${r.pageviews} |`);
+    if (g.note) L.push("", g.note);
   }
   if (agg.unmatched.length) L.push("", `x_targets に紐づかない行: ${agg.unmatched.join("、")}`);
   return L.join("\n") + "\n";
@@ -315,7 +327,7 @@ function parseArgs(argv) {
 if (isMain(import.meta.url)) {
   const a = parseArgs(process.argv.slice(2));
   if (!a.replies || !a.targets) {
-    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
+    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
     process.exit(2);
   }
   const agg = aggregate({
@@ -325,6 +337,7 @@ if (isMain(import.meta.url)) {
     ownPosts: typeof a["own-posts"] === "string" ? (a["own-posts"].endsWith(".json") ? JSON.parse(fs.readFileSync(a["own-posts"], "utf8")) : fs.readFileSync(a["own-posts"], "utf8")) : null,
     since: typeof a.since === "string" ? a.since : null,
     until: typeof a.until === "string" ? a.until : null,
+    ga4Quote: typeof a["ga4-quote"] === "string" ? JSON.parse(fs.readFileSync(a["ga4-quote"], "utf8")) : null,
   });
   process.stdout.write(a.md ? toMarkdown(agg) : JSON.stringify(agg, null, 2) + "\n");
 }

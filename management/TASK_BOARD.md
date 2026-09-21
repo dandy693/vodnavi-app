@@ -11270,3 +11270,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 ## 2026-09-21 17:2x — `c65d8e3` の state **READY**（`dpl_6pDA1JrAXtYfYQmejb2kjp7uwkBV`・17:17:35 → READY 17:18:40 JST・`app-concierge/` 差分ありの正常ビルド）／sitemap 再生成 17:18:01 JST・2,594（works 1,200／genres 200／actresses 1,177／articles 8）＝全損なし／healthcheck の UA `vodnavi-healthcheck/1` はローカル受け口で 3/3 着地（変更前は `node`）
 - E28 実施の順序＝①コード push ✅ → ②READY ✅ → ③Firewall 適用（**9/22 06:30 以降・朝の抽出後**）→ ④読み戻し → ⑤healthcheck 1 回。起案 §7-6。
 - 終了時の libuv assertion（ローカル Windows・変更前でも再現）は記録のみ。
+- `c12de1a`（docs のみ・距離 1）の state **CANCELED**（`dpl_BTmWuGUVFBGkRgswj5W4kiNS8Z4d`・17:23:35 JST・skip 経路）。次の docs push は距離 2。
+
+## 2026-09-21 18:0x — 【CSO 指示（夜）】引用ポスト（基盤D）の運用開始 → ツール実装・dry-run 完了（記録なし）。**提示は 2026-09-22 朝の抽出から**（FACT §26-11・設計書 §12-10・README「引用ポスト」・ROUTINE §3-2）
+- 実装: `quote.mjs`（候補選定 → 停止 → 上限 → works HTTP 200 → Q1/Q2 生成 → URL 付与 → 全文ガード）／`PROMPT-Q.md`／`guards.mjs`（type=Q・`guardQuoteFull`）／`guards.config.json`（`Q_quote`・`R8_chars_Q`・R12 埋め文）／`record.mjs`（`draft_used=Q`・`YYYYMMDD-Q-<handle>`・`--posted --quote` → `last_quote_at`）／`weekly-report.mjs`（Q 列・Q は自投稿に含める・`--ga4-quote`）／`ga4-quote-sessions.mjs`。`node --test` **70/70**。
+- dry-run（17:47・17:50・朝の 9 行）: attackers_av・S1_No1_Style で Q1・Q2 全通過／`mida00812` は works ページ HTTP 500（17:48:03・17:50）で提示せず。GA4 `utm_medium=quote` ベースライン（9/1〜9/21）＝0 セッション。
+- CTO 判断（要否は CSO）: ①Q の cache 事実上限＝3（B は 2）②`draft_used` の選択肢 Q は MCP で追加できないため初回 `typecast: true` で作成（HUMAN が UI で先に追加してもよい）③引用の停止判定に `reply_restriction` は使わない（`no_repropose` と URL 重複のみ）。

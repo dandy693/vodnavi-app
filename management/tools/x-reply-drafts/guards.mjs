@@ -2,7 +2,8 @@
 // 設計書 §4（R1〜R10）＋ CSO裁定 2026-09-18 C（R11 虚偽体験語）・D（R10 は R9 出典検査に統合）。
 // 語リストは guards.config.json（HUMAN 編集可）。本ファイルは語を持たない。
 // ctx = {
-//   type: "A"|"B"|"C",   // 案の型（R9 の全数値検査は B のみ・価格/割引の数値は全案）
+//   type: "A"|"B"|"C"|"Q", // 案の型（R9 の全数値検査は B・Q・価格/割引の数値は全案）。"Q"＝引用ポストの一言（基盤D・CSO 指示 2026-09-21 夜）:
+//                        //   R8 は R8_chars_Q（40〜80）・本文の具体（R14）は不要・cache 由来の事実 1〜2 個（R14-B と同じ）・URL は本体に含めず quote.mjs が付ける
 //   names: string[],     // 出演者名など敬称必須の名前（R7）
 //   sources: string[],   // 数値の出典（相手投稿本文・作品知識 JSON など）（R9）
 //   body?: string,       // 相手投稿本文。R5 のヒット語が本文にそのまま含まれていれば免除／R14 の具体トークン源（CSO裁定 2026-09-19）
@@ -230,7 +231,7 @@ function matchesEntry(text, entry) {
   return null;
 }
 
-function listHits(text, list) {
+export function listHits(text, list) {
   const hits = [];
   for (const e of list ?? []) {
     const h = matchesEntry(text, e);
@@ -304,7 +305,7 @@ export function guardReply(text, ctx = {}) {
   // R8 字数・重み・文数
   const chars = charCount(t);
   const weight = xWeight(t);
-  const lim = cfg.R8_chars ?? { min: 80, max: 140 };
+  const lim = (ctx.type === "Q" && cfg.R8_chars_Q) ? cfg.R8_chars_Q : cfg.R8_chars ?? { min: 80, max: 140 };
   if (chars < lim.min || chars > lim.max) push("R8", `字数 ${chars}（${lim.min}〜${lim.max}）`);
   if (weight > 280) push("R8", `X 重み ${weight}（≤280）`);
   const sentences = countSentences(t);
@@ -322,7 +323,7 @@ export function guardReply(text, ctx = {}) {
     if (h.length && !exempt) push("R13", `根拠なし断定語: ${h.join("、")}`);
   }
   // R14 具体性（相手投稿本文の具体を 1 つ含む・ヒューリスティック・CSO判定 2026-09-19）
-  if (cfg.R14_concreteness && ctx.body) {
+  if (cfg.R14_concreteness && ctx.body && ctx.type !== "Q") {
     const res = hasConcreteFromBody(t, ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
     if (!res.ok) {
       const cands = concreteTokens(ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
@@ -332,17 +333,20 @@ export function guardReply(text, ctx = {}) {
   // R14-B: B 型は cache 由来の事実を 1 つ含む（知識ありモードのみ生成・CSO判定 2026-09-19 dry-run #3）
   //        かつ最大 B_max_knowledge_facts 個まで（CSO判定 2026-09-19 12:1x・監督名・レーベル名の羅列はデータの読み上げ）。
   //        上限の数え方＝種別ごと（配信日の表記ゆれは 1 つ）・出演者名は「名前＋さん」の呼びかけに使うため数えない。
-  if (cfg.R14_concreteness?.B_requires_knowledge_fact && (ctx.type ?? "B") === "B") {
-    if (!ctx.knowledge) push("R14", "B 型は作品知識（cache ヒット）があるときだけ生成する（知識なしモードでは A・C のみ）");
+  // Q 型（引用ポストの一言）も同じ: 作品の属性を述べるため cache 由来の事実 1〜2 個を必須にする（CSO 指示 2026-09-21 夜）。
+  if (cfg.R14_concreteness?.B_requires_knowledge_fact && ((ctx.type ?? "B") === "B" || ctx.type === "Q")) {
+    const tname = ctx.type === "Q" ? "Q" : "B";
+    if (!ctx.knowledge) push("R14", `${tname} 型は作品知識（cache ヒット）があるときだけ生成する` + (tname === "B" ? "（知識なしモードでは A・C のみ）" : "（引用は content_id 確定の投稿のみ）"));
     else {
       const hits = knowledgeFactHits(t, ctx.knowledge, cfg.R6_appearance_explicit ?? []);
       if (!hits.length) {
         const facts = knowledgeFacts(ctx.knowledge, cfg.R6_appearance_explicit ?? []);
-        push("R14", `B 型に cache 由来の事実（収録時間・配信日・シリーズ・ジャンル・メーカー・出演者など）が無い（候補: ${facts.slice(0, 8).join("、") || "なし"}）`);
+        push("R14", `${tname} 型に cache 由来の事実（収録時間・配信日・シリーズ・ジャンル・メーカー・出演者など）が無い（候補: ${facts.slice(0, 8).join("、") || "なし"}）`);
       }
-      const max = cfg.R14_concreteness.B_max_knowledge_facts;
+      // 上限: B は B_max_knowledge_facts（2）。Q は Q_quote.max_knowledge_facts（既定 3・dry-run 2026-09-21 で 2 だと字数合わせの埋め文が出たため別枠・CSO が変更可）
+      const max = ctx.type === "Q" ? (cfg.Q_quote?.max_knowledge_facts ?? cfg.R14_concreteness.B_max_knowledge_facts) : cfg.R14_concreteness.B_max_knowledge_facts;
       const counted = hits.filter((h) => h.cat !== "actress");
-      if (max != null && counted.length > max) push("R14", `B 型の cache 由来の事実が ${counted.length} 個（最大 ${max}・優先: 収録時間 > 配信日 > シリーズ > その他）: ${counted.map((h) => h.value).join("、")}`);
+      if (max != null && counted.length > max) push("R14", `${tname} 型の cache 由来の事実が ${counted.length} 個（最大 ${max}・優先: 収録時間 > 配信日 > シリーズ > その他）: ${counted.map((h) => h.value).join("、")}`);
     }
   }
   // R14-A: A 型の祝福（おめでと）は cache の配信日が投稿日から A_congrats_window_days 日以内のときだけ許可（CSO判定 2026-09-21 朝）。
@@ -375,9 +379,9 @@ export function guardReply(text, ctx = {}) {
   // R9 数値の出典（B 案＝全数値／全案＝価格・割引の数値）
   const srcNorm = (ctx.sources ?? []).map(normalizeNumbers).join("\n");
   const missing = (list) => list.filter((n) => !srcNorm.includes(n));
-  if ((ctx.type ?? "B") === "B") {
+  if ((ctx.type ?? "B") === "B" || ctx.type === "Q") {
     const miss = missing(extractNumbers(t));
-    if (miss.length) push("R9", `出典のない数値（B）: ${miss.join("、")}`);
+    if (miss.length) push("R9", `出典のない数値（${ctx.type === "Q" ? "Q" : "B"}）: ${miss.join("、")}`);
   }
   {
     const priceNums = Array.from(normalizeNumbers(t).matchAll(PRICE_TOKEN), (m) => m[1]);
@@ -406,3 +410,38 @@ export function checkPayloadForbidden(obj, allowKeys = []) {
   walk(obj, "");
   return hits;
 }
+
+/**
+ * 引用ポスト（基盤D・CSO 指示 2026-09-21 夜）の全文検査: 「一言 ＋ 自サイト works 詳細 URL 1 本」だけを許す R1 の例外。
+ *   - allowedUrl がちょうど 1 回、末尾（改行区切り）にあること
+ *   - URL を除いた残り（一言）に R1〜R4（URL / @ / vodnavi・af_id / #）が無いこと
+ *   - X 重み（URL は t.co の 23 として数える）≤ 280
+ * 返り値 { ok, failures, metrics: { weight } }
+ */
+export function guardQuoteFull(full, { allowedUrl } = {}) {
+  const failures = [];
+  const push = (rule, detail) => failures.push({ rule, detail });
+  const t = String(full ?? "").replace(/\s+$/u, "");
+  if (!allowedUrl) push("Q-URL", "allowedUrl が無い");
+  const n = allowedUrl ? t.split(allowedUrl).length - 1 : 0;
+  if (allowedUrl && n !== 1) push("Q-URL", `許可 URL の出現が ${n} 回（ちょうど 1 回）`);
+  if (allowedUrl && n === 1 && !t.endsWith("\n" + allowedUrl)) push("Q-URL", "URL は本文の末尾に改行で区切って 1 本だけ置く");
+  const rest = allowedUrl ? t.split(allowedUrl).join("") : t;
+  for (const re of R1_URL) {
+    const m = rest.match(re);
+    if (m) {
+      push("R1", `許可 URL 以外の URL/ドメイン: ${m[0].trim()}`);
+      break;
+    }
+  }
+  if (R2_MENTION.test(rest)) push("R2", "@ を含む");
+  {
+    const m = rest.match(R3_SELF);
+    if (m) push("R3", `自社語/af_id（URL の外）: ${m[0]}`);
+  }
+  if (R4_HASHTAG.test(rest)) push("R4", "# を含む");
+  const weight = xWeight(rest.replace(/\s+$/u, "")) + (allowedUrl ? 23 : 0);
+  if (weight > 280) push("R8", `X 重み ${weight}（URL は 23 として計上・≤280）`);
+  return { ok: failures.length === 0, failures, metrics: { weight } };
+}
+

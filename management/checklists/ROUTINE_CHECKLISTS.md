@@ -177,6 +177,7 @@
 - [ ] ツール実行（parse → stopcheck → knowledge → generate）→ 案を提示（停止判定に当たった行はその旨表示・priority 3 は週 2 件まで手動カウント）→ HUMAN 投稿 → `record.mjs --create --texts` → MCP → `--posted` → 読み戻し。
 - [ ] **木曜 PDCA の集計（9/24 朝）も 06:00 起点**——反応の補完（累積・read-only）→ `weekly-report.mjs --reactions --own-posts` の順。
 - [ ] **【CSO 判定 2026-09-21・継続】木曜 PDCA（2026-09-24）で GSC「ページのインデックス登録」の未登録 12,443 の理由別内訳（ベースライン FACT §29-2）と、9/18〜9/24 の X 指標（`weekly-report.mjs` の priority 別・type 別／X 経由セッション・着地・年齢確認・外部クリック＝`ga4-access-20260921.mjs` の 2 章を期間差し替えで再実行）を並べる。
+- [ ] **【CSO 指示 2026-09-21 夜・基盤D 引用ポスト・2026-09-22 朝から】朝・夜のリプ生成の直後に `quote.mjs` を同じ中間ファイルで実行し、引用向き 1〜2 件（Q1・Q2）を別枠で提示（提示前に works ページ HTTP 200 を確認）。HUMAN 投稿後「@ハンドル｜Q1/Q2（手直し有無）｜引用ポストURL｜本文」→ `record.mjs --create quotes.json --pick … --replies` → MCP（初回のみ `typecast: true`）→ `--posted --quote` → 読み戻し。**同一投稿にリプ＋引用の両方はしない／引用は 1 日 2 件まで（T1改 と合わせて works リンク 3 件/日）**。木曜集計は `ga4-quote-sessions.mjs`（`utm_medium=quote`）→ `weekly-report.mjs --ga4-quote`。引用ポストは X Analytics では自投稿として数える（FACT §26-11）。
 
 ## 4. T3 自動投稿の事後目視（**初回2週間・木曜サイクルとは別**・第102便 タスクB）
 

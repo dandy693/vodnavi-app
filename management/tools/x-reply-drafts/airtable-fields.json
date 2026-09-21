@@ -13,7 +13,9 @@
       "last_reply_at": "fldaqFoEVEIdvFXV3",
       "note": "fldjxdAebj2DK8lwu",
       "reply_restriction": "fld212NAEGBWRujwI",
-      "no_repropose": "fldlBROgusXj2PZTs"
+      "no_repropose": "fldlBROgusXj2PZTs",
+      "last_quote_at": "fldkkqFHP0lFp2jqs",
+      "verified_at": "fld8zbOWBPJdcbOXN"
     },
     "choices": {
       "status": {
@@ -48,6 +50,7 @@
         "B": "selzKCzvAAkQlzpKe",
         "C": "selPPvuenDPVpssHe"
       }
-    }
+    },
+    "_draft_used_Q_note": "draft_used の選択肢 Q（引用ポスト・CSO 指示 2026-09-21 夜）は MCP に選択肢追加ツールが無いため未登録。初回の Q 記録を typecast:true で作成すると Airtable が選択肢を作る → get_table_schema で ID を読み戻して choices.draft_used.Q に追記する。"
   }
 }

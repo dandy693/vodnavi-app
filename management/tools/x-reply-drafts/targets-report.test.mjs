@@ -54,7 +54,7 @@ test("normalizeRepliesFull: 生出力と fields 形の両方を読む", () => {
 test("aggregate: priority 別・type 別・件数・draft_used・got_like/got_reply・期間絞り", () => {
   const agg = aggregate({ replies: REPLIES, targets: TARGETS, since: "2026-09-18", until: "2026-09-24" });
   assert.equal(agg.total.count, 4, "9/17 の 1 件は期間外・posted_at 空の 1 件は落とさない");
-  assert.deepEqual(agg.total.draft_used, { A: 2, B: 1, C: 1, "空": 0 });
+  assert.deepEqual(agg.total.draft_used, { A: 2, B: 1, C: 1, Q: 0, "空": 0 });
   assert.equal(agg.total.got_like, 1);
   assert.equal(agg.total.got_reply, 1);
   assert.equal(agg.total.profile_click_delta_filled, 1);
@@ -132,7 +132,7 @@ test("own-posts: X Analytics CSV（旧形式 +0000）を tolerant に読み、�
   assert.equal(agg.own_posts.n, 2);
   assert.equal(agg.own_posts.excluded_replies, 1, "REPLIES の reply_post_id=1 が除外される");
   const md = toMarkdown(agg);
-  assert.ok(md.includes("| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 1 件を除外） | 2 | 80 | 160 |"), md);
+  assert.ok(md.includes("| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 1 件を除外・引用ポスト Q は自投稿に含める） | 2 | 80 | 160 |"), md);
   assert.ok(md.includes("観測のみ"));
   assert.ok(!/推奨|判定:/.test(md));
 });

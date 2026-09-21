@@ -280,3 +280,16 @@ management/tools/x-reply-drafts/
 
 - **`node --test` 61/61**（追加 3: R13 時間表現／R14-A／record 一部生成不能）。**手動下書き 6 件の回帰の期待値を更新**——#1・#4 の「第2弾」は本文（第1弾のみ）に無いため R13 も当たる（参考例は PROMPT の注記どおり使わない）。
 - **本日朝の 16 案を改訂後のガードに再適用（回帰・API なし）**: **FANZAdougaX A＝R13（今夜）＋R14-A（知識なし）／同 C＝R13（第4弾）／MOODYZ A＝R14-A（配信日 9/11・投稿 9/20＝差 9 日）／IDEAPOCKETTER A＝R14-A（配信日 8/28・差 23 日）**＝CSO が指摘した 4 点はいずれも機械検査で捕捉できる形になった。**attackers_av A・S1 A（配信日＝投稿日・差 0 日）は通過。** 他 10 案は不変。**朝の drafts.json は改訂前の生成物として据え置く。**
+
+### 12-10. 【基盤D 引用ポスト・CSO 指示 2026-09-21 夜 → CTO 実装 17:2x〜18:0x】`quote.mjs`／`PROMPT-Q.md`／`guardQuoteFull`／`record.mjs` の Q 対応／`ga4-quote-sessions.mjs`
+
+- 指示の転記と着地の要点 → FACT §26-11。運用手順 → ツール README「引用ポスト（基盤D）」。ROUTINE §3-2 に 1 行。
+- 実装の差分（設計報告を挟まず最小限・指示どおり）:
+  - `quote.mjs`（新規・約 250 行）: 候補選定 `quoteEligibility` → 停止判定 `checkQuoteStop` → 上限（`max_per_run` − 本日記録済み Q）→ `checkWorksUrl`（GET・`redirect: manual`・UA `vodnavi-quote-check/1`）→ `generateQuoteForLine`（Q1・Q2・再生成 ≤2）→ `assembleQuote`（一言＋改行＋URL）。出力 `kind: "quote"`。
+  - `guards.mjs`: `guardReply` に type=Q（`R8_chars_Q`・R14 本文具体なし・cache 事実 1〜`Q_quote.max_knowledge_facts`・R9 全数値）／`guardQuoteFull`（URL 1 本の例外）／`listHits` を export。
+  - `guards.config.json`: `R8_chars_Q`・`Q_quote`（allowed_types／release_keywords／exclude_keywords／max_knowledge_facts 3／max_per_run 2／max_per_day 2）・R12 に埋め文 5 語。
+  - `record.mjs`: `buildCreatePayload` が `draftUsed="Q"`＋`allowedUrl` を受ける（reply_text の URL を除いて FORBIDDEN 検査）／`buildQuoteCreateRecords`／`--posted --quote` → `last_quote_at`／`normalizeRepliesLite`。`airtable-fields.json` に `last_quote_at`・`verified_at`。
+  - `weekly-report.mjs`: `draft_used` に Q・`--own-posts` の除外は A/B/C のみ・`--ga4-quote`。`ga4-quote-sessions.mjs`（新規）。
+  - テスト: `quote.test.mjs` 9 件（適格性／停止／URL／全文ガード／生成 stub／HTTP モック／payload／main）。合計 **70/70**。
+- dry-run 2 回（17:47・17:50・朝の抽出 9 行・記録なし）: 1 回目は上限 2 の事実数で Q2 が 3 回とも NG（4〜5 個）・S1 の通過案に埋め文（「数字はそのまま、作品情報として書き留めておきます」）→ `max_knowledge_facts` を Q だけ 3 にし、PROMPT に「埋め文を書かない」・R12 に埋め文語を追加 → 2 回目は attackers_av（calls 1）・S1（calls 2）とも Q1・Q2 全通過。`mida00812` は 2 回とも works ページ HTTP 500（17:48:03・17:50）＝提示しない（E6① の上流 400・原因は追わない）。
+- 未確定（明朝の初回で確定）: `draft_used` の選択肢 Q は初回 `typecast: true` で作成→ID 読み戻し／HUMAN 投稿の貼り付け形式「@ハンドル｜Q1/Q2（手直し有無）｜引用ポストURL｜本文」→ `posted.json` へ転記（URL 1 本はそのまま）。
