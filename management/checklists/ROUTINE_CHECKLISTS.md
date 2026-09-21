@@ -18,6 +18,7 @@
 
 ### 📌 規約・取り下げ対応（**週次**・CSO 指示 2026-09-21・**CSO 採用 2026-09-21**・FACT §28-1）
 - [ ] **DMM アフィリエイトお知らせの週次確認 → 掲載取り下げ依頼の content_id 検索 → 除外**: affiliate.dmm.com のお知らせ（取り下げ依頼・API 仕様変更・料率）を HUMAN が週次で確認し、取り下げ依頼があれば CTO が content_id（と女優名・ID）で **10 範囲**（リポジトリ／git 履歴／`sitemap_works_archive`／`sitemap_cohort`／`fanza_response_cache`／`price_history`・`article_products`・`editorial_articles`・`internal_links`／配信中 sitemap 3 本／Vercel Runtime Logs 24h／Airtable `posts`／FANZA API の `cid=` 照会（videoc・videoa・ローカル））を read-only で検索 → 本番 `/works/{floor}/{cid}`・`/actresses/{id}` の HTTP ステータスを取得（**cache 行が 1 つ生成される副作用を記録し、削除は HUMAN 枠**）→ 該当があれば除外手順（archive・cohort・cache の行削除＝HUMAN 枠／sitemap 除外／404・410 は denylist＝本番コード変更／記事内リンク削除）を設計 → **CSO 承認後に実施 → 読み戻し** → FACT §28-1 に「依頼日・cid・調査日・結果」を登録。
+- [ ] **📌 E28 クローラ対策の効果測定（CSO 裁定 2026-09-21・実施 2026-09-22 06:30 以降・FACT §29-3）**: 実施日から 7 日間（9/22〜9/28）毎日、①`served:500` 日別（Runtime Logs MCP `group_by=statusCode`・query `"served":500`・JST 日）②Firewall Past Day の Allowed／Denied／Rate Limited（同時刻に画面読み取り）③Runtime Logs の `/concierge` 関数実行数（代理指標）を `access-20260921.md` 末尾の追記表に記録。前窓＝served:500 9/14〜9/20（6,462 行）・Allowed 9/20 08:47〜9/21 08:47（151.8k）。**9/29 に Allowed が 20k/日を下回らなければ Challenge 格上げを CSO が再裁定。**
 
 ### 📌 DB更新監視
 - [ ] **API生存確認**: FANZA商品情報APIの同期ログを確認。エラーによる作品データの欠損や、Vercelのビルドエラー（インクリメンタル生成失敗）が起きていないか。
