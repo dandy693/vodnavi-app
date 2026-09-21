@@ -11278,3 +11278,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - CTO 判断（要否は CSO）: ①Q の cache 事実上限＝3（B は 2）②`draft_used` の選択肢 Q は MCP で追加できないため初回 `typecast: true` で作成（HUMAN が UI で先に追加してもよい）③引用の停止判定に `reply_restriction` は使わない（`no_repropose` と URL 重複のみ）。
 - `30f78d6`（management のみ・距離 2）の state **CANCELED**（`dpl_3EqUm9cVy7heEfKD6fQ3vdHutuZ3`・17:54:36 JST・skip 経路）。次の docs push は距離 3。
 - **【CSO 裁定 2026-09-21 夜】引用ポストの CTO 判断 3 点（事実上限 3・初回 typecast・reply_restriction 不使用）を承認。`mida00812` の 500 停止は期待どおり・提示前 200 確認は維持**（FACT §26-11）。明朝 06:00 の順序＝抽出 → リプ案 → Q1/Q2（別枠）→ 提示 → E28 Firewall 適用（抽出後）。
+- `5cc81cb`（docs のみ・距離 3）の state **CANCELED**（`dpl_5AjK4dXWUM5XsM2pjDfnwbZ7aRMA`・17:57:37 JST・skip 経路）。次の docs push は距離 4。
+
+## 2026-09-21 22:3x — 【段階② 3 日目・夜】抽出 34/34（21:1x〜21:4x JST・窓＝06:00 以降）→ 窓内 21 アカウント 34 投稿 → 除外 19（女優本人の私生活等 13・フロア外/FANZA 外 3・画像のみ 3）→ 入力 15 行 → 停止 10（同日返信済み 8・バッチ内 2）→ 知識 5/5 → 生成 5 行 12 案 全通過（21:37:35〜21:40:05）→ **投稿 4 件・x_replies 累計 29**（`bundle2/runs/20260921-pm/`）
+- 投稿（HUMAN・22:27:16〜22:28:58 JST）: `20260921-Fitch_official` C／`20260921-kawaii_pr` B（投稿本文は「kawaiiVR」＝生成の `kawaii*VR` からアスタリスクが落ちた・記録は投稿本文を正とする）／`20260921-fanza_sns` A／`20260921-shinnakanodream` A（priority 3・**今週 2 / 2 で上限**）。X 直接 URL 4/4 200・対照 404。@sodstarofficial は見送り。
+- Airtable: create ×1（createdTime 22:31:35 JST）→ `reply_post_id`／`posted_at`（snowflake）／`x_targets.last_reply_at` → 読み戻し 4/4 一致・機械照合 0 不一致・x_replies 総数 29（reply_key 重複なし）。
+- **【CSO判定 2026-09-21 夜】**①@ran_tpowers の店舗イベント（作品名なし）は除外側で確定（README 手順 0 ④）②本文 1 文のみで作品名・配信日が無い投稿は「続報待ち」型の案を出さない（`PROMPT.md` 規則 12・README ⑤）③案の提示は対象投稿 URL を各ブロックの 1 行目に固定（`print-drafts.mjs`）。`node --test` 70/70。
+- Q（引用ポスト）の提示は明朝から（本夜の候補になりうる行＝MOODYZ 19:00 `miab00677` のみ・同日返信済みで停止行）。
+- 明朝 06:00 の順序＝抽出 → リプ案 → Q1/Q2（別枠・works 200 確認・初回 Q は `typecast: true` → `get_table_schema` → `airtable-fields.json`）→ 提示 → **E28 Firewall 適用（`put_firewall_config` → `get_firewall_config` 読み戻し → healthcheck 1 回・起案 §7-6）**。

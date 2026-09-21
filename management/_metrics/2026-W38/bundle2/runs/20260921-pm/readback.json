@@ -1,0 +1,14 @@
+{"_readback":"2026-09-21 22:3x JST・MCP list_records_for_table（recordIds 指定）・x_replies 4 / x_targets 4・x_replies 総数 29（reply_key 重複なし）",
+"x_replies":[
+{"id":"recwHOKZwchb1duey","createdTime":"2026-09-21T13:31:35.000Z","reply_key":"20260921-Fitch_official","target":"rec4XV4eU5UQUntIZ","target_post_url":"https://x.com/Fitch_official/status/2101993598623576181","draft_used":"C","reply_post_id":"2102026878257385494","posted_at":"2026-09-21T13:27:16.204Z"},
+{"id":"recumgnriipAAsKW9","createdTime":"2026-09-21T13:31:35.000Z","reply_key":"20260921-kawaii_pr","target":"rec00dXKxyuZuZzEY","target_post_url":"https://x.com/kawaii_pr/status/2102005932213600635","draft_used":"B","reply_post_id":"2102026996503155152","posted_at":"2026-09-21T13:27:44.396Z"},
+{"id":"reclMnP7TvQBzz4JS","createdTime":"2026-09-21T13:31:35.000Z","reply_key":"20260921-fanza_sns","target":"reccuopQfFX8dSjwS","target_post_url":"https://x.com/fanza_sns/status/2101838830630252965","draft_used":"A","reply_post_id":"2102027172022300967","posted_at":"2026-09-21T13:28:26.243Z"},
+{"id":"recpv0QJYUXdRaGwr","createdTime":"2026-09-21T13:31:35.000Z","reply_key":"20260921-shinnakanodream","target":"recQDdtUugpQKcOUO","target_post_url":"https://x.com/shinnakanodream/status/2101969255164240119","draft_used":"A","reply_post_id":"2102027308806865271","posted_at":"2026-09-21T13:28:58.855Z"}
+],
+"x_targets":[
+{"id":"rec4XV4eU5UQUntIZ","handle":"@Fitch_official","status":"稼働","last_reply_at":"2026-09-21T13:27:16.204Z"},
+{"id":"rec00dXKxyuZuZzEY","handle":"@kawaii_pr","status":"稼働","last_reply_at":"2026-09-21T13:27:44.396Z"},
+{"id":"reccuopQfFX8dSjwS","handle":"@fanza_sns","status":"稼働","last_reply_at":"2026-09-21T13:28:26.243Z"},
+{"id":"recQDdtUugpQKcOUO","handle":"@shinnakanodream","status":"稼働","last_reply_at":"2026-09-21T13:28:58.855Z"}
+],
+"x_check":{"at_jst":"2026-09-21 22:29〜22:30","direct_url_200":["2102026878257385494","2102026996503155152","2102027172022300967","2102027308806865271"],"control_404":"1111111111111111111"}}

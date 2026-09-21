@@ -1,0 +1,105 @@
+model=claude-opus-5 dry_run=false today_jst=20260921 counts={"lines":15,"generated":5,"stopped":10} prompt_sha=eca63a8f2620
+
+=== 対象 https://x.com/Fitch_official/status/2101993598623576181（2026-09-21 20:15）
+    @Fitch_official (メーカー公式) status=generated replyKey=20260921-Fitch_official calls=2 in=1554 out=1769
+  A chars=50 weight=94 ok=true attempts=2
+     50%OFFは思い切った数字ですね。秋の企画と同じタイミングで出てくるというのも気になるところです。
+  B chars=46 weight=77 ok=true attempts=1
+     収録時間162分の作品が50%OFFの対象なのですね。2024年3月1日配信のタイトルです。
+  C chars=31 weight=55 ok=true attempts=1
+     50%OFFの期間はいつまでで、対象はこの1作だけでしょうか。
+
+=== 対象 https://x.com/Fitch_official/status/2101842604480774505（2026-09-21 10:15）
+    @Fitch_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260921-Fitch_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/kawaii_pr/status/2102005932213600635（2026-09-21 21:04）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20260921-kawaii_pr calls=2 in=1907 out=414
+  A chars=54 weight=101 ok=true attempts=1
+     第2弾は9月23日の朝9時59分までなのですね。締め切りが分単位で示されていると、残り時間が数えやすいです。
+  B chars=54 weight=89 ok=true attempts=1
+     9月23日朝9時59分までの第2弾ですね。対象作は収録113分で、シリーズはkawaii*VRとのことです。
+  C chars=44 weight=81 ok=true attempts=2
+     9月23日の朝9時59分までという期限は、第2弾に入っている作品すべてで共通でしょうか？
+
+=== 対象 https://x.com/fanza_sns/status/2101838830630252965（2026-09-21 10:00）
+    @fanza_sns (セール告知系) status=generated replyKey=20260921-fanza_sns calls=3 in=1265 out=1525
+  A chars=61 weight=107 ok=true attempts=1
+     第2弾は30％OFFと10％ポイント還元が同時に付くのですね。9月22日23時59分までという区切りが気になるところです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=50 weight=92 ok=true attempts=3
+     第2弾の対象作品は9月22日23時59分の終了後、どのタイミングで次の対象に入れ替わるのでしょうか？
+
+=== 対象 https://x.com/fanza_sns/status/2101838830412456435（2026-09-21 10:00）
+    @fanza_sns (セール告知系) status=停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260921-fanza_sns calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/sodstarofficial/status/2101974729577955597（2026-09-21 19:00）
+    @sodstarofficial (メーカー公式) status=generated replyKey=20260921-sodstarofficial calls=1 in=321 out=1108
+  A chars=48 weight=96 ok=true attempts=1
+     年上お姉さんというテーマの一言だけで、続きが気になりますね。作品名や配信日の続報を待っています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=43 weight=86 ok=true attempts=1
+     年上お姉さんのこの作品、配信開始日や予約の受付時期はいつ頃の発表になりそうでしょうか？
+
+=== 対象 https://x.com/shinnakanodream/status/2101969255164240119（2026-09-21 18:38）
+    @shinnakanodream (メーカー公式) status=generated replyKey=20260921-shinnakanodream calls=1 in=549 out=822
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=62 weight=110 ok=true attempts=1
+     70種類の映像が30%OFFで10月4日までとは、対象がかなり広いですね。9月25日までの動画くじ復活と時期も重なりますね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=39 weight=74 ok=true attempts=1
+     冒頭3分間の無料公開は、動画くじが9月25日に終わった後も続く予定でしょうか。
+
+=== 対象 https://x.com/FANZAdougaX/status/2101944634721386739（2026-09-21 17:00）
+    @FANZAdougaX (セール告知系) status=停止（同日同ハンドル 2 件目: 20260921-FANZAdougaX が既存） replyKey=20260921-FANZAdougaX calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== 対象 https://x.com/FANZAdougaX/status/2101974869802168575（2026-09-21 19:00）
+    @FANZAdougaX (セール告知系) status=停止（同日同ハンドル 2 件目: 20260921-FANZAdougaX が既存） replyKey=20260921-FANZAdougaX calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== 対象 https://x.com/MOODYZ_official/status/2101974728969945583（2026-09-21 19:00）
+    @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260921-MOODYZ_official が既存） replyKey=20260921-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/MOODYZ_official/status/2101982283037294880（2026-09-21 19:30）
+    @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260921-MOODYZ_official が既存） replyKey=20260921-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2102001651590795626（2026-09-21 20:47）
+    @IDEAPOCKETTER (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260921-IDEAPOCKETTER が既存） replyKey=20260921-IDEAPOCKETTER calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== 対象 https://x.com/PREMIUM_AV/status/2102004933486875011（2026-09-21 21:00）
+    @PREMIUM_AV (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260921-PREMIUM_AV が既存） replyKey=20260921-PREMIUM_AV calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/S1_No1_Style/status/2101999933356433802（2026-09-21 20:40）
+    @S1_No1_Style (メーカー公式) status=停止（同日同ハンドル 2 件目: 20260921-S1_No1_Style が既存） replyKey=20260921-S1_No1_Style calls=0 in=0 out=0
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2102005032678023191（2026-09-21 21:00）
+    @shirot_AV_chosa (レビュー系) status=停止（同日同ハンドル 2 件目: 20260921-shirot_AV_chosa が既存） replyKey=20260921-shirot_AV_chosa calls=0 in=0 out=0
+  A: (なし)
+  B: (なし・知識なしモードでは B を生成しない)
+  C: (なし)

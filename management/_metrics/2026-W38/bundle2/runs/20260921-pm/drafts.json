@@ -1,0 +1,708 @@
+{
+  "generated_at": "2026-09-21T12:40:05.780Z",
+  "today_jst": "20260921",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "eca63a8f2620b9968df42577620310b8cb425bcd92fa90554fc015f8ac83c1e4",
+  "counts": {
+    "lines": 15,
+    "generated": 5,
+    "stopped": 10
+  },
+  "items": [
+    {
+      "lineNo": 2,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2101993598623576181",
+      "targetPostId": "2101993598623576181",
+      "postedAtJst": "2026-09-21 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T12:37:44.047Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "juny00112",
+        "title": "爆乳Icup客室乗務員の卑猥なオフパコ撮影会 極小水着姿で肉弾ボディをモロ出し誘惑 武田怜香",
+        "fetched_at": "2026-09-21 04:24:32.817+00"
+      },
+      "replyKey": "20260921-Fitch_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50%OFFは思い切った数字ですね。秋の企画と同じタイミングで出てくるというのも気になるところです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 94
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "50%OFFという割引幅は大きいですね。半額という数字だけでも目を引きます。",
+              "failures": [
+                {
+                  "rule": "R5",
+                  "detail": "宣伝語: 割引"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "収録時間162分の作品が50%OFFの対象なのですね。2024年3月1日配信のタイトルです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 77
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "50%OFFの期間はいつまでで、対象はこの1作だけでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 31,
+              "weight": 55
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1554,
+        "output_tokens": 1769,
+        "cache_creation_input_tokens": 6568,
+        "cache_read_input_tokens": 0,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2101842604480774505",
+      "targetPostId": "2101842604480774505",
+      "postedAtJst": "2026-09-21 10:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T12:37:44.047Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260921-Fitch_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2102005932213600635",
+      "targetPostId": "2102005932213600635",
+      "postedAtJst": "2026-09-21 21:04",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:25:16.000Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "kavr00266",
+        "title": "【VR】心地良いタメ口の後輩とゲリラ豪雨で緊急ラブホ避難… 童貞を見透かされ死ぬほど恥ずかしがってたら「じゃあ卒業しちゃう？」色白美肌が病みつきになる中出し筆おろし体験 皆瀬あかり",
+        "fetched_at": "2026-09-21 09:34:25.655+00"
+      },
+      "replyKey": "20260921-kawaii_pr",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第2弾は9月23日の朝9時59分までなのですね。締め切りが分単位で示されていると、残り時間が数えやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 101
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "9月23日朝9時59分までの第2弾ですね。対象作は収録113分で、シリーズはkawaii*VRとのことです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 89
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "9月23日の朝9時59分までという期限は、第2弾に入っている作品すべてで共通でしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 81
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "第2弾の対象作品は、第1弾から入れ替わっている形でしょうか。",
+              "failures": [
+                {
+                  "rule": "R13",
+                  "detail": "根拠なし断定語: 第1弾（regex: 第[0-9０-９一二三四五六七八九十]+弾）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1907,
+        "output_tokens": 414,
+        "cache_creation_input_tokens": 3262,
+        "cache_read_input_tokens": 3306,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "fanza_sns",
+      "postUrl": "https://x.com/fanza_sns/status/2101838830630252965",
+      "targetPostId": "2101838830630252965",
+      "postedAtJst": "2026-09-21 10:00",
+      "target": {
+        "id": "reccuopQfFX8dSjwS",
+        "handle": "fanza_sns",
+        "type": "セール告知系",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-fanza_sns",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第2弾は30％OFFと10％ポイント還元が同時に付くのですね。9月22日23時59分までという区切りが気になるところです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 61,
+              "weight": 107
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第2弾の対象作品は9月22日23時59分の終了後、どのタイミングで次の対象に入れ替わるのでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 92
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "9月22日23時59分までの第2弾の対象作品は、第1弾から入れ替わっているのでしょうか。",
+              "failures": [
+                {
+                  "rule": "R13",
+                  "detail": "根拠なし断定語: 第1弾（regex: 第[0-9０-９一二三四五六七八九十]+弾）"
+                }
+              ]
+            },
+            {
+              "text": "30％OFFと10％ポイント還元の対象は、9月22日23時59分までに購入した分すべてが含まれるのでしょうか。",
+              "failures": [
+                {
+                  "rule": "R5",
+                  "detail": "宣伝語: 購入"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1265,
+        "output_tokens": 1525,
+        "cache_creation_input_tokens": 3284,
+        "cache_read_input_tokens": 6524,
+        "calls": 3
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "fanza_sns",
+      "postUrl": "https://x.com/fanza_sns/status/2101838830412456435",
+      "targetPostId": "2101838830412456435",
+      "postedAtJst": "2026-09-21 10:00",
+      "target": {
+        "id": "reccuopQfFX8dSjwS",
+        "handle": "fanza_sns",
+        "type": "セール告知系",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260921-fanza_sns",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "sodstarofficial",
+      "postUrl": "https://x.com/sodstarofficial/status/2101974729577955597",
+      "targetPostId": "2101974729577955597",
+      "postedAtJst": "2026-09-21 19:00",
+      "target": {
+        "id": "recNeii0IxsmSm4Sb",
+        "handle": "sodstarofficial",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-sodstarofficial",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "年上お姉さんというテーマの一言だけで、続きが気になりますね。作品名や配信日の続報を待っています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "年上お姉さんのこの作品、配信開始日や予約の受付時期はいつ頃の発表になりそうでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 86
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 321,
+        "output_tokens": 1108,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3284,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "shinnakanodream",
+      "postUrl": "https://x.com/shinnakanodream/status/2101969255164240119",
+      "targetPostId": "2101969255164240119",
+      "postedAtJst": "2026-09-21 18:38",
+      "target": {
+        "id": "recQDdtUugpQKcOUO",
+        "handle": "shinnakanodream",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-shinnakanodream",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "70種類の映像が30%OFFで10月4日までとは、対象がかなり広いですね。9月25日までの動画くじ復活と時期も重なりますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 62,
+              "weight": 110
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "冒頭3分間の無料公開は、動画くじが9月25日に終わった後も続く予定でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 39,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 549,
+        "output_tokens": 822,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3284,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101944634721386739",
+      "targetPostId": "2101944634721386739",
+      "postedAtJst": "2026-09-21 17:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:23:28.700Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-FANZAdougaX",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-FANZAdougaX が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 10,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2101974869802168575",
+      "targetPostId": "2101974869802168575",
+      "postedAtJst": "2026-09-21 19:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:23:28.700Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-FANZAdougaX",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-FANZAdougaX が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 11,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101974728969945583",
+      "targetPostId": "2101974728969945583",
+      "postedAtJst": "2026-09-21 19:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:02:17.671Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "miab00677",
+        "title": "ドリームウーマンVol.101 逢沢みゆ",
+        "fetched_at": "2026-09-20 18:37:19.945+00"
+      },
+      "replyKey": "20260921-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-MOODYZ_official が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 12,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2101982283037294880",
+      "targetPostId": "2101982283037294880",
+      "postedAtJst": "2026-09-21 19:30",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:02:17.671Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-MOODYZ_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-MOODYZ_official が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 13,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102001651590795626",
+      "targetPostId": "2102001651590795626",
+      "postedAtJst": "2026-09-21 20:47",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:13.091Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-IDEAPOCKETTER が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 14,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2102004933486875011",
+      "targetPostId": "2102004933486875011",
+      "postedAtJst": "2026-09-21 21:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:23:10.911Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "pred00889",
+        "title": "「エッチなことばかり教えてごめんね？」ベロキス手コキで情けなく腰ガク射精する童貞生徒が可愛くて…何度も中出しさせる痴女家庭教師 三好佑香",
+        "fetched_at": "2026-09-21 00:22:09.998+00"
+      },
+      "replyKey": "20260921-PREMIUM_AV",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-PREMIUM_AV が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 15,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2101999933356433802",
+      "targetPostId": "2101999933356433802",
+      "postedAtJst": "2026-09-21 20:40",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:36.437Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-S1_No1_Style",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-S1_No1_Style が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 16,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2102005032678023191",
+      "targetPostId": "2102005032678023191",
+      "postedAtJst": "2026-09-21 21:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:24:12.252Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260921-shirot_AV_chosa",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 20260921-shirot_AV_chosa が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}

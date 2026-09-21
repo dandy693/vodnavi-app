@@ -3,7 +3,9 @@ import fs from "node:fs";
 const d = JSON.parse(fs.readFileSync(process.argv[2], "utf8"));
 console.log(`model=${d.model} dry_run=${d.dry_run} today_jst=${d.today_jst} counts=${JSON.stringify(d.counts)} prompt_sha=${d.system_prompt_sha256.slice(0, 12)}`);
 for (const it of d.items) {
-  console.log(`\n=== @${it.handle} (${it.target?.type ?? "?"}) status=${it.status} replyKey=${it.replyKey} calls=${it.usage.calls} in=${it.usage.input_tokens} out=${it.usage.output_tokens}`);
+  // 各ブロックの 1 行目は対象投稿 URL に固定（CSO判定 2026-09-21 夜: 提示に URL が無く別途出す手間が出たため）
+  console.log(`\n=== 対象 ${it.postUrl ?? "(URL なし)"}${it.postedAtJst ? `（${it.postedAtJst}）` : ""}`);
+  console.log(`    @${it.handle} (${it.target?.type ?? "?"}) status=${it.status} replyKey=${it.replyKey} calls=${it.usage.calls} in=${it.usage.input_tokens} out=${it.usage.output_tokens}`);
   for (const w of it.warnings ?? []) console.log(`  ! ${w}`);
   for (const t of ["A", "B", "C"]) {
     const x = it.drafts?.[t];
