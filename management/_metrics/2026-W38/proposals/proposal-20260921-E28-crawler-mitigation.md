@@ -175,3 +175,16 @@
 
 - 確定した送信 JSON → `e28-firewall-config.json`（ルール 2＝G1〜G4 の条件は上記のとおり）。
 - **未回答の確認事項（再掲・§7-2）**: `/concierge` の表示は Anthropic に到達しない（`?cids=` 付きのみ FANZA API）。`/api/concierge` は cookie 通過時のみ Anthropic。**9/20 08:47〜9/21 08:47 の 40.0k のうち Anthropic に到達したのは 4 件＝すべて自前の healthcheck（ボット由来 0 件）。** 実施報告（9/22）にも同表を再掲する。
+
+### 7-6. 【実施記録 2026-09-21 17:17〜17:21 JST】コード push → READY → sitemap 再生成の確認（順序の第 1〜2 段）
+
+| 段 | 実測 |
+|---|---|
+| push | `c65d8e3`（`healthcheck-api.mjs` ＋ JSON ＋ 台帳）17:17:33 JST |
+| デプロイ | **`dpl_6pDA1JrAXtYfYQmejb2kjp7uwkBV` READY**（作成 17:17:35・BUILDING 17:17:36・READY **17:18:40 JST**・build 1 分 4 秒）。`ignore-build` ログ＝`changes under /vercel/path0/app-concierge vs dbd29e7… -> build`（距離 1・`app-concierge/` 差分ありの正常経路） |
+| sitemap | **`lastmod 2026-09-21T08:18:01.767Z`＝17:18:01 JST**（ビルド開始 +25 秒）。`<loc>` 2,594／works 1,200（videoa 400／anime 400／nikkatsu 400）／genres 200／actresses 1,177／articles 8＝**前回（06:35 生成）と同数・全損なし**（交絡＝articles の `lastmod` 更新のみ・CSO 受容済み） |
+| **UA の着地確認（ローカル・本番と Anthropic には触れない）** | ローカル HTTP 受け口（127.0.0.1）に `HEALTHCHECK_BASE` を向けて `healthcheck-api.mjs` を 1 回実行 → **3 リクエストとも `user-agent: vodnavi-healthcheck/1`**（GET `/sitemap.xml`／GET `/`／POST `/api/concierge`＋`cookie: vodnavi_age_verified=1`）。**対照＝変更前（`dbd29e7` 版）は 3 件とも `user-agent: node`**（node の既定値＝`Mozilla/5.0 (` を含まないため旧 G4 で deny になる側だった） |
+| 併記（記録のみ） | ローカル Windows（node v24.14.1）では `ALL PASS` 出力後の終了時に `Assertion failed: !(handle->flags & UV_HANDLE_CLOSING) src\win\async.c:76`・exit 127 が出る。**変更前の版でも同一に再現＝本変更とは無関係（環境由来）。GH Actions（ubuntu）では未観測。追わない** |
+
+- **残る段（2026-09-22 06:30 以降・朝の抽出後）**: ③ `put_firewall_config`（`e28-firewall-config.json` から `_readme` を除いて送信）→ ④ `get_firewall_config(active)` 読み戻し → ⑤ healthcheck 1 回実行（本番・`gh workflow run api-healthcheck.yml` または `node app-concierge/scripts/healthcheck-api.mjs`）で `llm.concierge` PASS を確認 → 実施報告（§7-2 の課金回答を再掲）。
+- **GH Actions の cron（0 */6 UTC＝JST 03:xx／09:xx／15:xx／21:xx）は次回から新 UA で走る**（checkout が `main` の最新を取るため）。Firewall 適用前は UA に関わらず通る。

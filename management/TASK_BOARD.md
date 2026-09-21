@@ -11266,3 +11266,7 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - `proposals/e28-firewall-config.json`: G1・G2 に `nsub "Google-InspectionTool"`、G3・G4 に `neq "vodnavi-healthcheck/1"` を追加。起案 §7-5・FACT §29-3・NOTES E28。
 - 未回答とされた確認事項（従量課金）は §7-2 のとおり回答済み（ボット由来 0・4 件は自前 healthcheck）＝実施報告に再掲する。
 - **未コミットの `x-post-generator.mjs` 作業ツリー差分は含めない**（運用則）。
+
+## 2026-09-21 17:2x — `c65d8e3` の state **READY**（`dpl_6pDA1JrAXtYfYQmejb2kjp7uwkBV`・17:17:35 → READY 17:18:40 JST・`app-concierge/` 差分ありの正常ビルド）／sitemap 再生成 17:18:01 JST・2,594（works 1,200／genres 200／actresses 1,177／articles 8）＝全損なし／healthcheck の UA `vodnavi-healthcheck/1` はローカル受け口で 3/3 着地（変更前は `node`）
+- E28 実施の順序＝①コード push ✅ → ②READY ✅ → ③Firewall 適用（**9/22 06:30 以降・朝の抽出後**）→ ④読み戻し → ⑤healthcheck 1 回。起案 §7-6。
+- 終了時の libuv assertion（ローカル Windows・変更前でも再現）は記録のみ。
