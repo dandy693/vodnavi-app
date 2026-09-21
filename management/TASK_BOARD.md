@@ -11242,3 +11242,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **DMM**（レポートトップ・ID ヘッダ確認）9/1〜9/21: すべて 473 クリック／**004 391（成果 2 件 1,484円＝9/3 ダイレクト 1,386円・9/6 カテゴリ 98円）／006 12（成果 0）**・9/21 は翌日反映。
 - **Vercel**: `served:500` 行数 9/12〜9/21＝576／458／1,019／965／962／207／791／1,293／1,225／386（〜08:4x）＝計 7,882（ログ行数・9/12 まで遡及可）。Firewall Past Day（9/20 08:47〜9/21 08:47 JST）Allowed 151.8k／Denied 398・UA 上位 PerplexityBot 88.8k／bingbot 14.9k／Amazonbot 4.7k／AteveSearch 4.7k＝クローラ UA 計 74.5%（下限）。**Bot Category 別は未取得**（Run Query ビルダーが Chrome 拡張から 2 回連続タイムアウト → §10 手順 5 で中断）。BotID は No Data。
 - **距離**: 本コミットは直前 READY `267a533` から 8（`70dcf43` が 7）＝skip 想定。
+- 【2026-09-21 09:0x 追記・push 後の Vercel state】`c833b0b`（距離 8・push 09:00:55 JST）＝`dpl_6cWFFteu71MgbYRDQsaYHGc8Hf3q` **CANCELED**（created 1789948856952＝09:00:57 JST・skip 経路）。`70dcf43`（距離 7）＝`dpl_DbxAU8YBmJNbdR6X8Vb6f9jgwJqT` CANCELED（08:16:54 JST）。閾値 10 と整合。**次の docs push は距離 9（skip）・その次が距離 10＝fail-open（ビルド・sitemap 再生成・§22-8-1-1-f 受容済み）。**
+
+## 2026-09-21 09:2x — CSO判定（access-20260921 第1報）を反映: FACT §29 新設（GSC 7/24 停止の解消を訂正残置・インデックス 15,280/12,443 と X 経由・004・面別 PV をベースライン化）／E28 クローラ対策を起案（実装は承認後・別束）／E29 年齢確認通過率を未決へ／木曜 PDCA の継続項目を ROUTINE §3-2 へ
+- **FACT §29-1**: TASK_BOARD 2026-08 上旬の「GSC 値＝最終更新 7/24 の確定値」・§23-4 背景（8/21）は当時の実測として残置。2026-09-21 の実測＝インデックス登録 最終更新日 2026/09/18・検索パフォーマンス「6 時間前」。
+- **FACT §29-2**: 登録済 15,280／未登録 12,443（理由 8・未登録増は提出拡大による分母増＝CSO 判定）／X 経由 9/1〜9/21 37 セッション・works 着地 93.5%・年齢確認 62.1%・外部クリック 21・DMM 006 クリック 12（CSO 併記「GA4 比 約 6 割」＝12÷21＝57%・計測系と導線が異なる旨を軸③で併記）／004 クリック 391・成果 2 件 1,484円・EPC 3.8円（1,484÷391）／articles 16 PV／30 日・actresses 322→523。
+- **E28 起案** → `proposals/proposal-20260921-E28-crawler-mitigation.md`: ルール 1＝`user_agent sub "PerplexityBot"` → challenge／deny（要裁定）・ルール 2＝`path pre /concierge` ∧ 非ブラウザ UA（`re (?i)bot|crawler|…` ∨ `nsub "Mozilla/5.0 ("`）∧ Googlebot/bingbot 除外 → rate_limit fixed_window 60s・N＝60／10／5（要裁定・上位 IP 18.97.9.x は 7.6 req/分の実測）・robots.ts に `PerplexityBot Disallow: /`（+4/−1 行・1 ビルド）。**現行 robots.ts は PerplexityBot を明示 Allow（LLMO・`23669e9`）＝反転は要裁定。** Firewall 設定 API は 404（未作成）＝`put_firewall_config` は全置換。効果測定＝served:500（9 日遡及可・前窓 9/14〜9/20＝6,462 行）と Firewall Allowed（Past Day のみ・遡及不可＝毎日読むか Runtime Logs 総行数を代理）。
+- **E29**（未決）: 年齢確認 68.0%／離脱 32% は §26-1 裁定 6 の停止対象・10/12 判定後の候補。
+- **ROUTINE §3-2**: 9/24 PDCA に「未登録 12,443 の理由別内訳」と「9/18〜9/24 の X 指標（`ga4-access-20260921.mjs` 2 章を期間差し替えで再実行）」を追加。
+- **距離**: 本コミットは直前 READY `267a533` から 9（`c833b0b` が 8）＝skip 想定。**次の docs push は距離 10＝fail-open（ビルド・sitemap 再生成）になる**（§22-8-1-1-f・受容済み）。
