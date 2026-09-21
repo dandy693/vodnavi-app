@@ -1,0 +1,45 @@
+{
+  "_readme": "E28 送信 JSON（put_firewall_config・CSO裁定 2026-09-21 ①②④⑥）。実施は 2026-09-22 06:30 以降・朝の抽出後。§7-3 の未決（healthcheck の除外方式・Google-InspectionTool）を裁定後に確定してから送る。送信後に get_firewall_config(active) で読み戻す。",
+  "firewallEnabled": true,
+  "rules": [
+    {
+      "name": "E28-1 PerplexityBot rate limit",
+      "description": "CSO裁定 2026-09-21 ①: PerplexityBot UA を 60s/IP で 30 req に制限（超過は deny）。LLMO 方針は維持。7日後に再裁定",
+      "active": true,
+      "conditionGroup": [
+        { "conditions": [ { "type": "user_agent", "op": "sub", "value": "PerplexityBot" } ] }
+      ],
+      "action": { "mitigate": { "action": "rate_limit", "rateLimit": { "algo": "fixed_window", "window": 60, "limit": 30, "keys": ["ip"], "action": "deny" } } }
+    },
+    {
+      "name": "E28-2 concierge non-browser deny",
+      "description": "CSO裁定 2026-09-21 ②: /concierge の非ブラウザUAを deny（Googlebot/bingbot はページ本体のみ許可）。/api/concierge は全非ブラウザUAを deny",
+      "active": true,
+      "conditionGroup": [
+        { "conditions": [
+          { "type": "path", "op": "pre", "value": "/concierge" },
+          { "type": "user_agent", "op": "re", "value": "(?i)bot|crawler|spider|curl|python|scrapy|httpclient|java/|go-http|wget" },
+          { "type": "user_agent", "op": "nsub", "value": "Googlebot" },
+          { "type": "user_agent", "op": "nsub", "value": "bingbot" },
+          { "type": "user_agent", "op": "nsub", "value": "vodnavi-affiliate-guard" }
+        ] },
+        { "conditions": [
+          { "type": "path", "op": "pre", "value": "/concierge" },
+          { "type": "user_agent", "op": "nsub", "value": "Mozilla/5.0 (" },
+          { "type": "user_agent", "op": "nsub", "value": "Googlebot" },
+          { "type": "user_agent", "op": "nsub", "value": "bingbot" },
+          { "type": "user_agent", "op": "nsub", "value": "vodnavi-affiliate-guard" }
+        ] },
+        { "conditions": [
+          { "type": "path", "op": "pre", "value": "/api/concierge" },
+          { "type": "user_agent", "op": "re", "value": "(?i)bot|crawler|spider|curl|python|scrapy|httpclient|java/|go-http|wget" }
+        ] },
+        { "conditions": [
+          { "type": "path", "op": "pre", "value": "/api/concierge" },
+          { "type": "user_agent", "op": "nsub", "value": "Mozilla/5.0 (" }
+        ] }
+      ],
+      "action": { "mitigate": { "action": "deny" } }
+    }
+  ]
+}

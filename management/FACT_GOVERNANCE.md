@@ -4518,3 +4518,19 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **【CSO 判定・起案登録】クローラ対策（PerplexityBot の Challenge／Deny・`/concierge` 非ブラウザ UA の Rate Limit・robots.txt Disallow・Googlebot／bingbot は不触）→ E28 として起案** → `management/_metrics/2026-W38/proposals/proposal-20260921-E28-crawler-mitigation.md`。**実装は CSO 承認後・別束。** **【停止して報告】現行 `robots.ts` は PerplexityBot を__明示 Allow__している（LLMO 方針・`23669e9`）＝Disallow は方針の反転であり要裁定（起案 §6 ③）。**
 - **【CSO 判定・未決に追加】年齢確認の通過率（app 全体 68.0%＝離脱 32%）は「CTA 最適化停止」（§26-1 裁定 6）の対象のため今は触らない。10/12 判定後の候補として NOTES に登録。**
 - **【CSO 判定・継続】木曜 PDCA（2026-09-24）で未登録 12,443 の理由別内訳と、9/18〜9/24 の X 指標を並べる**（ROUTINE §3-2）。
+
+### 29-3. 【CSO 裁定 2026-09-21・E28 クローラ対策・6 点】と実施前の追加確認
+
+| # | 裁定 |
+|---|---|
+| ① | **PerplexityBot は Deny／Challenge を採らない。Firewall の `rate_limit`（60 秒窓・IP キー・閾値 30/分・超過は deny）。LLMO 方針（`robots.ts` の明示 Allow・`23669e9`）は維持。7 日後（9/29）に Allowed が 20k/日を下回らなければ Challenge へ格上げを再裁定** |
+| ② | **`/concierge` の非ブラウザ UA → deny（rate_limit ではなく）。Googlebot・bingbot はページ本体（`/concierge`）のみ除外して許可。`/api/concierge` は Googlebot・bingbot を含む全非ブラウザ UA を deny**（理由: クローラが対話エンドポイントを叩いても索引価値がなく上流呼び出しの無駄） |
+| ③ | **`robots.ts` は変更しない**（ビルド・sitemap 再生成の交絡を避ける／LLMO 方針の反転をしない） |
+| ④ | **CTO が MCP `put_firewall_config` で実施**（現行設定が未作成＝全置換の上書きリスクなし）。実施後 `get_firewall_config` で読み戻し、ルール 2 本の定義を報告 |
+| ⑤ | **実施日 2026-09-22（火）06:30 以降・朝の抽出が終わってから。前窓＝`served:500` 9/14〜9/20（6,462 行）・後窓＝9/22〜9/28。Firewall Allowed は実施日から毎日 Past Day を記録。Runtime Logs 行数は代理指標として併記** |
+| ⑥ | ①の閾値は 30/分。②は deny のため閾値なし |
+
+- 送信 JSON → `management/_metrics/2026-W38/proposals/e28-firewall-config.json`（起案 §7-1）。
+- **【追加確認・read-only・実測 2026-09-21】`/concierge` の表示・`/api/concierge` は従量課金を起こすか**——**GET `/concierge` は Anthropic を呼ばない**（`?cids=` 付きのみ FANZA API・チャット送信はユーザーの submit 時のみ）。**POST `/api/concierge` は `proxy.ts` が cookie 未通過を 403 で止め、通過時のみ Anthropic（課金）。** 9/20 08:47〜9/21 08:47 JST（Firewall の 24h 窓と同一）の Runtime Logs: `/concierge` SSR **39,763**／`/api/concierge` 到達 **4**（全件 200）／Anthropic 到達 **4**＝**すべて GH Actions「API Health Check」の `llm.concierge` 検査**（run 作成 03:35:41Z／10:42:04Z／15:30:33Z／20:22:25Z の +11〜13 秒・`input_tokens=4275` 固定）。**→ ボット由来で課金に到達した件数 0。CSO 条件「課金あり」に該当せず、②の前倒しは行わない（9/22 06:30 以降）。** 併記: 39,763 SSR は Vercel 関数実行（Pro 含有量に対する使用量・超過の有無は Usage 画面が要る＝未取得）。
+- **【停止して報告・実施前の裁定 2 点】(a) 自前 GH Actions 2 本が非ブラウザ UA で叩く**——`guard-affiliate-id.mjs`（UA `vodnavi-affiliate-guard/1.0`・GET `/concierge`）は JSON で除外済み。**`healthcheck-api.mjs`（UA 指定なし・POST `/api/concierge`・cookie 付き）は②の deny に当たり `llm.concierge` 検査が 6 時間ごとに失敗する**——選択肢 (i) `/api/concierge` のグループに `cookie vodnavi_age_verified ex` の除外を足す（コード変更なし）／(ii) `healthcheck-api.mjs` に UA を付けて除外（1 ビルド・sitemap 再生成）／(iii) 失敗を受容。**(b) Google の URL 検査 UA `Google-InspectionTool` は `Googlebot` を含まない**——除外に加えるか。起案 §7-3。
+- **E29（年齢確認通過率）は未決登録のまま。**

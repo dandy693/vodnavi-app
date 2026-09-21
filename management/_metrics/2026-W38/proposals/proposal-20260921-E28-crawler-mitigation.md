@@ -103,3 +103,65 @@
 | ④ | 実施経路 | (i) Dashboard／(ii) MCP `put_firewall_config` |
 | ⑤ | 実施日と測定窓 | T（実施）・前窓 T−7〜T−1（served:500 は遡及可・Allowed は代理指標か毎日読み） |
 | ⑥ | ルール 2 の対象パスに `/api/concierge` を含めるか | 含める／含めない（本書は含めない） |
+
+---
+
+## 7. 【CSO 裁定 2026-09-21・6 点】と実施設計の確定
+
+| # | 裁定 | 実施設計への反映 |
+|---|---|---|
+| ① | **PerplexityBot は Deny／Challenge を採らない。`rate_limit`（60 秒窓・IP キー・閾値 30/分）。LLMO 方針（robots.ts の明示 Allow・`23669e9`）は維持。7 日後に Allowed が 20k/日を下回らなければ Challenge へ格上げを再裁定** | ルール 1＝`user_agent sub "PerplexityBot"` → `rate_limit { algo: fixed_window, window: 60, limit: 30, keys: ["ip"], action: deny }` |
+| ② | **`/concierge` の非ブラウザ UA → `deny`。Googlebot・bingbot はページ本体（`/concierge`）のみ除外して許可。`/api/concierge` は Googlebot・bingbot を含む全非ブラウザ UA を deny** | ルール 2＝条件グループ 4 本（OR）→ `deny`（§7-1） |
+| ③ | **robots.ts は変更しない**（ビルド・sitemap 再生成の交絡を避ける／LLMO 方針の反転をしない） | コード変更 0 |
+| ④ | **CTO が MCP `put_firewall_config` で実施**（現行設定が未作成＝全置換の上書きリスクなし）。実施後 `get_firewall_config` で読み戻し、ルール 2 本の定義を報告 | 送信 JSON＝`e28-firewall-config.json`（本書と同じ棚） |
+| ⑤ | **実施日 2026-09-22（火）06:30 以降・朝の抽出が終わってから。前窓＝served:500 9/14〜9/20（6,462 行）・後窓＝9/22〜9/28。Firewall Allowed は実施日から毎日 Past Day を記録。Runtime Logs 行数は代理指標として併記** | ROUTINE §1 に測定 1 行（実施時に追記） |
+| ⑥ | ①は 30/分。②は deny のため閾値なし | — |
+
+### 7-1. 送信 JSON の要点（全文＝`e28-firewall-config.json`）
+
+- ルール 1: `conditionGroup=[{ user_agent sub "PerplexityBot" }]` → `rate_limit(fixed_window, 60s, 30, keys=[ip], 超過=deny)`。
+- ルール 2: `conditionGroup` 4 グループ（**配列要素は OR・要素内の条件は AND**＝Vercel WAF の仕様）→ `deny`。
+  - G1: `path pre /concierge` ∧ `user_agent re (?i)bot|crawler|spider|curl|python|scrapy|httpclient|java/|go-http|wget` ∧ `nsub Googlebot` ∧ `nsub bingbot` ∧ `nsub vodnavi-affiliate-guard`
+  - G2: `path pre /concierge` ∧ `user_agent nsub "Mozilla/5.0 ("` ∧ `nsub Googlebot` ∧ `nsub bingbot` ∧ `nsub vodnavi-affiliate-guard`
+  - G3: `path pre /api/concierge` ∧ `user_agent re (?i)bot|…`
+  - G4: `path pre /api/concierge` ∧ `user_agent nsub "Mozilla/5.0 ("`
+- `path pre "/concierge"` は `/concierge`・`/concierge/*` に一致し `/api/concierge` には一致しない（先頭一致）。
+- **`vodnavi-affiliate-guard` の除外**＝GH Actions「Affiliate ID Guard (live)」が `/concierge` を UA `vodnavi-affiliate-guard/1.0` で取得する（`guard-affiliate-id.mjs:202`）。除外しないと live ジョブが毎回 403 で失敗する。
+
+### 7-2. 追加の確認（read-only・CSO 指示）— `/concierge` の表示・`/api/concierge` へのアクセスは従量課金の呼び出しを起こすか
+
+| 経路 | 上流呼び出し | 課金 | 根拠 |
+|---|---|---|---|
+| **GET `/concierge`（ページ表示）** | **Anthropic API: 呼ばない。** FANZA API: `?cids=` が付いた場合のみ `fetchItemList(cid)`（`src/app/concierge/page.tsx` `resolveCidsToWorks`）。チャットの送信はフォーム submit 時のみ（`sendMessage`・マウント時の自動送信なし＝`concierge-chat.tsx`） | **Anthropic 課金なし**。FANZA API は無償（レート制限あり）。**Vercel 関数実行（SSR）は発生する** | コード実測 |
+| **POST `/api/concierge`** | `proxy.ts` が cookie `vodnavi_age_verified` 未通過を **403**（Anthropic に到達しない）→ 通過時のみ `streamText`（`@ai-sdk/anthropic`・**課金**） | **cookie 通過時のみ課金** | `src/proxy.ts:44-57`・`src/app/api/concierge/route.ts:125-` |
+
+**9/20 08:47〜9/21 08:47 JST（Firewall の 24h 窓と同一）の実測（Vercel Runtime Logs・`group_by`・取得 09:3x）**:
+
+| 項目 | 件数 |
+|---|---|
+| `/concierge` の関数実行（SSR） | **39,763**（`requestPath` 別: `/concierge` 39,763／`/api/concierge` 4。source 別: function 39,767／middleware 39,767） |
+| `/api/concierge` に到達（statusCode 200） | **4** |
+| うち Anthropic に到達（`[concierge] finish` ログ） | **4**——03:35:52Z／10:42:15Z／15:30:44Z／20:22:38Z・全件 `source=default intent=- seed_cid=- steps=1 input_tokens=4275`・output 86／98／131／209 |
+| その 4 件の正体 | **GH Actions「API Health Check (FANZA + LLM)」の `llm.concierge` 検査**（cron 6 時間ごと・`healthcheck-api.mjs` が cookie 付きで「こんにちは」を POST）。**run 作成 03:35:41Z／10:42:04Z／15:30:33Z／20:22:25Z の各 +11〜13 秒に一致**（`gh run list`） |
+| **→ ボット由来で課金対象（Anthropic）に到達した件数** | **0**（40.0k のうち 0 件。Anthropic への到達は自前の健全性検査 4 件のみ＝入力 4,275 トークン × 4／日） |
+| cookie 未通過で proxy が 403 にした POST | Runtime Logs の `/api/concierge` は上記 4 件のみ＝この窓では観測されていない（middleware 単独の 403 が `group_by` に現れるかは未確認＝「未取得」） |
+
+- **判定（CSO 条件「課金あり なら②を本日中に前倒し」）**: **Anthropic の従量課金はボット由来 0 件＝「課金あり」に該当しない。②の前倒しは行わず、裁定⑤どおり 9/22 06:30 以降に実施する。**
+- **併記**: `/concierge` の 39,763 SSR は Vercel の関数実行（Pro プランの含有量に対する使用量）。**含有量に対する位置と超過課金の有無は Usage 画面が要る（未取得・Dashboard が拡張からタイムアウト）。** FANZA API 呼び出し（`?cids=` 付き）の件数は `requestPath` にクエリが含まれないため未取得。
+
+### 7-3. 実施前に裁定を要する点（②の除外・**9/22 06:30 までに**）
+
+| # | 事実 | 選択肢（CTO は決めない） |
+|---|---|---|
+| ① | **自前の GH Actions 2 本が非ブラウザ UA で叩く**——(a) `guard-affiliate-id.mjs`（UA `vodnavi-affiliate-guard/1.0`・GET `/concierge`）(b) `healthcheck-api.mjs`（**UA 指定なし＝node 既定・POST `/api/concierge`・cookie 付き**）。ルール 2 をそのまま入れると **(a) は §7-1 の除外で通るが、(b) は G3/G4 の deny に当たり `llm.concierge` 検査が 6 時間ごとに失敗する**（LLM 認証監視が失われ、失敗メールが続く） | **(i)** G3/G4 に `cookie vodnavi_age_verified ex`（cookie 保持なら対象外）を足す＝コード変更なし・proxy の 403 と同じ境界（cookie を持つスクリプトは通る＝現状と同じ）／**(ii)** `healthcheck-api.mjs` に UA `vodnavi-healthcheck/1.0` を付けてルールで除外＝**`app-concierge/scripts/` の変更＝1 ビルド・sitemap 再生成**（裁定③が避けた交絡）／**(iii)** `llm.concierge` 検査の失敗を受容（監視を失う） |
+| ② | **Google の URL 検査は UA `Google-InspectionTool`**（`Googlebot` を含まない）。裁定②の除外（Googlebot・bingbot）のままだと `/concierge` の URL 検査が 403 になる | 除外に `Google-InspectionTool` を加える／加えない |
+| ③ | ルール 1（rate_limit）は Vercel Pro で利用可の表示（画面「Rate Limited」列）。**ルール数・窓の上限は未確認**＝送信時の応答（`validationErrors`）で確定 | — |
+
+### 7-4. 効果測定の前窓（確定値）
+
+| 指標 | 前窓 |
+|---|---|
+| `served:500`（GUARD 行数） | 9/14〜9/20＝1,019／965／962／207／791／1,293／1,225（**計 6,462**） |
+| Firewall Allowed（Past Day） | 9/20 08:47〜9/21 08:47＝**151.8k**（1 点のみ・実施日から毎日記録） |
+| Runtime Logs 行数（代理） | `/concierge` 関数実行 39,763／24h（同窓）。日別は実施時に `group_by` で 9 日遡及して取得 |
+| 再裁定（裁定①） | **7 日後（9/29）に Allowed が 20k/日を下回らなければ Challenge へ格上げを再裁定** |
