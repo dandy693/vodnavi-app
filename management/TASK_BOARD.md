@@ -11276,3 +11276,5 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 実装: `quote.mjs`（候補選定 → 停止 → 上限 → works HTTP 200 → Q1/Q2 生成 → URL 付与 → 全文ガード）／`PROMPT-Q.md`／`guards.mjs`（type=Q・`guardQuoteFull`）／`guards.config.json`（`Q_quote`・`R8_chars_Q`・R12 埋め文）／`record.mjs`（`draft_used=Q`・`YYYYMMDD-Q-<handle>`・`--posted --quote` → `last_quote_at`）／`weekly-report.mjs`（Q 列・Q は自投稿に含める・`--ga4-quote`）／`ga4-quote-sessions.mjs`。`node --test` **70/70**。
 - dry-run（17:47・17:50・朝の 9 行）: attackers_av・S1_No1_Style で Q1・Q2 全通過／`mida00812` は works ページ HTTP 500（17:48:03・17:50）で提示せず。GA4 `utm_medium=quote` ベースライン（9/1〜9/21）＝0 セッション。
 - CTO 判断（要否は CSO）: ①Q の cache 事実上限＝3（B は 2）②`draft_used` の選択肢 Q は MCP で追加できないため初回 `typecast: true` で作成（HUMAN が UI で先に追加してもよい）③引用の停止判定に `reply_restriction` は使わない（`no_repropose` と URL 重複のみ）。
+- `30f78d6`（management のみ・距離 2）の state **CANCELED**（`dpl_3EqUm9cVy7heEfKD6fQ3vdHutuZ3`・17:54:36 JST・skip 経路）。次の docs push は距離 3。
+- **【CSO 裁定 2026-09-21 夜】引用ポストの CTO 判断 3 点（事実上限 3・初回 typecast・reply_restriction 不使用）を承認。`mida00812` の 500 停止は期待どおり・提示前 200 確認は維持**（FACT §26-11）。明朝 06:00 の順序＝抽出 → リプ案 → Q1/Q2（別枠）→ 提示 → E28 Firewall 適用（抽出後）。
