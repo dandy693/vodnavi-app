@@ -11234,3 +11234,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **回帰（朝の 16 案に再適用）**: FANZAdougaX A（R13 今夜＋R14-A）・C（R13 第4弾）・MOODYZ A（R14-A 差 9 日）・IDEAPOCKETTER A（R14-A 差 23 日）＝NG／attackers_av A・S1 A（差 0 日）＝通過／他 10 案 不変。朝の drafts.json は改訂前の生成物として据え置き。
 - 記録 → `runs/20260921-am/README.md`（投稿と記録）・設計書 §12-9・FACT §26-10-2（実測 bullet＋CSO判定 bullet）。
 - **距離**: 本コミットは直前 READY `267a533` から 7（`35f2424` が 6）＝skip 想定。
+- 【2026-09-21 08:1x 追記・push 後の Vercel state】`70dcf43`（距離 7・push 08:16:52 JST）＝`dpl_DbxAU8YBmJNbdR6X8Vb6f9jgwJqT` **CANCELED**（created 1789946214595＝08:16:54 JST・skip 経路）。閾値 10 と整合。次の docs push は距離 8（skip）。**距離 10 に達する 3 push 目で fail-open（ビルド・sitemap 再生成）になる**（§22-8-1-1-f・受容済み）。
+
+## 2026-09-21 09:0x — CSO指示（アクセス解析レポート・read-only・数字のみ）第1報 → `management/_metrics/2026-W38/access-20260921.md`（A＝8/23〜9/21・B＝7/24〜8/22）
+- **GA4**（Data API・44 回・`ga4-access-20260921.mjs`）: プロパティ合計 A セッション 2,331／ユーザー 2,175／PV 5,985（B 1,956／1,834／4,996）・app.vodnavi.jp A 2,280／2,123／5,909。チャネル（app）A: Organic Search 2,079／Organic Social 46／Direct 141／Referral 4／Unassigned 11／AI Assistant 3。**X 経由（t.co・x_vodnavi）9/1〜9/21＝37 セッション**（日別 0〜4）・着地 93.5% が `/works/*`・年齢確認 agree÷view 62.1%（app 全体 68.0%）・外部クリック `product_click` 21／`click`(al.dmm.co.jp) 20（sone00711・sone00665 に集中）。works 面 PV A 4,822（videoa 3,785／nikkatsu 473／anime 442／amateur 116）・articles 16／actresses 523／genres 146。
+- **GSC**: A クリック 1,340／表示 2.49万／CTR 5.4%／順位 19.4（〜9/20）・B 1,180／2.12万／5.5%／17.4。最終更新「6 時間前」。インデックス登録 最終更新日 2026/09/18＝登録済 15,280／未登録 12,443（8 理由・検算一致）。
+- **DMM**（レポートトップ・ID ヘッダ確認）9/1〜9/21: すべて 473 クリック／**004 391（成果 2 件 1,484円＝9/3 ダイレクト 1,386円・9/6 カテゴリ 98円）／006 12（成果 0）**・9/21 は翌日反映。
+- **Vercel**: `served:500` 行数 9/12〜9/21＝576／458／1,019／965／962／207／791／1,293／1,225／386（〜08:4x）＝計 7,882（ログ行数・9/12 まで遡及可）。Firewall Past Day（9/20 08:47〜9/21 08:47 JST）Allowed 151.8k／Denied 398・UA 上位 PerplexityBot 88.8k／bingbot 14.9k／Amazonbot 4.7k／AteveSearch 4.7k＝クローラ UA 計 74.5%（下限）。**Bot Category 別は未取得**（Run Query ビルダーが Chrome 拡張から 2 回連続タイムアウト → §10 手順 5 で中断）。BotID は No Data。
+- **距離**: 本コミットは直前 READY `267a533` から 8（`70dcf43` が 7）＝skip 想定。
