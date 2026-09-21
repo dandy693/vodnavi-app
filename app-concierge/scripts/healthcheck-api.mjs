@@ -17,6 +17,9 @@
 
 const BASE = process.env.HEALTHCHECK_BASE ?? "https://app.vodnavi.jp";
 const TIMEOUT_MS = 30_000;
+// 固定 UA（CSO裁定 2026-09-21・E28）: Vercel Firewall の「/api/concierge 非ブラウザ UA deny」から
+// この probe だけを `user_agent eq` で除外するための識別子。値を変えるときは Firewall ルール 2 も同時に変える。
+const USER_AGENT = "vodnavi-healthcheck/1";
 
 let failures = 0;
 function pass(name) {
@@ -31,7 +34,11 @@ async function fetchText(path, init) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), TIMEOUT_MS);
   try {
-    const res = await fetch(`${BASE}${path}`, { ...init, signal: ctrl.signal });
+    const res = await fetch(`${BASE}${path}`, {
+      ...init,
+      headers: { "user-agent": USER_AGENT, ...(init?.headers ?? {}) },
+      signal: ctrl.signal,
+    });
     const body = await res.text();
     return { status: res.status, body };
   } finally {

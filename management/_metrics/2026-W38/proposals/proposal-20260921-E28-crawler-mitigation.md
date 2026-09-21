@@ -165,3 +165,13 @@
 | Firewall Allowed（Past Day） | 9/20 08:47〜9/21 08:47＝**151.8k**（1 点のみ・実施日から毎日記録） |
 | Runtime Logs 行数（代理） | `/concierge` 関数実行 39,763／24h（同窓）。日別は実施時に `group_by` で 9 日遡及して取得 |
 | 再裁定（裁定①） | **7 日後（9/29）に Allowed が 20k/日を下回らなければ Challenge へ格上げを再裁定** |
+
+### 7-5. 【CSO 裁定 2026-09-21・実施前の 2 点】
+
+| # | 裁定 | 反映 |
+|---|---|---|
+| 1 | **healthcheck の UA を固定文字列 `vodnavi-healthcheck/1` に変更し、ルール 2 に `user_agent eq その文字列 → 除外` を追加。IP 除外は採らない（Vercel 側の IP が変わる）。コード 1 行・1 ビルド（sitemap 再生成の交絡は受容）。9/22 06:30 の実施はこのビルドが READY になった後。順序＝コード変更 push → READY 確認 → Firewall 適用 → 読み戻し → healthcheck 1 回実行で通過を確認** | `app-concierge/scripts/healthcheck-api.mjs`: `USER_AGENT = "vodnavi-healthcheck/1"` を定数化し `fetchText` の全リクエストに `user-agent` ヘッダとして付与（`init.headers` があればそちらを優先・cookie 等は不変）。JSON: G3・G4（`/api/concierge`）に `user_agent neq "vodnavi-healthcheck/1"` を追加（グループ内 AND のため「等しければ対象外」＝除外） |
+| 2 | **`Google-InspectionTool` は Googlebot と同扱い＝`/concierge` ページ本体は許可・`/api/concierge` は deny。除外条件に追加** | JSON: G1・G2（`/concierge`）に `user_agent nsub "Google-InspectionTool"` を追加。G3・G4 には追加しない（`/api/concierge` は deny のまま） |
+
+- 確定した送信 JSON → `e28-firewall-config.json`（ルール 2＝G1〜G4 の条件は上記のとおり）。
+- **未回答の確認事項（再掲・§7-2）**: `/concierge` の表示は Anthropic に到達しない（`?cids=` 付きのみ FANZA API）。`/api/concierge` は cookie 通過時のみ Anthropic。**9/20 08:47〜9/21 08:47 の 40.0k のうち Anthropic に到達したのは 4 件＝すべて自前の healthcheck（ボット由来 0 件）。** 実施報告（9/22）にも同表を再掲する。
