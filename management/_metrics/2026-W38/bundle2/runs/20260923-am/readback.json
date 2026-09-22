@@ -1,0 +1,20 @@
+{
+  "_note": "2026-09-23 07:12 JST の Airtable MCP 読み戻し（x_replies 3 件・x_targets 3 件）。X 直接 URL の確認は 07:11:06 JST。",
+  "x_check": {
+    "2102519568329748946": { "status": 200, "bytes": 99779 },
+    "2102519819723776449": { "status": 200, "bytes": 102801 },
+    "2102520018240180402": { "status": 200, "bytes": 101631 },
+    "control_1111111111111111111": { "status": 404, "bytes": 34779 }
+  },
+  "x_replies": [
+    { "id": "recx3kaa9YkFzLNFo", "reply_key": "20260923-MOODYZ_official", "target": "recuIj1YV4CmsxgJN", "target_post_url": "https://x.com/MOODYZ_official/status/2102382415075545091", "draft_used": "A", "reply_post_id": "2102519568329748946", "posted_at": "2026-09-22T22:05:02.671Z", "reply_text": "水泳部顧問という切り口、タイトルだけでも方向性がはっきり伝わってきますね。" },
+    { "id": "recs23DIJZp2l9cFv", "reply_key": "20260923-IDEAPOCKETTER", "target": "rec3EWHDnA1tnjPzL", "target_post_url": "https://x.com/IDEAPOCKETTER/status/2102389964311069127", "draft_used": "A", "reply_post_id": "2102519819723776449", "posted_at": "2026-09-22T22:06:02.608Z", "reply_text": "ナース4選という括りで4作並ぶと、どれから見るか迷いますね。先頭が西田瑞希さんの作品なのも気になります。" },
+    { "id": "recToPt5j8xgeko8p", "reply_key": "20260923-PREMIUM_AV", "target": "recHwHcrfE8LFcRdW", "target_post_url": "https://x.com/PREMIUM_AV/status/2102382415071314295", "draft_used": "A", "reply_post_id": "2102520018240180402", "posted_at": "2026-09-22T22:06:49.938Z", "reply_text": "シルバーウィークに楪カレンさんの5作品という括りは、じっくり見るには十分な本数ですね。" }
+  ],
+  "x_targets": [
+    { "id": "recuIj1YV4CmsxgJN", "last_reply_at": "2026-09-22T22:05:02.671Z" },
+    { "id": "rec3EWHDnA1tnjPzL", "last_reply_at": "2026-09-22T22:06:02.608Z" },
+    { "id": "recHwHcrfE8LFcRdW", "last_reply_at": "2026-09-22T22:06:49.938Z" }
+  ],
+  "totals": { "x_replies_total": 40, "by_day_jst_of_reply_key": { "20260918": 6, "20260919": 4, "20260920": 8, "20260921": 11, "20260922": 8, "20260923": 3 }, "duplicates": 0 }
+}

@@ -201,6 +201,61 @@ export function applyReplacements(text, cfg) {
   return { text: out, applied };
 }
 
+/** 全角数字を半角にして Number 化。 */
+function toHalfNum(x) {
+  return Number(String(x).replace(/[０-９]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0)));
+}
+
+/**
+ * 文中の「時刻」を拾う。`9:59` / `9時` / `9時ちょうど` / `9時59分` の4形。
+ * `N時間`（収録時間）は否定先読みで拾わない。返り値 [{ raw, h, m }]（m は書かれていなければ null・「ちょうど」は 0）。
+ */
+export function extractTimes(text) {
+  const RE = /([0-9０-９]{1,2})\s*[:：]\s*([0-9０-９]{2})|([0-9０-９]{1,2})時(?!間)(?:(ちょうど)|([0-9０-９]{1,2})分)?/g;
+  const out = [];
+  for (const mm of String(text ?? "").matchAll(RE)) {
+    let h, m;
+    if (mm[1] != null) { h = toHalfNum(mm[1]); m = toHalfNum(mm[2]); }
+    else { h = toHalfNum(mm[3]); m = mm[4] ? 0 : (mm[5] != null ? toHalfNum(mm[5]) : null); }
+    if (!Number.isFinite(h) || h > 23) continue;
+    if (m != null && (!Number.isFinite(m) || m > 59)) continue;
+    out.push({ raw: mm[0], h, m });
+  }
+  return out;
+}
+
+/**
+ * CTO が input.txt に付ける注記のうち**時刻で終わる角括弧**（［同一スレッドの詳細投稿 22:00］）を落とす。
+ * 相手の投稿時刻は CTO の注記であって相手の言葉ではないため、R14 の「具体」にも R13 の免除にも使わない
+ * （CSO裁定 2026-09-23 朝 ④）。［引用元 …］のように時刻で終わらない注記は残す＝引用元の本文は従来どおり具体に使える。
+ */
+export function stripTimeAnnotation(body) {
+  return String(body ?? "").replace(/［[^］]*?\d{1,2}[:：]\d{2}\s*］/g, " ");
+}
+/**
+ * R13（投稿時刻）: 案が**相手の投稿時刻**に言及していれば、その表記を返す（CSO裁定 2026-09-23 朝 ④）。
+ * `post.posted_at_jst` は「いつの投稿か」を判断するための文脈であって、R14 が求める**本文の具体ではない**。
+ * 免除: ①本文に同じ表記がそのまま含まれる ②本文に同じ時刻が別表記（`9:59` / `9時59分`）で出ている。
+ * → 本文由来の時刻（締切時刻など）は従来どおり具体として使える。`postedAtJst` が無ければ検査しない。
+ */
+export function postedTimeHits(draft, body, postedAtJst) {
+  if (!postedAtJst) return [];
+  const pm = /(\d{1,2}):(\d{2})/.exec(String(postedAtJst));
+  if (!pm) return [];
+  const ph = Number(pm[1]);
+  const pmin = Number(pm[2]);
+  const b = stripTimeAnnotation(body); // 注記［… 22:00］は相手の言葉ではないので免除に使わない
+  const bodyTimes = extractTimes(b);
+  const hits = [];
+  for (const t of extractTimes(draft)) {
+    if (t.h !== ph) continue;                       // 別の時刻（本文由来の締切など）は対象外
+    if (t.m != null && t.m !== pmin) continue;      // 分まで書いていて一致しないなら別の時刻
+    if (b.includes(t.raw)) continue;                // 本文にそのままある → 引用
+    if (bodyTimes.some((x) => x.h === t.h && (t.m == null || x.m == null || x.m === t.m))) continue;
+    hits.push(t.raw);
+  }
+  return [...new Set(hits)];
+}
 /** R14-A 用: "YYYY-MM-DD…" 2 つの暦日差（絶対値・日）。どちらかが日付として読めなければ null。 */
 export function calendarDayDiff(a, b) {
   const d = (v) => {
@@ -322,11 +377,18 @@ export function guardReply(text, ctx = {}) {
     if (cfg.R13_quote_exempt && ctx.body) h = h.filter((hit) => !String(ctx.body).includes(hit.replace(/（regex: .*）$/, ""))); // 本文にあれば引用（暦語も同じ）
     if (h.length && !exempt) push("R13", `根拠なし断定語: ${h.join("、")}`);
   }
+  // R13（投稿時刻）: 相手の投稿時刻への言及は R14 の「具体」ではない（CSO裁定 2026-09-23 朝 ④）
+  if (cfg.R13_no_posted_time !== false && ctx.postedAtJst) {
+    const h = postedTimeHits(t, ctx.body ?? "", ctx.postedAtJst);
+    if (h.length) push("R13", `相手の投稿時刻への言及: ${h.join("、")}（投稿日時 ${ctx.postedAtJst}・本文に無い）`);
+  }
   // R14 具体性（相手投稿本文の具体を 1 つ含む・ヒューリスティック・CSO判定 2026-09-19）
   if (cfg.R14_concreteness && ctx.body && ctx.type !== "Q") {
-    const res = hasConcreteFromBody(t, ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
+    // 投稿時刻の注記（［… 22:00］）は具体に数えない（CSO裁定 2026-09-23 朝 ④）
+    const body14 = stripTimeAnnotation(ctx.body);
+    const res = hasConcreteFromBody(t, body14, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
     if (!res.ok) {
-      const cands = concreteTokens(ctx.body, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
+      const cands = concreteTokens(body14, cfg.R14_concreteness, cfg.R6_appearance_explicit ?? []);
       push("R14", `相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: ${cands.slice(0, 8).join("、") || "なし"}）`);
     }
   }

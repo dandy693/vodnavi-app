@@ -847,6 +847,41 @@ export const GUARDS = {
       : { ok: true, ng: null };
   },
 
+  /**
+   * 【T1改】投稿文が名称フィールド（`Name` 列。旧名 `管理ID`）と同一でないこと。
+   *
+   * 【2026-09-22 の事故】`W11-05`（MIZD-464）が **本文＝名称「W11-05 T1改 新ありな MIZD-464」**
+   * のまま 21:00 JST に配信された。生成器の出力・MCP payload・投入直後の読み戻し・承認直前の再照合
+   * （2026-09-17 22:24:48 JST）はいずれも正常であり、**書き換えは 2026-09-17 22:24:48 〜 2026-09-22 21:00 の間**に起きている。
+   * 既知の自動機構（`generate-t1.mjs` / `airtable.ts createRecord` / `t3-auto.ts` / Make モジュール3・8 /
+   * Airtable オートメーション3本）はいずれも投稿文を書き換えられず、**原因は未特定**（CSO裁定 2026-09-23 朝 ②）。
+   *
+   * 【厳守・本ガードの有効範囲】本ガードは **`p.text` に入っている値**しか見ない。
+   * したがって **承認直前の再実行に「生成時の text」を渡すかぎり、上記の事故は捕捉できない**
+   * （生成時の値は正常だったため）。**Airtable から読み戻した値を `text` に入れて実行すること。**
+   * 実装例 → `management/tools/x-post-refill/reguard-before-approve.mjs`
+   */
+  g22_text_not_name: (p) => {
+    if (p.kind && p.kind !== "T1") return { ok: true, ng: null };
+    const text = (p.text ?? "").trim();
+    const name = (p.name ?? "").trim();
+    if (name && text === name) return { ok: false, ng: `投稿文が名称フィールドと同一: ${name}` };
+    return { ok: true, ng: null };
+  },
+
+  /**
+   * 【T1改】投稿文が内部ラベル（`W<週>-<連番>`）で始まらないこと。
+   * g22 と対にする——**名称が改名・変更されていても**、内部ラベルの形式そのものを拒否する。
+   * CSO裁定 2026-09-23 朝 ③。有効範囲の但し書きは g22 と同じ。
+   */
+  g23_text_not_internal_label: (p) => {
+    if (p.kind && p.kind !== "T1") return { ok: true, ng: null };
+    const text = (p.text ?? "").trim();
+    return /^W\d+-\d+/.test(text)
+      ? { ok: false, ng: `投稿文が内部ラベル形式で始まる: ${text.slice(0, 24)}` }
+      : { ok: true, ng: null };
+  },
+
   /** 品番のラウンドトリップ検証（変換ロジックの誤りを検知する）。 */
   g10_hinban_roundtrip: (p) => {
     if (p.kind && p.kind !== "T1") return { ok: true, ng: null }; // 品番を持つのは T1改 のみ

@@ -1,7 +1,7 @@
 // R1〜R15 の陽性・陰性（設計書 §8-1・CSO裁定 2026-09-19・CSO判定 2026-09-19）。語リストは guards.config.json の現行値で検査する。
 import test from "node:test";
 import assert from "node:assert/strict";
-import { guardReply, xWeight, charCount, normalizeNumbers, checkPayloadForbidden, countSentences, hasConcreteFromBody, hintTokens, applyReplacements, knowledgeFactHits, loadConfig } from "./guards.mjs";
+import { guardReply, xWeight, charCount, normalizeNumbers, checkPayloadForbidden, countSentences, hasConcreteFromBody, hintTokens, applyReplacements, knowledgeFactHits, loadConfig, extractTimes, postedTimeHits, stripTimeAnnotation } from "./guards.mjs";
 
 // 40〜140 字・2 文・数字なし・定型句なしの無害な本文（47 字）
 const OK = "先行配信の開始おめでとうございます。今週の動きも追いかけながら、次の告知を楽しみにしています。";
@@ -238,6 +238,29 @@ test("R13（CSO判定 2026-09-21）: 投稿時刻・本文にない時間表現�
   assert.ok(rules(guardReply("今日中にリストを見ておきます。9時59分までですね。", { type: "A", body })).includes("R13"), "「今日中」");
 });
 
+test("R13（投稿時刻）CSO裁定 2026-09-23 朝 ④: 相手の投稿時刻への言及は NG。本文由来の時刻は従来どおり具体に使える", () => {
+  const posted = "2026-09-22 22:00";
+  const body = "［同一スレッドの詳細投稿 22:00］水泳部顧問がエロすぎる 篠真有";
+  // 注記の時刻を拾わない
+  assert.equal(stripTimeAnnotation(body).includes("22:00"), false);
+  assert.equal(stripTimeAnnotation("［引用元 9月15日 新作情報解禁］").includes("引用元"), true);
+  // extractTimes: N時間（収録時間）は拾わない
+  assert.deepEqual(extractTimes("2時間28分の収録").length, 0);
+  assert.deepEqual(extractTimes("22時に").map((x) => [x.h, x.m]), [[22, null]]);
+  assert.deepEqual(extractTimes("23時ちょうど").map((x) => [x.h, x.m]), [[23, 0]]);
+  assert.deepEqual(extractTimes("9:59まで").map((x) => [x.h, x.m]), [[9, 59]]);
+  // 投稿時刻への言及は NG（注記に 22:00 があっても免除しない）
+  assert.deepEqual(postedTimeHits("22時に公開された水泳部顧問という切り口。", body, posted), ["22時"]);
+  assert.ok(rules(guardReply("22時に公開された水泳部顧問という切り口、方向性がはっきり伝わってきますね。", { type: "A", body, postedAtJst: posted })).includes("R13"));
+  assert.ok(rules(guardReply("23時ちょうどの続きの投稿なのですね。水泳部顧問の評価が気になります。", { type: "A", body, postedAtJst: "2026-09-22 23:00" })).includes("R13"));
+  // 投稿時刻を書かなければ通る
+  assert.ok(!rules(guardReply("水泳部顧問という切り口、タイトルだけでも方向性がはっきり伝わってきますね。", { type: "A", body, postedAtJst: posted })).includes("R13"));
+  // 本文由来の時刻（締切）は引用できる
+  const body2 = "第3弾は朝9:59まで‼️ こだわりのフェラ50％OFF";
+  assert.deepEqual(postedTimeHits("第3弾は朝9時59分までなのですね。", body2, "2026-09-21 09:59"), []);
+  // postedAtJst が無い呼び出しでは検査しない
+  assert.deepEqual(postedTimeHits("22時に", body, null), []);
+});
 test("R14-A（CSO判定 2026-09-21）: A 型の祝福は cache 配信日が投稿日から 3 日以内のときのみ。postedAtJst 無しでは検査しない", () => {
   const body = "パーフェクトボディ💎✨ #坂井美桜 @mio_sakai_ #PR";
   const kOld = { content_id: "ipzz00947", date: "2026-08-28 00:00:19", volume: "121" };

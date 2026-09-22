@@ -15,7 +15,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { isMain } from "./parse.mjs";
-import { guardReply, loadConfig, hintTokens, applyReplacements } from "./guards.mjs";
+import { guardReply, loadConfig, hintTokens, applyReplacements, stripTimeAnnotation } from "./guards.mjs";
 import { FIELDS, replyKeyFor, jstYmd } from "./record.mjs";
 
 const HERE = path.dirname(fileURLToPath(import.meta.url));
@@ -205,7 +205,8 @@ function userPayload({ line, target, knowledge, todayJst, retryReasons, config }
     today_jst: todayJst,
   };
   // R14 の機械検査と同じ抽出で「本文の具体候補」を渡す（数値・日付・企画名・順位のいずれかを 1 つ含める・CSO判定 2026-09-19）
-  p.hints = { concretes_from_body: hintTokens(line.body, config?.R14_concreteness ?? {}, config?.R6_appearance_explicit ?? []) };
+  // 投稿時刻の注記（［… 22:00］）は具体候補に渡さない（CSO裁定 2026-09-23 朝 ④）
+  p.hints = { concretes_from_body: hintTokens(stripTimeAnnotation(line.body), config?.R14_concreteness ?? {}, config?.R6_appearance_explicit ?? []) };
   if (retryReasons) p.retry_reasons = retryReasons;
   return JSON.stringify(p, null, 2);
 }
