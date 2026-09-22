@@ -1,0 +1,35 @@
+5may_itsukaichi	女優本人	1
+Aizawa_miyu03	女優本人	1
+attackers_av	メーカー公式	1
+azusa_hikari_	女優本人	1
+DMM10sale	セール告知系	1
+FalenoEvent	メーカー公式	1
+fanza_meireview	レビュー系	1
+FANZAdougaX	セール告知系	1
+Fitch_official	メーカー公式	1
+honnaka_NN	メーカー公式	1
+iyo_shinohara	女優本人	1
+karin_kitaoka_	女優本人	1
+kawaii_pr	メーカー公式	1
+Kizukiamane	女優本人	1
+Madonna_AVinfo	メーカー公式	1
+mio_sakai_	女優本人	1
+nao_satsuki	女優本人	1
+PREMIUM_AV	メーカー公式	1
+PRESTIGE_PR2020	メーカー公式	1
+ran_tpowers	女優本人	1
+saki_seino	女優本人	1
+sakuramio_X	女優本人	1
+shirot_AV_chosa	レビュー系	1
+sodstarofficial	メーカー公式	1
+waka_misono	女優本人	1
+wanz_official	メーカー公式	1
+fanza_sns	セール告知系	2
+IDEAPOCKETTER	メーカー公式	2
+MOODYZ_official	メーカー公式	2
+shiromine_miu	女優本人	2
+mayukiito	女優本人	3	対照（提示は週 2 件まで）
+S1_No1_Style	メーカー公式	3	対照（提示は週 2 件まで）
+shinnakanodream	メーカー公式	3	対照（提示は週 2 件まで）
+umi_sea_0v0	女優本人	3	対照（提示は週 2 件まで）
+[active-targets] 34 件 / priority {"1":26,"2":4,"3":4} / type {"女優本人":15,"メーカー公式":14,"セール告知系":3,"レビュー系":2}

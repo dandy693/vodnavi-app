@@ -1,0 +1,34 @@
+model=claude-opus-5 dry_run=false today_jst=20260922 counts={"lines":4,"generated":3,"stopped":1} prompt_sha=bf23d27971ce
+
+=== 対象 https://x.com/FANZAdougaX/status/2102337419874107887（2026-09-22 19:01）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260922-FANZAdougaX calls=1 in=640 out=918
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=83 weight=148 ok=true attempts=1
+     ディレクターズカット版のBEAUTY VENUS VI、240分という収録時間はかなりのボリュームですね。未公開映像とシリーズ最新作インタビューの追加も気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=53 weight=103 ok=true attempts=1
+     OFF作品リストの対象には、今回のような未公開映像を追加したプレミアムエディションも含まれるのでしょうか。
+
+=== 対象 https://x.com/Fitch_official/status/2102355990477955495（2026-09-22 20:15）
+    @Fitch_official (メーカー公式) status=generated replyKey=20260922-Fitch_official calls=2 in=1503 out=462
+  A chars=42 weight=78 ok=true attempts=1
+     50%OFFの対象に入っているのですね。秋のテーマに合わせた並びとして気になります。
+  B chars=58 weight=100 ok=true attempts=1
+     50%OFFの対象作、収録147分で2024年8月16日配信の一本ですね。黒咲華さんの出演作として押さえておきます。
+  C chars=60 weight=113 ok=true attempts=2
+     50%OFFの対象はこの1作だけでしょうか、それとも他の作品も同じ価格で並ぶのでしょうか。終了の時期も気になっています。
+
+=== 対象 https://x.com/Fitch_official/status/2102204992451162371（2026-09-22 10:15）
+    @Fitch_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260922-Fitch_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/waka_misono/status/2102197151103328399（2026-09-22 09:43）
+    @waka_misono (女優本人) status=generated replyKey=20260922-waka_misono calls=3 in=2623 out=1438
+  A chars=67 weight=127 ok=true attempts=1
+     美園和花さん、9月21日の新作情報での共演、完全主観ASMRという企画が気になります。どんな収録だったのか話題に上るのを待っています。
+  B chars=55 weight=100 ok=true attempts=3
+     美園和花さん、9月21日の新作情報ありがとうございます。収録時間は120分、配信は10月23日と出ていますね。
+  C chars=41 weight=79 ok=true attempts=1
+     美園和花さん、9月21日に情報が出た今作は、予約開始や先行配信の予定はありますか？

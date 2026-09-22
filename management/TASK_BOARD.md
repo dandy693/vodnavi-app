@@ -11300,3 +11300,13 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 【自己申告・分類D】Q の create で CTO の Unicode エスケープ誤り 1 字（「収錂78分」）→ create 応答で検出・update で「収録78分」へ訂正（X 本文は正しい）。以後は payload の文字列をそのまま貼る。
 - **【CSO裁定 2026-09-22 朝】**①引用はメーカー公式を主・女優本人はリプ優先（`Q_quote.allowed_types`＝メーカー公式のみ・README）②Q は priority 3 の週カウント対象外（Q 1 日 2 件・works リンク 1 日 3 件は維持）③E28 適用承認・CLI 経路を台帳記録・`/api/concierge` 403 の由来分離は行わない ④抽出 2 時間遅れは記録のみ。FACT §26-11。`node --test` 70/70。
 - 本日の上限: Q 1/2・works リンク 1（＋T1改 21:00＝2/3）・priority 3 週 2/2。
+- `16b9e6f`（docs＋ツール json/mjs/md・`app-concierge/` 差分なし・距離 6）の state **CANCELED**（`dpl_kzETJycupsrLPiKQGZdy8SSznFth`・09:27:42 JST・skip 経路）。次の docs push は距離 7。
+
+### 2026-09-22 夜 — 束2 段階② 抽出・リプ案（21:00 枠）／Q 0 件／E28 効果測定 初回記録
+- **対象**: Airtable x_targets 42 件 → `active-targets.mjs` で **稼働 34 件**（priority 1:26 / 2:4 / 3:4・21:25 JST 読み戻し）。
+- **抽出（読み取りのみ・34/34・21:26〜22:5x JST）**: 窓＝**2026-09-22 08:45 JST 以降**（snowflake `2102182335083446272`）。**窓内 18 アカウント 35 投稿 / 窓外 16**。除外 12（MGS＝FANZA 外 1・ライブチャット＝動画フロア外 1・店舗イベント 4・交流/雑談 5・連投重複 1）。停止 6 アカウント（女優本人 3 日＝iyo_shinohara / shiromine_miu / Aizawa_miyu03、1 日間隔＝IDEAPOCKETTER / MOODYZ_official / shirot_AV_chosa）。priority 3 は週 2/2 で上限（S1_No1_Style / umi_sea_0v0 は提示せず）。**`PREMIUM_AV` は 3 回試行して URL・本文とも取得不能**。
+- **入力 4 行 → 知識 3/3 PK ヒット → 生成 3 行 8 案（全通過）・停止 1（同日同ハンドル 2 件目）**。API 3 回 / in 2,623 / out 1,438・model `claude-opus-5`・prompt_sha `bf23d27971ce`。
+- **Q（引用）＝候補 0 件**。4 行とも対象外（セール告知系/女優本人＝type 対象外・50%OFF＝セール除外語・発売/配信/予約の語なし）。**本日の Q は 1/2 のまま**。
+- **E28 効果測定 初回（23:1x JST・Chrome 読み取り・Past Day＝9/21 23:00〜9/22 22:45 JST）**: **Allowed 62.0k / Denied 9.6k / Challenged 6 / Logged・Rate Limited 表示なし**。Rules マッチ＝**E28-2 concierge non-browser deny 9.0k** / DDoS Mitigation 656。Custom Rules 2 active・Bot Protection Inactive。**窓が E28 適用（9/22 朝）を跨ぐため定常値ではない。前窓対照 151.8k（9/21 08:47・§29-2）との差は起点が異なるためそのまま効果と読まない。E28-1（PerplexityBot rate_limit）はマッチ一覧に現れず＝解釈しない。`served:500` の代理指標は未取得**。
+- **逸脱（自己申告）**: 停止判定に該当する 6 アカウント＋priority 3 の 2 件は本文を取得せず URL・時刻のみ記録（停止は CTO が手で確認・ツールの機械判定を通していない）。要否は CSO。
+- 記録 → `management/_metrics/2026-W38/bundle2/runs/20260922-pm/`（targets / input / parsed / knowledge / drafts / quotes / README）。

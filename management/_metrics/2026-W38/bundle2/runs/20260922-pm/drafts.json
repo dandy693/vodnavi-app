@@ -1,0 +1,285 @@
+{
+  "generated_at": "2026-09-22T14:11:17.832Z",
+  "today_jst": "20260922",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "bf23d27971ce5d7de7b1f23ea903ebddf4359978ea977169aa681e9aa8e2fe6a",
+  "counts": {
+    "lines": 4,
+    "generated": 3,
+    "stopped": 1
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2102337419874107887",
+      "targetPostId": "2102337419874107887",
+      "postedAtJst": "2026-09-22 19:01",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:23:28.700Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260922-FANZAdougaX",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "ディレクターズカット版のBEAUTY VENUS VI、240分という収録時間はかなりのボリュームですね。未公開映像とシリーズ最新作インタビューの追加も気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 83,
+              "weight": 148
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "OFF作品リストの対象には、今回のような未公開映像を追加したプレミアムエディションも含まれるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 103
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 640,
+        "output_tokens": 918,
+        "cache_creation_input_tokens": 3480,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2102355990477955495",
+      "targetPostId": "2102355990477955495",
+      "postedAtJst": "2026-09-22 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:16.204Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "fpre00094",
+        "title": "ハイパービッチな肉食系の現役看護師W専属決定！ 黒ギャル絶品グラマラス・黒咲華 潮吹き×中出し解禁Special 黒咲華",
+        "fetched_at": "2026-09-21 19:17:35.346+00"
+      },
+      "replyKey": "20260922-Fitch_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50%OFFの対象に入っているのですね。秋のテーマに合わせた並びとして気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 78
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "50%OFFの対象作、収録147分で2024年8月16日配信の一本ですね。黒咲華さんの出演作として押さえておきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 58,
+              "weight": 100
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "50%OFFの対象はこの1作だけでしょうか、それとも他の作品も同じ価格で並ぶのでしょうか。終了の時期も気になっています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 60,
+              "weight": 113
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "50%OFFの対象期間はいつまででしょうか。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "字数 22（30〜140）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1503,
+        "output_tokens": 462,
+        "cache_creation_input_tokens": 6960,
+        "cache_read_input_tokens": 0,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2102204992451162371",
+      "targetPostId": "2102204992451162371",
+      "postedAtJst": "2026-09-22 10:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:16.204Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260922-Fitch_official",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "waka_misono",
+      "postUrl": "https://x.com/waka_misono/status/2102197151103328399",
+      "targetPostId": "2102197151103328399",
+      "postedAtJst": "2026-09-22 09:43",
+      "target": {
+        "id": "recG1UOdyZhtseqWV",
+        "handle": "waka_misono",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:31:09.852Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "dsod00068",
+        "title": "完全主観ASMR W巨乳美女が迫る。射精管理お姉さんとドSギャルに両耳から囁かれる淫語責めボイス。薄暗い密室で脳が震えるほど完全に支配される搾精劇【痴女POV】 百永さりな 美園和花",
+        "fetched_at": "2026-09-22 12:45:55.392+00"
+      },
+      "replyKey": "20260922-waka_misono",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "美園和花さん、9月21日の新作情報での共演、完全主観ASMRという企画が気になります。どんな収録だったのか話題に上るのを待っています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 67,
+              "weight": 127
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "美園和花さん、9月21日の新作情報ありがとうございます。収録時間は120分、配信は10月23日と出ていますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 100
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "美園和花さん、完全主観ASMRの今作は収録120分で、配信は10月23日と出ていますね。長さの分だけ聴きどころが多そうです。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 120、10月23日、主観"
+                }
+              ]
+            },
+            {
+              "text": "美園和花さん、9月21日告知の完全主観ASMRは収録時間120分なのですね。配信は10月23日と少し先の予定になっています。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 120、10月23日、主観"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "美園和花さん、9月21日に情報が出た今作は、予約開始や先行配信の予定はありますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 41,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 2623,
+        "output_tokens": 1438,
+        "cache_creation_input_tokens": 3458,
+        "cache_read_input_tokens": 6960,
+        "calls": 3
+      }
+    }
+  ]
+}
