@@ -1,0 +1,28 @@
+{
+  "_source": "X Analytics（Premium）→ アナリティクス → コンテンツ → ポスト。URL `https://x.com/i/account_analytics/content?type=posts&sort=date&dir=desc&days=14`。読み取りのみ・CSV エクスポートは使わず画面の表を書き起こした（CSO裁定 2026-09-23 の但し書きどおり「CSV」とは書かない）。",
+  "_captured_at_jst": "2026-09-23 07:1x",
+  "_window": "2W（days=14）。表示は Sep 12〜Sep 22。日付は X の表示（JST 暦日）。",
+  "_columns": "date / impressions / likes / replies / reposts（表のヘッダは 日付・インプレッション数・いいね・返信・リポスト）",
+  "_note_type": "type=posts のため『ポスト』のみ。リプ（返信）は含まれない＝--own-posts の除外処理は不要だが、引用ポスト Q-1（9/22）は自投稿として含まれている（CSO 指示 2026-09-21 夜どおり）。",
+  "_note_missing": "9/17 と 9/20 の行が存在しない。9/17 は既知のキュー切れ（FACT §13-9）。9/20 は未確認＝報告で別途扱う。",
+  "posts": [
+    { "date": "2026-09-22", "impressions": 14, "likes": 0, "replies": 0, "reposts": 0, "text_head": "W11-05 T1改 新ありな MIZD-464", "note": "本文が管理名の形になっている（要確認）" },
+    { "date": "2026-09-22", "impressions": 29, "likes": 0, "replies": 0, "reposts": 0, "text_head": "本中の新作で、収録78分、配信開始は10月27日です。幸村泉希さん出演の作品です。", "note": "引用ポスト Q-1（20260922-Q-honnaka_NN）" },
+    { "date": "2026-09-21", "impressions": 37, "likes": 0, "replies": 0, "reposts": 0, "text_head": "ムーディーズのMIZD-481、出演は小野六花。721分収録。" },
+    { "date": "2026-09-19", "impressions": 61, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで「MOODYZキャンペーン30％OFF」を確認しました。", "note": "T3" },
+    { "date": "2026-09-19", "impressions": 58, "likes": 0, "replies": 0, "reposts": 0, "text_head": "SNOS-334（瀬戸環奈）はレビュー30件で平均4.9。" },
+    { "date": "2026-09-18", "impressions": 74, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで「こだわりのフェラ50％OFF」を確認しました。", "note": "T3" },
+    { "date": "2026-09-18", "impressions": 55, "likes": 0, "replies": 0, "reposts": 0, "text_head": "泉ももかのMIMK-271は118分の収録。ハイビジョン収録です。" },
+    { "date": "2026-09-16", "impressions": 59, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで買ったとき、クレジットカードの明細には何と表示されるのか。" },
+    { "date": "2026-09-16", "impressions": 45, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで「S-CUTE他30％OFF」を確認しました。", "note": "T3" },
+    { "date": "2026-09-15", "impressions": 34, "likes": 0, "replies": 0, "reposts": 0, "text_head": "ジャンル名で探すより、好みを答えて選んでもらう方が早いこともあります。" },
+    { "date": "2026-09-15", "impressions": 28, "likes": 0, "replies": 0, "reposts": 0, "text_head": "アイデアポケットのIPZZ-713、出演は堀北桃愛。154分収録。" },
+    { "date": "2026-09-14", "impressions": 30, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAの支払いはクレジットカードだけではありません。" },
+    { "date": "2026-09-14", "impressions": 31, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで「日替わりセール♭」を確認しました。", "note": "T3" },
+    { "date": "2026-09-13", "impressions": 25, "likes": 0, "replies": 0, "reposts": 0, "text_head": "作品を探す時間のほうが長くなっている人へ。" },
+    { "date": "2026-09-13", "impressions": 21, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで「日替わりセール★」を確認しました。", "note": "T3" },
+    { "date": "2026-09-13", "impressions": 17, "likes": 0, "replies": 0, "reposts": 0, "text_head": "波多野結衣のBONY-191は127分の収録。ハイビジョン収録です。" },
+    { "date": "2026-09-12", "impressions": 18, "likes": 0, "replies": 0, "reposts": 0, "text_head": "はじめてのFANZA、「登録自体にお金がかかるのか」" },
+    { "date": "2026-09-12", "impressions": 18, "likes": 0, "replies": 0, "reposts": 0, "text_head": "FANZAで「日替わりセール◇」を確認しました。", "note": "T3" }
+  ]
+}

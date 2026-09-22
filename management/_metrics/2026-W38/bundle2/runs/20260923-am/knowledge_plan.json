@@ -1,0 +1,65 @@
+[
+  {
+    "lineNo": 1,
+    "handle": "MOODYZ_official",
+    "step": "cid",
+    "cid": "mida00783",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "7c508b02ad4dd4f99f37156608a772ad5ccef649d83998170672f5f57801556d"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "71a7985da24abe9b3205bd8d0ff5a3b6e7b8bdc622d70042f8fc003b6dd90c8d"
+      },
+      {
+        "floor": "anime",
+        "key": "14bf24032a5956b1b72ae964f9d20fa2137f9a8201a59c1e27c1e4b5c9549be2"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('7c508b02ad4dd4f99f37156608a772ad5ccef649d83998170672f5f57801556d', '71a7985da24abe9b3205bd8d0ff5a3b6e7b8bdc622d70042f8fc003b6dd90c8d', '14bf24032a5956b1b72ae964f9d20fa2137f9a8201a59c1e27c1e4b5c9549be2')"
+  },
+  {
+    "lineNo": 2,
+    "handle": "IDEAPOCKETTER",
+    "step": "cid",
+    "cid": "ipzz00957",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "1853cfa929d258cc4540528b4253df554e4f138d755bf557d0174da328fa850e"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "afe66b5cd6b31930148094289c238e2b2595dfd674dba354bf72007850da8f4c"
+      },
+      {
+        "floor": "anime",
+        "key": "f98e9660c6e75e3da215c2be9cab9f902b94273a642d7a2d64c26abe71b054bf"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('1853cfa929d258cc4540528b4253df554e4f138d755bf557d0174da328fa850e', 'afe66b5cd6b31930148094289c238e2b2595dfd674dba354bf72007850da8f4c', 'f98e9660c6e75e3da215c2be9cab9f902b94273a642d7a2d64c26abe71b054bf')"
+  },
+  {
+    "lineNo": 3,
+    "handle": "PREMIUM_AV",
+    "step": "cid",
+    "cid": "pred00882",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "1f5fd1480075a7e3609d5d0a44a71a19394cc1c61445cb00d551c4594d3616d3"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "b952bb77c7ebabc2405e928edafcfc2b6ea0d28faacd71c3eee930a0fdcb6102"
+      },
+      {
+        "floor": "anime",
+        "key": "a6768079d63945a5b920edaf35d9bbf9eaa3ca6f319009050fc8c9cbbb6f80f8"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('1f5fd1480075a7e3609d5d0a44a71a19394cc1c61445cb00d551c4594d3616d3', 'b952bb77c7ebabc2405e928edafcfc2b6ea0d28faacd71c3eee930a0fdcb6102', 'a6768079d63945a5b920edaf35d9bbf9eaa3ca6f319009050fc8c9cbbb6f80f8')"
+  }
+]

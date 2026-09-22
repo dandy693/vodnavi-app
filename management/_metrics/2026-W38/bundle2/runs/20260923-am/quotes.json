@@ -1,0 +1,199 @@
+{
+  "kind": "quote",
+  "generated_at": "2026-09-22T21:44:27.462Z",
+  "today_jst": "20260923",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "154fe4faf8dc50c4263ddc9a44c50d0624d969e070c073a2f8073b4e5a7cfebd",
+  "limits": {
+    "max_per_run": 2,
+    "max_per_day": 2,
+    "recorded_today": 0,
+    "note": "works ページへのリンク投稿は T1改（21:00・1 件）と合わせて 1 日 3 件まで／同一投稿にリプ＋引用の両方はしない"
+  },
+  "counts": {
+    "lines": 4,
+    "generated": 0,
+    "presented": 0,
+    "not_eligible": 4
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2102382415075545091",
+      "targetPostId": "2102382415075545091",
+      "postedAtJst": "2026-09-22 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "mida00783",
+        "floor_code": "videoa",
+        "title": "競泳水着から浮き出る巨乳に発情サル化した絶倫生徒の追撃中出し輪●50発射で爆乳ガクブルイキまくったJカップ水泳部顧問 篠真有",
+        "date": "2026-09-11 00:00:47",
+        "volume": "148",
+        "fetched_at": "2026-09-22 01:33:34.552+00"
+      },
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "mida00783"
+      },
+      "quoteKey": "20260923-Q-MOODYZ_official",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102389964311069127",
+      "targetPostId": "2102389964311069127",
+      "postedAtJst": "2026-09-22 22:30",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "ipzz00957",
+        "floor_code": "videoa",
+        "title": "白衣の天使は深夜0時に跪く 美人で優しくて笑顔が素敵な僕の初恋の西田さんは消灯後にマゾ化するイカれた変態ナースでした。 西田瑞希",
+        "date": "2026-08-28 00:00:00",
+        "volume": "186",
+        "fetched_at": "2026-09-22 03:27:21.541+00"
+      },
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "ipzz00957"
+      },
+      "quoteKey": "20260923-Q-IDEAPOCKETTER",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2102382415071314295",
+      "targetPostId": "2102382415071314295",
+      "postedAtJst": "2026-09-22 22:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "pred00882",
+        "floor_code": "videoa",
+        "title": "都合のイイ地味メガネ巨乳 中出しOK後輩OLを乳首ビンビンに揉みまくりいつでもヤリまくり肉体関係 楪カレン",
+        "date": "2026-08-14 00:00:46",
+        "volume": "148",
+        "fetched_at": "2026-09-20 22:08:56.65+00"
+      },
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "pred00882"
+      },
+      "quoteKey": "20260923-Q-PREMIUM_AV",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2102397671013257313",
+      "targetPostId": "2102397671013257313",
+      "postedAtJst": "2026-09-22 23:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）",
+          "type 対象外（レビュー系・引用元は メーカー公式 のみ）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260923-Q-shirot_AV_chosa",
+      "url": null,
+      "http": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定）／type 対象外（レビュー系・引用元は メーカー公式 のみ）／発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}

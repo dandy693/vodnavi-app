@@ -1,0 +1,315 @@
+{
+  "today": "2026-09-23",
+  "threshold_snowflake": "2102373847004086272",
+  "threshold_jst": "2026-09-22 21:26:00",
+  "skip": [
+    {
+      "handle": "FANZAdougaX",
+      "type": "セール告知系",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T16:55:55.369Z",
+      "reason": "再返信間隔（1 日・最終 2026-09-23・暦日差 0）",
+      "last": "2026-09-23"
+    },
+    {
+      "handle": "iyo_shinohara",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T00:11:27.446Z",
+      "reason": "再返信間隔（女優本人 3 日・最終 2026-09-22・暦日差 1）",
+      "last": "2026-09-22"
+    },
+    {
+      "handle": "waka_misono",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T16:59:32.817Z",
+      "reason": "再返信間隔（女優本人 3 日・最終 2026-09-23・暦日差 0）",
+      "last": "2026-09-23"
+    },
+    {
+      "handle": "shiromine_miu",
+      "type": "女優本人",
+      "priority": 2,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T00:12:08.724Z",
+      "reason": "再返信間隔（女優本人 3 日・最終 2026-09-22・暦日差 1）",
+      "last": "2026-09-22"
+    },
+    {
+      "handle": "mayukiito",
+      "type": "女優本人",
+      "priority": 3,
+      "contrast": true,
+      "last_reply_at": null,
+      "reason": "priority 3・今週 2/2 で上限",
+      "last": null
+    },
+    {
+      "handle": "S1_No1_Style",
+      "type": "メーカー公式",
+      "priority": 3,
+      "contrast": true,
+      "last_reply_at": "2026-09-20T23:03:36.437Z",
+      "reason": "priority 3・今週 2/2 で上限",
+      "last": "2026-09-21"
+    },
+    {
+      "handle": "shinnakanodream",
+      "type": "メーカー公式",
+      "priority": 3,
+      "contrast": true,
+      "last_reply_at": "2026-09-21T13:28:58.855Z",
+      "reason": "priority 3・今週 2/2 で上限",
+      "last": "2026-09-21"
+    },
+    {
+      "handle": "umi_sea_0v0",
+      "type": "女優本人",
+      "priority": 3,
+      "contrast": true,
+      "last_reply_at": null,
+      "reason": "priority 3・今週 2/2 で上限",
+      "last": null
+    }
+  ],
+  "scan": [
+    {
+      "handle": "5may_itsukaichi",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "Aizawa_miyu03",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-20T12:38:41.747Z",
+      "last": "2026-09-20",
+      "diff": 3
+    },
+    {
+      "handle": "attackers_av",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-20T22:22:32.318Z",
+      "last": "2026-09-21",
+      "diff": 2
+    },
+    {
+      "handle": "azusa_hikari_",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "DMM10sale",
+      "type": "セール告知系",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "FalenoEvent",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-20T12:39:01.954Z",
+      "last": "2026-09-20",
+      "diff": 3
+    },
+    {
+      "handle": "fanza_meireview",
+      "type": "レビュー系",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "Fitch_official",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-21T13:27:16.204Z",
+      "last": "2026-09-21",
+      "diff": 2
+    },
+    {
+      "handle": "honnaka_NN",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-19T03:24:46.108Z",
+      "last": "2026-09-19",
+      "diff": 4
+    },
+    {
+      "handle": "karin_kitaoka_",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "kawaii_pr",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-21T13:27:44.396Z",
+      "last": "2026-09-21",
+      "diff": 2
+    },
+    {
+      "handle": "Kizukiamane",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "Madonna_AVinfo",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-18T13:23:19.000Z",
+      "last": "2026-09-18",
+      "diff": 5
+    },
+    {
+      "handle": "mio_sakai_",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "nao_satsuki",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "PREMIUM_AV",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-20T22:23:10.911Z",
+      "last": "2026-09-21",
+      "diff": 2
+    },
+    {
+      "handle": "PRESTIGE_PR2020",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "ran_tpowers",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "saki_seino",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "sakuramio_X",
+      "type": "女優本人",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "shirot_AV_chosa",
+      "type": "レビュー系",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T00:15:35.260Z",
+      "last": "2026-09-22",
+      "diff": 1
+    },
+    {
+      "handle": "sodstarofficial",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "wanz_official",
+      "type": "メーカー公式",
+      "priority": 1,
+      "contrast": false,
+      "last_reply_at": null,
+      "last": null,
+      "diff": null
+    },
+    {
+      "handle": "fanza_sns",
+      "type": "セール告知系",
+      "priority": 2,
+      "contrast": false,
+      "last_reply_at": "2026-09-21T13:28:26.243Z",
+      "last": "2026-09-21",
+      "diff": 2
+    },
+    {
+      "handle": "IDEAPOCKETTER",
+      "type": "メーカー公式",
+      "priority": 2,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T00:14:04.296Z",
+      "last": "2026-09-22",
+      "diff": 1
+    },
+    {
+      "handle": "MOODYZ_official",
+      "type": "メーカー公式",
+      "priority": 2,
+      "contrast": false,
+      "last_reply_at": "2026-09-22T00:13:09.218Z",
+      "last": "2026-09-22",
+      "diff": 1
+    }
+  ]
+}
