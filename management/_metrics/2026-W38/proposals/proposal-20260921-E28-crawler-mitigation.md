@@ -188,3 +188,21 @@
 
 - **残る段（2026-09-22 06:30 以降・朝の抽出後）**: ③ `put_firewall_config`（`e28-firewall-config.json` から `_readme` を除いて送信）→ ④ `get_firewall_config(active)` 読み戻し → ⑤ healthcheck 1 回実行（本番・`gh workflow run api-healthcheck.yml` または `node app-concierge/scripts/healthcheck-api.mjs`）で `llm.concierge` PASS を確認 → 実施報告（§7-2 の課金回答を再掲）。
 - **GH Actions の cron（0 */6 UTC＝JST 03:xx／09:xx／15:xx／21:xx）は次回から新 UA で走る**（checkout が `main` の最新を取るため）。Firewall 適用前は UA に関わらず通る。
+
+### 7-7. 【実施記録 2026-09-22 08:55〜08:58 JST】③ Firewall 適用 → ④ 読み戻し → ⑤ healthcheck 1 回（順序の第 3〜5 段・朝の抽出後に実施）
+
+| 段 | 実測 |
+|---|---|
+| 前提 | `c65d8e3` READY（9/21 17:18:40）済み・朝の抽出（08:1x〜08:5x）とリプ案／Q 案の生成後に着手（06:30 以降の条件を満たす） |
+| 現行設定の確認 | `get_firewall_config(active)`（MCP）→ **404 `Seawall Config not found`**＝起案どおり未作成 |
+| **MCP での適用は不可** | `put_firewall_config`（MCP）→ **404 `Seawall Config not found`**（全置換のはずが未作成 config に対しては 404）／`update_firewall_config`（MCP・`firewallEnabled`）→ 同じ 404。**→ Vercel CLI 54.0.0（ログイン済み・`vercel api`）で REST を直接叩く方式へ切替**（値の入力・再認証はしていない） |
+| 初期化 | `PUT /v1/security/firewall/config`（`{"firewallEnabled":true}`）→ **version 1**（08:55:59 JST・`id waf_lzcN8K1PPQbs`・CRS は既定の全 inactive/log） |
+| 起案 JSON の送信 | **400 `Invalid rule [E28-2 …]`**（PUT はアトミックのため未適用）。**原因 2 点**（いずれも API の実形との差・意味は不変）: ①「含まない」の op `nsub` は存在しない → `sub`＋`neg: true` ②正規表現の先頭 `(?i)` が不正 → `[Bb]ot|[Cc]rawler|…` の文字クラスで表現（**全大文字 `BOT` 等は対象外＝不一致を許容**）。**`neq`（healthcheck UA の除外）はそのまま有効** |
+| 適用 | ルール 1 のみ PUT → **version 2**（08:56:40 JST）→ ルール 2 を `rules.insert`（PATCH）**→ 最初の試行の応答を grep で読み落として再送し、同一ルールが 2 本入った（version 3・4）** → `rules.remove` で重複 `…_vg9yYo` を削除（version 5）→ `rules.update` で regex を文字クラス形へ（**version 6・08:57:52 JST**） |
+| **④ 読み戻し（`/v1/security/firewall/config/active`・08:57:5x JST）** | **version 6 / firewallEnabled true / rules 2**: **E28-1** `rule_e28_1_perplexity_bot_rate_limit_KydRrK`（active・`user_agent sub PerplexityBot` → `rate_limit fixed_window 60s limit 30 keys [ip] action deny`）／**E28-2** `rule_e28_2_concierge_non_browser_deny_KQwbUo`（active・deny・4 グループ＝`/concierge`×{非ブラウザ UA regex, `Mozilla/5.0 (` を含まない}×{Googlebot / bingbot / vodnavi-affiliate-guard / Google-InspectionTool を含まない}／`/api/concierge`×{同 regex, `Mozilla/5.0 (` を含まない}×`user_agent neq vodnavi-healthcheck/1`）。全文 → `e28-firewall-active-readback-20260922.json` |
+| 挙動プローブ（08:58:16〜18 JST・7 リクエスト） | GET `/concierge`: `curl/8.4.0` **403（59 B）**／`python-requests` **403（59 B）**／Googlebot UA **200**／Chrome UA **200**。POST `/api/concierge`: Googlebot UA **403（93 B）**／`curl` **403（93 B）**（**Firewall の deny か `proxy.ts` の cookie 未通過 403 かは本プローブでは区別していない**——cookie 付きの検証は Anthropic 課金を伴うため行わない）。対照 GET `/works/videoa/miab00677`（curl UA）**200**＝ルールは `/concierge` 系に限定されている |
+| **⑤ healthcheck** | `node app-concierge/scripts/healthcheck-api.mjs`（本番・UA `vodnavi-healthcheck/1`）**08:58:33〜08:58:38 JST → `fanza.sitemap works=1200` / `fanza.home grid` / `llm.concierge stream` すべて PASS・ALL PASS**＝ルール 2 の `neq` 除外が機能（Anthropic 到達 1 回＝定常の GH 検査と同じ） |
+| 課金回答の再掲（§7-2） | 9/20 08:47〜9/21 08:47 JST の `/api/concierge` 到達 4 件はすべて GH Actions の healthcheck。**ボット由来で Anthropic 課金に到達した件数 0**。適用後は非ブラウザ UA が `/api/concierge` に到達しない（healthcheck UA を除く） |
+
+- **効果測定**: 前窓＝`served:500` 9/14〜9/20（6,462 行）・後窓＝9/22〜9/28。**Firewall Allowed の Past Day は本日から毎日記録**（Firewall 画面は Chrome 連携でのみ取得＝夜の抽出時に初回を取る）。**9/29 に ① の格上げ（Challenge）を再裁定**（Allowed が 20k/日を下回らなければ）。
+- **【併記・記録のみ】MCP の firewall 系ツールは未作成 config に対して使えない**（§10 の「ツールの戻り値」の型＝404 が「権限」ではなく「未作成」を意味していた）。**以後の変更は `vercel api` の PATCH（`rules.update` / `rules.remove`）か、config 作成済みのため MCP `update_firewall_config` でも可能になった**（未検証）。

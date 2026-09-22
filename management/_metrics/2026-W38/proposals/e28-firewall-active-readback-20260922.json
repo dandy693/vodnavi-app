@@ -1,11 +1,79 @@
+<claude-code-hint v="1" type="plugin" value="vercel@claude-plugins-official" />
 {
-  "_readme": "E28 送信 JSON（CSO裁定 2026-09-21 ①②④⑥＋実施前 2 点の裁定）。【適用済み 2026-09-22 08:56〜08:57 JST・active version 6】API の実形に合わせて 2 点を機械的に変換した（意味は起案どおり）: ①「含まない」は op=nsub ではなく op=sub＋neg=true ②正規表現の (?i) は 400 になるため大文字小文字を [Bb]ot 形式の文字クラスで表現（全大文字 BOT 等は対象外＝不一致は許容）。適用手順＝Vercel CLI `vercel api /v1/security/firewall/config?projectId=…&teamId=… -X PUT --input`（MCP put/update は未作成 config に対し 404 のため、まず {firewallEnabled:true} の最小 PUT で初期化）。読み戻し → e28-firewall-active-readback-20260922.json",
+  "ips": [],
+  "projectKey": "prj_42GkXv2njAJTxYbmDoLdP8JoZbkx#active",
+  "changes": [],
+  "crs": {
+    "sd": {
+      "active": false,
+      "action": "log"
+    },
+    "gen": {
+      "active": false,
+      "action": "log"
+    },
+    "sf": {
+      "active": false,
+      "action": "log"
+    },
+    "java": {
+      "active": false,
+      "action": "log"
+    },
+    "ma": {
+      "active": false,
+      "action": "log"
+    },
+    "rfi": {
+      "active": false,
+      "action": "log"
+    },
+    "rce": {
+      "active": false,
+      "action": "log"
+    },
+    "php": {
+      "active": false,
+      "action": "log"
+    },
+    "xss": {
+      "active": false,
+      "action": "log"
+    },
+    "lfi": {
+      "active": false,
+      "action": "log"
+    },
+    "sqli": {
+      "active": false,
+      "action": "log"
+    }
+  },
   "firewallEnabled": true,
+  "id": "waf_jsFulQPnApbU",
+  "version": 6,
+  "ownerId": "team_xZz5NtMS95tDQ2Vde65faOzc",
+  "updatedAt": "2026-09-21T23:57:52.357Z",
   "rules": [
     {
       "name": "E28-1 PerplexityBot rate limit",
       "description": "CSO裁定 2026-09-21 ①: PerplexityBot UA を 60s/IP で 30 req に制限（超過は deny）。LLMO 方針は維持。7日後に再裁定",
       "active": true,
+      "action": {
+        "mitigate": {
+          "action": "rate_limit",
+          "rateLimit": {
+            "limit": 30,
+            "action": "deny",
+            "window": 60,
+            "algo": "fixed_window",
+            "keys": [
+              "ip"
+            ]
+          }
+        }
+      },
+      "id": "rule_e28_1_perplexity_bot_rate_limit_KydRrK",
       "conditionGroup": [
         {
           "conditions": [
@@ -17,25 +85,19 @@
           ]
         }
       ],
-      "action": {
-        "mitigate": {
-          "action": "rate_limit",
-          "rateLimit": {
-            "algo": "fixed_window",
-            "window": 60,
-            "limit": 30,
-            "keys": [
-              "ip"
-            ],
-            "action": "deny"
-          }
-        }
-      }
+      "valid": true,
+      "validationErrors": null
     },
     {
       "name": "E28-2 concierge non-browser deny",
       "description": "CSO裁定 2026-09-21 ②: /concierge の非ブラウザUAを deny（Googlebot/bingbot/Google-InspectionTool はページ本体のみ許可）。/api/concierge は全非ブラウザUAを deny（除外は healthcheck の固定UA vodnavi-healthcheck/1 のみ）",
       "active": true,
+      "action": {
+        "mitigate": {
+          "action": "deny"
+        }
+      },
+      "id": "rule_e28_2_concierge_non_browser_deny_KQwbUo",
       "conditionGroup": [
         {
           "conditions": [
@@ -50,28 +112,28 @@
               "value": "[Bb]ot|[Cc]rawler|[Ss]pider|[Cc]url|[Pp]ython|[Ss]crapy|[Hh]ttp[Cc]lient|[Jj]ava/|[Gg]o-http|[Ww]get"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "Googlebot",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "Googlebot"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "bingbot",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "bingbot"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "vodnavi-affiliate-guard",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "vodnavi-affiliate-guard"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "Google-InspectionTool",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "Google-InspectionTool"
             }
           ]
         },
@@ -83,34 +145,34 @@
               "value": "/concierge"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "Mozilla/5.0 (",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "Mozilla/5.0 ("
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "Googlebot",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "Googlebot"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "bingbot",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "bingbot"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "vodnavi-affiliate-guard",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "vodnavi-affiliate-guard"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "Google-InspectionTool",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "Google-InspectionTool"
             }
           ]
         },
@@ -141,10 +203,10 @@
               "value": "/api/concierge"
             },
             {
-              "type": "user_agent",
               "op": "sub",
-              "value": "Mozilla/5.0 (",
-              "neg": true
+              "neg": true,
+              "type": "user_agent",
+              "value": "Mozilla/5.0 ("
             },
             {
               "type": "user_agent",
@@ -154,11 +216,8 @@
           ]
         }
       ],
-      "action": {
-        "mitigate": {
-          "action": "deny"
-        }
-      }
+      "valid": true,
+      "validationErrors": null
     }
   ]
 }

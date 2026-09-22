@@ -1,0 +1,110 @@
+model=claude-opus-5 dry_run=false today_jst=20260922 counts={"lines":14,"generated":9,"stopped":5} prompt_sha=bf23d27971ce
+
+=== 対象 https://x.com/honnaka_NN/status/2102065325206597775（2026-09-22 01:00）
+    @honnaka_NN (メーカー公式) status=generated replyKey=20260922-honnaka_NN calls=1 in=775 out=1341
+  A chars=39 weight=78 ok=true attempts=1
+     新作の予約開始とのことで、配信限定という形でどんな一本になるのか気になります。
+  B chars=47 weight=88 ok=true attempts=1
+     収録78分で配信は10月27日からとのことなので、予約開始からひと月ほど先の公開になりますね。
+  C chars=38 weight=76 ok=true attempts=1
+     今回の配信限定という表記は、他の形式での取り扱いが無いという意味でしょうか。
+
+=== 対象 https://x.com/honnaka_NN/status/2102050237821132951（2026-09-22 00:00）
+    @honnaka_NN (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260922-honnaka_NN calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/iyo_shinohara/status/2102130716792528919（2026-09-22 05:19）
+    @iyo_shinohara (女優本人) status=generated replyKey=20260922-iyo_shinohara calls=1 in=481 out=802
+  A chars=60 weight=119 ok=true attempts=1
+     篠原いよさん、母性から女心へ変わってしまうという切ないお言葉が気になります。5年間という時間の長さが効いてきそうですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=50 weight=99 ok=true attempts=1
+     篠原いよさん、5年間という関係の長さは、演じるうえでの気持ちの作り方にも影響してくるものでしょうか。
+
+=== 対象 https://x.com/shiromine_miu/status/2102053207619018823（2026-09-22 00:11）
+    @shiromine_miu (女優本人) status=generated replyKey=20260922-shiromine_miu calls=1 in=769 out=964
+  A chars=69 weight=134 ok=true attempts=1
+     白峰ミウさん、9月21日の新作情報解禁、はずかしっという第一声が返ってくるとは思いませんでした。タイトルの5秒という言葉が効いていますね。
+  B chars=57 weight=104 ok=true attempts=1
+     白峰ミウさん、収録は110分、配信は10月23日とのことですね。9月21日の解禁から本編まで少し間がありそうです。
+  C chars=47 weight=91 ok=true attempts=1
+     白峰ミウさん、9月21日に解禁された新作は、サンプル動画の公開も同じ時期になりそうでしょうか？
+
+=== 対象 https://x.com/PREMIUM_AV/status/2102020026895384621（2026-09-21 22:00）
+    @PREMIUM_AV (メーカー公式) status=generated replyKey=20260922-PREMIUM_AV calls=2 in=1558 out=1837
+  A chars=44 weight=87 ok=true attempts=1
+     5作品を厳選という選び方、絞り込まれているぶんどれから見ていくか考えるのが楽しそうです。
+  B chars=53 weight=101 ok=true attempts=2
+     厳選5作品のうち、三好佑香さんの1本は収録119分ありますね。まとまった時間を取って向き合いたい長さです。
+  C chars=54 weight=107 ok=true attempts=1
+     今回厳選された5作品は、いつ頃までの期間で紹介される予定でしょうか。見る時間を取りたいので気になっています。
+
+=== 対象 https://x.com/MOODYZ_official/status/2102020030712217872（2026-09-21 22:00）
+    @MOODYZ_official (メーカー公式) status=generated replyKey=20260922-MOODYZ_official calls=2 in=1484 out=1741
+  A chars=46 weight=92 ok=true attempts=1
+     三咲まゆさんの新人秘書ものですね。題材がはっきりしていて、どんな展開になるのか気になります。
+  B chars=55 weight=104 ok=true attempts=2
+     三咲まゆさんのこの作品、収録166分で配信開始は9月11日からなのですね。尺が長めなので見応えがありそうです。
+  C chars=45 weight=90 ok=true attempts=1
+     三咲まゆさんの新人秘書という題材ですが、今後も同じ路線の作品を出していく予定はありますか。
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2102035124766585026（2026-09-21 23:00）
+    @IDEAPOCKETTER (メーカー公式) status=generated replyKey=20260922-IDEAPOCKETTER calls=1 in=395 out=880
+  A chars=51 weight=96 ok=true attempts=1
+     第2弾で50％OFFとのことで、下げ幅が大きいですね。対象の本数がどのくらいになるのかが気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=74 ok=true attempts=1
+     第2弾の50％OFFは、いつまでの期間でどこまでの作品が対象になるのでしょうか。
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2102027595709919450（2026-09-21 22:30）
+    @IDEAPOCKETTER (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 8 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260922-IDEAPOCKETTER calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2102035297634770984（2026-09-21 23:00）
+    @shirot_AV_chosa (レビュー系) status=generated replyKey=20260922-shirot_AV_chosa calls=1 in=768 out=1700
+  A chars=48 weight=95 ok=true attempts=1
+     媚薬×サウナという組み合わせは珍しい切り口ですね。紹介文だけでも設定の作り込みが伝わってきます。
+  B chars=59 weight=111 ok=true attempts=1
+     媚薬×サウナという設定で、収録は119分、配信日は4月10日の作品ですね。この時期に紹介されるとまた気になってきます。
+  C chars=39 weight=77 ok=true attempts=1
+     安達夕莉さんの媚薬×サウナ路線は、同じ系統の作品が他にも出ているのでしょうか？
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2102020203626504230（2026-09-21 22:00）
+    @shirot_AV_chosa (レビュー系) status=停止（同日同ハンドル 2 件目: 本バッチ内 10 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260922-shirot_AV_chosa calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/FANZAdougaX/status/2102125730700329457（2026-09-22 05:00）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260922-FANZAdougaX calls=1 in=354 out=1030
+  A chars=57 weight=111 ok=true attempts=1
+     川越にこさんのOFF作品リスト、一人の出演者でまとめた括りなのですね。どのくらいの本数が並ぶのか気になっています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=77 ok=true attempts=1
+     川越にこさんのOFF作品リストは、対象期間がいつまでの予定になりますでしょうか。
+
+=== 対象 https://x.com/S1_No1_Style/status/2102140835194434011（2026-09-22 06:00）
+    @S1_No1_Style (メーカー公式) status=generated replyKey=20260922-S1_No1_Style calls=1 in=778 out=1143
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=52 weight=101 ok=true attempts=1
+     特大号の2作目が10月新作解禁なんですね。希望みうさんのデビュー作、どんな内容になるのか注目しています。
+  B chars=50 weight=90 ok=true attempts=1
+     収録160分で配信は10月23日なんですね。10月新作解禁の2作目として、続報を楽しみにしています。
+  C chars=52 weight=96 ok=true attempts=1
+     10月新作解禁の2作目とのことですが、生写真付きDVDとチェキ付きBDは予約の受付期間が同じでしょうか。
+
+=== 対象 https://x.com/S1_No1_Style/status/2102125722089467925（2026-09-22 05:00）
+    @S1_No1_Style (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 13 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260922-S1_No1_Style calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/S1_No1_Style/status/2102081427290615826（2026-09-22 02:04）
+    @S1_No1_Style (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 13 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260922-S1_No1_Style calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)

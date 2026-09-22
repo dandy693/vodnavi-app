@@ -1,0 +1,810 @@
+{
+  "generated_at": "2026-09-21T23:50:48.649Z",
+  "today_jst": "20260922",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "bf23d27971ce5d7de7b1f23ea903ebddf4359978ea977169aa681e9aa8e2fe6a",
+  "counts": {
+    "lines": 14,
+    "generated": 9,
+    "stopped": 5
+  },
+  "items": [
+    {
+      "lineNo": 2,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2102065325206597775",
+      "targetPostId": "2102065325206597775",
+      "postedAtJst": "2026-09-22 01:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:24:46.108Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "hnmg00006",
+        "title": "【本中配信限定】 僕が彼女の浮気を知ったきっかけのハメ撮り動画をお見せします 昔の集まりに行って朝まで帰ってこなかった婚約者のあの日の中出しハメ撮り 幸村泉希",
+        "fetched_at": "2026-09-21 16:34:26.009+00"
+      },
+      "replyKey": "20260922-honnaka_NN",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "新作の予約開始とのことで、配信限定という形でどんな一本になるのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 39,
+              "weight": 78
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録78分で配信は10月27日からとのことなので、予約開始からひと月ほど先の公開になりますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 88
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "今回の配信限定という表記は、他の形式での取り扱いが無いという意味でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 38,
+              "weight": 76
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 775,
+        "output_tokens": 1341,
+        "cache_creation_input_tokens": 3502,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2102050237821132951",
+      "targetPostId": "2102050237821132951",
+      "postedAtJst": "2026-09-22 00:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:24:46.108Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260922-honnaka_NN",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "iyo_shinohara",
+      "postUrl": "https://x.com/iyo_shinohara/status/2102130716792528919",
+      "targetPostId": "2102130716792528919",
+      "postedAtJst": "2026-09-22 05:19",
+      "target": {
+        "id": "rec916RFclGkjRpeb",
+        "handle": "iyo_shinohara",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260922-iyo_shinohara",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "篠原いよさん、母性から女心へ変わってしまうという切ないお言葉が気になります。5年間という時間の長さが効いてきそうですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 60,
+              "weight": 119
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "篠原いよさん、5年間という関係の長さは、演じるうえでの気持ちの作り方にも影響してくるものでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 99
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 481,
+        "output_tokens": 802,
+        "cache_creation_input_tokens": 3480,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "shiromine_miu",
+      "postUrl": "https://x.com/shiromine_miu/status/2102053207619018823",
+      "targetPostId": "2102053207619018823",
+      "postedAtJst": "2026-09-22 00:11",
+      "target": {
+        "id": "recHRnE8hlXY0CsX5",
+        "handle": "shiromine_miu",
+        "type": "女優本人",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "dsod00096",
+        "title": "出会って5秒で即まんぐり返し 白峰ミウ",
+        "fetched_at": "2026-09-21 18:48:08.774+00"
+      },
+      "replyKey": "20260922-shiromine_miu",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "白峰ミウさん、9月21日の新作情報解禁、はずかしっという第一声が返ってくるとは思いませんでした。タイトルの5秒という言葉が効いていますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 69,
+              "weight": 134
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "白峰ミウさん、収録は110分、配信は10月23日とのことですね。9月21日の解禁から本編まで少し間がありそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 57,
+              "weight": 104
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "白峰ミウさん、9月21日に解禁された新作は、サンプル動画の公開も同じ時期になりそうでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 91
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 769,
+        "output_tokens": 964,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3502,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2102020026895384621",
+      "targetPostId": "2102020026895384621",
+      "postedAtJst": "2026-09-21 22:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:23:10.911Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "pred00902",
+        "title": "彼女の不在中…彼女の親友と汗だくで中出し浮気セックスしまくった3日間。 三好佑香",
+        "fetched_at": "2026-09-21 13:44:46.271+00"
+      },
+      "replyKey": "20260922-PREMIUM_AV",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "5作品を厳選という選び方、絞り込まれているぶんどれから見ていくか考えるのが楽しそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 87
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "厳選5作品のうち、三好佑香さんの1本は収録119分ありますね。まとまった時間を取って向き合いたい長さです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 101
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "9月11日配信の1本は収録時間が119分と長めで、5作品を通して見るとまとまった時間になりますね。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 119、9月11日、5"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "今回厳選された5作品は、いつ頃までの期間で紹介される予定でしょうか。見る時間を取りたいので気になっています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 107
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1558,
+        "output_tokens": 1837,
+        "cache_creation_input_tokens": 3458,
+        "cache_read_input_tokens": 3502,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2102020030712217872",
+      "targetPostId": "2102020030712217872",
+      "postedAtJst": "2026-09-21 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:02:17.671Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "mida00758",
+        "title": "大嫌いな変態上司に固定吸引バイブでおま●こ管理された新人秘書お漏らし調教 三咲まゆ",
+        "fetched_at": "2026-09-21 03:07:59.17+00"
+      },
+      "replyKey": "20260922-MOODYZ_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "三咲まゆさんの新人秘書ものですね。題材がはっきりしていて、どんな展開になるのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 92
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "三咲まゆさんのこの作品、収録166分で配信開始は9月11日からなのですね。尺が長めなので見応えがありそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 104
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "収録166分で、配信開始は9月11日からなのですね。三咲まゆさんの新人秘書ものとして押さえておきたい一本です。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 166、9月11日、秘書"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "三咲まゆさんの新人秘書という題材ですが、今後も同じ路線の作品を出していく予定はありますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 90
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1484,
+        "output_tokens": 1741,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 6960,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102035124766585026",
+      "targetPostId": "2102035124766585026",
+      "postedAtJst": "2026-09-21 23:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:13.091Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260922-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第2弾で50％OFFとのことで、下げ幅が大きいですね。対象の本数がどのくらいになるのかが気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第2弾の50％OFFは、いつまでの期間でどこまでの作品が対象になるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 395,
+        "output_tokens": 880,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3480,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102027595709919450",
+      "targetPostId": "2102027595709919450",
+      "postedAtJst": "2026-09-21 22:30",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:13.091Z"
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260922-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 8 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 10,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2102035297634770984",
+      "targetPostId": "2102035297634770984",
+      "postedAtJst": "2026-09-21 23:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:24:12.252Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "snos00134",
+        "title": "湯気に仕込まれた媚薬サウナ 異常感度でととのうどころかグッチャグチャにイキ狂った汗だくの健康巨乳ボディちゃん 安達夕莉",
+        "fetched_at": "2026-09-20 12:35:53.504+00"
+      },
+      "replyKey": "20260922-shirot_AV_chosa",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "媚薬×サウナという組み合わせは珍しい切り口ですね。紹介文だけでも設定の作り込みが伝わってきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 95
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "媚薬×サウナという設定で、収録は119分、配信日は4月10日の作品ですね。この時期に紹介されるとまた気になってきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 59,
+              "weight": 111
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "安達夕莉さんの媚薬×サウナ路線は、同じ系統の作品が他にも出ているのでしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 39,
+              "weight": 77
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 768,
+        "output_tokens": 1700,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3502,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 11,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2102020203626504230",
+      "targetPostId": "2102020203626504230",
+      "postedAtJst": "2026-09-21 22:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:24:12.252Z"
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260922-shirot_AV_chosa",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 10 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 12,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2102125730700329457",
+      "targetPostId": "2102125730700329457",
+      "postedAtJst": "2026-09-22 05:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:23:28.700Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260922-FANZAdougaX",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "川越にこさんのOFF作品リスト、一人の出演者でまとめた括りなのですね。どのくらいの本数が並ぶのか気になっています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 57,
+              "weight": 111
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "川越にこさんのOFF作品リストは、対象期間がいつまでの予定になりますでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 77
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 354,
+        "output_tokens": 1030,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3480,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 13,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102140835194434011",
+      "targetPostId": "2102140835194434011",
+      "postedAtJst": "2026-09-22 06:00",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:36.437Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "snos00331",
+        "title": "特大号新人 希望みう 104cm Iのかたまり 殻を破って、初絶頂を知る。",
+        "fetched_at": "2026-09-21 22:14:18.589+00"
+      },
+      "replyKey": "20260922-S1_No1_Style",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "特大号の2作目が10月新作解禁なんですね。希望みうさんのデビュー作、どんな内容になるのか注目しています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 101
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録160分で配信は10月23日なんですね。10月新作解禁の2作目として、続報を楽しみにしています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 90
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "10月新作解禁の2作目とのことですが、生写真付きDVDとチェキ付きBDは予約の受付期間が同じでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 778,
+        "output_tokens": 1143,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3502,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 14,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102125722089467925",
+      "targetPostId": "2102125722089467925",
+      "postedAtJst": "2026-09-22 05:00",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:36.437Z"
+      },
+      "knowledgeMode": "none",
+      "replyKey": "20260922-S1_No1_Style",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 13 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 15,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102081427290615826",
+      "targetPostId": "2102081427290615826",
+      "postedAtJst": "2026-09-22 02:04",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:36.437Z"
+      },
+      "knowledgeMode": "cache",
+      "replyKey": "20260922-S1_No1_Style",
+      "warnings": [],
+      "status": "停止（同日同ハンドル 2 件目: 本バッチ内 13 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}

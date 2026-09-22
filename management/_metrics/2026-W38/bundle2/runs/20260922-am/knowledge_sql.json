@@ -1,0 +1,212 @@
+[
+  {
+    "lineNo": 2,
+    "handle": "honnaka_NN",
+    "step": "cid",
+    "cid": "hnmg00006",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "aa800ea78ed7029629c4f119641bd8d6c54d89e2e858056fcd3545d9fb3b9ddf"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "0aa5696830c1096ce2175ec945ce9055723d6236bc391fcde639747ea6fd985d"
+      },
+      {
+        "floor": "anime",
+        "key": "4bb6b57064859abf9b633197e06077d8c132b474b84c43d204fed6074003a953"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('aa800ea78ed7029629c4f119641bd8d6c54d89e2e858056fcd3545d9fb3b9ddf', '0aa5696830c1096ce2175ec945ce9055723d6236bc391fcde639747ea6fd985d', '4bb6b57064859abf9b633197e06077d8c132b474b84c43d204fed6074003a953')"
+  },
+  {
+    "lineNo": 3,
+    "handle": "honnaka_NN",
+    "step": "cid",
+    "cid": "hmn00905",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "460aaff4c94badb33cf3033d7226477fe752883f32f70e56ef2a4ee418e6c3bf"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "3033258def7e189df4aec4f7142b0ba62958926e8ed397e65964947b22cf9fed"
+      },
+      {
+        "floor": "anime",
+        "key": "ab09f7094b4c52052a0f88e91317bd3b59612444f4515c9b492d09b26b22625f"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('460aaff4c94badb33cf3033d7226477fe752883f32f70e56ef2a4ee418e6c3bf', '3033258def7e189df4aec4f7142b0ba62958926e8ed397e65964947b22cf9fed', 'ab09f7094b4c52052a0f88e91317bd3b59612444f4515c9b492d09b26b22625f')"
+  },
+  {
+    "lineNo": 4,
+    "handle": "iyo_shinohara",
+    "step": "cid",
+    "cid": "jur00889",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "3d1b46df94f4893a83b16c6b9d146152ab9d9b67378a01bee47fa4b09a163727"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "ec644915d4120849cb8cda53fd4686ccaf320c47994fcfa615488bceebe68931"
+      },
+      {
+        "floor": "anime",
+        "key": "10168778493b9b374ad225de7ce1c4fdefe8e0f32ff0cc1c64bb50c38d602b28"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('3d1b46df94f4893a83b16c6b9d146152ab9d9b67378a01bee47fa4b09a163727', 'ec644915d4120849cb8cda53fd4686ccaf320c47994fcfa615488bceebe68931', '10168778493b9b374ad225de7ce1c4fdefe8e0f32ff0cc1c64bb50c38d602b28')"
+  },
+  {
+    "lineNo": 5,
+    "handle": "shiromine_miu",
+    "step": "cid",
+    "cid": "dsod00096",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "b1c93fa16dfa00cecbcb6509ffab1d68fe33510cb8e700efe9e0429596cb5fb6"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "59cf26ef6846d1ae111be4cc1be2237997949ceef5fa0e854744a5c131f5a791"
+      },
+      {
+        "floor": "anime",
+        "key": "83389915709978d65cca67fd1f7a7c698d00ccf3288cdd9e5a4767f826530fc5"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('b1c93fa16dfa00cecbcb6509ffab1d68fe33510cb8e700efe9e0429596cb5fb6', '59cf26ef6846d1ae111be4cc1be2237997949ceef5fa0e854744a5c131f5a791', '83389915709978d65cca67fd1f7a7c698d00ccf3288cdd9e5a4767f826530fc5')"
+  },
+  {
+    "lineNo": 6,
+    "handle": "PREMIUM_AV",
+    "step": "cid",
+    "cid": "pred00902",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "a9888fb8e16c34bf4e31404421bd08d9b4aa49bf1a2d3d8a8a497abb5e286dac"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "cde6455e80b5d5fc03779bb3f6e6a3e107c4255640f9c58315ff0463d821fec5"
+      },
+      {
+        "floor": "anime",
+        "key": "b234a8133e3399fdf940979c2ffe2c9660fc876e79ee286bbda575c151966d70"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('a9888fb8e16c34bf4e31404421bd08d9b4aa49bf1a2d3d8a8a497abb5e286dac', 'cde6455e80b5d5fc03779bb3f6e6a3e107c4255640f9c58315ff0463d821fec5', 'b234a8133e3399fdf940979c2ffe2c9660fc876e79ee286bbda575c151966d70')"
+  },
+  {
+    "lineNo": 7,
+    "handle": "MOODYZ_official",
+    "step": "cid",
+    "cid": "mida00758",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "612df64743a2209fd79811075f2eb94dc0674a8b6db826e57e8df84dd094b8d0"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "dc4d779c8a6666d06469165148731f3504969910bce0e9a154fb50dc0eea9701"
+      },
+      {
+        "floor": "anime",
+        "key": "77df78c161a21d8d95b40e1f454f80c328e972383c38d6e8cd778373eefa2cc8"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('612df64743a2209fd79811075f2eb94dc0674a8b6db826e57e8df84dd094b8d0', 'dc4d779c8a6666d06469165148731f3504969910bce0e9a154fb50dc0eea9701', '77df78c161a21d8d95b40e1f454f80c328e972383c38d6e8cd778373eefa2cc8')"
+  },
+  {
+    "lineNo": 9,
+    "handle": "IDEAPOCKETTER",
+    "step": "cid",
+    "cid": "ipzz00918",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "c1a8fac7c848157136a99bc40631d96bf139baae495619b5b828800385c8ce69"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "c571d4517a03d6b55981c4e535128d7ff9fe18ad2f99f6c4e2799909cf794dd2"
+      },
+      {
+        "floor": "anime",
+        "key": "bce4064472f904737eea77fe908054b88c6a1f020187b97583afc7a5398ad2ca"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('c1a8fac7c848157136a99bc40631d96bf139baae495619b5b828800385c8ce69', 'c571d4517a03d6b55981c4e535128d7ff9fe18ad2f99f6c4e2799909cf794dd2', 'bce4064472f904737eea77fe908054b88c6a1f020187b97583afc7a5398ad2ca')"
+  },
+  {
+    "lineNo": 10,
+    "handle": "shirot_AV_chosa",
+    "step": "cid",
+    "cid": "snos00134",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "bf1dc206cc614ddea18268cd4117ce350c3f68078f5796af92bc1202048caf9e"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "98608ac54b69057baa484a1197da19e0caad55d9730e55c8957f3b6a6b449aad"
+      },
+      {
+        "floor": "anime",
+        "key": "d3685ec86215e47d0c836daf45d70e38068907df1c0307770c3f2a9c0397652d"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('bf1dc206cc614ddea18268cd4117ce350c3f68078f5796af92bc1202048caf9e', '98608ac54b69057baa484a1197da19e0caad55d9730e55c8957f3b6a6b449aad', 'd3685ec86215e47d0c836daf45d70e38068907df1c0307770c3f2a9c0397652d')"
+  },
+  {
+    "lineNo": 13,
+    "handle": "S1_No1_Style",
+    "step": "cid",
+    "cid": "snos00331",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "aed95d44cb6b9666a0d82f1199b032c11204ec927ae32e19223df095ef67805d"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "3819b405cd5d46a2694de6735daec0a0e43a3b06e697f851a841d41fd209b54f"
+      },
+      {
+        "floor": "anime",
+        "key": "8e9c41006dd22f71115bd4682eb84d49892c42415213d2f01992207159edd881"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('aed95d44cb6b9666a0d82f1199b032c11204ec927ae32e19223df095ef67805d', '3819b405cd5d46a2694de6735daec0a0e43a3b06e697f851a841d41fd209b54f', '8e9c41006dd22f71115bd4682eb84d49892c42415213d2f01992207159edd881')"
+  },
+  {
+    "lineNo": 15,
+    "handle": "S1_No1_Style",
+    "step": "cid",
+    "cid": "sivr00508",
+    "keys": [
+      {
+        "floor": "videoa",
+        "key": "c5d0dc2bb2fb9f58a8125a6b239cbd399b02989f55586dd6518b2d33803f4147"
+      },
+      {
+        "floor": "nikkatsu",
+        "key": "3e2b81e53a420f23aff77d72414a07e75603f90f82ade39fc5bc030839e56ad8"
+      },
+      {
+        "floor": "anime",
+        "key": "be670cb70dff4df87f0beb6dfb0d9151d539fd4a4d893234808ef241c4504a86"
+      }
+    ],
+    "sql": "select cache_key, fetched_at, payload->'result'->'items'->0 as item from fanza_response_cache where cache_key in ('c5d0dc2bb2fb9f58a8125a6b239cbd399b02989f55586dd6518b2d33803f4147', '3e2b81e53a420f23aff77d72414a07e75603f90f82ade39fc5bc030839e56ad8', 'be670cb70dff4df87f0beb6dfb0d9151d539fd4a4d893234808ef241c4504a86')"
+  }
+]

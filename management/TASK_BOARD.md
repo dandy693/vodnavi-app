@@ -11286,3 +11286,11 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **【CSO判定 2026-09-21 夜】**①@ran_tpowers の店舗イベント（作品名なし）は除外側で確定（README 手順 0 ④）②本文 1 文のみで作品名・配信日が無い投稿は「続報待ち」型の案を出さない（`PROMPT.md` 規則 12・README ⑤）③案の提示は対象投稿 URL を各ブロックの 1 行目に固定（`print-drafts.mjs`）。`node --test` 70/70。
 - Q（引用ポスト）の提示は明朝から（本夜の候補になりうる行＝MOODYZ 19:00 `miab00677` のみ・同日返信済みで停止行）。
 - 明朝 06:00 の順序＝抽出 → リプ案 → Q1/Q2（別枠・works 200 確認・初回 Q は `typecast: true` → `get_table_schema` → `airtable-fields.json`）→ 提示 → **E28 Firewall 適用（`put_firewall_config` → `get_firewall_config` 読み戻し → healthcheck 1 回・起案 §7-6）**。
+- `d8b5c42`（docs＋ツール md/mjs・`app-concierge/` 差分なし・距離 4）の state **CANCELED**（`dpl_HHuCafPowE7obSWTqqYFtsQwN6rF`・22:35:48 JST・skip 経路）。次の docs push は距離 5。
+
+## 2026-09-22 09:0x — 【段階② 4 日目・朝】x_targets 読み戻し 06:2x → **セッション中断・08:07 再開**（着手遅れ約 2 時間・記録）→ 抽出 34/34（08:1x〜08:4x・窓＝9/21 21:1x 以降）→ 窓内 10 アカウント 22 投稿 → 除外 8 → 入力 14 行 → 停止 5（バッチ内）→ 知識 8/10 → **リプ生成 9 行 22 案 全通過**（08:47:49〜08:50:48）→ **Q 初回提示 2 件**（honnaka_NN `hnmg00006`／shiromine_miu `dsod00096`・works 200・08:51〜08:52）→ 提示（`bundle2/runs/20260922-am/`）
+- priority 3: S1_No1_Style（06:00 snos00331）は生成したが週 2/2 上限で提示せず。Q の S1 2 行は run 上限 2 で提示上限外。
+- 【CTO 注記】同一投稿に「リプ＋引用」は不可＝honnaka 01:00・shiromine 00:11 はリプ案と Q 案の両方を提示しており、HUMAN はどちらか一方を選ぶ。FANZAdougaX A/C は本文の「%OFF 作品リスト」を川越にこ個人の括りと読んでいる（本文にその記述は無い）。
+- 抽出の実装注記: X の SPA ナビが前ページのまま止まる事象 2 回 → `home` 経由で 1 件ずつ navigate（タブタイトルで着地確認）／1 回スクロールで 2 件しか載らない場合あり → 2 回スクロール後に find。昨夜の PREMIUM_AV 19:00・20:00 は未検出だった（窓外・記録のみ）。
+
+## 2026-09-22 08:55〜08:58 — **E28 Firewall 適用完了**（起案 §7-7・FACT §29-3）: MCP `get/put/update_firewall_config` は未作成 config に **404** → Vercel CLI `vercel api … -X PUT` で最小 PUT 初期化（v1）→ ルール 1（v2）→ ルール 2 insert（重複 → remove）→ update（**v6・08:57:52 JST**）。起案 JSON からの機械変換 2 点（`nsub`→`sub`+`neg`／`(?i)`→`[Bb]ot` 文字クラス・意味は不変）。読み戻し rules 2・両方 active（`e28-firewall-active-readback-20260922.json`）。プローブ: curl/python UA の `/concierge` 403（59 B）・Googlebot/Chrome UA 200・`/works/…` は curl でも 200。**healthcheck ALL PASS（08:58:33〜38・`llm.concierge` 含む）**。課金回答（§7-2・ボット由来 0）不変。効果測定の後窓 9/22〜9/28・Firewall Allowed は毎日記録（初回＝本日夜）・9/29 に ① 格上げ再裁定。

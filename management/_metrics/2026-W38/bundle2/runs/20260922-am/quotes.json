@@ -1,0 +1,746 @@
+{
+  "kind": "quote",
+  "generated_at": "2026-09-21T23:52:47.805Z",
+  "today_jst": "20260922",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "154fe4faf8dc50c4263ddc9a44c50d0624d969e070c073a2f8073b4e5a7cfebd",
+  "limits": {
+    "max_per_run": 2,
+    "max_per_day": 2,
+    "recorded_today": 0,
+    "note": "works ページへのリンク投稿は T1改（21:00・1 件）と合わせて 1 日 3 件まで／同一投稿にリプ＋引用の両方はしない"
+  },
+  "counts": {
+    "lines": 14,
+    "generated": 2,
+    "presented": 2,
+    "not_eligible": 9
+  },
+  "items": [
+    {
+      "lineNo": 2,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2102065325206597775",
+      "targetPostId": "2102065325206597775",
+      "postedAtJst": "2026-09-22 01:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "hnmg00006",
+        "floor_code": "videoa",
+        "title": "【本中配信限定】 僕が彼女の浮気を知ったきっかけのハメ撮り動画をお見せします 昔の集まりに行って朝まで帰ってこなかった婚約者のあの日の中出しハメ撮り 幸村泉希",
+        "date": "2026-10-27 00:00:00",
+        "volume": "78",
+        "fetched_at": "2026-09-21 16:34:26.009+00"
+      },
+      "eligibility": {
+        "eligible": true,
+        "reasons": [],
+        "releaseHits": [
+          "予約開始"
+        ],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "hnmg00006"
+      },
+      "quoteKey": "20260922-Q-honnaka_NN",
+      "url": "https://app.vodnavi.jp/works/videoa/hnmg00006?utm_source=x&utm_medium=quote&utm_content=honnaka_NN",
+      "http": {
+        "status": 200,
+        "ok": true,
+        "checked_at": "2026-09-21T23:51:22.453Z"
+      },
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "Q1": {
+          "text": "本中の新作で、収録78分、配信開始は10月27日です。幸村泉希さん出演の作品です。",
+          "full": "本中の新作で、収録78分、配信開始は10月27日です。幸村泉希さん出演の作品です。\nhttps://app.vodnavi.jp/works/videoa/hnmg00006?utm_source=x&utm_medium=quote&utm_content=honnaka_NN",
+          "ok": true,
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 41,
+              "weight": 76
+            }
+          },
+          "guardFull": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "weight": 99
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "Q2": {
+          "text": "この作品は幸村泉希さんが出演する単体作品で、配信形態は独占配信のタイトルとなります。",
+          "full": "この作品は幸村泉希さんが出演する単体作品で、配信形態は独占配信のタイトルとなります。\nhttps://app.vodnavi.jp/works/videoa/hnmg00006?utm_source=x&utm_medium=quote&utm_content=honnaka_NN",
+          "ok": true,
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 84
+            }
+          },
+          "guardFull": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "weight": 107
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "独占配信の単体作品で、映像はハイビジョンです。監督はHAKUSHU、出演は幸村泉希さんです。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "Q 型の cache 由来の事実が 4 個（最大 3・優先: 収録時間 > 配信日 > シリーズ > その他）: ハイビジョン、単体作品、独占配信、HAKUSHU"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1607,
+        "output_tokens": 3818,
+        "cache_creation_input_tokens": 3214,
+        "cache_read_input_tokens": 0,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2102050237821132951",
+      "targetPostId": "2102050237821132951",
+      "postedAtJst": "2026-09-22 00:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "hmn00905",
+        "floor_code": "videoa",
+        "title": "全裸転校生 おっぱい丸出し、マ〇コ丸出しで服を着用しない風習がある村からやってきた転入生女子の無自覚誘惑から始まるクラス全員の男子と中出ししまくり学園性活 倉本すみれ",
+        "date": "2026-10-23 00:00:00",
+        "volume": "130",
+        "fetched_at": "2026-09-21 18:37:45.217+00"
+      },
+      "eligibility": {
+        "eligible": true,
+        "reasons": [],
+        "releaseHits": [
+          "解禁"
+        ],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "hmn00905"
+      },
+      "quoteKey": "20260922-Q-honnaka_NN",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "停止（同日同ハンドルの引用 2 件目・本バッチ内）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "iyo_shinohara",
+      "postUrl": "https://x.com/iyo_shinohara/status/2102130716792528919",
+      "targetPostId": "2102130716792528919",
+      "postedAtJst": "2026-09-22 05:19",
+      "target": {
+        "id": "rec916RFclGkjRpeb",
+        "handle": "iyo_shinohara",
+        "type": "女優本人",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）"
+        ],
+        "releaseHits": [
+          "解禁"
+        ],
+        "excludeHits": [],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260922-Q-iyo_shinohara",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "shiromine_miu",
+      "postUrl": "https://x.com/shiromine_miu/status/2102053207619018823",
+      "targetPostId": "2102053207619018823",
+      "postedAtJst": "2026-09-22 00:11",
+      "target": {
+        "id": "recHRnE8hlXY0CsX5",
+        "handle": "shiromine_miu",
+        "type": "女優本人",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "dsod00096",
+        "floor_code": "videoa",
+        "title": "出会って5秒で即まんぐり返し 白峰ミウ",
+        "date": "2026-10-23 00:00:00",
+        "volume": "110",
+        "fetched_at": "2026-09-21 18:48:08.774+00"
+      },
+      "eligibility": {
+        "eligible": true,
+        "reasons": [],
+        "releaseHits": [
+          "解禁"
+        ],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "dsod00096"
+      },
+      "quoteKey": "20260922-Q-shiromine_miu",
+      "url": "https://app.vodnavi.jp/works/videoa/dsod00096?utm_source=x&utm_medium=quote&utm_content=shiromine_miu",
+      "http": {
+        "status": 200,
+        "ok": true,
+        "checked_at": "2026-09-21T23:52:12.002Z"
+      },
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "Q1": {
+          "text": "白峰ミウさん、本作は収録110分で、配信開始は10月23日です。単体作品としての出演となります。",
+          "full": "白峰ミウさん、本作は収録110分で、配信開始は10月23日です。単体作品としての出演となります。\nhttps://app.vodnavi.jp/works/videoa/dsod00096?utm_source=x&utm_medium=quote&utm_content=shiromine_miu",
+          "ok": true,
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 89
+            }
+          },
+          "guardFull": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "weight": 112
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "Q2": {
+          "text": "白峰ミウさん、本作はダスッ！が手がける単体作品で、独占配信として届けられる一本です。",
+          "full": "白峰ミウさん、本作はダスッ！が手がける単体作品で、独占配信として届けられる一本です。\nhttps://app.vodnavi.jp/works/videoa/dsod00096?utm_source=x&utm_medium=quote&utm_content=shiromine_miu",
+          "ok": true,
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 84
+            }
+          },
+          "guardFull": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "weight": 107
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "白峰ミウさん、本作はお姉さん系の作品で、ハイビジョンでの独占配信です。監督はZAMPAが担当です。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "Q 型の cache 由来の事実が 4 個（最大 3・優先: 収録時間 > 配信日 > シリーズ > その他）: ハイビジョン、独占配信、お姉さん、ZAMPA"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1543,
+        "output_tokens": 2706,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3214,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2102020026895384621",
+      "targetPostId": "2102020026895384621",
+      "postedAtJst": "2026-09-21 22:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "pred00902",
+        "floor_code": "videoa",
+        "title": "彼女の不在中…彼女の親友と汗だくで中出し浮気セックスしまくった3日間。 三好佑香",
+        "date": "2026-09-11 00:00:53",
+        "volume": "119",
+        "fetched_at": "2026-09-21 13:44:46.271+00"
+      },
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "pred00902"
+      },
+      "quoteKey": "20260922-Q-PREMIUM_AV",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2102020030712217872",
+      "targetPostId": "2102020030712217872",
+      "postedAtJst": "2026-09-21 22:00",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "mida00758",
+        "floor_code": "videoa",
+        "title": "大嫌いな変態上司に固定吸引バイブでおま●こ管理された新人秘書お漏らし調教 三咲まゆ",
+        "date": "2026-09-11 00:00:16",
+        "volume": "166",
+        "fetched_at": "2026-09-21 03:07:59.17+00"
+      },
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "mida00758"
+      },
+      "quoteKey": "20260922-Q-MOODYZ_official",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102035124766585026",
+      "targetPostId": "2102035124766585026",
+      "postedAtJst": "2026-09-21 23:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）",
+          "セール・ランキング・イベントの投稿は引用しない（該当: 50％OFF（regex: \\d+\\s*[%％]\\s*OFF））"
+        ],
+        "releaseHits": [],
+        "excludeHits": [
+          "50％OFF（regex: \\d+\\s*[%％]\\s*OFF）"
+        ],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260922-Q-IDEAPOCKETTER",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定）／発売・配信開始・予約開始の投稿ではない（該当語なし）／セール・ランキング・イベントの投稿は引用しない（該当: 50％OFF（regex: \\d+\\s*[%％]\\s*OFF）））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102027595709919450",
+      "targetPostId": "2102027595709919450",
+      "postedAtJst": "2026-09-21 22:30",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260922-Q-IDEAPOCKETTER",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定）／発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 10,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2102035297634770984",
+      "targetPostId": "2102035297634770984",
+      "postedAtJst": "2026-09-21 23:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "snos00134",
+        "floor_code": "videoa",
+        "title": "湯気に仕込まれた媚薬サウナ 異常感度でととのうどころかグッチャグチャにイキ狂った汗だくの健康巨乳ボディちゃん 安達夕莉",
+        "date": "2026-04-10 00:00:08",
+        "volume": "119",
+        "fetched_at": "2026-09-20 12:35:53.504+00"
+      },
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "type 対象外（レビュー系・引用元はメーカー公式・女優本人のみ）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "snos00134"
+      },
+      "quoteKey": "20260922-Q-shirot_AV_chosa",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（type 対象外（レビュー系・引用元はメーカー公式・女優本人のみ）／発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 11,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2102020203626504230",
+      "targetPostId": "2102020203626504230",
+      "postedAtJst": "2026-09-21 22:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）",
+          "type 対象外（レビュー系・引用元はメーカー公式・女優本人のみ）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260922-Q-shirot_AV_chosa",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定）／type 対象外（レビュー系・引用元はメーカー公式・女優本人のみ）／発売・配信開始・予約開始の投稿ではない（該当語なし））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 12,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2102125730700329457",
+      "targetPostId": "2102125730700329457",
+      "postedAtJst": "2026-09-22 05:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）",
+          "type 対象外（セール告知系・引用元はメーカー公式・女優本人のみ）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）",
+          "セール・ランキング・イベントの投稿は引用しない（該当: OFF作品）"
+        ],
+        "releaseHits": [],
+        "excludeHits": [
+          "OFF作品"
+        ],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260922-Q-FANZAdougaX",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定）／type 対象外（セール告知系・引用元はメーカー公式・女優本人のみ）／発売・配信開始・予約開始の投稿ではない（該当語なし）／セール・ランキング・イベントの投稿は引用しない（該当: OFF作品））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 13,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102140835194434011",
+      "targetPostId": "2102140835194434011",
+      "postedAtJst": "2026-09-22 06:00",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "snos00331",
+        "floor_code": "videoa",
+        "title": "特大号新人 希望みう 104cm Iのかたまり 殻を破って、初絶頂を知る。",
+        "date": "2026-10-23 00:00:00",
+        "volume": "160",
+        "fetched_at": "2026-09-21 22:14:18.589+00"
+      },
+      "eligibility": {
+        "eligible": true,
+        "reasons": [],
+        "releaseHits": [
+          "解禁"
+        ],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "snos00331"
+      },
+      "quoteKey": "20260922-Q-S1_No1_Style",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "提示上限外（本日の上限 2・記録済み 0 件・本 run の提示 2 件）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 14,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102125722089467925",
+      "targetPostId": "2102125722089467925",
+      "postedAtJst": "2026-09-22 05:00",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）"
+        ],
+        "releaseHits": [
+          "解禁"
+        ],
+        "excludeHits": [],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260922-Q-S1_No1_Style",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 15,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102081427290615826",
+      "targetPostId": "2102081427290615826",
+      "postedAtJst": "2026-09-22 02:04",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働"
+      },
+      "knowledge": {
+        "content_id": "sivr00508",
+        "floor_code": "videoa",
+        "title": "【VR】【馬乗りメンズエステ】右も左も分からない初接客の新人嬢にいいじゃんいいじゃん…と挿入した途端！突然ドエロモード覚醒してすんごいグイグイ騎乗位で連続搾りヌキさせられた僕 桜乃りの",
+        "date": "2026-09-22 00:00:21",
+        "volume": "107",
+        "fetched_at": "2026-09-21 20:04:50.722+00"
+      },
+      "eligibility": {
+        "eligible": true,
+        "reasons": [],
+        "releaseHits": [
+          "配信開始",
+          "新作配信"
+        ],
+        "excludeHits": [],
+        "floor": "videoa",
+        "contentId": "sivr00508"
+      },
+      "quoteKey": "20260922-Q-S1_No1_Style",
+      "url": null,
+      "http": null,
+      "warnings": [],
+      "status": "提示上限外（本日の上限 2・記録済み 0 件・本 run の提示 2 件）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}
