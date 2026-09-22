@@ -11310,3 +11310,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **E28 効果測定 初回（23:1x JST・Chrome 読み取り・Past Day＝9/21 23:00〜9/22 22:45 JST）**: **Allowed 62.0k / Denied 9.6k / Challenged 6 / Logged・Rate Limited 表示なし**。Rules マッチ＝**E28-2 concierge non-browser deny 9.0k** / DDoS Mitigation 656。Custom Rules 2 active・Bot Protection Inactive。**窓が E28 適用（9/22 朝）を跨ぐため定常値ではない。前窓対照 151.8k（9/21 08:47・§29-2）との差は起点が異なるためそのまま効果と読まない。E28-1（PerplexityBot rate_limit）はマッチ一覧に現れず＝解釈しない。`served:500` の代理指標は未取得**。
 - **逸脱（自己申告）**: 停止判定に該当する 6 アカウント＋priority 3 の 2 件は本文を取得せず URL・時刻のみ記録（停止は CTO が手で確認・ツールの機械判定を通していない）。要否は CSO。
 - 記録 → `management/_metrics/2026-W38/bundle2/runs/20260922-pm/`（targets / input / parsed / knowledge / drafts / quotes / README）。
+
+### 2026-09-23 未明 — 束2 段階② 9/22 夜枠の投稿記録（2 件）／CSO裁定 2026-09-23（5 点）の反映
+- **投稿（HUMAN・snowflake 復元）**: `2102441775306822090` = **2026-09-23 01:55:55 JST**（@FANZAdougaX・案A・手直しなし）／`2102442687349891356` = **01:59:32 JST**（@waka_misono・案B・**手直しあり**＝「9月21日の新作情報」→「新作情報」）。**@Fitch_official は見送り**。
+- **X 実在確認（02:18:03 JST・curl・Chrome UA）**: 2/2 **200**（101,443 B / 127,181 B）・対照 `1111111111111111111` **404**（34,773 B）。
+- **記録**: 重複検査（`20260922`/`20260923` の reply_key を先に読み戻し＝朝の 6 件のみ・重複なし）→ `record.mjs --create --texts`（`text_overridden_for: ["waka_misono"]`）→ create ×1（**createdTime 2026-09-23 02:18:30 JST**・`recvIarMM33BACUia` / `recBEFtimredtcRvV`）→ `--posted` ×2 → update ×2 → **読み戻し: x_replies 2/2・x_targets 2/2・payload との機械照合 16 項目で不一致 0・x_replies 総数 37**（9/18 6・9/19 4・9/20 8・9/21 11・9/22 8）・重複 0。
+- **【注記】`reply_key` は `20260922-*`（抽出バッチの日付）で `posted_at` は 9/23。** 「同日同ハンドル」の判定は reply_key、再返信間隔の判定は `last_reply_at`（9/23 01:5x JST）を見るため、9/23 の抽出では両ハンドルとも暦日差 0 で停止する。
+- **CSO裁定 2026-09-23（5 点）を反映**: ①夜の抽出 45 分上限・超過は priority 1→2→3・残りは「未読・件数のみ」②停止確定アカウントは本文未取得でよく、プロフィール読み取り自体も省略可（**9/22 夜の自己申告した逸脱を運用として採用**）③同一企画への連続返信は 3 日連続まで・**ツールの停止判定には入れず提示時の注記**④`@PREMIUM_AV` の取得不能を記録・再現時は投稿ページ `<title>` へフォールバック⑤**E28 初回記録（Allowed 62.0k / concierge deny 9.0k）は適用跨ぎのため参考値・定常値は 9/23 分から**。記録先＝`management/tools/x-reply-drafts/README.md`（手順 0・日次ループ表・木曜 PDCA 節）＋ FACT 末尾。
+- **併記（木曜 PDCA）**: `--own-posts` の取得担当を HUMAN → **CTO** へ改訂。**2026-09-23 06:00 の抽出時に X Analytics「投稿別」（9/18〜9/24）を読み取りのみで取得**する。CSV が取れない場合は画面を書き起こし、その旨と取得時刻を記録する（「CSV」と書かない）。
+- 記録 → `management/_metrics/2026-W38/bundle2/runs/20260922-pm/`（README §8・§9／`posted.json` / `payload_create.json` / `payload_posted_*.json` / `readback.json`）。

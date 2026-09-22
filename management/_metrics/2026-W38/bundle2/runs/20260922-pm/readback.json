@@ -1,0 +1,17 @@
+{
+  "_note": "2026-09-23 02:2x JST の Airtable MCP 読み戻し（x_replies 2 件・x_targets 2 件）。X 直接 URL の確認は 02:18:03 JST。",
+  "x_check": {
+    "2102441775306822090": { "status": 200, "bytes": 101443 },
+    "2102442687349891356": { "status": 200, "bytes": 127181 },
+    "control_1111111111111111111": { "status": 404, "bytes": 34773 }
+  },
+  "x_replies": [
+    { "id": "recvIarMM33BACUia", "reply_key": "20260922-FANZAdougaX", "target": "recEfvfO65s5S0o1f", "target_post_url": "https://x.com/FANZAdougaX/status/2102337419874107887", "draft_used": "A", "reply_post_id": "2102441775306822090", "posted_at": "2026-09-22T16:55:55.369Z", "reply_text": "ディレクターズカット版のBEAUTY VENUS VI、240分という収録時間はかなりのボリュームですね。未公開映像とシリーズ最新作インタビューの追加も気になります。" },
+    { "id": "recBEFtimredtcRvV", "reply_key": "20260922-waka_misono", "target": "recG1UOdyZhtseqWV", "target_post_url": "https://x.com/waka_misono/status/2102197151103328399", "draft_used": "B", "reply_post_id": "2102442687349891356", "posted_at": "2026-09-22T16:59:32.817Z", "reply_text": "美園和花さん、新作情報ありがとうございます。収録時間は120分、配信は10月23日と出ていますね。" }
+  ],
+  "x_targets": [
+    { "id": "recEfvfO65s5S0o1f", "handle": "@FANZAdougaX", "status": "稼働", "last_reply_at": "2026-09-22T16:55:55.369Z" },
+    { "id": "recG1UOdyZhtseqWV", "handle": "@waka_misono", "status": "稼働", "last_reply_at": "2026-09-22T16:59:32.817Z" }
+  ],
+  "totals": { "x_replies_total": 37, "by_day_jst_of_reply_key": { "20260918": 6, "20260919": 4, "20260920": 8, "20260921": 11, "20260922": 8 }, "duplicates": 0 }
+}
