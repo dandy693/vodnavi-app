@@ -1,0 +1,82 @@
+{
+  "tag": "PREFLIGHT_TODAY",
+  "ts": "2026-09-22T23:35:38.161Z",
+  "date": "2026-09-23",
+  "n": 2,
+  "ngCount": 0,
+  "unrecovered": [],
+  "dumpUsed": false,
+  "existingRows": 0,
+  "metaDependent": {
+    "g9_utc_iso": "intendedJst（生成時の意図時刻）",
+    "g12_actress_not_recent": "actressNames（posts に出演女優の列が無い）",
+    "g19_t3_deadline": "material.ends_at（T3 の生成材料）",
+    "g20_t3_template": "material（T3 の生成材料）",
+    "g21_t3_not_reported": "material.campaign_title（T3 の生成材料）"
+  },
+  "posts": [
+    {
+      "recordId": "recBArcUTazKuPJfQ",
+      "name": "W11-06 T1改 八木奈々 MIZD-450",
+      "text": "八木奈々のMIZD-450は634分の収録。ハイビジョン収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/mizd00450",
+      "kind": "T1",
+      "typeName": "T1改",
+      "statusName": "承認済",
+      "linkKindName": "サイト",
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-09-23T12:00:00.000Z",
+      "contentId": "mizd00450",
+      "hinban": "MIZD-450",
+      "actressNames": [],
+      "failures": [],
+      "skipped": [
+        {
+          "post": "W11-06 T1改 八木奈々 MIZD-450",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        }
+      ]
+    },
+    {
+      "recordId": "recCIvF7Jc6Aar508",
+      "name": "T3 ケイ・エム・プロデュース他30％OFF 2026-09-23",
+      "text": "FANZAで「ケイ・エム・プロデュース他30％OFF」を確認しました。\n最大30%OFF / 9/29 23:59まで\n確認できた範囲で4件。\n例: cosvrw00008（698円 / 通常998円）\n\n対象作品の一覧はこちら↓\n#PR",
+      "linkUrl": "https://app.vodnavi.jp/sale",
+      "kind": "T3",
+      "typeName": "T3セール",
+      "statusName": "承認済",
+      "linkKindName": null,
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-09-23T13:00:00.000Z",
+      "contentId": null,
+      "hinban": null,
+      "actressNames": [],
+      "failures": [],
+      "skipped": [
+        {
+          "post": "T3 ケイ・エム・プロデュース他30％OFF 2026-09-23",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        },
+        {
+          "post": "T3 ケイ・エム・プロデュース他30％OFF 2026-09-23",
+          "guard": "g19_t3_deadline",
+          "ng": "material.ends_at が無い（期限を検証できない）"
+        },
+        {
+          "post": "T3 ケイ・エム・プロデュース他30％OFF 2026-09-23",
+          "guard": "g20_t3_template",
+          "ng": "material が無い（数値を照合できない）"
+        },
+        {
+          "post": "T3 ケイ・エム・プロデュース他30％OFF 2026-09-23",
+          "guard": "g21_t3_not_reported",
+          "ng": "material.campaign_title が無い"
+        }
+      ]
+    }
+  ]
+}

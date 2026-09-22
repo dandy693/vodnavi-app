@@ -1,0 +1,13 @@
+=== 配信前再検査（対象日 2026-09-23 JST・posts 読み戻し値で全ガード再実行）===
+対象 2 件（承認済/T1改 , 承認済/T3セール）
+PASS  W11-06 T1改 八木奈々 MIZD-450  予約 2026-09-23 21:00 JST  承認済  （検査不能 1: g9_utc_iso）
+PASS  T3 ケイ・エム・プロデュース他30％OFF 2026-09-23  予約 2026-09-23 22:00 JST  承認済  （検査不能 4: g9_utc_iso / g19_t3_deadline / g20_t3_template / g21_t3_not_reported）
+
+【検査不能（生成時メタが posts に無い）】g9_utc_iso＝intendedJst（生成時の意図時刻） / g12_actress_not_recent＝actressNames（posts に出演女優の列が無い） / g19_t3_deadline＝material.ends_at（T3 の生成材料） / g20_t3_template＝material（T3 の生成材料） / g21_t3_not_reported＝material.campaign_title（T3 の生成材料）
+【同日件数の上限（g6 / g11 / g18）】当日予約行を__悉皆で__読み戻していれば、既存行 0 でも正しく数えられる（当日分はすべて検査対象側にあるため）。 --dump は渡していない。
+【未検証】TG の記事間隔（g16）は、当日行に TG が無い日には確認できない。TG の予約がある日に挙動を確かめること。
+
+【厳守・残差】本検査は__対象日の実行時刻__の値を見ている。以後（配信までの間）の書き換えは検知できない（FACT_GOVERNANCE §13-5-1）。
+【厳守】NG の是正（承認を外す／本文を直す）は HUMAN。CTO は posts を書かない。
+
+JSON: management/_metrics/2026-W38/bundle2/runs/20260923-am/preflight-20260923.json
