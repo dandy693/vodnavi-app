@@ -33,10 +33,24 @@
 | @mio_sakai_ | 女優本人 / 1 | 3 | 撮影会・雑談・TikTok 配信＝除外 |
 | 窓内 0 件（24） | — | — | 5may_itsukaichi / Aizawa_miyu03 / attackers_av / azusa_hikari_ / DMM10sale / FalenoEvent / fanza_meireview / Fitch_official / karin_kitaoka_ / kawaii_pr / Kizukiamane / Madonna_AVinfo / nao_satsuki / PRESTIGE_PR2020 / ran_tpowers / saki_seino / sakuramio_X / sodstarofficial / waka_misono / wanz_official / fanza_sns / mayukiito / shinnakanodream / umi_sea_0v0 |
 
+## 投稿と記録（HUMAN 投稿 09:10〜09:15 JST・記録 09:21〜09:2x JST）
+
+| 項目 | 実測 |
+|---|---|
+| HUMAN 申告 | リプ 5 件＋引用 1 件の URL 6 本（投稿順不明）＋対応表（本文は提示どおり・手直しなし）。①④⑧・Q-2 は見送り |
+| **判別（Chrome 読み取り・09:1x〜09:2x）** | 各 URL を開き、記事の親（返信先）と引用の有無・返信先の status リンクで判別: **`2102188758477209635`＝引用（@honnaka_NN 2102065325206597775・Q1・本文＋works リンク表示 `app.vodnavi.jp/works/videoa/h…`＝t.co/3sTe76ZznP → 301 で utm 付き works URL に一致）**／`2102188993316360282`＝@iyo_shinohara 2102130716792528919 への返信（C）／`2102189166448747004`＝@shiromine_miu 2102053207619018823（B）／`2102189420178964939`＝@MOODYZ_official 2102020030712217872（B）／`2102189651192946809`＝@IDEAPOCKETTER 2102035124766585026（C）／`2102190032723603459`＝@shirot_AV_chosa 2102035297634770984（A）。**HUMAN の提示順（Q-1→②→③→⑤→⑥→⑦）と投稿順は一致していた**（snowflake 09:10:31 / 11:27 / 12:08 / 13:09 / 14:04 / 15:35） |
+| X 実在確認（09:24 JST・`curl`） | 6 件とも直接 URL **HTTP 200**（99,743〜155,250 B）／対照 `1111111111111111111` **404** |
+| Airtable（リプ 5） | `record.mjs --create drafts.json --pick iyo_shinohara=C --pick shiromine_miu=B --pick MOODYZ_official=B --pick IDEAPOCKETTER=C --pick shirot_AV_chosa=A --texts posted.json`（手直しなし＝`text_overridden_for` 空）→ MCP create × 1（**createdTime 09:21:25 JST**） |
+| **Airtable（Q 初回）** | `record.mjs --create quotes.json --pick honnaka_NN=Q1 --replies replies.json` → `_note`（Q 未登録）どおり **`typecast: true` で create（09:21:40 JST・`recVlfdlZJuyjGR73`・reply_key `20260922-Q-honnaka_NN`・reply_text＝一言＋改行＋works URL）** → `get_table_schema` で **選択肢 Q＝`sel1aoLdq9bvHguee`（blueLight2）** を読み戻し → `airtable-fields.json` の `choices.draft_used.Q` に登録（以後 typecast 不要） |
+| **【自己申告・分類D】** | Q の create で CTO が `reply_text` の Unicode エスケープを 1 字誤り（`錂`＝錂）、**「収錂78分」で書かれた**（X の投稿本文は「収録78分」で正しい）。create 応答の読み取りで検出し **09:2x に update で「収録78分」へ訂正**。読み戻しで payload と一致。**原因＝MCP へ渡す JSON を手打ちのエスケープで組んだこと**。以後は payload ファイルの文字列をそのまま貼る（エスケープしない） |
+| 投稿後 | `--posted` × 5（x_replies の `reply_post_id` / `posted_at`・x_targets の `last_reply_at`）＋ **`--posted --quote` × 1（x_targets `last_quote_at` のみ・`last_reply_at` は触らない）** → MCP update × 2 |
+| 読み戻し（§10） | `readback.json`＝x_replies 6 件（reply_key / target / target_post_url / draft_used / reply_post_id / posted_at が payload と**機械照合で不一致 0**・Q の `draft_used` は `{id: sel1aoLdq9bvHguee, name: Q}`）／x_targets 6 件（5 件の `last_reply_at` が posted_at と一致・honnaka は `last_reply_at` 9/19 のまま・`last_quote_at` 09:10:31 JST）／**20260922 の行＝6・重複なし・x_replies 総数 35**（9/18 6・9/19 4・9/20 8・9/21 11・9/22 6） |
+| 上限 | Q 本日 1 / 2・works リンク投稿 1（＋T1改 21:00 で 2 / 3）・priority 3 週 2 / 2（S1 は提示せず） |
+
 ## E28 Firewall 適用（抽出・提示後・08:55〜08:58 JST）
 
 → 起案 `proposal-20260921-E28-crawler-mitigation.md` §7-7・FACT §29-3。**active version 6・rules 2・healthcheck ALL PASS。**
 
 ## ファイル
 
-`targets.json`／`active-targets.urls.txt`・`active-targets.summary.txt`／`input.txt`（14 行）／`parsed.json`／`knowledge_sql.json`・`knowledge_union.sql`・`rows.json`（＋`rows.README.txt`）・`knowledge.json`／`replies.json`（29 件）／`drafts.json`・`drafts.txt`・`generate.log.txt`／`quotes.json`・`quote.log.txt`。投稿記録（`posted.json`・`payload_*`・`readback.json`）は HUMAN 投稿後に追加。
+`targets.json`／`active-targets.urls.txt`・`active-targets.summary.txt`／`input.txt`（14 行）／`parsed.json`／`knowledge_sql.json`・`knowledge_union.sql`・`rows.json`（＋`rows.README.txt`）・`knowledge.json`／`replies.json`（29 件）／`drafts.json`・`drafts.txt`・`generate.log.txt`／`quotes.json`・`quote.log.txt`。`posted.json`（投稿本文・5 件）／`payload_create.json`・`payload_create_quote.json`・`payload_posted_*.json`（6 件）／`readback.json`（判別結果・X 確認・読み戻し）。

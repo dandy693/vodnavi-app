@@ -1,0 +1,20 @@
+{
+  "tableId": "tblpFVorIemSOywTH",
+  "kind": "quote",
+  "count": 1,
+  "draft_used": "Q",
+  "records": [
+    {
+      "fields": {
+        "fld63cUuOti14Vlnj": "20260922-Q-honnaka_NN",
+        "fldPt0Ob7S3llquKB": [
+          "rec0nGddlSPhwOqcI"
+        ],
+        "fld69HPg8Qrm2JVPK": "https://x.com/honnaka_NN/status/2102065325206597775",
+        "fldbKfB0mpR9wMS2g": "本中の新作で、収録78分、配信開始は10月27日です。幸村泉希さん出演の作品です。\nhttps://app.vodnavi.jp/works/videoa/hnmg00006?utm_source=x&utm_medium=quote&utm_content=honnaka_NN",
+        "fldeXo1Hzlb5xytfv": "Q"
+      }
+    }
+  ],
+  "_note": "draft_used に選択肢 Q が未登録: 初回は typecast:true で作成する（MCP に選択肢追加ツールが無い）。作成後に get_table_schema で Q の選択肢 ID を読み戻し airtable-fields.json に記す。"
+}

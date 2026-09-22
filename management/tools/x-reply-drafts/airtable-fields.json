@@ -48,9 +48,10 @@
       "draft_used": {
         "A": "seliGVnNd1DJ5D1mY",
         "B": "selzKCzvAAkQlzpKe",
-        "C": "selPPvuenDPVpssHe"
+        "C": "selPPvuenDPVpssHe",
+        "Q": "sel1aoLdq9bvHguee"
       }
     },
-    "_draft_used_Q_note": "draft_used の選択肢 Q（引用ポスト・CSO 指示 2026-09-21 夜）は MCP に選択肢追加ツールが無いため未登録。初回の Q 記録を typecast:true で作成すると Airtable が選択肢を作る → get_table_schema で ID を読み戻して choices.draft_used.Q に追記する。"
+    "_draft_used_Q_note": "draft_used の選択肢 Q（引用ポスト・CSO 指示 2026-09-21 夜）は 2026-09-22 09:21:40 JST の初回 Q 記録（20260922-Q-honnaka_NN・typecast:true）で Airtable 側に作成され、get_table_schema で ID sel1aoLdq9bvHguee（color blueLight2）を読み戻して choices.draft_used.Q に登録済み。以後の Q 記録は typecast 不要。"
   }
 }

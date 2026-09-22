@@ -11294,3 +11294,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - 抽出の実装注記: X の SPA ナビが前ページのまま止まる事象 2 回 → `home` 経由で 1 件ずつ navigate（タブタイトルで着地確認）／1 回スクロールで 2 件しか載らない場合あり → 2 回スクロール後に find。昨夜の PREMIUM_AV 19:00・20:00 は未検出だった（窓外・記録のみ）。
 
 ## 2026-09-22 08:55〜08:58 — **E28 Firewall 適用完了**（起案 §7-7・FACT §29-3）: MCP `get/put/update_firewall_config` は未作成 config に **404** → Vercel CLI `vercel api … -X PUT` で最小 PUT 初期化（v1）→ ルール 1（v2）→ ルール 2 insert（重複 → remove）→ update（**v6・08:57:52 JST**）。起案 JSON からの機械変換 2 点（`nsub`→`sub`+`neg`／`(?i)`→`[Bb]ot` 文字クラス・意味は不変）。読み戻し rules 2・両方 active（`e28-firewall-active-readback-20260922.json`）。プローブ: curl/python UA の `/concierge` 403（59 B）・Googlebot/Chrome UA 200・`/works/…` は curl でも 200。**healthcheck ALL PASS（08:58:33〜38・`llm.concierge` 含む）**。課金回答（§7-2・ボット由来 0）不変。効果測定の後窓 9/22〜9/28・Firewall Allowed は毎日記録（初回＝本日夜）・9/29 に ① 格上げ再裁定。
+- `7570789`（docs のみ・距離 5）の state **CANCELED**（`dpl_6AUAyHN7wmCdZibNJufxxYUgky7e`・09:01:30 JST・skip 経路）。次の docs push は距離 6。
+
+## 2026-09-22 09:2x — 【段階② 4 日目・朝】投稿 **リプ 5＋引用 1**（HUMAN 09:10〜09:15 JST）→ Chrome 読み取りで判別（引用＝`2102188758477209635`＝@honnaka_NN Q1／返信先＝iyo C・shiromine B・MOODYZ B・IDEAPOCKET C・shirot A＝提示順と投稿順が一致）→ X 直接 URL 6/6 200・対照 404 → x_replies 作成 5＋**Q 初回 1（typecast → 選択肢 Q `sel1aoLdq9bvHguee` を `airtable-fields.json` に登録）**（createdTime 09:21:25 / 09:21:40）→ `reply_post_id`／`posted_at`／`last_reply_at`×5／**`last_quote_at`×1** → 読み戻し 6/6 一致・機械照合 0 不一致・**x_replies 累計 35**（`bundle2/runs/20260922-am/`）
+- 【自己申告・分類D】Q の create で CTO の Unicode エスケープ誤り 1 字（「収錂78分」）→ create 応答で検出・update で「収録78分」へ訂正（X 本文は正しい）。以後は payload の文字列をそのまま貼る。
+- **【CSO裁定 2026-09-22 朝】**①引用はメーカー公式を主・女優本人はリプ優先（`Q_quote.allowed_types`＝メーカー公式のみ・README）②Q は priority 3 の週カウント対象外（Q 1 日 2 件・works リンク 1 日 3 件は維持）③E28 適用承認・CLI 経路を台帳記録・`/api/concierge` 403 の由来分離は行わない ④抽出 2 時間遅れは記録のみ。FACT §26-11。`node --test` 70/70。
+- 本日の上限: Q 1/2・works リンク 1（＋T1改 21:00＝2/3）・priority 3 週 2/2。

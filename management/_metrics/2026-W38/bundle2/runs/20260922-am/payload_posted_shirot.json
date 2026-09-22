@@ -1,0 +1,27 @@
+{
+  "x_replies": {
+    "tableId": "tblpFVorIemSOywTH",
+    "records": [
+      {
+        "id": "recstYy1MTRiNGCB7",
+        "fields": {
+          "fld3EPVhYRfBuvEZL": "2102190032723603459",
+          "fldACpFxznVDTtmWu": "2026-09-22T00:15:35.260Z"
+        }
+      }
+    ]
+  },
+  "x_targets": {
+    "tableId": "tblStC3L57aJh22sD",
+    "records": [
+      {
+        "id": "recPYIDdkQ7EC0w0q",
+        "fields": {
+          "fldaqFoEVEIdvFXV3": "2026-09-22T00:15:35.260Z"
+        }
+      }
+    ]
+  },
+  "reply_post_id": "2102190032723603459",
+  "posted_at": "2026-09-22T00:15:35.260Z"
+}

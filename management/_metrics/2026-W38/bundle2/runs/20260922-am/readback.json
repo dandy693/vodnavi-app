@@ -1,0 +1,26 @@
+{"_readback":"2026-09-22 09:2x JST・MCP list_records_for_table（recordIds 指定）・x_replies 6 / x_targets 6・x_replies の 20260922 行＝6（重複なし）・総数 35（29＋6）",
+"x_check":{"at_jst":"2026-09-22 09:24","direct_url_200":["2102188758477209635","2102188993316360282","2102189166448747004","2102189420178964939","2102189651192946809","2102190032723603459"],"control_404":"1111111111111111111","quote_link_card":"2102188758477209635 に app.vodnavi.jp/works/videoa/h… の表示リンク（t.co/3sTe76ZznP）と @honnaka_NN の引用が確認できた"},
+"identification":[
+{"post":"2102188758477209635","kind":"quote","target":"https://x.com/honnaka_NN/status/2102065325206597775","pick":"Q1","posted_at_jst":"09:10:31"},
+{"post":"2102188993316360282","kind":"reply","target":"https://x.com/iyo_shinohara/status/2102130716792528919","pick":"C","posted_at_jst":"09:11:27"},
+{"post":"2102189166448747004","kind":"reply","target":"https://x.com/shiromine_miu/status/2102053207619018823","pick":"B","posted_at_jst":"09:12:08"},
+{"post":"2102189420178964939","kind":"reply","target":"https://x.com/MOODYZ_official/status/2102020030712217872","pick":"B","posted_at_jst":"09:13:09"},
+{"post":"2102189651192946809","kind":"reply","target":"https://x.com/IDEAPOCKETTER/status/2102035124766585026","pick":"C","posted_at_jst":"09:14:04"},
+{"post":"2102190032723603459","kind":"reply","target":"https://x.com/shirot_AV_chosa/status/2102035297634770984","pick":"A","posted_at_jst":"09:15:35"}
+],
+"x_replies":[
+{"id":"recUo7cKOQjY8V7eA","createdTime":"2026-09-22T00:21:25.000Z","reply_key":"20260922-iyo_shinohara","target":"rec916RFclGkjRpeb","target_post_url":"https://x.com/iyo_shinohara/status/2102130716792528919","draft_used":"C","reply_post_id":"2102188993316360282","posted_at":"2026-09-22T00:11:27.446Z"},
+{"id":"recIbAVD0oFDyJwCb","createdTime":"2026-09-22T00:21:25.000Z","reply_key":"20260922-shiromine_miu","target":"recHRnE8hlXY0CsX5","target_post_url":"https://x.com/shiromine_miu/status/2102053207619018823","draft_used":"B","reply_post_id":"2102189166448747004","posted_at":"2026-09-22T00:12:08.724Z"},
+{"id":"recSUBFNxpJ4E5nQg","createdTime":"2026-09-22T00:21:25.000Z","reply_key":"20260922-MOODYZ_official","target":"recuIj1YV4CmsxgJN","target_post_url":"https://x.com/MOODYZ_official/status/2102020030712217872","draft_used":"B","reply_post_id":"2102189420178964939","posted_at":"2026-09-22T00:13:09.218Z"},
+{"id":"recStufnxeOo6yU1p","createdTime":"2026-09-22T00:21:25.000Z","reply_key":"20260922-IDEAPOCKETTER","target":"rec3EWHDnA1tnjPzL","target_post_url":"https://x.com/IDEAPOCKETTER/status/2102035124766585026","draft_used":"C","reply_post_id":"2102189651192946809","posted_at":"2026-09-22T00:14:04.296Z"},
+{"id":"recstYy1MTRiNGCB7","createdTime":"2026-09-22T00:21:25.000Z","reply_key":"20260922-shirot_AV_chosa","target":"recPYIDdkQ7EC0w0q","target_post_url":"https://x.com/shirot_AV_chosa/status/2102035297634770984","draft_used":"A","reply_post_id":"2102190032723603459","posted_at":"2026-09-22T00:15:35.260Z"},
+{"id":"recVlfdlZJuyjGR73","createdTime":"2026-09-22T00:21:40.000Z","reply_key":"20260922-Q-honnaka_NN","target":"rec0nGddlSPhwOqcI","target_post_url":"https://x.com/honnaka_NN/status/2102065325206597775","draft_used":"Q","draft_used_choice_id":"sel1aoLdq9bvHguee","reply_post_id":"2102188758477209635","posted_at":"2026-09-22T00:10:31.456Z","_note":"作成時の reply_text に CTO の Unicode エスケープ誤り（\u9302＝錂）が混入し「収錂78分」で書かれた → 09:2x に update で「収録78分」へ訂正（読み戻しで payload と一致）"}
+],
+"x_targets":[
+{"id":"rec916RFclGkjRpeb","handle":"@iyo_shinohara","status":"稼働","last_reply_at":"2026-09-22T00:11:27.446Z"},
+{"id":"recHRnE8hlXY0CsX5","handle":"@shiromine_miu","status":"稼働","last_reply_at":"2026-09-22T00:12:08.724Z"},
+{"id":"recuIj1YV4CmsxgJN","handle":"@MOODYZ_official","status":"稼働","last_reply_at":"2026-09-22T00:13:09.218Z"},
+{"id":"rec3EWHDnA1tnjPzL","handle":"@IDEAPOCKETTER","status":"稼働","last_reply_at":"2026-09-22T00:14:04.296Z"},
+{"id":"recPYIDdkQ7EC0w0q","handle":"@shirot_AV_chosa","status":"稼働","last_reply_at":"2026-09-22T00:15:35.260Z"},
+{"id":"rec0nGddlSPhwOqcI","handle":"@honnaka_NN","status":"稼働","last_reply_at":"2026-09-19T03:24:46.108Z","last_quote_at":"2026-09-22T00:10:31.456Z"}
+]}

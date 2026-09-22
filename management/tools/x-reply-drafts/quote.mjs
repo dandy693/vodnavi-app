@@ -1,6 +1,6 @@
 // 束2 拡張 — 引用ポスト（基盤D）の候補選定・一言生成・URL 付与・works ページ HTTP 200 確認（CSO 指示 2026-09-21 夜）
 // 入力はリプ生成（generate.mjs）と同じ parsed / targets / replies / knowledge。朝・夜の抽出結果のうち
-//   「知識あり（cache ヒット＝content_id 確定）」∧「メーカー公式・女優本人」∧「発売・配信開始・予約開始の投稿」（セール・ランキング・イベントは除く）
+//   「知識あり（cache ヒット＝content_id 確定）」∧「メーカー公式」（女優本人はリプ優先＝CSO裁定 2026-09-22 朝・guards.config.json Q_quote.allowed_types）∧「発売・配信開始・予約開始の投稿」（セール・ランキング・イベントは除く）
 // を候補にし、引用向き 1〜2 件（max_per_run − 本日記録済みの Q 件数）に対して案 Q1・Q2 を生成する。
 // 文面＝一言（40〜80 字・作品の属性）＋ 改行 ＋ works 詳細 URL（https://app.vodnavi.jp/works/<floor>/<content_id>?utm_source=x&utm_medium=quote&utm_content=<handle>）。
 // URL はモデルが書かずツールが付ける。ガードはリプと同じ R1〜R18（type=Q）＋ guardQuoteFull（URL は自サイト works 詳細 1 本のみ許可）。
@@ -58,7 +58,7 @@ export function quoteEligibility({ line, target, knowledge, config }) {
   const reasons = [];
   if (!knowledge || !knowledge.content_id) reasons.push("知識なし（cache MISS＝content_id 未確定）");
   if (!target) reasons.push("台帳未登録");
-  else if (!(cfg.allowed_types ?? ["メーカー公式", "女優本人"]).includes(target.type)) reasons.push(`type 対象外（${target.type ?? "?"}・引用元はメーカー公式・女優本人のみ）`);
+  else if (!(cfg.allowed_types ?? ["メーカー公式"]).includes(target.type)) reasons.push(`type 対象外（${target.type ?? "?"}・引用元は ${(cfg.allowed_types ?? ["メーカー公式"]).join("・")} のみ）`);
   const releaseHits = listHits(line.body ?? "", cfg.release_keywords ?? []);
   const excludeHits = listHits(line.body ?? "", cfg.exclude_keywords ?? []);
   if (!releaseHits.length) reasons.push("発売・配信開始・予約開始の投稿ではない（該当語なし）");
