@@ -11346,3 +11346,4 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **裁定⑨**: 打ち切り時刻の逸脱（分類D・自己申告）は承認。以後は実測時刻で判断する。
 - **不変**: X は読み取りのみ／`x_targets.status` は HUMAN 専権／Make・本番コードは不触（③のガード追加のみ裁定で承認）／`x-post-generator.mjs` の作業ツリーにある参照表更新（9/17 refill 由来）は**コミットしていない**——ガードのハンクのみを index に載せた（staged 35 行・追加のみ）。
 - 記録 → `management/_metrics/2026-W38/bundle2/runs/20260923-am/` §9・§10（検証ログ 3 本＋再実行スクリプト 2 本を同梱）。
+- **デプロイ確認（`e4edbf5` push 後）**: **`dpl_GtFwSYTVBgoxdFJML2SrVi4bYYgF` state=READY**（ビルド開始 07:48:45 → READY 07:49:53 JST）。**E19 fail-open ではなく `app-concierge/` に実差分があるための通常ビルド**（`x-post-generator.mjs`）。**sitemap 再生成 07:49:15 JST・全損なし**＝`<loc>` 2,594 / works 1,200（videoa 400・anime 400・nikkatsu 400）/ genres 200 / actresses 1,177 / articles 8。**公開面の挙動は変えていない**（変更は `scripts/` 配下のガード定義のみ＝ランタイムは参照しない）。
