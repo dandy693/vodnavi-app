@@ -117,7 +117,13 @@ node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/
 - `x_targets` に紐づかない行は priority 空・type 不明で別行に出る（`unmatched`）。`posted_at` 空の行は期間で落とさず記入状況に出す。
 - **Airtable の `got_like` / `got_reply` はチェックボックスで「取得済み・0」と「未取得」を区別できない。** 区別は `reactions.json` の有無（`--reactions` の「反応 取得済」列）で見る。`reactions.json` に無い行＝未取得。
 - 初回（9/18〜9/19・10 件・反応は 2026-09-19 22:4x〜22:5x 取得）→ `management/_metrics/2026-W38/bundle2/state/20260919-2230/weekly-report-dry-20260919.md`＝全件 priority 1・A 4 / B 3 / C 3・likes 0 / replies 0・views 合計 123（中央値 7.5）。
-- priority 3（対照）の「提示は週 2 件まで」は CTO の手動カウント（実装不要・CSO 2026-09-19 22:5x）。**週は月〜日で数える**（CSO判定 2026-09-21 朝。9/20（日）の S1_No1_Style は先週分・9/21（月）の S1_No1_Style で今週 1 / 2）。
+- ~~priority 3（対照）の「提示は週 2 件まで」は CTO の手動カウント（実装不要・CSO 2026-09-19 22:5x）。~~ → **🔴【機械化・CSO 指摘 2026-09-23】手で数えるのをやめ、`priority3-week.mjs` で x_replies から数える。**
+  ```
+  node management/tools/x-reply-drafts/priority3-week.mjs --replies <replies.json> --targets <targets.json> [--today YYYY-MM-DD] [--json <out.json>]
+  ```
+  - **週は月〜日（JST）。基準日を含む週の月曜が起点**（`weekRangeMonday`）。**引用（`draft_used=Q` / `reply_key` に `-Q-`）はカウント対象外**（CSO裁定 2026-09-22 朝 ②）。**終了コード 0＝残枠あり / 1＝上限到達。**
+  - **機械化した理由**: **2026-09-23 夜、CTO が週起点を 9/22（火）と誤認し「今週 0 / 2」と報告した。** **実際は 9/21 が月曜で、同日の 2 件（`20260921-S1_No1_Style` 08:03 ＋ `20260921-shinnakanodream` 22:28）により既に 2 / 2 に到達していた。** **手で数えるかぎり同じ誤りが再発する。**
+  - 実測（2026-09-23 23:2x）: 今週 2026-09-21〜09-27 ＝ **2 / 2・残り 0**／先週 2026-09-14〜09-20 ＝ 1 / 2（`20260920-S1_No1_Style`・9/20 は日曜）。
 - **引用ポスト（Q）の扱い**: `draft_used` 内訳に `Q` 列が出る。`--own-posts` の除外は A/B/C のリプ自身だけ（Q は自投稿に含める）。`--ga4-quote ga4_quote.json` で `utm_medium=quote` のセッション表を末尾に添付する（CSO 指示 2026-09-21 夜）。
 - **自投稿との比較（CSO 連絡 2026-09-20・観測のみ）**: HUMAN が X Analytics（Premium）の投稿別 CSV を `state/<日付>/own_posts.csv` に置く → `--own-posts state/<日付>/own_posts.csv` で「リプの表示回数中央値」と「同期間の自投稿インプレッション中央値」を並べる比較表が末尾に出る。**判定基準（10/12・自投稿の中央値 ≥ 50・§26-2）は変えない。** 列名は tolerant に検出（id＝`Tweet id`/`Post id`・日時＝`time`/`Date`・インプレッション＝`impressions`/`Impressions`）し、使用した列名を出力に併記する。x_replies の `reply_post_id` と一致する行（リプ自身）は自投稿から除外。**TZ 表記の無い日時は JST として扱う＝初回の HUMAN 提供 CSV で列名と TZ を実測して確定する**（旧 Twitter Analytics 形式は `+0000`＝UTC 明記）。
 - **【取得担当の改訂・CSO 指示 2026-09-23】自投稿の値は CTO が取得する。** **2026-09-23 06:00 の抽出時に、X Analytics の「投稿別」（対象期間 2026-09-18〜09-24）を読み取りのみで取得**し、`state/<日付>/own_posts.csv`（または同等の JSON）に保存して `--own-posts` に渡す。**CSV エクスポートが取れない場合は画面の投稿別表を読み取って同じ列（投稿 ID / 日時 / インプレッション）を書き起こす**——**書き起こした場合はその旨と取得時刻を記録し、「CSV」と書かない。** 読み取り専用（投稿・返信・設定変更をしない）は従来どおり。

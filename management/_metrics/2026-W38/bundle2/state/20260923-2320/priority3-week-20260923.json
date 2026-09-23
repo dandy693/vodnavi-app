@@ -1,0 +1,30 @@
+{
+  "tag": "PRIORITY3_WEEK",
+  "ts": "2026-09-23T14:24:25.749Z",
+  "today": "2026-09-23",
+  "week": {
+    "from": "2026-09-21",
+    "to": "2026-09-27"
+  },
+  "limit": 2,
+  "used": 2,
+  "remaining": 0,
+  "rows": [
+    {
+      "replyKey": "20260921-S1_No1_Style",
+      "handle": "S1_No1_Style",
+      "postedAtJst": "2026-09-21 08:03:36",
+      "day": "2026-09-21",
+      "draftUsed": "A",
+      "counted": true
+    },
+    {
+      "replyKey": "20260921-shinnakanodream",
+      "handle": "shinnakanodream",
+      "postedAtJst": "2026-09-21 22:28:58",
+      "day": "2026-09-21",
+      "draftUsed": "A",
+      "counted": true
+    }
+  ]
+}
