@@ -1,0 +1,108 @@
+{
+  "kind": "quote",
+  "generated_at": "2026-09-23T14:15:50.936Z",
+  "today_jst": "20260923",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "154fe4faf8dc50c4263ddc9a44c50d0624d969e070c073a2f8073b4e5a7cfebd",
+  "limits": {
+    "max_per_run": 2,
+    "max_per_day": 2,
+    "recorded_today": 0,
+    "note": "works ページへのリンク投稿は T1改（21:00・1 件）と合わせて 1 日 3 件まで／同一投稿にリプ＋引用の両方はしない"
+  },
+  "counts": {
+    "lines": 2,
+    "generated": 0,
+    "presented": 0,
+    "not_eligible": 2
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102759910102675774",
+      "targetPostId": "2102759910102675774",
+      "postedAtJst": "2026-09-23 23:00",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）"
+        ],
+        "releaseHits": [
+          "解禁"
+        ],
+        "excludeHits": [],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260923-Q-S1_No1_Style",
+      "url": null,
+      "http": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102759902657863721",
+      "targetPostId": "2102759902657863721",
+      "postedAtJst": "2026-09-23 23:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働"
+      },
+      "knowledge": null,
+      "eligibility": {
+        "eligible": false,
+        "reasons": [
+          "知識なし（cache MISS＝content_id 未確定）",
+          "発売・配信開始・予約開始の投稿ではない（該当語なし）",
+          "セール・ランキング・イベントの投稿は引用しない（該当: 50％OFF（regex: \\d+\\s*[%％]\\s*OFF））"
+        ],
+        "releaseHits": [],
+        "excludeHits": [
+          "50％OFF（regex: \\d+\\s*[%％]\\s*OFF）"
+        ],
+        "floor": null,
+        "contentId": null
+      },
+      "quoteKey": "20260923-Q-IDEAPOCKETTER",
+      "url": null,
+      "http": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "対象外（知識なし（cache MISS＝content_id 未確定）／発売・配信開始・予約開始の投稿ではない（該当語なし）／セール・ランキング・イベントの投稿は引用しない（該当: 50％OFF（regex: \\d+\\s*[%％]\\s*OFF）））",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}

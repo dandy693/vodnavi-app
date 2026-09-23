@@ -1,0 +1,110 @@
+{
+  "generated_at": "2026-09-23T14:15:28.712Z",
+  "today_jst": "20260923",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "79d1227310ad4e06ca3cd99afbc9339d35b3cba13a08d4e37ba112b63567ed4b",
+  "counts": {
+    "lines": 2,
+    "generated": 1,
+    "stopped": 1
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102759910102675774",
+      "targetPostId": "2102759910102675774",
+      "postedAtJst": "2026-09-23 23:00",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T23:03:36.437Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260923-S1_No1_Style",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った",
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "10月新作解禁ということで、理系女子というテーマが新鮮ですね。生写真付きというのも気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 94
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "10月新作解禁の作品に付く生写真は、配信開始からいつまで付いてくるものでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 41,
+              "weight": 80
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 359,
+        "output_tokens": 686,
+        "cache_creation_input_tokens": 3654,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102759902657863721",
+      "targetPostId": "2102759902657863721",
+      "postedAtJst": "2026-09-23 23:00",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-22T22:06:02.608Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260923-IDEAPOCKETTER",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "停止（同日同ハンドル 2 件目: 20260923-IDEAPOCKETTER が既存）",
+      "drafts": {},
+      "usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 0,
+        "calls": 0
+      }
+    }
+  ]
+}

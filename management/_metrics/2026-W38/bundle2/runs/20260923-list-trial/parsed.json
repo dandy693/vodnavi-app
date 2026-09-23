@@ -1,0 +1,34 @@
+{
+  "lines": [
+    {
+      "ok": true,
+      "lineNo": 1,
+      "handle": "S1_No1_Style",
+      "postedAtJst": "2026-09-23 23:00",
+      "postedAtIso": "2026-09-23T14:00:00.000Z",
+      "postUrl": "https://x.com/S1_No1_Style/status/2102759910102675774",
+      "targetPostId": "2102759910102675774",
+      "body": "リケジョなの。10月新作解禁！ #初美なのか @hatsuminanoka ［同一スレッドの詳細投稿 23:00］【PR】 配信 生写真付き 理系女子に性癖を開発される 初美なのか｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    },
+    {
+      "ok": true,
+      "lineNo": 2,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-23 23:00",
+      "postedAtIso": "2026-09-23T14:00:00.000Z",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2102759902657863721",
+      "targetPostId": "2102759902657863721",
+      "body": "こだわりのフェラ特集 50％OFFで楽しめるのは今だけ 第3弾 動画はこちらからチェック！ #役野満里奈 #PR｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    }
+  ],
+  "okCount": 2,
+  "ngCount": 0
+}
