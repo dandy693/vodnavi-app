@@ -1,0 +1,362 @@
+{
+ "generated_at": "2026-09-23T11:54:44.039Z",
+ "today_jst": "2026-09-23",
+ "rule": "裁定⑤ 前回未読を先頭 → priority 昇順。裁定② 停止確定は読み取り省略",
+ "unread_from_am": [
+  "azusa_hikari_",
+  "5may_itsukaichi",
+  "aizawa_miyu03",
+  "dmm10sale",
+  "fanza_meireview",
+  "karin_kitaoka_",
+  "kizukiamane",
+  "mio_sakai_",
+  "nao_satsuki",
+  "prestige_pr2020",
+  "ran_tpowers",
+  "saki_seino",
+  "sakuramio_x"
+ ],
+ "rows": [
+  {
+   "handle": "5may_itsukaichi",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "Aizawa_miyu03",
+   "type": "女優本人",
+   "priority": 1,
+   "last": "2026-09-20",
+   "diff": 3,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "azusa_hikari_",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "DMM10sale",
+   "type": "セール告知系",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 1,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "fanza_meireview",
+   "type": "レビュー系",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 1,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "karin_kitaoka_",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "Kizukiamane",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "mio_sakai_",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "nao_satsuki",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "PRESTIGE_PR2020",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 1,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "ran_tpowers",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "saki_seino",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "sakuramio_X",
+   "type": "女優本人",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": true
+  },
+  {
+   "handle": "attackers_av",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-21",
+   "diff": 2,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "FalenoEvent",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-20",
+   "diff": 3,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "Fitch_official",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-21",
+   "diff": 2,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "honnaka_NN",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-19",
+   "diff": 4,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "kawaii_pr",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-21",
+   "diff": 2,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "Madonna_AVinfo",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-18",
+   "diff": 5,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "shirot_AV_chosa",
+   "type": "レビュー系",
+   "priority": 1,
+   "last": "2026-09-22",
+   "diff": 1,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "sodstarofficial",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "wanz_official",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": null,
+   "diff": null,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "fanza_sns",
+   "type": "セール告知系",
+   "priority": 2,
+   "last": "2026-09-21",
+   "diff": 2,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "mayukiito",
+   "type": "女優本人",
+   "priority": 3,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "S1_No1_Style",
+   "type": "メーカー公式",
+   "priority": 3,
+   "last": "2026-09-21",
+   "diff": 2,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "shinnakanodream",
+   "type": "メーカー公式",
+   "priority": 3,
+   "last": "2026-09-21",
+   "diff": 2,
+   "need": 1,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "umi_sea_0v0",
+   "type": "女優本人",
+   "priority": 3,
+   "last": null,
+   "diff": null,
+   "need": 3,
+   "stop": false,
+   "unread": false
+  },
+  {
+   "handle": "FANZAdougaX",
+   "type": "セール告知系",
+   "priority": 1,
+   "last": "2026-09-23",
+   "diff": 0,
+   "need": 1,
+   "stop": true,
+   "unread": false
+  },
+  {
+   "handle": "iyo_shinohara",
+   "type": "女優本人",
+   "priority": 1,
+   "last": "2026-09-22",
+   "diff": 1,
+   "need": 3,
+   "stop": true,
+   "unread": false
+  },
+  {
+   "handle": "PREMIUM_AV",
+   "type": "メーカー公式",
+   "priority": 1,
+   "last": "2026-09-23",
+   "diff": 0,
+   "need": 1,
+   "stop": true,
+   "unread": false
+  },
+  {
+   "handle": "waka_misono",
+   "type": "女優本人",
+   "priority": 1,
+   "last": "2026-09-23",
+   "diff": 0,
+   "need": 3,
+   "stop": true,
+   "unread": false
+  },
+  {
+   "handle": "IDEAPOCKETTER",
+   "type": "メーカー公式",
+   "priority": 2,
+   "last": "2026-09-23",
+   "diff": 0,
+   "need": 1,
+   "stop": true,
+   "unread": false
+  },
+  {
+   "handle": "MOODYZ_official",
+   "type": "メーカー公式",
+   "priority": 2,
+   "last": "2026-09-23",
+   "diff": 0,
+   "need": 1,
+   "stop": true,
+   "unread": false
+  },
+  {
+   "handle": "shiromine_miu",
+   "type": "女優本人",
+   "priority": 2,
+   "last": "2026-09-22",
+   "diff": 1,
+   "need": 3,
+   "stop": true,
+   "unread": false
+  }
+ ]
+}
