@@ -1,0 +1,18 @@
+{
+  "records": [
+    {
+      "id": "recJpXzMJs17PuVz7",
+      "createdTime": "2026-09-17T13:23:24.000Z",
+      "cellValuesByFieldId": {
+        "fldDrNzqVRb9LxxqD": "2026-09-24T12:00:00.000Z",
+        "fldFMfnZXxnhSviDr": "MIMK-244（楪カレン）はレビュー5件で平均4.4。\n収録内容・サンプル・出演情報はこちらから↓",
+        "fldSFgqqf40w8D2hQ": "W11-07 T1改 楪カレン MIMK-244",
+        "fldWn1DLzKGacDC26": { "id": "seliCklhPiE5mDsvA", "name": "T1改", "color": "blueLight2" },
+        "fldiGogHs9F7w5t2q": { "id": "sel9i6IZZTBkKbt5M", "name": "承認済", "color": "blueLight2" },
+        "fldkk8CfCKXyqPNFO": "https://app.vodnavi.jp/works/videoa/mimk00244",
+        "fldohCPGnEjkTQRV6": { "id": "selMapr1SjVidtkFe", "name": "サイト", "color": "grayLight2" }
+      }
+    }
+  ],
+  "metadata": { "totalRecordCount": 131, "_note": "2026-09-24 06:2x JST 読み戻し・予約日時 desc 上位 8 件のうち JST 当日（2026-09-24）の行のみを抜き出したもの" }
+}

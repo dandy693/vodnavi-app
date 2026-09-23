@@ -1,0 +1,43 @@
+{
+  "tag": "PREFLIGHT_TODAY",
+  "ts": "2026-09-23T21:28:55.623Z",
+  "date": "2026-09-24",
+  "n": 1,
+  "ngCount": 0,
+  "unrecovered": [],
+  "dumpUsed": false,
+  "existingRows": 0,
+  "metaDependent": {
+    "g9_utc_iso": "intendedJst（生成時の意図時刻）",
+    "g12_actress_not_recent": "actressNames（posts に出演女優の列が無い）",
+    "g19_t3_deadline": "material.ends_at（T3 の生成材料）",
+    "g20_t3_template": "material（T3 の生成材料）",
+    "g21_t3_not_reported": "material.campaign_title（T3 の生成材料）"
+  },
+  "posts": [
+    {
+      "recordId": "recJpXzMJs17PuVz7",
+      "name": "W11-07 T1改 楪カレン MIMK-244",
+      "text": "MIMK-244（楪カレン）はレビュー5件で平均4.4。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/mimk00244",
+      "kind": "T1",
+      "typeName": "T1改",
+      "statusName": "承認済",
+      "linkKindName": "サイト",
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-09-24T12:00:00.000Z",
+      "contentId": "mimk00244",
+      "hinban": "MIMK-244",
+      "actressNames": [],
+      "failures": [],
+      "skipped": [
+        {
+          "post": "W11-07 T1改 楪カレン MIMK-244",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        }
+      ]
+    }
+  ]
+}
