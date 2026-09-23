@@ -11443,3 +11443,12 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **【記録】`node` が出力完了後に終了時アサーション（`uv_handle_closing`・Windows の libuv）を出し exit=127 になった。** **検査結果とは無関係**——標準出力は最後まで出ており、`preflight-20260924.json` も書かれている（`ngCount: 0` を機械確認）。**exit コードを「NG あり（=1）」と読まないこと。**
 - **【厳守・残差】本検査は 06:3x 時点の値を見ている。配信（21:00）までの書き換えは検知できない**（FACT §13-5-1 / §13-5-2）。
 - 記録 → `management/_metrics/2026-W38/preflight/20260924/`
+
+#### 2026-09-24 06:52〜06:56 JST — 束2 段階② 朝の投稿 2 件（記録・読み戻し一致）
+
+- **投稿は HUMAN・2 件とも手直しなし**（生成本文と投稿本文を機械照合＝一致。**本文は手で打たず drafts から取り出した**——9/22 の Unicode エスケープ誤りの再発防止）。
+  - `20260924-FANZAdougaX`（A・06:52:45.266 JST・`2102878863294615887`）／`20260924-MOODYZ_official`（A・06:53:09.212 JST・`2102878963731501433`）
+- **X 上の実在（06:55:56 JST）**: 2 件とも **HTTP 200**（107,166 / 107,576 B）・**対照の無効 ID は 404（34,885 B）**。
+- **Airtable**: create 前に `x_replies` 全 40 件を読み **`20260924-` の reply_key 0 件・今回の target_post_url 0 件**（重複なし）→ create 2 件（createdTime 06:55:35 JST）→ `reply_post_id` / `posted_at` → `x_targets.last_reply_at` → **読み戻しで全項目一致・不一致 0**（`last_quote_at` は不変）。
+- **`x_replies` 累計 42 件。priority 3 の消費 0**（2 件とも priority 1・週枠 2/2 のまま）。
+- 記録 → `management/_metrics/2026-W38/bundle2/runs/20260924-am/README.md` §6

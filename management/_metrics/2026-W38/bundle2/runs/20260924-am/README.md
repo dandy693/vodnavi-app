@@ -53,3 +53,27 @@
 
 - **読み取りのみ。** 投稿・返信・フォロー・いいね・ブックマーク・**リストの編集**はしていない。
 - **本文は本 run ディレクトリと scratchpad に留め、FACT / TASK_BOARD には貼っていない。**
+
+## 6. 投稿と記録（2026-09-24 06:52〜06:56 JST）
+
+**投稿は HUMAN。CTO は記録のみ。** 2 件とも**手直しなし**（生成本文と投稿本文を機械照合して一致を確認＝`merge-and-verify.mjs`。9/22 の Unicode エスケープ誤りの再発防止として、本文は手で打たず drafts から取り出した）。
+
+| # | 対象 | 案 | 投稿 URL | 実配信（snowflake 復元） |
+|---|---|---|---|---|
+| 1 | `@FANZAdougaX` [`2102850518892920926`](https://x.com/FANZAdougaX/status/2102850518892920926) | **A**（手直しなし） | `https://x.com/vodnavi_jp/status/2102878863294615887` | **2026-09-24 06:52:45.266 JST** |
+| 2 | `@MOODYZ_official` [`2102789090336985344`](https://x.com/MOODYZ_official/status/2102789090336985344) | **A**（手直しなし） | `https://x.com/vodnavi_jp/status/2102878963731501433` | **2026-09-24 06:53:09.212 JST** |
+
+**X 上の実在（§13-5 / §21-6 の手順・06:55:56 JST）**: 2 件とも **HTTP 200**（107,166 B / 107,576 B）。**対照の無効 ID `1111111111111111111` は 404（34,885 B）＝判別力あり。**
+
+**Airtable（§10 の読み戻しまで）**
+
+| 段 | 実測 |
+|---|---|
+| 重複確認（create 前） | `x_replies` 全 40 件を読み、`20260924-` の reply_key **0 件**・今回の `target_post_url` **0 件** |
+| create | `recUWdHUK2ffBiyVk`（20260924-FANZAdougaX）/ `recPJl6SQDZt3FHat`（20260924-MOODYZ_official）・**createdTime 2026-09-24 06:55:35 JST** |
+| update（x_replies） | `reply_post_id` / `posted_at` を 2 件 |
+| update（x_targets） | `last_reply_at`＝`@FANZAdougaX` 06:52:45.266 / `@MOODYZ_official` 06:53:09.212 JST（**`last_quote_at` は触っていない**） |
+| **読み戻し** | **x_replies 2 件**（reply_key / target / target_post_url / reply_text / draft_used=A（`seliGVnNd1DJ5D1mY`）/ reply_post_id / posted_at）・**x_targets 2 件**（handle / status=稼働 / last_reply_at）＝**payload と全項目一致・不一致 0** |
+
+- **`x_replies` 累計＝42 件**（9/18 6・9/19 4・9/20 8・9/21 7・9/22 7＋Q 1・9/23 3・**9/24 2**）。
+- **priority 3 の消費は 0**（2 件とも priority 1。週枠は 2/2 のまま）。
