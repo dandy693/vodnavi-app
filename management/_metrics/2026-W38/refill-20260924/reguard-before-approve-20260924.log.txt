@@ -1,0 +1,9 @@
+OK rec1Ipk9CaVCvIqJK W12-01 T1改 石川澪 MIDV-229
+OK recJMBq6PD0znkCu4 W12-02 T1改 河北彩花（河北彩伽） SNOS-377
+OK rec1qLnx6QPiVYU4f W12-03 T1改 希望みう SNOS-299
+OK recL6QGC8yrcmcoUG W12-04 T1改 九野ひなの MIDV-855
+OK recla1McN4uCpaVW0 W12-05 T1改 二葉エマ ROYD-170
+OK recdDbsffixEc3NL4 W12-06 T1改 美谷朱音（美谷朱里） HNDB-221
+OK rec9goZ2IC3zigTyo W12-07 T1改 七沢みあ MIDV-174
+readback: 7 generated / 7 read / mismatch 0
+{"tag":"REGUARD_BEFORE_APPROVE","ts":"2026-09-23T22:07:28.507Z","n":7,"existing":131,"guardInputText":[{"name":"W12-01 T1改 石川澪 MIDV-229","textFrom":"airtable"},{"name":"W12-02 T1改 河北彩花（河北彩伽） SNOS-377","textFrom":"airtable"},{"name":"W12-03 T1改 希望みう SNOS-299","textFrom":"airtable"},{"name":"W12-04 T1改 九野ひなの MIDV-855","textFrom":"airtable"},{"name":"W12-05 T1改 二葉エマ ROYD-170","textFrom":"airtable"},{"name":"W12-06 T1改 美谷朱音（美谷朱里） HNDB-221","textFrom":"airtable"},{"name":"W12-07 T1改 七沢みあ MIDV-174","textFrom":"airtable"}],"readbackMismatch":0,"pass":true,"failures":[]}

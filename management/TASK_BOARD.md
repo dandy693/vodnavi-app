@@ -11452,3 +11452,17 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **Airtable**: create 前に `x_replies` 全 40 件を読み **`20260924-` の reply_key 0 件・今回の target_post_url 0 件**（重複なし）→ create 2 件（createdTime 06:55:35 JST）→ `reply_post_id` / `posted_at` → `x_targets.last_reply_at` → **読み戻しで全項目一致・不一致 0**（`last_quote_at` は不変）。
 - **`x_replies` 累計 42 件。priority 3 の消費 0**（2 件とも priority 1・週枠 2/2 のまま）。
 - 記録 → `management/_metrics/2026-W38/bundle2/runs/20260924-am/README.md` §6
+
+#### 2026-09-24 06:58〜07:09 JST — posts 補充 W12（9/26〜10/2・T1改 7 件）— **CSO 指示 ③②**
+
+- **契機**: 配信前再検査のための読み戻しで **9/26（土）以降の予約が 0 件**と判明（`CLAUDE.md` 手順 0 / FACT §13-9 の Check 条件）。補充前＝9/24 W11-07・9/25 W9-15 のみ。
+- **固定ステップどおり実施**: ①FANZA API 疎通 **HTTP 200**（07:01:11・`result_count=1`）→ ②`sync-actress-table.mjs` dry-run（`t_attempted=53 / u_rate=0 / n_added=1`）→ ③件数目視 → ④`--write`／**`TG_LAST_USED` は dump と完全一致・更新不要**。
+- **生成**: `generate-t1.mjs --slots 9/26〜10/2 21:00 --id-prefix W12 --recent X4,X5,X1,X2,X3 --existing dump(131 件)` → **7 件・全 PASS**（候補プール 188・g12 で 38 件除外）。
+- **投入 → 承認**: `ストック` で create（07:05:28 / 07:06:15）→ 読み戻し 7/7 → **`reguard-before-approve.mjs`（Airtable の読み戻し値でガード23件 再実行）＝mismatch 0・PASS**（`textFrom: airtable` 7/7）→ `承認済`＋予約日時 `…T12:00:00.000Z`（21:00 JST・**Z 終端**）→ 読み戻し → **JST 換算が想定枠と全件一致（機械検算）**。
+- **承認後に `sync-actress-table.mjs --write` を再実行**（§13-8-2 の定常ステップ・`n_added=5 / n_changed=2 / src_new=8`）。**平常時の `u_rate` は本日 2 回とも 0**（分布蓄積 6・7 点目）。
+- **投入後の日付別件数（9/24〜10/2）＝各 1 件・0 件の日なし。** 在庫アラート換算（承認済かつ 9/28 21:00 以降）＝**5 件（閾値 6 未満）＝本日 10:00 のアラートは鳴る見込み**。22:30 枠は 9 日とも空（CSO裁定 2026-09-17 22:5x ①）。
+- **🔴 停止・報告 2 件**（CTO は判定しない）:
+  1. **MCP `create_records_for_table` が `singleSelect` の `{"id": "sel..."}` 形式を受け付けなくなった**——7 件一括 create が **422 `Cannot parse value for field タイプ`**。`get_table_schema` で選択肢の実在を確認し**名前文字列**に変えて成功。**9/17（W11）は `{"id": ...}` で通っていた。** 原因は追っていない。
+  2. **`generate-t1.mjs` の見出しが「ガード17件」のまま**。**実行件数は実測 23**（`GUARDS` 22 ＋ `ASYNC_CHECKS` 1）で台帳と一致＝**表示のみ古い**。本番コードの文言変更は裁定事項のため触っていない。
+- `x-post-generator.mjs`（参照表 2 件）は**作業ツリーに保持・本コミットに含めない**（次のデプロイ便で同梱）。**g22 / g23 の保持を確認済み**。
+- 記録 → `management/_metrics/2026-W38/refill-20260924/README.md`

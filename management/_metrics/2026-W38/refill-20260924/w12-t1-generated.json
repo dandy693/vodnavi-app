@@ -1,0 +1,126 @@
+{
+  "generatedAtJst": "2026-09-24",
+  "pass": true,
+  "failures": [],
+  "posts": [
+    {
+      "id": "W12-01",
+      "name": "W12-01 T1改 石川澪 MIDV-229",
+      "kind": "T1",
+      "template": "X5",
+      "text": "ムーディーズのMIDV-229、出演は石川澪。121分収録。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/midv00229",
+      "contentId": "midv00229",
+      "hinban": "MIDV-229",
+      "actressNames": [
+        "石川澪"
+      ],
+      "scheduledUtc": "2026-09-26T12:00:00.000Z",
+      "intendedJst": "2026-09-26 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    },
+    {
+      "id": "W12-02",
+      "name": "W12-02 T1改 河北彩花（河北彩伽） SNOS-377",
+      "kind": "T1",
+      "template": "X1",
+      "text": "河北彩花（河北彩伽）の単体作品、SNOS-377。4K収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/snos00377",
+      "contentId": "snos00377",
+      "hinban": "SNOS-377",
+      "actressNames": [
+        "河北彩花（河北彩伽）"
+      ],
+      "scheduledUtc": "2026-09-27T12:00:00.000Z",
+      "intendedJst": "2026-09-27 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    },
+    {
+      "id": "W12-03",
+      "name": "W12-03 T1改 希望みう SNOS-299",
+      "kind": "T1",
+      "template": "X2",
+      "text": "希望みうのSNOS-299は148分の収録。4K収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/snos00299",
+      "contentId": "snos00299",
+      "hinban": "SNOS-299",
+      "actressNames": [
+        "希望みう"
+      ],
+      "scheduledUtc": "2026-09-28T12:00:00.000Z",
+      "intendedJst": "2026-09-28 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    },
+    {
+      "id": "W12-04",
+      "name": "W12-04 T1改 九野ひなの MIDV-855",
+      "kind": "T1",
+      "template": "X3",
+      "text": "MIDV-855（九野ひなの）はレビュー37件で平均4.7。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/midv00855",
+      "contentId": "midv00855",
+      "hinban": "MIDV-855",
+      "actressNames": [
+        "九野ひなの"
+      ],
+      "scheduledUtc": "2026-09-29T12:00:00.000Z",
+      "intendedJst": "2026-09-29 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    },
+    {
+      "id": "W12-05",
+      "name": "W12-05 T1改 二葉エマ ROYD-170",
+      "kind": "T1",
+      "template": "X5",
+      "text": "ロイヤルのROYD-170、出演は二葉エマ。148分収録。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/royd00170",
+      "contentId": "royd00170",
+      "hinban": "ROYD-170",
+      "actressNames": [
+        "二葉エマ"
+      ],
+      "scheduledUtc": "2026-09-30T12:00:00.000Z",
+      "intendedJst": "2026-09-30 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    },
+    {
+      "id": "W12-06",
+      "name": "W12-06 T1改 美谷朱音（美谷朱里） HNDB-221",
+      "kind": "T1",
+      "template": "X1",
+      "text": "美谷朱音（美谷朱里）の単体作品、HNDB-221。ハイビジョン収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/hndb00221",
+      "contentId": "hndb00221",
+      "hinban": "HNDB-221",
+      "actressNames": [
+        "美谷朱音（美谷朱里）"
+      ],
+      "scheduledUtc": "2026-10-01T12:00:00.000Z",
+      "intendedJst": "2026-10-01 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    },
+    {
+      "id": "W12-07",
+      "name": "W12-07 T1改 七沢みあ MIDV-174",
+      "kind": "T1",
+      "template": "X2",
+      "text": "七沢みあのMIDV-174は120分の収録。4K収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/midv00174",
+      "contentId": "midv00174",
+      "hinban": "MIDV-174",
+      "actressNames": [
+        "七沢みあ"
+      ],
+      "scheduledUtc": "2026-10-02T12:00:00.000Z",
+      "intendedJst": "2026-10-02 21:00",
+      "referenceJstDate": "2026-09-24",
+      "status": "ストック"
+    }
+  ]
+}
