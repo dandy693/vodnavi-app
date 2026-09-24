@@ -18,6 +18,7 @@
 | `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
 | `print-drafts.mjs` | `drafts.json` を人が読む形に出す（`node print-drafts.mjs drafts.json`） | なし |
 | `active-targets.mjs` | **抽出対象リストの組み立て**（`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`・priority 昇順・`--urls` で Chrome 抽出用 URL 一覧・CSO 連絡 2026-09-19 22:2x） | なし |
+| `follow-candidates.mjs` | **フォロー営業（CSO 指示 2026-09-24・FACT §26-13）**: 当日リプした対象投稿へ「いいね／返信」した一般ユーザーの候補を絞り込んで提示（自アカウント・`x_targets`・`follows.json` 既存・バッチ内重複を除外／1 日 10 件の残り枠で切る）→ HUMAN がフォロー → `--record` で `management/_metrics/x-follows/follows.json` に追記（読み戻し表示）。**CTO はフォローしない** | なし（Airtable の読み戻し JSON と follows.json のみ） |
 | `resolve-cid.mjs` | **t.co → content_id の解決（CSO判定 2026-09-24 の 3）**: 投稿内リンク（t.co）へ **1 回だけ GET（redirect: manual）** し、Location（`al.fanza.co.jp/?lurl=…`）の URL 文字列から content_id を抜く。**al.fanza 以降・`video.dmm.co.jp` へは到達しない**（クリック計測とツール層遮断の回避）。`--tco tco.tsv --fill input.txt` で作品コード欄（⑤）が空の行に付与し、読み戻して表示する **【運用則・CSO 確定 2026-09-24】短縮 URL から遷移先を知るときは Location を 1 段読むだけにする**（FACT §26-12-2 運用則）。`--hops` で段数を増やす使用は CSO の個別許可を要する | **t.co への GET 1 回のみ** |
 | `quote.mjs` / `PROMPT-Q.md` | **引用ポスト（基盤D・CSO 指示 2026-09-21 夜）**: 朝・夜の抽出結果のうち「知識あり（cache ヒット＝content_id 確定）」∧「メーカー公式・女優本人」∧「発売・配信開始・予約開始の投稿」から引用向き 1〜2 件を別枠で提示（案 Q1・Q2＝一言 40〜80 字 ＋ works 詳細 URL）。提示前に works ページの HTTP 200 を確認 | **Anthropic API ＋ works ページ GET**（app.vodnavi.jp のみ） |
 | `ga4-quote-sessions.mjs` | 引用ポスト経由の計測: GA4 Data API で `utm_medium=quote` のセッション（`hostName=app.vodnavi.jp`・utm_content＝ハンドル別・landingPage 別・日別）を出す。木曜集計に `weekly-report.mjs --ga4-quote` で添付 | **GA4 Data API**（read-only・鍵は §3） |
@@ -37,6 +38,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 | 1（旧・**補完用に残す**） | **CTO**（CSO 指示 2026-09-19 08:2x で HUMAN → CTO へ改訂・FACT §26-10-1） | Chrome 抽出（**1 日 2 回＝朝 06:00・夜 22:30**（**CSO 決定 2026-09-21 で朝 08:00 → 06:00／CSO判定 2026-09-24 で夜 21 時前 → 22:30**。旧時刻は訂正として残す）・窓は**前回抽出以降**＝夜 22:30 → 翌朝 06:00・読み取り専用＝投稿・返信・フォロー・いいね・ブックマークをしない）→ `@ハンドル｜投稿日時｜投稿URL｜本文｜リンク先 content_id` を `runs/<日付>/input.txt` に置く（本文は台帳に貼らない）。重複はツール側が `target_post_url` で排除 |
 | **1.5**（**朝 06:00 のみ**） | **CTO**（CSO裁定 2026-09-23・承認後〜配信前の再検査） | **`posts` の当日予約行を MCP で読み戻し**（`予約日時 = today`・`Asia/Tokyo`・フィールドは Name / 投稿文 / タイプ / ステータス / リンクURL / リンク種別 / 予約日時 / ポストID / エラー詳細）→ `node management/tools/x-post-refill/preflight-today.mjs --readback <readback.json> --date <YYYY-MM-DD> --json <out.json>`。**NG があれば提示の先頭に「🔴配信前NG」として出す**（レコード名・予約時刻・ガード ID・本文）。**是正は HUMAN。CTO は `posts` を書かない。Make シナリオ 5615632 は触らない。** 検査不能（`g9` / `g12` / `g19` / `g20` / `g21`）は毎回併記。**残差＝当日朝以降の書き換えは未検知**（FACT §13-5-2） |
 | 2 | CTO | ツール実行（下の手順 2〜5）→ 案を提示。**停止判定に当たった行はその旨を表示**（同一投稿 1 回のみ／同日同ハンドル 1 件／再返信間隔＝女優本人 3 日・それ以外 1 日）。**提示時に「同一企画 3 日連続」を手で確認して注記する**（CSO裁定 2026-09-23・ツールの停止判定には入れない） |
+| **2.5**（**記録の後**・CSO 指示 2026-09-24） | **CTO** | **フォロー営業の候補提示**: 当日リプした対象投稿の「いいね／返信」から**一般ユーザー 5〜10 件**を読み取り専用で拾い、`follow-candidates.mjs --candidates` で絞り込んで**ハンドル＋根拠**を提示（メーカー・女優・他アフィリエイター・自動投稿は除外し、除外件数のみ報告）。**HUMAN が 1 日 10 件までフォロー**（CTO はフォローしない）→ フォローした分を `--record` で `follows.json` に追記。**推定フォロー中が 300 に達したら停止して報告**（正は HUMAN の実測・FACT §26-13） |
 | 3 | HUMAN | 案を選んで投稿 → リプ URL を Claude Code に貼る。**夜の投稿は 22:30〜23:00**（CSO判定 2026-09-24 の 4） |
 | 4 | CTO | `record.mjs` の payload を Airtable MCP で書き込み → 読み戻しを報告（手順 7〜8） |
 
@@ -135,7 +137,7 @@ node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/
 
 - **【フォロワー数と指標開放の併記・CSO裁定 2026-09-23 朝 ⑦】木曜集計に次の 2 つを毎回併記する。**
   1. **X Analytics の概要タブに出る表示の有無**——原文「Detailed engagement metrics become available once you reach 50 followers.」（2026-09-23 06:5x 時点で表示あり）。**消えたら消えたと記録する**。
-  2. **現在のフォロワー数**（取得時刻付き）。
+  2. **現在のフォロワー数**（取得時刻付き）。**2026-09-24 HUMAN 実測＝フォロワー 13 / フォロー中 156**（CSO 連絡）。**フォロー営業の起点でもある**（FACT §26-13-1・停止閾値 300 まで残り 144）。
      - **【改訂・CSO判定 2026-09-24 の 7】フォロワー数は HUMAN が報告する。CTO の取得は打ち切る。**（2026-09-24 の木曜 PDCA で、`x.com/vodnavi_jp` と `x.com/i/account_analytics` への navigate が「Navigation to this domain is not allowed」で拒否され、プロフィールリンクのクリック経由でも数値が a11y ツリーに出ず 4 回試行して取得不能だった。**旧記述は訂正として残す。**）
   - **【厳守】フォロワー数を判定指標にしない**。判定は **2026-10-12・直近 14 日のテキスト投稿インプレッション中央値 ≥ 50**（§26-2）のみ。併記は**「詳細指標が取れない理由」を後から読めるようにするため**である。
 - **【自投稿の中央値・観測 2026-09-23 06:5x〜07:1x】2026-09-18〜09-22 の自投稿 7 件＝74 / 55 / 61 / 58 / 37 / 14 / 29、**中央値 55**（書き起こし・`runs/20260923-am/own_posts.json`）。**観測として記録するだけで、10/12 の判定を前倒ししない**（CSO裁定 2026-09-23 朝 ⑦）。**2W 表に 2026-09-20 の行が無い件は「未特定」**（同 ⑧。`W11-03` は X 直接 URL で 200＝配信されている）。

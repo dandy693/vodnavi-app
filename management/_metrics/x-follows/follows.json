@@ -1,0 +1,14 @@
+{
+ "baseline": {
+  "date": "2026-09-24",
+  "following": 156,
+  "followers": 13,
+  "source": "HUMAN 実測（CSO 連絡 2026-09-24）"
+ },
+ "limits": {
+  "perDay": 10,
+  "followingStop": 300
+ },
+ "note": "基盤D（フォロー営業）の記録。CSO 指示 2026-09-24。日付・ハンドル・根拠のみ。CTO はフォローしない（HUMAN が実行）。推定フォロー中は baseline.following + entries.length で、正は X 画面の実測。",
+ "entries": []
+}
