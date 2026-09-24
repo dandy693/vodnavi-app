@@ -18,9 +18,9 @@
 | `airtable-fields.json` | フィールド ID（`bundle1/x_targets_field_map.json` の写し） | — |
 | `print-drafts.mjs` | `drafts.json` を人が読む形に出す（`node print-drafts.mjs drafts.json`） | なし |
 | `active-targets.mjs` | **抽出対象リストの組み立て**（`status=稼働 ∧ no_repropose≠true ∧ reply_restriction≠あり`・priority 昇順・`--urls` で Chrome 抽出用 URL 一覧・CSO 連絡 2026-09-19 22:2x） | なし |
-| `follow-candidates.mjs` | **フォロー営業（CSO 指示 2026-09-24・FACT §26-13）**: 当日リプした対象投稿へ「いいね／返信」した一般ユーザーの候補を絞り込んで提示（自アカウント・`x_targets`・`follows.json` 既存・バッチ内重複を除外／1 日 10 件の残り枠で切る）→ HUMAN がフォロー → `--record` で `management/_metrics/x-follows/follows.json` に追記（読み戻し表示）。**CTO はフォローしない** | なし（Airtable の読み戻し JSON と follows.json のみ） |
+| `follow-candidates.mjs` | **フォロー営業（基盤D-2・CSO 指示 2026-09-24・FACT §26-13）**: 当日リプした対象投稿へ「いいね／返信」した一般ユーザーの候補を絞り込んで提示（自アカウント・`x_targets`・`follows.json` 既存・バッチ内重複を除外／1 日 10 件の残り枠で切る）→ HUMAN がフォロー → `--record` で `management/_metrics/x-follows/follows.json` に追記（読み戻し表示）。**CTO はフォローしない** | なし（Airtable の読み戻し JSON と follows.json のみ） |
 | `resolve-cid.mjs` | **t.co → content_id の解決（CSO判定 2026-09-24 の 3）**: 投稿内リンク（t.co）へ **1 回だけ GET（redirect: manual）** し、Location（`al.fanza.co.jp/?lurl=…`）の URL 文字列から content_id を抜く。**al.fanza 以降・`video.dmm.co.jp` へは到達しない**（クリック計測とツール層遮断の回避）。`--tco tco.tsv --fill input.txt` で作品コード欄（⑤）が空の行に付与し、読み戻して表示する **【運用則・CSO 確定 2026-09-24】短縮 URL から遷移先を知るときは Location を 1 段読むだけにする**（FACT §26-12-2 運用則）。`--hops` で段数を増やす使用は CSO の個別許可を要する | **t.co への GET 1 回のみ** |
-| `quote.mjs` / `PROMPT-Q.md` | **引用ポスト（基盤D・CSO 指示 2026-09-21 夜）**: 朝・夜の抽出結果のうち「知識あり（cache ヒット＝content_id 確定）」∧「メーカー公式・女優本人」∧「発売・配信開始・予約開始の投稿」から引用向き 1〜2 件を別枠で提示（案 Q1・Q2＝一言 40〜80 字 ＋ works 詳細 URL）。提示前に works ページの HTTP 200 を確認 | **Anthropic API ＋ works ページ GET**（app.vodnavi.jp のみ） |
+| `quote.mjs` / `PROMPT-Q.md` | **引用ポスト（基盤D-1・CSO 指示 2026-09-21 夜）**: 朝・夜の抽出結果のうち「知識あり（cache ヒット＝content_id 確定）」∧「メーカー公式・女優本人」∧「発売・配信開始・予約開始の投稿」から引用向き 1〜2 件を別枠で提示（案 Q1・Q2＝一言 40〜80 字 ＋ works 詳細 URL）。提示前に works ページの HTTP 200 を確認 | **Anthropic API ＋ works ページ GET**（app.vodnavi.jp のみ） |
 | `ga4-quote-sessions.mjs` | 引用ポスト経由の計測: GA4 Data API で `utm_medium=quote` のセッション（`hostName=app.vodnavi.jp`・utm_content＝ハンドル別・landingPage 別・日別）を出す。木曜集計に `weekly-report.mjs --ga4-quote` で添付 | **GA4 Data API**（read-only・鍵は §3） |
 | `weekly-report.mjs` | **木曜 PDCA 用の x_replies 集計**（priority 別・type 別・件数・`draft_used` 内訳・`got_like` / `got_reply` / `profile_click_delta` の記入状況・`--reactions reactions.json` で反応の取得済み件数・likes / replies / views・`--own-posts own_posts.csv` で自投稿インプレッション中央値との比較（観測のみ）・`--md` で表） | なし |
 | `*.test.mjs` | `node --test`（dry-run のみ・API も Airtable も呼ばない・裁定 H） | なし |
@@ -88,7 +88,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 8. 投稿後、HUMAN がリプ URL を貼る → `node management/tools/x-reply-drafts/record.mjs --posted --record <x_replies の rec> --target <x_targets の rec> --url https://x.com/vodnavi_jp/status/…`
    → `reply_post_id` / `posted_at`（snowflake 復元）/ `x_targets.last_reply_at` の update payload → **MCP `update_records_for_table` × 2 → 読み戻し**。
 
-## 引用ポスト（基盤D・CSO 指示 2026-09-21 夜・2026-09-22 朝の抽出から提示）
+## 引用ポスト（基盤D-1・CSO 指示 2026-09-21 夜・2026-09-22 朝の抽出から提示）
 
 - **位置づけ**: テスト枠を消費しない「基盤D」。1 日 1〜2 件。リプ営業と同じ台帳（`x_targets` / `x_replies`）を使う。**引用元＝メーカー公式・女優本人の「発売日・配信開始・予約開始」の投稿に限る**（セール・ランキング・イベントは引用しない）。**【CSO裁定 2026-09-22 朝】引用は「メーカー公式を主」とし、女優本人の投稿は引用よりリプを優先（両方候補のときはリプ）＝既定の `Q_quote.allowed_types` はメーカー公式のみ。Q は priority 3 の週 2 件カウントの対象外。ただし Q 全体で 1 日 2 件・works リンク投稿 1 日 3 件の上限は維持。初回の Q 記録（2026-09-22 09:21 `20260922-Q-honnaka_NN`）で `draft_used` の選択肢 Q（`sel1aoLdq9bvHguee`）が作成され `airtable-fields.json` に登録済み＝以後 typecast 不要。****直リンク投稿 1 日 1 件上限（af_id 006）とは別枠。ただし works ページへのリンク投稿は T1改（21:00・1 件）と合わせて 1 日 3 件まで＝引用は 1 日 2 件を上限に数える。**
 - **文面の型**: 一言（40〜80 字・作品の属性＝「この作品は〇〇系」「収録〇〇分・配信〇月〇日」）＋ 改行 ＋ `https://app.vodnavi.jp/works/<floor>/<content_id>?utm_source=x&utm_medium=quote&utm_content=<ハンドル>`。誘導語は不可（R5）・女優本人の引用は「名前＋さん、」で始める（R17）・容姿・内容の露骨な言及は不可（R6・R7）。**直接アフィリエイト URL は使わない**（自サイトリンク＝#PR は現行設計どおり不要・法務観点の未決はそのまま）。**URL はモデルが書かずツールが付ける**（`PROMPT-Q.md`）。
