@@ -1,0 +1,68 @@
+{
+ "generatedAtJst": "2026-09-25 05:39:15 JST",
+ "date": "2026-09-25",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "comebackbakunew",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 特定女優のファン表明・個人）"
+  },
+  {
+   "handle": "paizuri1007",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 好きな女優を列挙・個人）"
+  },
+  {
+   "handle": "5D4o1UDGxFNAXDI",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 自己紹介・40代・個人）"
+  },
+  {
+   "handle": "glaymilan",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 趣味の列挙・個人）"
+  },
+  {
+   "handle": "L1ZL28AY7r2oGHY",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 「平凡人」・実名表示・個人）"
+  },
+  {
+   "handle": "Aika_Gemma",
+   "reason": "FANZAdougaX 2102850518892920926 をリポスト（プロフィール: 一言のみ・個人）"
+  },
+  {
+   "handle": "yoshikira",
+   "reason": "PREMIUM_AV 2103016594406555944 をリポスト（プロフィール: 趣味・個人）"
+  },
+  {
+   "handle": "6RiAWbBcUoiOUGQ",
+   "reason": "FANZAdougaX 2102850518892920926 と fanza_sns 2102925993518215308 の 2 件をリポスト（プロフィール文なし）"
+  },
+  {
+   "handle": "kamachan40",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（表示名に趣味・プロフィール文は一覧に出ず）"
+  },
+  {
+   "handle": "HHheverything1",
+   "reason": "PREMIUM_AV 2103016594406555944 をリポスト（プロフィール: 「全てが謎」）"
+  }
+ ],
+ "skipped": [
+  {
+   "handle": "hosimiyaichika",
+   "reason": "PREMIUM_AV 2103016594406555944 をリポスト（女優本人）",
+   "why": "x_targets に登録済み（営業対象＝一般ユーザーではない）"
+  },
+  {
+   "handle": "booksdandykanda",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（店舗）",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  }
+ ],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 0,
+  "estimated": 156,
+  "stop": 300,
+  "remainingToStop": 144,
+  "reached": false
+ }
+}

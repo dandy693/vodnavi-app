@@ -1,0 +1,21 @@
+{
+ "resolvedAtJst": "2026-09-25 05:34:16 JST",
+ "maxHops": 1,
+ "items": [
+  {
+   "input": "https://t.co/TjffPW5JOe",
+   "chain": [
+    {
+     "url": "https://t.co/TjffPW5JOe",
+     "status": 301,
+     "location": "https://rcv.ixd.dmm.com/api/surl?urid=hBko53u1"
+    }
+   ],
+   "cid": null,
+   "floor": null,
+   "note": "maxHops 1 で未取得（al.fanza 以降はクリック計測が走るため既定では辿らない）"
+  }
+ ],
+ "byHandle": {},
+ "fill": null
+}

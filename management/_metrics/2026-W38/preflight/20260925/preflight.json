@@ -1,0 +1,49 @@
+{
+  "tag": "PREFLIGHT_TODAY",
+  "ts": "2026-09-24T20:31:42.227Z",
+  "date": "2026-09-25",
+  "n": 1,
+  "ngCount": 1,
+  "unrecovered": [],
+  "dumpUsed": false,
+  "existingRows": 0,
+  "metaDependent": {
+    "g9_utc_iso": "intendedJst（生成時の意図時刻）",
+    "g12_actress_not_recent": "actressNames（posts に出演女優の列が無い）",
+    "g19_t3_deadline": "material.ends_at（T3 の生成材料）",
+    "g20_t3_template": "material（T3 の生成材料）",
+    "g21_t3_not_reported": "material.campaign_title（T3 の生成材料）"
+  },
+  "posts": [
+    {
+      "recordId": "recUUSIYWPzfggtUt",
+      "name": "W9-15 TG-15 ガイド誘導 登録前の全体像",
+      "text": "はじめてのFANZA、「登録自体にお金がかかるのか」「支払いはカード以外に何が使えるのか」あたりで手が止まりがちです。\n登録から購入までの全体像を1本のガイドにまとめています↓",
+      "linkUrl": "https://app.vodnavi.jp/articles/fanza-first-guide?utm_source=x_vodnavi&utm_medium=social&utm_campaign=fanza_first_guide&utm_content=tg15",
+      "kind": "TG",
+      "typeName": "TG",
+      "statusName": "承認済",
+      "linkKindName": "サイト",
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-09-25T12:00:00.000Z",
+      "contentId": null,
+      "hinban": null,
+      "actressNames": [],
+      "failures": [
+        {
+          "post": "W9-15 TG-15 ガイド誘導 登録前の全体像",
+          "guard": "g16_article_interval",
+          "ng": "fanza-first-guide の前回使用 2026-09-25 から 0日（下限 4日）"
+        }
+      ],
+      "skipped": [
+        {
+          "post": "W9-15 TG-15 ガイド誘導 登録前の全体像",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,90 @@
+model=claude-opus-5 dry_run=false today_jst=20260925 counts={"lines":10,"generated":10,"stopped":0} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/Madonna_AVinfo/status/2103146198580568275（2026-09-25 00:35）
+    @Madonna_AVinfo (メーカー公式) status=generated replyKey=20260925-Madonna_AVinfo calls=1 in=730 out=644
+  A chars=37 weight=73 ok=true attempts=1
+     先行配信スタートおめでとうございます。売上げ本数順で1位からの発表ですね。
+  B chars=44 weight=81 ok=true attempts=1
+     収録124分で、本日9月25日からの先行配信ですね。売上げ本数順では1位に入っています。
+  C chars=39 weight=75 ok=true attempts=1
+     本日9月25日からの先行配信は、通常配信の開始までどのくらい期間がありますか？
+
+=== 対象 https://x.com/PREMIUM_AV/status/2103152235022856660（2026-09-25 00:59）
+    @PREMIUM_AV (メーカー公式) status=generated replyKey=20260925-PREMIUM_AV calls=1 in=768 out=1531
+  A chars=56 weight=112 ok=true attempts=1
+     釈アリスさんの単体作品が本日先行配信スタートとのこと、配信開始おめでとうございます。先行配信から追っていきます。
+  B chars=58 weight=109 ok=true attempts=1
+     本日先行配信スタートの1本は収録時間123分で、配信日は9月25日付になっていますね。長さのある一作になりそうです。
+  C chars=40 weight=80 ok=true attempts=1
+     本日の先行配信スタートから通常配信への切り替えは、どれくらい先の予定でしょうか。
+
+=== 対象 https://x.com/Fitch_official/status/2103151226225607061（2026-09-25 00:55）
+    @Fitch_official (メーカー公式) status=generated replyKey=20260925-Fitch_official calls=1 in=628 out=1361
+  A chars=48 weight=93 ok=true attempts=1
+     本日先行配信スタートおめでとうございます。実写版という打ち出しで9月25日から動き出すのですね。
+  B chars=43 weight=80 ok=true attempts=1
+     本日先行配信スタートということで、収録は121分、配信日は9月25日という表記ですね。
+  C chars=38 weight=76 ok=true attempts=1
+     本日からの先行配信は、通常配信への切り替えまでどのくらいの期間になりますか？
+
+=== 対象 https://x.com/attackers_av/status/2103137392798634406（2026-09-25 00:00）
+    @attackers_av (メーカー公式) status=generated replyKey=20260925-attackers_av calls=1 in=669 out=1374
+  A chars=48 weight=96 ok=true attempts=1
+     天川そらさん出演の新作、本日先行配信スタートおめでとうございます。初日からの反応が気になります。
+  B chars=59 weight=112 ok=true attempts=1
+     収録時間は124分で、9月25日からの先行配信スタートですね。囮捜査官シリーズとして腰を据えて見る長さになりそうです。
+  C chars=34 weight=68 ok=true attempts=1
+     先行配信の期間は、通常配信が始まるまでどのくらい続く予定でしょうか。
+
+=== 対象 https://x.com/kawaii_pr/status/2103137394866401643（2026-09-25 00:00）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20260925-kawaii_pr calls=1 in=654 out=1628
+  A chars=52 weight=101 ok=true attempts=1
+     本日先行配信スタートおめでとうございます。9月25日スタートの新作、どんな反応が集まるのか気になります。
+  B chars=55 weight=104 ok=true attempts=1
+     収録時間は119分とのことで、本日9月25日からの先行配信スタートですね。じっくり向き合う長さになりそうです。
+  C chars=44 weight=88 ok=true attempts=1
+     本日スタートの先行配信は、通常配信に切り替わるまでどれくらいの期間になりますでしょうか。
+
+=== 対象 https://x.com/honnaka_NN/status/2103137389300568137（2026-09-25 00:00）
+    @honnaka_NN (メーカー公式) status=generated replyKey=20260925-honnaka_NN calls=1 in=662 out=1167
+  A chars=56 weight=109 ok=true attempts=1
+     先行配信スタートおめでとうございます。本日9月25日からの配信開始とのことで、公開を待っていた方も多そうですね。
+  B chars=56 weight=106 ok=true attempts=1
+     本日先行配信スタートの本作は収録118分なんですね。9月25日からの配信開始とあわせて、尺の長さが気になります。
+  C chars=37 weight=74 ok=true attempts=1
+     先行配信から通常配信への切り替えは、どれくらいの期間を予定されていますか。
+
+=== 対象 https://x.com/wanz_official/status/2103137888166986023（2026-09-25 00:02）
+    @wanz_official (メーカー公式) status=generated replyKey=20260925-wanz_official calls=1 in=805 out=1659
+  A chars=51 weight=102 ok=true attempts=1
+     本日先行配信スタートおめでとうございます。主観バイノーラルという作りがどう効いてくるのか気になります。
+  B chars=55 weight=107 ok=true attempts=1
+     収録時間は122分とのことで、本日先行配信スタートの主観バイノーラル作品なのですね。長さも含めて気になります。
+  C chars=42 weight=84 ok=true attempts=1
+     本日スタートの先行配信は、通常の配信開始まではどのくらいの期間になりますでしょうか。
+
+=== 対象 https://x.com/FANZAdougaX/status/2103212921048412230（2026-09-25 05:00）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260925-FANZAdougaX calls=1 in=355 out=1109
+  A chars=52 weight=94 ok=true attempts=1
+     第3弾は朝9:59までなのですね。50％OFFの締め切りが朝のうちだと、起きてすぐ見ておきたくなります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=44 weight=78 ok=true attempts=1
+     第3弾の50％OFFは、作品リストに載っているものだけが朝9:59までの対象でしょうか？
+
+=== 対象 https://x.com/MOODYZ_official/status/2103145689752711449（2026-09-25 00:33）
+    @MOODYZ_official (メーカー公式) status=generated replyKey=20260925-MOODYZ_official calls=1 in=763 out=976
+  A chars=56 weight=105 ok=true attempts=1
+     先行配信スタートおめでとうございます。シリーズ累計400,000部超という原作が実写になる流れは気になりますね。
+  B chars=64 weight=115 ok=true attempts=1
+     収録時間121分で、配信開始は9月25日からですね。シリーズ累計400,000部超の原作のどのエピソードが入るのか気になります。
+  C chars=50 weight=93 ok=true attempts=1
+     シリーズ累計400,000部超の原作エピソードは、今回の実写版で何話分が収録されているのでしょうか。
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2103144939093967340（2026-09-25 00:30）
+    @IDEAPOCKETTER (メーカー公式) status=generated replyKey=20260925-IDEAPOCKETTER calls=2 in=1487 out=1844
+  A chars=52 weight=104 ok=true attempts=1
+     先行配信スタートおめでとうございます。本日から公開の桜空ももさんの新作、気になっている方も多そうですね。
+  B chars=57 weight=108 ok=true attempts=2
+     本日先行配信スタートの作品、収録は122分ですね。9月25日配信で、この尺だと腰を据えて向き合う形になりそうです。
+  C chars=38 weight=76 ok=true attempts=1
+     本日スタートの先行配信は、通常配信が始まるまでどれくらいの期間になりますか？

@@ -1,0 +1,776 @@
+{
+  "generated_at": "2026-09-24T20:39:23.365Z",
+  "today_jst": "20260925",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "79d1227310ad4e06ca3cd99afbc9339d35b3cba13a08d4e37ba112b63567ed4b",
+  "counts": {
+    "lines": 10,
+    "generated": 10,
+    "stopped": 0
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "Madonna_AVinfo",
+      "postUrl": "https://x.com/Madonna_AVinfo/status/2103146198580568275",
+      "targetPostId": "2103146198580568275",
+      "postedAtJst": "2026-09-25 00:35",
+      "target": {
+        "id": "rec81cW6UPEmdwPZQ",
+        "handle": "Madonna_AVinfo",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-18T13:23:19.000Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "jur00854",
+        "title": "世界を股にかけるイイオンナ 水川スミレ 引退 発情密着お泊りデート＆別れを惜しむ中出しSEX",
+        "fetched_at": "2026-09-22 03:33:17.395+00"
+      },
+      "replyKey": "20260925-Madonna_AVinfo",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。売上げ本数順で1位からの発表ですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 37,
+              "weight": 73
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録124分で、本日9月25日からの先行配信ですね。売上げ本数順では1位に入っています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 81
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "本日9月25日からの先行配信は、通常配信の開始までどのくらい期間がありますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 39,
+              "weight": 75
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 730,
+        "output_tokens": 644,
+        "cache_creation_input_tokens": 3676,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2103152235022856660",
+      "targetPostId": "2103152235022856660",
+      "postedAtJst": "2026-09-25 00:59",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T12:20:51.104Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "pred00901",
+        "title": "囚われた女捜査官が超強力吸引性器具（吸うやつ）でクリトリス・乳首を執拗に尋問され脳バグ痙攣絶頂 釈アリス",
+        "fetched_at": "2026-09-21 20:39:39.019+00"
+      },
+      "replyKey": "20260925-PREMIUM_AV",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "釈アリスさんの単体作品が本日先行配信スタートとのこと、配信開始おめでとうございます。先行配信から追っていきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 112
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "本日先行配信スタートの1本は収録時間123分で、配信日は9月25日付になっていますね。長さのある一作になりそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 58,
+              "weight": 109
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "本日の先行配信スタートから通常配信への切り替えは、どれくらい先の予定でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 80
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 768,
+        "output_tokens": 1531,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2103151226225607061",
+      "targetPostId": "2103151226225607061",
+      "postedAtJst": "2026-09-25 00:55",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:16.204Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "nima00086",
+        "title": "実写版！ムラムラしたので通勤中にお持ち帰りされてみた 彩月七緒",
+        "fetched_at": "2026-09-18 17:08:23.601+00"
+      },
+      "replyKey": "20260925-Fitch_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "本日先行配信スタートおめでとうございます。実写版という打ち出しで9月25日から動き出すのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 93
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "本日先行配信スタートということで、収録は121分、配信日は9月25日という表記ですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 80
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "本日からの先行配信は、通常配信への切り替えまでどのくらいの期間になりますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 38,
+              "weight": 76
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 628,
+        "output_tokens": 1361,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "attackers_av",
+      "postUrl": "https://x.com/attackers_av/status/2103137392798634406",
+      "targetPostId": "2103137392798634406",
+      "postedAtJst": "2026-09-25 00:00",
+      "target": {
+        "id": "recGCCpEJDzLNEkLo",
+        "handle": "attackers_av",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T22:22:32.318Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "atid00698",
+        "title": "媚薬痴●に堕ちた囮捜査官 天川そら",
+        "fetched_at": "2026-09-24 00:31:40.375+00"
+      },
+      "replyKey": "20260925-attackers_av",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "天川そらさん出演の新作、本日先行配信スタートおめでとうございます。初日からの反応が気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録時間は124分で、9月25日からの先行配信スタートですね。囮捜査官シリーズとして腰を据えて見る長さになりそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 59,
+              "weight": 112
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "先行配信の期間は、通常配信が始まるまでどのくらい続く予定でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 34,
+              "weight": 68
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 669,
+        "output_tokens": 1374,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2103137394866401643",
+      "targetPostId": "2103137394866401643",
+      "postedAtJst": "2026-09-25 00:00",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:44.396Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "cawb00039",
+        "title": "制服妄想エロティシズム。いつも制服のことで頭がいっぱいで我慢汁止まらない。",
+        "fetched_at": "2026-09-24 14:27:17.335+00"
+      },
+      "replyKey": "20260925-kawaii_pr",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "本日先行配信スタートおめでとうございます。9月25日スタートの新作、どんな反応が集まるのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 101
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録時間は119分とのことで、本日9月25日からの先行配信スタートですね。じっくり向き合う長さになりそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 104
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "本日スタートの先行配信は、通常配信に切り替わるまでどれくらいの期間になりますでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 88
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 654,
+        "output_tokens": 1628,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2103137389300568137",
+      "targetPostId": "2103137389300568137",
+      "postedAtJst": "2026-09-25 00:00",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:24:46.108Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "hmn00904",
+        "title": "私の巨乳に目をつけられてー旦那が不在の日中、義父と町内会のオヤジたちにストリップと中出し輪●され続けています 彩月七緒",
+        "fetched_at": "2026-09-24 04:43:19.107+00"
+      },
+      "replyKey": "20260925-honnaka_NN",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。本日9月25日からの配信開始とのことで、公開を待っていた方も多そうですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 109
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "本日先行配信スタートの本作は収録118分なんですね。9月25日からの配信開始とあわせて、尺の長さが気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 106
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "先行配信から通常配信への切り替えは、どれくらいの期間を予定されていますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 37,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 662,
+        "output_tokens": 1167,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "wanz_official",
+      "postUrl": "https://x.com/wanz_official/status/2103137888166986023",
+      "targetPostId": "2103137888166986023",
+      "postedAtJst": "2026-09-25 00:02",
+      "target": {
+        "id": "recrSDMfNaoitnuaV",
+        "handle": "wanz_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T12:21:41.129Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "waaa00697",
+        "title": "「結衣がドピュっとイカせてアゲるぅ」アナタを見つめて鬼ジコりオナサポ昇天クリニック そそる小悪魔チンこきナースがニヤニヤ寸止め囁き淫語！［脳がトロける主観バイノーラル］ 波多野結衣",
+        "fetched_at": "2026-09-20 18:21:58.502+00"
+      },
+      "replyKey": "20260925-wanz_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "本日先行配信スタートおめでとうございます。主観バイノーラルという作りがどう効いてくるのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 102
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録時間は122分とのことで、本日先行配信スタートの主観バイノーラル作品なのですね。長さも含めて気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 55,
+              "weight": 107
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "本日スタートの先行配信は、通常の配信開始まではどのくらいの期間になりますでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 84
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 805,
+        "output_tokens": 1659,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2103212921048412230",
+      "targetPostId": "2103212921048412230",
+      "postedAtJst": "2026-09-25 05:00",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-23T21:52:45.266Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-FANZAdougaX",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第3弾は朝9:59までなのですね。50％OFFの締め切りが朝のうちだと、起きてすぐ見ておきたくなります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 94
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第3弾の50％OFFは、作品リストに載っているものだけが朝9:59までの対象でしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 78
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 355,
+        "output_tokens": 1109,
+        "cache_creation_input_tokens": 3654,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 9,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2103145689752711449",
+      "targetPostId": "2103145689752711449",
+      "postedAtJst": "2026-09-25 00:33",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-23T21:53:09.212Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "mimk00288",
+        "title": "シリーズ累計400，000部超 めちゃエロいけど誘いに乗ったら破滅しそうな子 実写版 SNSへ掲載されるたび大バズリした話題のエロストーリーを実写化。 宮下玲奈",
+        "fetched_at": "2026-09-24 14:20:44.226+00"
+      },
+      "replyKey": "20260925-MOODYZ_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。シリーズ累計400,000部超という原作が実写になる流れは気になりますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 105
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録時間121分で、配信開始は9月25日からですね。シリーズ累計400,000部超の原作のどのエピソードが入るのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 64,
+              "weight": 115
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "シリーズ累計400,000部超の原作エピソードは、今回の実写版で何話分が収録されているのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 93
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 763,
+        "output_tokens": 976,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 10,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2103144939093967340",
+      "targetPostId": "2103144939093967340",
+      "postedAtJst": "2026-09-25 00:30",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-22T22:06:02.608Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "ipzz00912",
+        "title": "最高級マゾ奴● スキャンダルを握られ脅され嬲られ犯●れて被虐快楽に跪く気高き女社長のアブノーマル調教記録 桜空もも",
+        "fetched_at": "2026-09-22 22:54:38.023+00"
+      },
+      "replyKey": "20260925-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "先行配信スタートおめでとうございます。本日から公開の桜空ももさんの新作、気になっている方も多そうですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 52,
+              "weight": 104
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "本日先行配信スタートの作品、収録は122分ですね。9月25日配信で、この尺だと腰を据えて向き合う形になりそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 57,
+              "weight": 108
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "本日先行配信スタートの本作は収録122分で、9月25日0時からの配信開始となっていますね。",
+              "failures": [
+                {
+                  "rule": "R13",
+                  "detail": "相手の投稿時刻への言及: 0時（投稿日時 2026-09-25 00:30・本文に無い）"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "本日スタートの先行配信は、通常配信が始まるまでどれくらいの期間になりますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 38,
+              "weight": 76
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1487,
+        "output_tokens": 1844,
+        "cache_creation_input_tokens": 3632,
+        "cache_read_input_tokens": 3676,
+        "calls": 2
+      }
+    }
+  ]
+}
