@@ -1,0 +1,724 @@
+{
+ "records": [
+  {
+   "id": "rec1fqChrGPQXGNmQ",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260918-FANZAdougaX",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recEfvfO65s5S0o1f",
+      "name": "@FANZAdougaX"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-18T13:21:33.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2100938278275064225"
+   }
+  },
+  {
+   "id": "rec5Mu9X5RqBm2obw",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-MOODYZ_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recuIj1YV4CmsxgJN",
+      "name": "@MOODYZ_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T23:02:17.671Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101809200032788851"
+   }
+  },
+  {
+   "id": "recAGVCP4e5mhHasV",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-IDEAPOCKETTER",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec3EWHDnA1tnjPzL",
+      "name": "@IDEAPOCKETTER"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T23:03:13.091Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101809432481161224"
+   }
+  },
+  {
+   "id": "recApCKJBETWQ700W",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-IDEAPOCKETTER",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec3EWHDnA1tnjPzL",
+      "name": "@IDEAPOCKETTER"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T00:15:33.799Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101465250864459902",
+    "fldvTCPxXU4ydY7O7": true
+   }
+  },
+  {
+   "id": "recB0chKStqPLLxSq",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260918-PREMIUM_AV",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recHwHcrfE8LFcRdW",
+      "name": "@PREMIUM_AV"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-18T13:24:04.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2100938911816224853"
+   }
+  },
+  {
+   "id": "recBEFtimredtcRvV",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-waka_misono",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recG1UOdyZhtseqWV",
+      "name": "@waka_misono"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T16:59:32.817Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2102442687349891356"
+   }
+  },
+  {
+   "id": "recCIlOizxhxDvuHY",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260918-honnaka_NN",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec0nGddlSPhwOqcI",
+      "name": "@honnaka_NN"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-18T13:27:02.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2100939657118937355"
+   }
+  },
+  {
+   "id": "recDUvC3rzBqtYf6z",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-FANZAdougaX",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recEfvfO65s5S0o1f",
+      "name": "@FANZAdougaX"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T22:23:28.700Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101799431620477291"
+   }
+  },
+  {
+   "id": "recFe7fM6ANoJbwix",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-MOODYZ_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recuIj1YV4CmsxgJN",
+      "name": "@MOODYZ_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T00:14:39.708Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101465023990444400"
+   }
+  },
+  {
+   "id": "recIbAVD0oFDyJwCb",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-shiromine_miu",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recHRnE8hlXY0CsX5",
+      "name": "@shiromine_miu"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T00:12:08.724Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2102189166448747004"
+   }
+  },
+  {
+   "id": "recIcT6hLLbXbE7Jb",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-attackers_av",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recGCCpEJDzLNEkLo",
+      "name": "@attackers_av"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T22:22:32.318Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101799195137200513"
+   }
+  },
+  {
+   "id": "recJCqaVX3xBujdG7",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-S1_No1_Style",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recItkceKqz7rPmzD",
+      "name": "@S1_No1_Style"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T12:39:58.561Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101652588454416580"
+   }
+  },
+  {
+   "id": "recKkp3j62z30mk2P",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260918-kawaii_pr",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec00dXKxyuZuZzEY",
+      "name": "@kawaii_pr"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-18T13:25:16.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2100939213181206773"
+   }
+  },
+  {
+   "id": "recLmwOTEyzli3858",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260918-Madonna_AVinfo",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec81cW6UPEmdwPZQ",
+      "name": "@Madonna_AVinfo"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-18T13:23:19.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2100938725194977383"
+   }
+  },
+  {
+   "id": "recMKmBxtJ01OrAeb",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260918-Fitch_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec4XV4eU5UQUntIZ",
+      "name": "@Fitch_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-18T13:26:03.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2100939409021702654"
+   }
+  },
+  {
+   "id": "recMWf5qzahKX7iti",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260919-honnaka_NN",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec0nGddlSPhwOqcI",
+      "name": "@honnaka_NN"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-19T03:24:46.108Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101150478033936813"
+   }
+  },
+  {
+   "id": "recPJl6SQDZt3FHat",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260924-MOODYZ_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recuIj1YV4CmsxgJN",
+      "name": "@MOODYZ_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-23T21:53:09.212Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102878963731501433"
+   }
+  },
+  {
+   "id": "recSUBFNxpJ4E5nQg",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-MOODYZ_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recuIj1YV4CmsxgJN",
+      "name": "@MOODYZ_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T00:13:09.218Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2102189420178964939"
+   }
+  },
+  {
+   "id": "recStufnxeOo6yU1p",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-IDEAPOCKETTER",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec3EWHDnA1tnjPzL",
+      "name": "@IDEAPOCKETTER"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T00:14:04.296Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2102189651192946809"
+   }
+  },
+  {
+   "id": "recT30akLekLk9Tos",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-PREMIUM_AV",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recHwHcrfE8LFcRdW",
+      "name": "@PREMIUM_AV"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T00:14:05.269Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101464879542747487"
+   }
+  },
+  {
+   "id": "recTWxdUifMOVXNCf",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-shirot_AV_chosa",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recPYIDdkQ7EC0w0q",
+      "name": "@shirot_AV_chosa"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T22:24:12.252Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2101799614290796558"
+   }
+  },
+  {
+   "id": "recTYezDasb2cTwaT",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-Fitch_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec4XV4eU5UQUntIZ",
+      "name": "@Fitch_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T12:37:44.047Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101652024261841381"
+   }
+  },
+  {
+   "id": "recToPt5j8xgeko8p",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260923-PREMIUM_AV",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recHwHcrfE8LFcRdW",
+      "name": "@PREMIUM_AV"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T22:06:49.938Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102520018240180402"
+   }
+  },
+  {
+   "id": "recUWdHUK2ffBiyVk",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260924-FANZAdougaX",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recEfvfO65s5S0o1f",
+      "name": "@FANZAdougaX"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-23T21:52:45.266Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102878863294615887"
+   }
+  },
+  {
+   "id": "recUo7cKOQjY8V7eA",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-iyo_shinohara",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec916RFclGkjRpeb",
+      "name": "@iyo_shinohara"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T00:11:27.446Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2102188993316360282"
+   }
+  },
+  {
+   "id": "recVlfdlZJuyjGR73",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-Q-honnaka_NN",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec0nGddlSPhwOqcI",
+      "name": "@honnaka_NN"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T00:10:31.456Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "Q"
+    },
+    "fld3EPVhYRfBuvEZL": "2102188758477209635"
+   }
+  },
+  {
+   "id": "recXOW0tChnz7TEc9",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-PREMIUM_AV",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recHwHcrfE8LFcRdW",
+      "name": "@PREMIUM_AV"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T22:23:10.911Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2101799357008040412",
+    "fldvTCPxXU4ydY7O7": true,
+    "fldm3bUI9JpPqGH4u": true
+   }
+  },
+  {
+   "id": "recZPc8aGD6aCQwRz",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-Aizawa_miyu03",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recld7SvHioWfSb8o",
+      "name": "@Aizawa_miyu03"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T12:38:41.747Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2101652266273153150"
+   }
+  },
+  {
+   "id": "recbvFoQg0PMeNDgD",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-FalenoEvent",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recByvjAnovkOIiu3",
+      "name": "@FalenoEvent"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T12:39:01.954Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101652351027417222"
+   }
+  },
+  {
+   "id": "receBnEZCXDjgMI29",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260919-waka_misono",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recG1UOdyZhtseqWV",
+      "name": "@waka_misono"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-19T03:31:09.852Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101152087572959295"
+   }
+  },
+  {
+   "id": "recf5YAS6e449QGng",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260920-FANZAdougaX",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recEfvfO65s5S0o1f",
+      "name": "@FANZAdougaX"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T00:13:16.988Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101464677037592748"
+   }
+  },
+  {
+   "id": "recgaV8o604O21uWk",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260919-FANZAdougaX",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recEfvfO65s5S0o1f",
+      "name": "@FANZAdougaX"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-19T03:30:22.865Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101151890495172961"
+   }
+  },
+  {
+   "id": "reclMnP7TvQBzz4JS",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-fanza_sns",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "reccuopQfFX8dSjwS",
+      "name": "@fanza_sns"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-21T13:28:26.243Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102027172022300967"
+   }
+  },
+  {
+   "id": "recpv0QJYUXdRaGwr",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-shinnakanodream",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recQDdtUugpQKcOUO",
+      "name": "@shinnakanodream"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-21T13:28:58.855Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102027308806865271"
+   }
+  },
+  {
+   "id": "recs23DIJZp2l9cFv",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260923-IDEAPOCKETTER",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec3EWHDnA1tnjPzL",
+      "name": "@IDEAPOCKETTER"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T22:06:02.608Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102519819723776449"
+   }
+  },
+  {
+   "id": "recstYy1MTRiNGCB7",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-shirot_AV_chosa",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recPYIDdkQ7EC0w0q",
+      "name": "@shirot_AV_chosa"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T00:15:35.260Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102190032723603459"
+   }
+  },
+  {
+   "id": "recumgnriipAAsKW9",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-kawaii_pr",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec00dXKxyuZuZzEY",
+      "name": "@kawaii_pr"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-21T13:27:44.396Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2102026996503155152"
+   }
+  },
+  {
+   "id": "recvIarMM33BACUia",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260922-FANZAdougaX",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recEfvfO65s5S0o1f",
+      "name": "@FANZAdougaX"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T16:55:55.369Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102441775306822090"
+   }
+  },
+  {
+   "id": "recwHOKZwchb1duey",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-Fitch_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec4XV4eU5UQUntIZ",
+      "name": "@Fitch_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-21T13:27:16.204Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "C"
+    },
+    "fld3EPVhYRfBuvEZL": "2102026878257385494"
+   }
+  },
+  {
+   "id": "recwx4kIDrcai15L3",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260921-S1_No1_Style",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recItkceKqz7rPmzD",
+      "name": "@S1_No1_Style"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-20T23:03:36.437Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2101809530401444081"
+   }
+  },
+  {
+   "id": "recx3kaa9YkFzLNFo",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260923-MOODYZ_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "recuIj1YV4CmsxgJN",
+      "name": "@MOODYZ_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-22T22:05:02.671Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "A"
+    },
+    "fld3EPVhYRfBuvEZL": "2102519568329748946"
+   }
+  },
+  {
+   "id": "recxGuuN1g88fY53w",
+   "cellValuesByFieldId": {
+    "fld63cUuOti14Vlnj": "20260919-Fitch_official",
+    "fldPt0Ob7S3llquKB": [
+     {
+      "id": "rec4XV4eU5UQUntIZ",
+      "name": "@Fitch_official"
+     }
+    ],
+    "fldACpFxznVDTtmWu": "2026-09-19T12:50:47.000Z",
+    "fldeXo1Hzlb5xytfv": {
+     "name": "B"
+    },
+    "fld3EPVhYRfBuvEZL": "2101292922088091657"
+   }
+  }
+ ],
+ "metadata": {
+  "totalRecordCount": 42
+ }
+}

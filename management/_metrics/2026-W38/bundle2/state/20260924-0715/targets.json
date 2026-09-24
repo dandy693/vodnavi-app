@@ -1,0 +1,587 @@
+{
+ "records": [
+  {
+   "id": "rec00dXKxyuZuZzEY",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@kawaii_pr",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 66818
+   }
+  },
+  {
+   "id": "rec0nGddlSPhwOqcI",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@honnaka_NN",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 12535
+   }
+  },
+  {
+   "id": "rec1fN2VM1pI5l2vf",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@5may_itsukaichi",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 181000
+   }
+  },
+  {
+   "id": "rec3EWHDnA1tnjPzL",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@IDEAPOCKETTER",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 2,
+    "fldECZiqBvFOJnY49": 176000
+   }
+  },
+  {
+   "id": "rec4XV4eU5UQUntIZ",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@Fitch_official",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 60181
+   }
+  },
+  {
+   "id": "rec81cW6UPEmdwPZQ",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@Madonna_AVinfo",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 90000
+   }
+  },
+  {
+   "id": "rec8tvAJ3ho0kzNOC",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@nao_satsuki",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 234821
+   }
+  },
+  {
+   "id": "rec916RFclGkjRpeb",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@iyo_shinohara",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 150858
+   }
+  },
+  {
+   "id": "recByvjAnovkOIiu3",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@FalenoEvent",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 21000
+   }
+  },
+  {
+   "id": "recEfvfO65s5S0o1f",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@FANZAdougaX",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "セール告知系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 94218
+   }
+  },
+  {
+   "id": "recFlyz4vYucvCWgd",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@mio_sakai_",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 29000
+   }
+  },
+  {
+   "id": "recG1UOdyZhtseqWV",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@waka_misono",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 167551
+   }
+  },
+  {
+   "id": "recGCCpEJDzLNEkLo",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@attackers_av",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 61000
+   }
+  },
+  {
+   "id": "recGgGiVMfR8Bptcp",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@DMM10sale",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "セール告知系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 51219
+   }
+  },
+  {
+   "id": "recHRnE8hlXY0CsX5",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@shiromine_miu",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 2,
+    "fldECZiqBvFOJnY49": 302000
+   }
+  },
+  {
+   "id": "recHwHcrfE8LFcRdW",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@PREMIUM_AV",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 70600
+   }
+  },
+  {
+   "id": "recItkceKqz7rPmzD",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@S1_No1_Style",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 3,
+    "fldECZiqBvFOJnY49": 359343
+   }
+  },
+  {
+   "id": "recJK4pYv75Fy1Fsz",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@AViiyone",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "レビュー系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 7907
+   }
+  },
+  {
+   "id": "recLjDdc7R8Q5Hi1Q",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@sakuramio_X",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 13000
+   }
+  },
+  {
+   "id": "recMrhIc4oQ6hpG2o",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@karin_kitaoka_",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 101900
+   }
+  },
+  {
+   "id": "recNeii0IxsmSm4Sb",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@sodstarofficial",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 18000
+   }
+  },
+  {
+   "id": "recPYIDdkQ7EC0w0q",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@shirot_AV_chosa",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "レビュー系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 4630
+   }
+  },
+  {
+   "id": "recQDdtUugpQKcOUO",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@shinnakanodream",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 3,
+    "fldECZiqBvFOJnY49": 239909
+   }
+  },
+  {
+   "id": "recSPWZyyoFXIFcsV",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@hinako_matsui",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 2
+   }
+  },
+  {
+   "id": "recUTLt9vfrI2Kcf6",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@ran_tpowers",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 86005
+   }
+  },
+  {
+   "id": "recVHlk4mHn7C4rAx",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@fanza_meireview",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "レビュー系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 9043
+   }
+  },
+  {
+   "id": "recVN501h1w7Krify",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@rinrin_dayou",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 2
+   }
+  },
+  {
+   "id": "recXsIsbNwypxFNLJ",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@hosimiyaichika",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 2
+   }
+  },
+  {
+   "id": "recZgymhLNWcWuMw7",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@piyomaru_cmore",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 2
+   }
+  },
+  {
+   "id": "recaVcZyYkTGSdbb4",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@Kizukiamane",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 16256
+   }
+  },
+  {
+   "id": "reccuopQfFX8dSjwS",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@fanza_sns",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "セール告知系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 2,
+    "fldECZiqBvFOJnY49": 198968
+   }
+  },
+  {
+   "id": "recfvEirsYNX6h6Ga",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@azusa_hikari_",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 257000
+   }
+  },
+  {
+   "id": "recgGfmVPiZ2RWs6a",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@PRESTIGE_PR2020",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 50658
+   }
+  },
+  {
+   "id": "recglKiGDQ9HyneeB",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@saki_seino",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 71038
+   }
+  },
+  {
+   "id": "rechIr8AvsSHpDbBN",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@Miyoshi_style",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 2
+   }
+  },
+  {
+   "id": "recld7SvHioWfSb8o",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@Aizawa_miyu03",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 201033
+   }
+  },
+  {
+   "id": "recnTmQTtODPKNgoO",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@mayukiito",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 3,
+    "fldECZiqBvFOJnY49": 1139796
+   }
+  },
+  {
+   "id": "recpZbxpXWLU5POkF",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@umi_sea_0v0",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "女優本人"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 3,
+    "fldECZiqBvFOJnY49": 1086536
+   }
+  },
+  {
+   "id": "recrSDMfNaoitnuaV",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@wanz_official",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 1,
+    "fldECZiqBvFOJnY49": 47000
+   }
+  },
+  {
+   "id": "recsUaZoSgPvqFAcu",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@otona_rank_info",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "レビュー系"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    }
+   }
+  },
+  {
+   "id": "recuIj1YV4CmsxgJN",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@MOODYZ_official",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "稼働"
+    },
+    "fldxeGSQKtSZtwaPG": 2,
+    "fldECZiqBvFOJnY49": 259717
+   }
+  },
+  {
+   "id": "recyp3I87NxJey8LV",
+   "cellValuesByFieldId": {
+    "fldaWVD2Hs0AeWURb": "@SOFT_ON_DEMAND",
+    "fldIgWtSHvJ44v5Pi": {
+     "name": "メーカー公式"
+    },
+    "fldHHsmMVoqkFZXpe": {
+     "name": "候補"
+    },
+    "fldxeGSQKtSZtwaPG": 1
+   }
+  }
+ ],
+ "metadata": {
+  "totalRecordCount": 42
+ }
+}

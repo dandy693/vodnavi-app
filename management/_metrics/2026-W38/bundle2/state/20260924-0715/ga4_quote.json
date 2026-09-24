@@ -1,0 +1,17 @@
+{
+  "fetched_at": "2026-09-24T02:48:06.935Z",
+  "period": {
+    "startDate": "2026-09-18",
+    "endDate": "2026-09-24"
+  },
+  "filter": "hostName=app.vodnavi.jp AND sessionMedium=quote",
+  "total": {
+    "sessions": 0,
+    "users": 0,
+    "pageviews": 0
+  },
+  "by_content": [],
+  "by_landing": [],
+  "by_date": [],
+  "note": "GA4 Data API（プロパティ 489519780・サービスアカウント閲覧者・§3）。当日・前日の行は処理遅延で未生成のことがある（§6-1）。X 側のインプレッション（引用ポストは自投稿として X Analytics CSV に含める）とは計測系が別。"
+}
