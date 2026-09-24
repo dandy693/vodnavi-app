@@ -11484,3 +11484,21 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **E28 効果測定（Past Day 9/23 11:50〜9/24 11:50・定常の初回）**: **Allowed 158.1k / Denied 170.0k / `E28-2 concierge non-browser deny` 173.9k**。`E28-1 PerplexityBot rate limit` はリストに出ない（フィルタの選択肢には存在）＝**0 件と見られるが断定しない**。**前窓 151.8k（9/21・適用前）との差を効果として読まない**（CSO裁定 2026-09-23 の 5）。
 - **🔴 フォロワー数は取得不能**——`https://x.com/vodnavi_jp` と `https://x.com/i/account_analytics` への `navigate` が **「Navigation to this domain is not allowed」で拒否**（`/status/…` と `account_analytics/content?…` は開ける）。プロフィールリンクのクリック経由では「156 フォロー中」は取れたが**フォロワー数の数値は a11y ツリーにも `get_page_text` にも出なかった**。**4 回試行して断念（§10 の規定）。**「50 フォロワーで詳細指標が開放」の表示も本回は未確認。
 - 記録 → `management/_metrics/2026-W38/bundle2/state/20260924-0715/`（README / weekly-report-20260924.md / replies / targets / reactions / own_posts / ga4_quote）
+
+#### 2026-09-24 17:0x JST — CSO判定（木曜 PDCA 初週・9 点）の反映
+
+- **判定の全文 → `FACT_GOVERNANCE.md` §26-12-2。** 判定指標（2026-10-12・直近 14 日のテキスト投稿インプレッション中央値 ≥ 50）も §21 の凍結も変更していない。
+- **1. リプ営業**＝型・件数・間隔ルールは変更なし。**型の判定は 10/8 の PDCA（3 週分）。** priority 3 の週 2 件は維持（n=3 では判断しない）。
+- **2. 判定指標**＝自投稿中央値 **61.5（n=8・9/18〜9/24）／44.5（2W・n=16）** を記録。**2026-09-14 の予測（9/28 で 50 未満）は保守的だったと記録。**
+- **3. Q の材料**＝**t.co → content_id の解決手順を復活させた**。実装 → **`management/tools/x-reply-drafts/resolve-cid.mjs`**（+ テスト 10 件・`node --test` **80/80 pass**）。
+  - **実測（17:04〜17:08 JST）**: `https://t.co/MnUBta5TNO` → 301 の Location `al.fanza.co.jp/?lurl=…video.dmm.co.jp/av/content/?id=mdvr00441…` → **content_id `mdvr00441`** → `knowledge.mjs` の 3 フロア PK 照会で **cache ヒット（videoa・収録 64 分・配信 2026-09-24）**。
+  - **【確定】FANZA の遷移先は `?id=` 形式**（旧 `cid=` ではない）。**floor は URL に出ない**ため cache 側で解決する。
+  - **【確定】9/24 朝に「cache MISS（知識なし）」と記録した @MOODYZ_official の投稿は、本手順で cache ヒットする。** 原因はリスト方式で content_id 欄が空だったことで、cache の不足ではなかった。
+  - **【厳守・最小アクセス】t.co へ 1 回だけ GET（`redirect: manual`）し Location から抜く。`al.fanza.co.jp` 以降・`video.dmm.co.jp` へは到達しない。**
+- **4. 夜の抽出時刻**＝**21 時前 → 22:30**（HUMAN の投稿は 22:30〜23:00・朝 06:00 は不変）。**抽出時刻は収集手段であり判定指標の変数に当たらない**（§26-12-1 と同じ扱い）。反映 → `README.md` 日次ループ・`ROUTINE_CHECKLISTS.md` §3-2。
+- **5. reactions**＝`got_like` / `got_reply` は**反応ありの行だけ true**、他は空のまま。**取得済みの正は `reactions.json`。** 本日の運用（2 件のみ true）を承認＝§26-10-2 の「全件 false」運用を上書き。
+- **6. `W11-05` 削除**＝§13-5-1 の実例として記録。**2026-10-12 の判定は削除後の母集団で行う**（削除分を遡って足さない）。
+- **7. フォロワー数**＝**HUMAN が報告する。CTO の取得は打ち切り**（本日 4 回試行して取得不能）。
+- **8. E28**＝**2026-09-29 に再裁定。それまで日次記録のみ。**
+- **9. 2026-09-28（月）中間チェック**＝直近 14 日の自投稿中央値とリプの表示中央値を読むだけ。変更なし。
+- **🔴【自己申告・分類D】実装の過程で他社 af_id（`WILLaffi-061`）のクリック計測を 2 回踏んだ。** 初版が `maxHops = 4`（および診断の `8`）でリダイレクトを追跡し、`al.fanza.co.jp` → `ip.affiliate.dmm.com` → **`rcv.ixd.dmm.com/api/surl` → `/api/click`** に GET を送った（17:04:10 と 17:04:4x）。**`video.dmm.co.jp` への到達は無し**（最終 Location に現れたが GET は送っていない）。**是正＝既定 `maxHops` を 1 にし、`al.fanza` 以降の 6 ドメインを `BLOCKED_HOSTS` に入れた**（17:05:13 の再実測で 1 段・同じ content_id を確認）。**DMM 側へ申告するかは CSO 裁定事項。**
