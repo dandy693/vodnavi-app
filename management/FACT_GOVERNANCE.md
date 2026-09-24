@@ -4700,6 +4700,14 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **E29（年齢確認通過率）は未決登録のまま。**
 - **【CSO 裁定 2026-09-21・実施前の 2 点】(a) healthcheck の UA を固定文字列 `vodnavi-healthcheck/1` に変更し、ルール 2 の `/api/concierge` グループに `user_agent neq` の除外を追加（IP 除外は採らない・コード 1 行・1 ビルド・sitemap 再生成の交絡は受容）。9/22 06:30 の実施はこのビルドが READY になった後——順序＝コード push → READY → Firewall 適用 → 読み戻し → healthcheck 1 回実行で通過確認。(b) `Google-InspectionTool` は Googlebot と同扱い（`/concierge` 本体は許可・`/api/concierge` は deny・除外条件に追加）。** 反映＝`healthcheck-api.mjs`（`USER_AGENT` 定数・`fetchText` 全リクエストに付与）・`e28-firewall-config.json`（起案 §7-5）。**E19 fail-open 5 例目・sitemap 同数は記録のみ。**
 
+### 29-4. 【CSO裁定 2026-09-25】中国発アクセスは JS 実行型ボット群。GA4 集計スクリプトは country ≠ CN を既定とする
+
+- **判定（CSO）**: 実ユーザーではない（`Chrome/99.0.4844.51` 固定 UA・116.179.33.x〔China Unicom〕・Baiduspider 同居）。**収益影響なし**（FANZA は中国から購入不可）。served:500 への寄与 **5.6%**（24h エッジ 500＝108 中 CN 6）。**実害は GA4 計測の濁り＝30 日で 15%**（418 / 2,733 セッション）。数字 → `management/_metrics/2026-W38/cn-access-20260924/README.md`。
+- **既定（実施済み 2026-09-24 夜）**: `ga4-quote-sessions.mjs`・`weekly-report.mjs`（GA4 部分）・`ga4-access-20260921.mjs` に **country ≠ CN** を既定で付与（`--include-cn` で解除）。**GA4 プロパティ側の設定は変更しない。**
+- **`access-20260921.md` の数字は CN を含む**（冒頭に注記・**再集計しない**）。**本項以前の GA4 数値と比較するときは CN 含む／除くを併記する**（§15-2 軸1）。
+- **9/29 E28 再裁定の議題**: (a) PerplexityBot rate_limit の効果 (b) ClaudeBot（107.4K/日）への同等 rate_limit (c) country=CN への Challenge。**それまで Firewall は触らない（効果測定窓の保護）。**
+- **/sale（CN 888/日）**: ISR（`revalidate = 300`）・再生成 1 回あたり FANZA 16 コール・Edge Requests の Cached 98.3%（12h）＝上流呼び出しはリクエスト数ではなく再生成回数に比例（上限 4,608 コール/日）。
+
 ### 26-11. 【CSO 指示 2026-09-21 夜／CTO 実装 同日 17:2x〜18:0x】**基盤D-1＝引用ポストの運用開始 — 2026-09-22 朝の抽出から提示**
 
 | 項目 | 確定（CSO 指示の転記） |

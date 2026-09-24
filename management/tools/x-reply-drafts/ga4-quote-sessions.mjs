@@ -16,6 +16,16 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const REPO = path.resolve(HERE, "..", "..", "..");
 export const PROPERTY = "489519780";
 export const APP = "app.vodnavi.jp";
+// 【CSO裁定 2026-09-25】中国発（JS 実行型ボット群と判定）を GA4 集計から既定で除外する。GA4 プロパティ側の設定は変えない。
+// 含めたいときは --include-cn（CLI）／includeCN: true（関数）。
+export const EXCLUDE_COUNTRIES = ["CN"];
+export function withCountryExclusion(dimensionFilter, exclude = EXCLUDE_COUNTRIES) {
+  if (!exclude || exclude.length === 0) return dimensionFilter;
+  const not = { notExpression: { filter: { fieldName: "countryId", inListFilter: { values: exclude } } } };
+  if (!dimensionFilter) return not;
+  if (dimensionFilter.andGroup) return { andGroup: { expressions: [...dimensionFilter.andGroup.expressions, not] } };
+  return { andGroup: { expressions: [dimensionFilter, not] } };
+}
 
 const b64u = (o) => Buffer.from(typeof o === "string" ? o : JSON.stringify(o)).toString("base64url");
 
@@ -36,7 +46,7 @@ async function token(key) {
 const n = (v) => Number(v ?? 0);
 const rows = (j) => (j.rows ?? []).map((r) => ({ d: (r.dimensionValues ?? []).map((x) => x.value), m: (r.metricValues ?? []).map((x) => n(x.value)) }));
 
-export async function fetchQuoteSessions({ since, until, keyFile = path.join(REPO, "app-concierge", "ga4-service-account.json") }) {
+export async function fetchQuoteSessions({ since, until, keyFile = path.join(REPO, "app-concierge", "ga4-service-account.json"), includeCN = false }) {
   const key = JSON.parse(fs.readFileSync(keyFile, "utf8"));
   const tok = await token(key);
   const run = async (body) => {
@@ -45,10 +55,11 @@ export async function fetchQuoteSessions({ since, until, keyFile = path.join(REP
     if (j.error) throw new Error("GA4 error: " + JSON.stringify(j.error).slice(0, 400));
     return j;
   };
-  const filter = { andGroup: { expressions: [
+  const exclude = includeCN ? [] : EXCLUDE_COUNTRIES;
+  const filter = withCountryExclusion({ andGroup: { expressions: [
     { filter: { fieldName: "hostName", stringFilter: { matchType: "EXACT", value: APP } } },
     { filter: { fieldName: "sessionMedium", stringFilter: { matchType: "EXACT", value: "quote" } } },
-  ] } };
+  ] } }, exclude);
   const metrics = [{ name: "sessions" }, { name: "activeUsers" }, { name: "screenPageViews" }];
   const period = { startDate: since, endDate: until };
   const total = rows(await run({ dateRanges: [period], metrics, dimensionFilter: filter }))[0]?.m ?? [0, 0, 0];
@@ -59,7 +70,8 @@ export async function fetchQuoteSessions({ since, until, keyFile = path.join(REP
   return {
     fetched_at: new Date().toISOString(),
     period,
-    filter: `hostName=${APP} AND sessionMedium=quote`,
+    filter: `hostName=${APP} AND sessionMedium=quote${exclude.length ? ` AND country NOT IN (${exclude.join(",")})` : ""}`,
+    excluded_countries: exclude,
     total: { sessions: total[0], users: total[1], pageviews: total[2] },
     by_content: byContent.map((r) => pack(r, "content")),
     by_landing: byLanding.map((r) => pack(r, "landing")),
@@ -83,10 +95,10 @@ function parseArgs(argv) {
 if (isMain(import.meta.url)) {
   const a = parseArgs(process.argv.slice(2));
   if (!a.since || !a.until) {
-    process.stderr.write("usage: node ga4-quote-sessions.mjs --since YYYY-MM-DD --until YYYY-MM-DD [--out ga4_quote.json] [--key path]\n");
+    process.stderr.write("usage: node ga4-quote-sessions.mjs --since YYYY-MM-DD --until YYYY-MM-DD [--out ga4_quote.json] [--key path] [--include-cn]\n");
     process.exit(2);
   }
-  fetchQuoteSessions({ since: a.since, until: a.until, ...(a.key ? { keyFile: a.key } : {}) })
+  fetchQuoteSessions({ since: a.since, until: a.until, includeCN: a["include-cn"] === true, ...(a.key ? { keyFile: a.key } : {}) })
     .then((out) => {
       const text = JSON.stringify(out, null, 2) + "\n";
       if (a.out) {

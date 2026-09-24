@@ -302,7 +302,7 @@ export function toMarkdown(agg) {
   if (agg.ga4_quote) {
     const g = agg.ga4_quote;
     L.push("");
-    L.push(`| GA4 utm_medium=quote（引用ポスト経由・hostName=app.vodnavi.jp・${g.period?.startDate ?? "?"}〜${g.period?.endDate ?? "?"}） | セッション | ユーザー | PV |`);
+    L.push(`| GA4 utm_medium=quote（引用ポスト経由・${g.filter ?? "hostName=app.vodnavi.jp（CN 除外なし＝旧形式）"}・${g.period?.startDate ?? "?"}〜${g.period?.endDate ?? "?"}） | セッション | ユーザー | PV |`);
     L.push("|---|---|---|---|");
     L.push(`| 合計 | ${g.total?.sessions ?? 0} | ${g.total?.users ?? 0} | ${g.total?.pageviews ?? 0} |`);
     for (const r of g.by_content ?? []) L.push(`| utm_content=${r.content} | ${r.sessions} | ${r.users} | ${r.pageviews} |`);

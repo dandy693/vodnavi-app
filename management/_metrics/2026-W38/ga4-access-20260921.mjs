@@ -30,8 +30,14 @@ async function token() {
 }
 const tok = await token();
 let calls = 0;
-const run = async (body) => {
+// 【CSO裁定 2026-09-25】中国発（JS 実行型ボット群）を既定で除外する（GA4 プロパティ側は不変）。含めるときは --include-cn。
+// 2026-09-21 に出力した access-20260921.md の数字は本改修の前＝CN を含む（再集計はしない）。
+const INCLUDE_CN = process.argv.includes("--include-cn");
+const NOT_CN = { notExpression: { filter: { fieldName: "countryId", inListFilter: { values: ["CN"] } } } };
+const run = async (body0) => {
   calls++;
+  const f0 = body0.dimensionFilter;
+  const body = INCLUDE_CN ? body0 : { ...body0, dimensionFilter: !f0 ? NOT_CN : f0.andGroup ? { andGroup: { expressions: [...f0.andGroup.expressions, NOT_CN] } } : { andGroup: { expressions: [f0, NOT_CN] } } };
   const r = await fetch(`https://analyticsdata.googleapis.com/v1beta/properties/${PROPERTY}:runReport`, { method: "POST", headers: { authorization: `Bearer ${tok}`, "content-type": "application/json" }, body: JSON.stringify(body) });
   const j = await r.json();
   if (j.error) throw new Error("GA4 error: " + JSON.stringify(j.error).slice(0, 400));
@@ -55,7 +61,7 @@ const inList = (field, values) => ({ filter: { fieldName: field, inListFilter: {
 {
   const j = await run({ dateRanges: [{ startDate: "2026-09-10", endDate: "2026-09-21" }], dimensions: [{ name: "date" }], metrics: [{ name: "sessions" }], orderBys: [{ dimension: { dimensionName: "date" }, desc: true }], limit: 4 });
   P("### 0. 取得条件・鮮度");
-  P(`- 取得: GA4 Data API v1beta \`runReport\`（プロパティ \`${PROPERTY}\`・サービスアカウント閲覧者・§3）。取得日時は本文冒頭。`);
+  P(`- 取得: GA4 Data API v1beta \`runReport\`（プロパティ \`${PROPERTY}\`・サービスアカウント閲覧者・§3）。取得日時は本文冒頭。${INCLUDE_CN ? "**CN を含む（--include-cn）**" : "**country ≠ CN（CSO裁定 2026-09-25 の既定）**"}`);
   P(`- 処理済み最終日（\`date\` 次元で行が返る最新日・§6-1）: ${rows(j).map((r) => `${r.d[0]}（sessions ${fmt(r.m[0])}）`).join(" / ")}`);
   P(`- 期間 A＝${A.startDate}〜${A.endDate}（30 日）／B＝${B.startDate}〜${B.endDate}（30 日）。A の末日 9/21 は当日＝処理未了の可能性（§6-1）。`);
   P(`- ボット除外: GA4 は既知のボット・スパイダー（IAB リスト）のトラフィックを自動で除外する（プロパティ設定で無効化できない GA4 仕様）。当サイト側に追加のボットフィルタ・IP フィルタ・内部トラフィック除外の設定は無い（§6: 検証用 Chrome は \`/g/collect\` を送らないため CTO 操作分は計上されない）。`);
