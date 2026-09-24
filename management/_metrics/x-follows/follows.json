@@ -9,6 +9,41 @@
   "perDay": 10,
   "followingStop": 300
  },
- "note": "基盤D（フォロー営業）の記録。CSO 指示 2026-09-24。日付・ハンドル・根拠のみ。CTO はフォローしない（HUMAN が実行）。推定フォロー中は baseline.following + entries.length で、正は X 画面の実測。",
- "entries": []
+ "entries": [
+  {
+   "date": "2026-09-25",
+   "handle": "comebackbakunew",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 特定女優のファン表明・個人）"
+  },
+  {
+   "date": "2026-09-25",
+   "handle": "paizuri1007",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 好きな女優を列挙・個人）"
+  },
+  {
+   "date": "2026-09-25",
+   "handle": "5D4o1UDGxFNAXDI",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 自己紹介・40代・個人）"
+  },
+  {
+   "date": "2026-09-25",
+   "handle": "glaymilan",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 趣味の列挙・個人）"
+  },
+  {
+   "date": "2026-09-25",
+   "handle": "L1ZL28AY7r2oGHY",
+   "reason": "MOODYZ_official 2102789090336985344 をリポスト（プロフィール: 「平凡人」・実名表示・個人）"
+  },
+  {
+   "date": "2026-09-25",
+   "handle": "Aika_Gemma",
+   "reason": "FANZAdougaX 2102850518892920926 をリポスト（プロフィール: 一言のみ・個人）"
+  },
+  {
+   "date": "2026-09-25",
+   "handle": "yoshikira",
+   "reason": "PREMIUM_AV 2103016594406555944 をリポスト（プロフィール: 趣味・個人）"
+  }
+ ]
 }

@@ -50,3 +50,8 @@
 1. W9-15 は誤検知・承認のまま配信 → `preflight-today.mjs` の g16 に自レコード予約日の除外を実装（`preflight-after-fix.json` で PASS／対照 `readback-negctl-0927.json` で NG）。
 2. 一斉発売日の提示上限（最大 4 件・同じ質問 1 日 1 回）→ README 手順 0・FACT §26-11-1。
 3. works リンク上限＝本日 3 で到達。
+
+## 5. フォロー実施（HUMAN・2026-09-25）
+
+- 7 件をフォロー: @comebackbakunew @paizuri1007 @5D4o1UDGxFNAXDI @glaymilan @L1ZL28AY7r2oGHY @Aika_Gemma @yoshikira。候補 8〜10（6RiAWbBcUoiOUGQ・kamachan40・HHheverything1）は見送り。
+- `follow-candidates.mjs --record` → `management/_metrics/x-follows/follows.json` に追記・**読み戻し一致（追加 7／累計 7）**。推定フォロー中 163（起点 156＋7・正は X 画面の実測）／停止閾値 300 まで残り 137。
