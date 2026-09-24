@@ -26,3 +26,27 @@
 
 - 9/24 に返信した対象投稿のリポスト一覧: MOODYZ 2102789090336985344（10 名）／PREMIUM 2103016594406555944（5 名）／FANZAdougaX 2102850518892920926（5 名・前回取得不能分）／fanza_sns 2102925993518215308（1 名）。引用一覧（FANZAdougaX）は 0 件。wanz は未確認。
 - **提示 10 件**（follow-candidates.json）。除外: x_targets 登録済み 1（hosimiyaichika）・店舗 1（booksdandykanda）・AV ライター 1（saori_462）・アフィリエイトサイト運営 1（yofukashinavi）。
+
+## 3. 投稿と記録（2026-09-25 06:24〜06:37 JST）
+
+投稿は HUMAN・全件手直しなし。見送り＝kawaii・honnaka・IDEAPOCKETTER・FANZAdougaX。
+
+| 種別 | 対象 | 案 | 投稿 | 配信（snowflake） |
+|---|---|---|---|---|
+| リプ | Madonna_AVinfo 2103146198580568275 | B | 2103234052363100321 | 06:24:08.939 |
+| リプ | attackers_av 2103137392798634406 | A | 2103234264762593505 | 06:24:59.579 |
+| リプ | wanz_official 2103137888166986023 | A | 2103234495096963256 | 06:25:54.495 |
+| リプ | MOODYZ_official 2103145689752711449 | A | 2103234650546294979 | 06:26:31.557 |
+| 引用 | PREMIUM_AV 2103152235022856660 | Q1 | **2103235699311075660** | 06:30:41.602 |
+| 引用 | Fitch_official 2103151226225607061 | Q1 | **2103235911052095931** | 06:31:32.085 |
+
+- **引用 2 本の判別**: `curl`（UA Twitterbot）で各投稿ページの `<title>` を読み、…5660＝「収録123分…釈アリスさん…」（本文中「釈アリス」8 回）＝PREMIUM／…5931＝「本作は収録121分…彩月七緒さん…」（「彩月七緒」8 回）＝Fitch。**引用元の投稿 ID は返却 HTML に含まれず、判別は本文一致による。**
+- X 実在: 6 件とも HTTP 200・無効 ID 対照 404。
+- 記録: `record.mjs --create`（リプ 4・Q 2）→ MCP create（createdTime 06:36:15 JST・reply_post_id / posted_at 同梱）→ x_targets update（リプ 4＝last_reply_at／Q 2＝last_quote_at・PREMIUM / Fitch の last_reply_at は不変）→ **読み戻し 6＋6 件とも全項目一致**。
+- **x_replies 累計 51 件**（9/25＝6）。priority 3 の消費 0。**works リンク投稿は Q 2 ＋ TG 21:00＝3 で本日上限（CSO裁定 2026-09-25 朝 3）。**
+
+## 4. CSO裁定（2026-09-25 朝）の反映
+
+1. W9-15 は誤検知・承認のまま配信 → `preflight-today.mjs` の g16 に自レコード予約日の除外を実装（`preflight-after-fix.json` で PASS／対照 `readback-negctl-0927.json` で NG）。
+2. 一斉発売日の提示上限（最大 4 件・同じ質問 1 日 1 回）→ README 手順 0・FACT §26-11-1。
+3. works リンク上限＝本日 3 で到達。

@@ -20,7 +20,7 @@
 //     --json     … 機械可読の結果を書き出す
 // 終了コード: 0＝全件 PASS / 1＝NG あり / 2＝引数不正
 import { readFileSync, writeFileSync } from "node:fs";
-import { runGuardsAsync, jstDate, toHinban } from "../../../app-concierge/scripts/x-post-generator.mjs";
+import { runGuardsAsync, jstDate, toHinban, TG_LAST_USED } from "../../../app-concierge/scripts/x-post-generator.mjs";
 
 const F = {
   name: "fldSFgqqf40w8D2hQ",        // Name（旧名 管理ID）
@@ -136,7 +136,21 @@ const existing = dump.map((r) => ({
 const { failures } = await runGuardsAsync(posts, existing);
 const byPost = {};   // 本当の NG（readback の値だけで判定できたもの）
 const skipped = {};  // メタ欠落で判定できなかったもの
+// 【CSO裁定 2026-09-25 朝】g16 は「自レコードの予約日」を比較対象から除外する。
+// TG_LAST_USED は予約済みも登録するため、当日の再検査では自分自身の予約日（=当日）と衝突する（2026-09-25 W9-15 の誤検知）。
+// 表の値が自レコードの予約日（JST）と一致する場合は自己登録とみなし NG にしない。表には最新 1 件しか無いため、
+// それより前の使用日はこの検査では見えない（=自己登録除外の行は「前回使用は未検査」と併記する）。
+const selfExcluded = [];
 for (const fl of failures) {
+  if (fl.guard === "g16_article_interval") {
+    const p = posts.find((x) => x.name === fl.post);
+    let slug = null;
+    try { slug = new URL(p?.linkUrl ?? "").pathname.replace("/articles/", ""); } catch { /* URL 解析不可はそのまま NG */ }
+    if (p && slug && TG_LAST_USED[slug] && TG_LAST_USED[slug] === jstDate(p.scheduledUtc)) {
+      selfExcluded.push({ post: p.name, slug, date: TG_LAST_USED[slug] });
+      continue;
+    }
+  }
   if (META_DEPENDENT[fl.guard]) (skipped[fl.post] ??= []).push(fl);
   else (byPost[fl.post] ??= []).push(fl);
 }
@@ -162,6 +176,7 @@ console.log(`\n【検査不能（生成時メタが posts に無い）】` + Obj
 console.log(`【同日件数の上限（g6 / g11 / g18）】当日予約行を__悉皆で__読み戻していれば、既存行 0 でも正しく数えられる（当日分はすべて検査対象側にあるため）。`
   + (dumpPath ? ` --dump を併用した（既存 ${existing.length} 行）。` : ` --dump は渡していない。`));
 console.log(`【未検証】TG の記事間隔（g16）は、当日行に TG が無い日には確認できない。TG の予約がある日に挙動を確かめること。`);
+if (selfExcluded.length) console.log(`【g16 自己登録除外（CSO裁定 2026-09-25）】${selfExcluded.map((x) => `${x.post}＝TG_LAST_USED[${x.slug}]=${x.date} は自レコードの予約日のため比較対象外（それ以前の使用日は表に無く未検査）`).join(" / ")}`);
 for (const u of unrecovered) console.log(`【メタ復元不能】${u}`);
 console.log(`\n【厳守・残差】本検査は__対象日の実行時刻__の値を見ている。以後（配信までの間）の書き換えは検知できない（FACT_GOVERNANCE §13-5-1）。`);
 console.log(`【厳守】NG の是正（承認を外す／本文を直す）は HUMAN。CTO は posts を書かない。`);
@@ -170,7 +185,7 @@ if (jsonOut) {
   writeFileSync(jsonOut, JSON.stringify({
     tag: "PREFLIGHT_TODAY", ts: new Date().toISOString(), date,
     n: posts.length, ngCount: ng.length,
-    unrecovered,
+    unrecovered, selfExcluded,
     dumpUsed: Boolean(dumpPath), existingRows: existing.length,
     metaDependent: META_DEPENDENT,
     posts: posts.map((p) => ({ ...p, failures: byPost[p.name] ?? [], skipped: skipped[p.name] ?? [] })),
