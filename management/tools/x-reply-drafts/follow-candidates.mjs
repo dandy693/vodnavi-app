@@ -66,13 +66,16 @@ export function parseCandidateLines(text) {
 /** follows.json を読む（無ければ初期構造） */
 export function loadFollows(file) {
   if (!file || !fs.existsSync(file)) {
-    return { baseline: FOLLOWING_BASELINE, limits: LIMITS, entries: [] };
+    return { baseline: FOLLOWING_BASELINE, limits: LIMITS, entries: [], preexisting: [] };
   }
   const j = JSON.parse(fs.readFileSync(file, "utf8"));
   return {
     baseline: j.baseline ?? FOLLOWING_BASELINE,
     limits: j.limits ?? LIMITS,
     entries: Array.isArray(j.entries) ? j.entries : [],
+    // 【CSO 2026-09-25 夜】候補に出したが HUMAN の実施前から既にフォローしていたハンドル。
+    // 起点（baseline.following）に含まれるため、日次件数・推定フォロー中には数えない。候補からは除外する。
+    preexisting: Array.isArray(j.preexisting) ? j.preexisting : [],
   };
 }
 
@@ -93,8 +96,9 @@ export function targetHandles(targetsJson) {
  * 候補を絞り込む。純関数。
  * 除外理由は行ごとに残す（提示時に「なぜ落としたか」を報告できるようにする）。
  */
-export function selectCandidates(items, { targets = new Set(), follows = [], max = LIMITS.perDay, date = null } = {}) {
+export function selectCandidates(items, { targets = new Set(), follows = [], preexisting = [], max = LIMITS.perDay, date = null } = {}) {
   const followed = new Set(follows.map((e) => String(e.handle || "").replace(/^@/, "")));
+  const pre = new Set(preexisting.map((e) => String(e.handle || "").replace(/^@/, "")));
   const todayCount = date ? follows.filter((e) => e.date === date).length : 0;
   const remaining = Math.max(0, max - todayCount);
 
@@ -107,6 +111,7 @@ export function selectCandidates(items, { targets = new Set(), follows = [], max
     if (SELF_HANDLES.has(h)) { skipped.push({ ...it, why: "自アカウント" }); continue; }
     if (targets.has(h)) { skipped.push({ ...it, why: "x_targets に登録済み（営業対象＝一般ユーザーではない）" }); continue; }
     if (followed.has(h)) { skipped.push({ ...it, why: "follows.json に既存（フォロー済み）" }); continue; }
+    if (pre.has(h)) { skipped.push({ ...it, why: "既フォロー（営業開始前から・follows.json preexisting）" }); continue; }
     if (seen.has(h)) { skipped.push({ ...it, why: "同一バッチ内の重複" }); continue; }
     seen.add(h);
     if (picked.length >= remaining) { skipped.push({ ...it, why: "本日の上限（" + max + " 件）に達したため次回へ" }); continue; }
@@ -122,6 +127,19 @@ export function estimateFollowing(follows) {
   const est = base + added;
   const stop = follows.limits?.followingStop ?? LIMITS.followingStop;
   return { baseline: base, added, estimated: est, stop, remainingToStop: stop - est, reached: est >= stop };
+}
+
+/** 既フォロー（営業開始前から）を preexisting に追記する。entries・日次件数・推定には入れない。純関数。 */
+export function mergePreexisting(follows, date, items) {
+  const known = new Set([...follows.entries, ...(follows.preexisting ?? [])].map((e) => String(e.handle || "").replace(/^@/, "")));
+  const added = [];
+  const dup = [];
+  for (const it of items) {
+    if (known.has(it.handle)) { dup.push(it); continue; }
+    known.add(it.handle);
+    added.push({ found: date, handle: it.handle, note: it.reason });
+  }
+  return { follows: { ...follows, preexisting: [...(follows.preexisting ?? []), ...added] }, added, dup };
 }
 
 /** follows.json へ追記（重複は弾く）。純関数側は merge のみ。 */
@@ -159,7 +177,7 @@ function printStatus(follows) {
 
 async function main() {
   const argv = process.argv.slice(2);
-  let candFile = null, recordFile = null, targetsFile = null, outJson = null;
+  let candFile = null, recordFile = null, targetsFile = null, outJson = null, preFile = null;
   let followsFile = "management/_metrics/x-follows/follows.json";
   let max = LIMITS.perDay;
   let date = jstDate();
@@ -168,6 +186,7 @@ async function main() {
     const a = argv[i];
     if (a === "--candidates") { candFile = argv[++i]; continue; }
     if (a === "--record") { recordFile = argv[++i]; continue; }
+    if (a === "--record-preexisting") { preFile = argv[++i]; continue; }
     if (a === "--targets") { targetsFile = argv[++i]; continue; }
     if (a === "--follows") { followsFile = argv[++i]; continue; }
     if (a === "--json") { outJson = argv[++i]; continue; }
@@ -179,6 +198,21 @@ async function main() {
   const follows = loadFollows(followsFile);
 
   if (statusOnly) { printStatus(follows); return; }
+
+  if (preFile) {
+    const { items, errors } = parseCandidateLines(fs.readFileSync(preFile, "utf8"));
+    for (const e of errors) process.stdout.write("  L" + e.lineNo + " 不正: " + e.reason + "\n");
+    const res = mergePreexisting(follows, date, items);
+    fs.writeFileSync(followsFile, JSON.stringify(res.follows, null, 1) + "\n");
+    const after = loadFollows(followsFile);
+    const ok = after.preexisting.length === res.follows.preexisting.length && after.entries.length === follows.entries.length;
+    process.stdout.write("[follow] --record-preexisting " + followsFile + "\n");
+    for (const a of res.added) process.stdout.write("  ~ @" + a.handle + TAB + a.note + "\n");
+    for (const d of res.dup) process.stdout.write("  = @" + d.handle + " skip: 既存\n");
+    process.stdout.write("  読み戻し: " + (ok ? "一致" : "🔴不一致") + "（preexisting 追加 " + res.added.length + " / 累計 " + after.preexisting.length + "・entries 不変 " + after.entries.length + "）\n");
+    printStatus(after);
+    return;
+  }
 
   if (recordFile) {
     const { items, errors } = parseCandidateLines(fs.readFileSync(recordFile, "utf8"));
@@ -206,7 +240,7 @@ async function main() {
   const { items, errors } = parseCandidateLines(fs.readFileSync(candFile, "utf8"));
   const targets = targetsFile ? targetHandles(JSON.parse(fs.readFileSync(targetsFile, "utf8"))) : new Set();
   if (!targetsFile) process.stdout.write("⚠ --targets を渡していないため x_targets の除外が効いていない\n");
-  const sel = selectCandidates(items, { targets, follows: follows.entries, max, date });
+  const sel = selectCandidates(items, { targets, follows: follows.entries, preexisting: follows.preexisting, max, date });
 
   for (const e of errors) process.stdout.write("  L" + e.lineNo + " 不正: " + e.reason + "\n");
   process.stdout.write("\n=== 提示（HUMAN が 1 日 " + max + " 件までフォロー・CTO はフォローしない）===\n");

@@ -116,3 +116,17 @@ test("起点の値は HUMAN 実測 2026-09-24（フォロワー 13 / フォロ�
   assert.equal(LIMITS.perDay, 10);
   assert.equal(LIMITS.followingStop, 300);
 });
+
+test("preexisting（既フォロー）は候補から除外し、日次件数・推定フォロー中には数えない", async () => {
+  const m = await import("./follow-candidates.mjs");
+  const base = { baseline: { following: 156 }, limits: { perDay: 10, followingStop: 300 }, entries: [{ date: "2026-09-25", handle: "a1", reason: "r" }], preexisting: [] };
+  const r = m.mergePreexisting(base, "2026-09-25", [{ handle: "danine1203", reason: "既フォロー・9/25判明" }, { handle: "a1", reason: "x" }]);
+  assert.equal(r.added.length, 1);
+  assert.equal(r.dup.length, 1);
+  assert.equal(r.follows.entries.length, 1);
+  assert.equal(m.estimateFollowing(r.follows).estimated, 157);
+  const sel = m.selectCandidates([{ handle: "danine1203", reason: "x" }, { handle: "b2", reason: "y" }], { follows: r.follows.entries, preexisting: r.follows.preexisting, date: "2026-09-25", max: 10 });
+  assert.deepEqual(sel.picked.map((x) => x.handle), ["b2"]);
+  assert.match(sel.skipped[0].why, /既フォロー/);
+  assert.equal(sel.todayCount, 1);
+});
