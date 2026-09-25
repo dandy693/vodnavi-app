@@ -1,0 +1,45 @@
+{
+ "generatedAtJst": "2026-09-25 22:22:48 JST",
+ "date": "2026-09-25",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "zzzzzz908",
+   "reason": "attackers_av 2103137392798634406 と wanz_official 2103137888166986023 の 2 件をリポスト（プロフィール: アイドルファン歴の自己紹介・個人）"
+  },
+  {
+   "handle": "danine1203",
+   "reason": "MOODYZ_official 2103145689752711449 をリポスト（プロフィール: 「好きな人を応援するためのアカウント」・個人）"
+  },
+  {
+   "handle": "gVm6vrnPYOo75Ak",
+   "reason": "Madonna_AVinfo 2103146198580568275 をリポスト（プロフィール: 「頑張ってる女性を応援したい」・個人）"
+  }
+ ],
+ "skipped": [
+  {
+   "handle": "jameswho00",
+   "reason": "MOODYZ_official 2103145689752711449 をリポスト（プロフィール: 推し女優を列挙・個人）",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  },
+  {
+   "handle": "mizumoto_yp",
+   "reason": "MOODYZ_official 2103145689752711449 と 2102789090336985344（9/24）をリポスト（プロフィール文は一覧に出ず）",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  },
+  {
+   "handle": "qUN3N1VyA7RKEn5",
+   "reason": "Madonna・attackers・wanz の 3 件をリポスト（プロフィール文なし）",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  }
+ ],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 7,
+  "estimated": 163,
+  "stop": 300,
+  "remainingToStop": 137,
+  "reached": false
+ }
+}

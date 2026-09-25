@@ -1,0 +1,67 @@
+model=claude-opus-5 dry_run=false today_jst=20260925 counts={"lines":8,"generated":8,"stopped":0} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/kawaii_pr/status/2103455735468446072（2026-09-25 21:05）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20260925-kawaii_pr calls=1 in=396 out=1126
+  A chars=50 weight=88 ok=true attempts=1
+     50％OFFの第4弾は9月28日の朝9時59分までなんですね。終了が朝の時間帯というのは意外でした。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=45 weight=78 ok=true attempts=1
+     第4弾の50％OFF対象は、9月28日の朝9時59分を過ぎると通常価格に戻る形でしょうか。
+
+=== 対象 https://x.com/Fitch_official/status/2103443151277146518（2026-09-25 20:15）
+    @Fitch_official (メーカー公式) status=generated replyKey=20260925-Fitch_official calls=1 in=655 out=1776
+  A chars=43 weight=80 ok=true attempts=1
+     50%OFFという値引き幅は大きいですね。今回の対象がどこまで広がるのか気になります。
+  B chars=61 weight=106 ok=true attempts=1
+     153分の収録で、配信は2024年2月16日の作品ですね。50%OFFの対象にこの時期の一本が入るのは気になるところです。
+  C chars=44 weight=81 ok=true attempts=1
+     50%OFFの対象はこの1作だけか、他の作品も同じ期間で入るのかを教えていただけますか？
+
+=== 対象 https://x.com/PREMIUM_AV/status/2103409189481861339（2026-09-25 18:00）
+    @PREMIUM_AV (メーカー公式) status=generated replyKey=20260925-PREMIUM_AV calls=2 in=1616 out=212
+  A chars=46 weight=85 ok=true attempts=1
+     第4弾は9月28日の朝9時59分までなのですね。半額の対象がどこまで広がるのか気になります。
+  B chars=53 weight=91 ok=true attempts=2
+     第4弾の対象作は165分収録なんですね、9月28日朝9時59分までの50％OFFで検討する方も多そうです。
+  C chars=44 weight=82 ok=true attempts=1
+     第4弾の50％OFF対象は、レーベル単位とテーマ単位のどちらで選ばれているのでしょうか。
+
+=== 対象 https://x.com/FalenoEvent/status/2103459449499492439（2026-09-25 21:19）
+    @FalenoEvent (メーカー公式) status=generated replyKey=20260925-FalenoEvent calls=1 in=363 out=107
+  A chars=58 weight=107 ok=true attempts=1
+     9月26日は買取りまっくすなんば店と日本橋店、9月27日はMAX書店名駅店と、大阪と名古屋を続けて回られるのですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=38 weight=70 ok=true attempts=1
+     9月27日のMAX書店名駅店は、参加の受付方法や開始時間は決まっていますか。
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2103447933077405936（2026-09-25 20:34）
+    @IDEAPOCKETTER (メーカー公式) status=generated replyKey=20260925-IDEAPOCKETTER calls=1 in=336 out=634
+  A chars=44 weight=87 ok=true attempts=1
+     あと1週間という言葉を見ると、いよいよという感じがしますね。当日を楽しみに待っています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=42 weight=83 ok=true attempts=1
+     あと1週間とのことですが、サンプル動画の公開も配信開始と同じタイミングになりますか。
+
+=== 対象 https://x.com/honnaka_NN/status/2103416510710677964（2026-09-25 18:29）
+    @honnaka_NN (メーカー公式) status=generated replyKey=20260925-honnaka_NN calls=1 in=363 out=669
+  A chars=48 weight=93 ok=true attempts=1
+     インタビュー掲載が10月5日発売と先に分かるのはいいですね。当日まで楽しみに待ちたいと思います。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=37 weight=71 ok=true attempts=1
+     10月5日発売のインタビューでは、作品まわりのお話も入る内容になりますか。
+
+=== 対象 https://x.com/FANZAdougaX/status/2103319270809805169（2026-09-25 12:02）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260925-FANZAdougaX calls=1 in=357 out=97
+  A chars=51 weight=98 ok=true attempts=1
+     10%ポイント還元付きでの第1弾開催なんですね、売れ筋作品がまとめて対象になるのは気になるところです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=37 weight=70 ok=true attempts=1
+     第1弾の対象作品は、どのくらいの期間まで％OFFの対象になるのでしょうか。
+
+=== 対象 https://x.com/fanza_sns/status/2103288383720063081（2026-09-25 10:00）
+    @fanza_sns (セール告知系) status=generated replyKey=20260925-fanza_sns calls=2 in=698 out=923
+  A chars=56 weight=101 ok=true attempts=1
+     売れ筋ビデオの第1弾スタートで、10％ポイント還元も付くのですね。9月27日23:59までの期間で考えてみます。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=46 weight=84 ok=true attempts=2
+     第1弾は9月27日23時59分までとのことですが、対象になる作品の範囲はどこまででしょうか。

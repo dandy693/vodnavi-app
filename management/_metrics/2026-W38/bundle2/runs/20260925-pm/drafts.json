@@ -1,0 +1,542 @@
+{
+  "generated_at": "2026-09-25T13:21:49.766Z",
+  "today_jst": "20260925",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "79d1227310ad4e06ca3cd99afbc9339d35b3cba13a08d4e37ba112b63567ed4b",
+  "counts": {
+    "lines": 8,
+    "generated": 8,
+    "stopped": 0
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2103455735468446072",
+      "targetPostId": "2103455735468446072",
+      "postedAtJst": "2026-09-25 21:05",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:44.396Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-kawaii_pr",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50％OFFの第4弾は9月28日の朝9時59分までなんですね。終了が朝の時間帯というのは意外でした。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 88
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第4弾の50％OFF対象は、9月28日の朝9時59分を過ぎると通常価格に戻る形でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 78
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 396,
+        "output_tokens": 1126,
+        "cache_creation_input_tokens": 3654,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2103443151277146518",
+      "targetPostId": "2103443151277146518",
+      "postedAtJst": "2026-09-25 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:16.204Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "juny00109",
+        "title": "超むっちり爆乳J系はおしゃぶり盛り 中年教師の家に押しかけヤリ放題な淫交夏休み 藤沢麗央",
+        "fetched_at": "2026-09-25 09:50:44.598+00"
+      },
+      "replyKey": "20260925-Fitch_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50%OFFという値引き幅は大きいですね。今回の対象がどこまで広がるのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 80
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "153分の収録で、配信は2024年2月16日の作品ですね。50%OFFの対象にこの時期の一本が入るのは気になるところです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 61,
+              "weight": 106
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "50%OFFの対象はこの1作だけか、他の作品も同じ期間で入るのかを教えていただけますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 81
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 655,
+        "output_tokens": 1776,
+        "cache_creation_input_tokens": 3676,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2103409189481861339",
+      "targetPostId": "2103409189481861339",
+      "postedAtJst": "2026-09-25 18:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T12:20:51.104Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "pred00482",
+        "title": "トリプル痴女ナースハーレム 欲求不満な看護師の3点責めコンビネーションで何度も何度も中出しさせられる！ 西野絵美 木下ひまり 波多野結衣",
+        "fetched_at": "2026-09-20 05:34:27.109+00"
+      },
+      "replyKey": "20260925-PREMIUM_AV",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第4弾は9月28日の朝9時59分までなのですね。半額の対象がどこまで広がるのか気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "第4弾の対象作は165分収録なんですね、9月28日朝9時59分までの50％OFFで検討する方も多そうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 91
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "9月28日の朝9時59分までの第4弾ですね。対象作には収録165分、2023年5月12日配信のプレミアム作品も入っているのですね。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "B 型の cache 由来の事実が 3 個（最大 2・優先: 収録時間 > 配信日 > シリーズ > その他）: 165、5月12日、プレミアム"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "第4弾の50％OFF対象は、レーベル単位とテーマ単位のどちらで選ばれているのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 82
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1616,
+        "output_tokens": 212,
+        "cache_creation_input_tokens": 3632,
+        "cache_read_input_tokens": 3676,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "FalenoEvent",
+      "postUrl": "https://x.com/FalenoEvent/status/2103459449499492439",
+      "targetPostId": "2103459449499492439",
+      "postedAtJst": "2026-09-25 21:19",
+      "target": {
+        "id": "recByvjAnovkOIiu3",
+        "handle": "FalenoEvent",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-20T12:39:01.954Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-FalenoEvent",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "9月26日は買取りまっくすなんば店と日本橋店、9月27日はMAX書店名駅店と、大阪と名古屋を続けて回られるのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 58,
+              "weight": 107
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "9月27日のMAX書店名駅店は、参加の受付方法や開始時間は決まっていますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 38,
+              "weight": 70
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 363,
+        "output_tokens": 107,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2103447933077405936",
+      "targetPostId": "2103447933077405936",
+      "postedAtJst": "2026-09-25 20:34",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-22T22:06:02.608Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-IDEAPOCKETTER",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "あと1週間という言葉を見ると、いよいよという感じがしますね。当日を楽しみに待っています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 44,
+              "weight": 87
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "あと1週間とのことですが、サンプル動画の公開も配信開始と同じタイミングになりますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 42,
+              "weight": 83
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 336,
+        "output_tokens": 634,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "honnaka_NN",
+      "postUrl": "https://x.com/honnaka_NN/status/2103416510710677964",
+      "targetPostId": "2103416510710677964",
+      "postedAtJst": "2026-09-25 18:29",
+      "target": {
+        "id": "rec0nGddlSPhwOqcI",
+        "handle": "honnaka_NN",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-19T03:24:46.108Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-honnaka_NN",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "インタビュー掲載が10月5日発売と先に分かるのはいいですね。当日まで楽しみに待ちたいと思います。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 93
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "10月5日発売のインタビューでは、作品まわりのお話も入る内容になりますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 37,
+              "weight": 71
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 363,
+        "output_tokens": 669,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2103319270809805169",
+      "targetPostId": "2103319270809805169",
+      "postedAtJst": "2026-09-25 12:02",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-23T21:52:45.266Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-FANZAdougaX",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "10%ポイント還元付きでの第1弾開催なんですね、売れ筋作品がまとめて対象になるのは気になるところです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 98
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第1弾の対象作品は、どのくらいの期間まで％OFFの対象になるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 37,
+              "weight": 70
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 357,
+        "output_tokens": 97,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "fanza_sns",
+      "postUrl": "https://x.com/fanza_sns/status/2103288383720063081",
+      "targetPostId": "2103288383720063081",
+      "postedAtJst": "2026-09-25 10:00",
+      "target": {
+        "id": "reccuopQfFX8dSjwS",
+        "handle": "fanza_sns",
+        "type": "セール告知系",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T12:22:22.162Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260925-fanza_sns",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "売れ筋ビデオの第1弾スタートで、10％ポイント還元も付くのですね。9月27日23:59までの期間で考えてみます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 101
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第1弾は9月27日23時59分までとのことですが、対象になる作品の範囲はどこまででしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 84
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "10％ポイント還元は、9月27日23:59までに購入した対象作品すべてに付く形でしょうか。",
+              "failures": [
+                {
+                  "rule": "R5",
+                  "detail": "宣伝語: 購入"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 698,
+        "output_tokens": 923,
+        "cache_creation_input_tokens": 3632,
+        "cache_read_input_tokens": 3654,
+        "calls": 2
+      }
+    }
+  ]
+}
