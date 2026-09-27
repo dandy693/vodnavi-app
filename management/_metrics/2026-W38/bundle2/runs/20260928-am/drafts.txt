@@ -1,0 +1,72 @@
+model=claude-opus-5 dry_run=false today_jst=20260928 counts={"lines":9,"generated":5,"stopped":4} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/MOODYZ_official/status/2104194358249714105（2026-09-27 22:00）
+    @MOODYZ_official (メーカー公式) status=generated replyKey=20260928-MOODYZ_official calls=1 in=679 out=911
+  A chars=49 weight=95 ok=true attempts=1
+     120分という尺はかなり見応えのある長さですね。じっくり時間をとって向き合いたい一本だと思います。
+  B chars=51 weight=93 ok=true attempts=1
+     収録時間は123分で、配信は9月11日からですね。本文の120分という表記より少し長めの尺なのですね。
+  C chars=39 weight=75 ok=true attempts=1
+     120分は通しでの収録でしょうか、それともパートに分かれた構成なのでしょうか。
+
+=== 対象 https://x.com/MOODYZ_official/status/2104194354059542682（2026-09-27 22:00）
+    @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 1 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260928-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/PREMIUM_AV/status/2104194366516629862（2026-09-27 22:00）
+    @PREMIUM_AV (メーカー公式) status=generated replyKey=20260928-PREMIUM_AV calls=2 in=1691 out=2017
+  A chars=52 weight=92 ok=true attempts=2
+     50％OFFの第4弾は9月28日の朝9時59分までなのですね。締め切りが朝という区切りは珍しく感じます。
+  B chars=68 weight=115 ok=true attempts=2
+     楪カレンさんの作品は収録203分で、配信は2024年2月16日なのですね。50％OFFは9月28日の朝9時59分までという区切りですか。
+  C chars=37 weight=68 ok=true attempts=1
+     第4弾の50％OFF対象には、何タイトルくらいが含まれているのでしょうか。
+
+=== 対象 https://x.com/attackers_av/status/2104201904628928821（2026-09-27 22:30）
+    @attackers_av (メーカー公式) status=generated replyKey=20260928-attackers_av calls=2 in=1428 out=2119
+  A chars=52 weight=104 ok=true attempts=2
+     続きが気になるドラマとのこと、どんな展開に進んでいくのか気になります。先が読めない話は引き込まれますね。
+  B chars=45 weight=87 ok=true attempts=2
+     収録時間は124分あるドラマなので、続きが気になる場面もそのぶん長く描かれていそうですね。
+  C chars=50 weight=100 ok=true attempts=1
+     続きが気になるドラマとのことですが、この先の展開は同じシリーズの中で描かれていく予定なのでしょうか。
+
+=== 対象 https://x.com/attackers_av/status/2104315155962265648（2026-09-28 06:00）
+    @attackers_av (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 4 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260928-attackers_av calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/S1_No1_Style/status/2104209459426070762（2026-09-27 23:00）
+    @S1_No1_Style (メーカー公式) status=generated replyKey=20260928-S1_No1_Style calls=1 in=710 out=766
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=49 weight=96 ok=true attempts=1
+     10月新作のお知らせ、いよいよ来月分の情報が出てくる時期ですね。どんな並びになるのか気になります。
+  B chars=52 weight=95 ok=true attempts=1
+     10月新作とのことで、収録時間は120分、配信日は10月23日と出ていますね。月末の配信になりそうです。
+  C chars=35 weight=68 ok=true attempts=1
+     10月新作の予約開始は、配信日のどのくらい前から始まる予定でしょうか。
+
+=== 対象 https://x.com/S1_No1_Style/status/2104224553056747712（2026-09-28 00:00）
+    @S1_No1_Style (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 6 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260928-S1_No1_Style calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/S1_No1_Style/status/2104194366499958896（2026-09-27 22:00）
+    @S1_No1_Style (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 6 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260928-S1_No1_Style calls=0 in=0 out=0
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/FANZAdougaX/status/2104300068996264116（2026-09-28 05:00）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260928-FANZAdougaX calls=1 in=364 out=986
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=51 weight=98 ok=true attempts=1
+     第4弾は朝9時59分までなのですね。終わりの時刻が分単位まで決まっていると、残り時間が数えやすいです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=39 weight=74 ok=true attempts=1
+     第4弾の対象リストは、朝9時59分を過ぎた後も同じ価格のまま残るのでしょうか。

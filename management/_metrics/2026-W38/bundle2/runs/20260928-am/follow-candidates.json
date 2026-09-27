@@ -1,0 +1,53 @@
+{
+ "generatedAtJst": "2026-09-28 06:23:30 JST",
+ "date": "2026-09-28",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "tu58tu",
+   "reason": "MOODYZ 9/27 22:00（新井リマ mngs00074）をリポスト・プロフィールに一般ユーザーの自己紹介"
+  },
+  {
+   "handle": "kinsyachi4871",
+   "reason": "MOODYZ 9/27 22:00（新井リマ）をリポスト・プロフィールに個人の趣味の記述"
+  },
+  {
+   "handle": "Fritha_Alone08",
+   "reason": "MOODYZ 9/27 22:00（新井リマ）をリポスト・プロフィールに女優ファンの記述"
+  },
+  {
+   "handle": "shitatitisaiko",
+   "reason": "MOODYZ 9/27 22:00（新井リマ）をリポスト・プロフィール「趣味垢」"
+  },
+  {
+   "handle": "qUN3N1VyA7RKEn5",
+   "reason": "MOODYZ 9/27 22:00・PREMIUM 9/27 22:00・attackers 9/27 22:30 の 3 投稿をリポスト（9/25 夜の次回送り）"
+  },
+  {
+   "handle": "tsubasa_no1yuko",
+   "reason": "PREMIUM 9/27 22:00・attackers 9/27 22:30 の 2 投稿をリポスト"
+  },
+  {
+   "handle": "sh0296_",
+   "reason": "MOODYZ・PREMIUM・attackers（いずれも 9/27 夜）の 3 投稿をリポスト"
+  },
+  {
+   "handle": "jameswho00",
+   "reason": "9/25 夜の次回送り（9/25 朝返信投稿のリポスト一覧）"
+  },
+  {
+   "handle": "mizumoto_yp",
+   "reason": "9/25 夜の次回送り（9/25 朝返信投稿のリポスト一覧）"
+  }
+ ],
+ "skipped": [],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 9,
+  "estimated": 165,
+  "stop": 300,
+  "remainingToStop": 135,
+  "reached": false
+ }
+}
