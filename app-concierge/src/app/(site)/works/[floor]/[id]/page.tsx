@@ -161,7 +161,6 @@ export async function generateMetadata({
 
   const actresses = joinNames(item.iteminfo?.actress, 3);
   const genres = joinNames(item.iteminfo?.genre, 5);
-  const image = pickImage(item.imageURL);
   const path = canonicalWorkPath(floor, id);
   const editorial = getWorkEditorial(item.content_id);
 
@@ -203,13 +202,19 @@ export async function generateMetadata({
       type: "video.movie",
       siteName: "VODNAVI",
       locale: "ja_JP",
-      images: image ? [{ url: image, width: 800, height: 1067, alt: item.title }] : [],
+      // カード画像はパッケージ画像ではなくルートの自社ブランド画像を明示参照する
+      // （@vodnavi_jp のセンシティブラベル下でパッケージ画像のカードが警告で隠された・
+      // CSO裁定 2026-09-28・FACT §26-14）。子セグメントが openGraph を定義すると
+      // 親の images は継承されないため、concierge/layout.tsx と同じく明示する。
+      images: [
+        { url: "/opengraph-image", width: 1200, height: 630, alt: "VODNAVI — 今夜の極上に、最短ルートで" },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: titleWithBrand,
       description,
-      images: image ? [image] : [],
+      images: ["/twitter-image"],
     },
   };
 }
