@@ -1,0 +1,31 @@
+{
+  "tableId": "tblpFVorIemSOywTH",
+  "count": 2,
+  "text_overridden_for": [
+    "S1_No1_Style"
+  ],
+  "records": [
+    {
+      "fields": {
+        "fld63cUuOti14Vlnj": "20260928-MOODYZ_official",
+        "fldPt0Ob7S3llquKB": [
+          "recuIj1YV4CmsxgJN"
+        ],
+        "fld69HPg8Qrm2JVPK": "https://x.com/MOODYZ_official/status/2104194358249714105",
+        "fldbKfB0mpR9wMS2g": "120分は通しでの収録でしょうか、それともパートに分かれた構成なのでしょうか。",
+        "fldeXo1Hzlb5xytfv": "C"
+      }
+    },
+    {
+      "fields": {
+        "fld63cUuOti14Vlnj": "20260928-S1_No1_Style",
+        "fldPt0Ob7S3llquKB": [
+          "recItkceKqz7rPmzD"
+        ],
+        "fld69HPg8Qrm2JVPK": "https://x.com/S1_No1_Style/status/2104209459426070762",
+        "fldbKfB0mpR9wMS2g": "10月新作とのことで、収録時間は120分、配信日は10月23日と出ていますね。",
+        "fldeXo1Hzlb5xytfv": "B"
+      }
+    }
+  ]
+}
