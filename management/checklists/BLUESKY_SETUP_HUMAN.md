@@ -53,4 +53,6 @@ CTO は受領後、プロフィール URL を読み取りのみで開き、表�
 
 - 投稿の開始時期と型（10/12 判定後）。
 - DMM アフィリエイトへの Bluesky のサイト登録を行うか（行うまでは af_id リンクを Bluesky に置けない）。
-- 独自ドメインハンドル（DNS 変更）の要否。
+- ~~独自ドメインハンドル（DNS 変更）の要否。~~ → **2026-09-28 実施（CSO/HUMAN 指示）**: DNS は Vercel ではなく **mixhost**（`ns1`〜`ns5.mixhost.jp`）で管理されているため、HUMAN が mixhost の Zone Editor で `_atproto.vodnavi.jp` TXT `did=did:plc:bhehlgmr74qysfc4mcxwsh5i` を追加。
+  - **CTO 読み戻し 2026-09-28 18:31:36 JST**: `8.8.8.8` / `1.1.1.1` / `ns1.mixhost.jp` / `ns2.mixhost.jp` の 4 か所とも同値。
+  - **18:31:45 JST**: `public.api.bsky.app` の `resolveHandle?handle=vodnavi.jp` → `did:plc:bhehlgmr74qysfc4mcxwsh5i`（一致）。ただし `plc.directory` の DID 文書の `alsoKnownAs` は **`at://vodnavi.bsky.social` のまま**＝Bluesky アプリ側でハンドルを `vodnavi.jp` に切り替える操作（設定 → ハンドル → 独自ドメイン → 検証）は **HUMAN 未実施**。切替後に CTO が `alsoKnownAs` を読み戻す。
