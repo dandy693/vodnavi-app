@@ -11541,3 +11541,7 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **E28-1・E28-2 現状維持／ClaudeBot 対処不要（§29-4(b) クローズ）／CN Challenge 実施しない（20K/日超で再裁定）。**
 - **📌 E28-3（AS 45102・Alibaba Cloud SG → Challenge・条件は ASN のみ）を 2026-09-29 06:30 以降・朝の抽出後に適用。** 手順＝Vercel CLI で PUT → `get` 読み戻し → healthcheck 1 回。効果窓＝適用前後 7 日で `/works/` の SG リクエスト数と `served:500`（`served:500` の低下は E28 の効果として主張しない）。
 - **運用則採用: Firewall の数値には時間窓（URL の `range`・既定 24h）を併記し、24h と 7d を混ぜない。**
+
+### 【2026-09-28 夜・CSO連絡】10/1 PDCA 外部リンク欄＝Ahrefs と outreach 実績を別行で
+- Ahrefs（§11-2）は記録のみ。DR 20→19 は追わない。
+- **outreach 実績（9/13 以降の 送付／返信／掲載約束／掲載済み）はリポジトリに記録なし＝HUMAN／CSO から件数を 10/1 までに受領して転記**（届かなければ「未取得」で出す）。形 → `management/_metrics/2026-W39/cn-works-20260928/README.md` §11-3。
