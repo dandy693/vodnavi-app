@@ -31,3 +31,19 @@
 - 提示 6: 前回送り 4（@HoHzs／@sakuli131／@roku_ni_san／@mgt_xknkmtc）＋新規 2（@kamipGentle／@syucreate）。
 - 除外（件数のみ）: 本人のサブ垢 1／海外・定型文 1／自己紹介に判断材料が乏しい 1。
 - 9/28 夜に提示した @hiyokoyahiyo のフォロー報告は未着（follows.json 累計 18 のまま）。
+
+## 4. 投稿と記録（HUMAN 投稿 2026-09-29 06:08〜06:09 JST）
+
+| # | 対象 | 案 | 投稿 | 配信（snowflake） |
+|---|---|---|---|---|
+| 1 | https://x.com/FANZAdougaX/status/2104662456249545042 | A（手直しなし） | 2104679692313956621 | 21:08:36.362Z |
+| 2 | https://x.com/MOODYZ_official/status/2104600780779262265 | A（手直しなし） | 2104679819028070543 | 21:09:06.573Z |
+| 4 | https://x.com/Aizawa_miyu03/status/2104572240004292739 | A（手直しなし） | 2104679962234200338 | 21:09:40.716Z |
+
+- 見送り（HUMAN）: attackers（第5弾は kawaii に集約）・shirot・S1（priority 3 の枠温存＝今週 1/2 のまま）。
+- X 実在: 3 件とも HTTP 200（Twitterbot の `<title>` で宛先一致）・無効 ID 対照 404。
+- 記録: `record.mjs --create --texts` → MCP create（createdTime 06:16:26 JST・`rec92P5FDmvylHkje` / `reczBfDi4dgZKyU41` / `recj6SyFo9L0pKfCw`・reply_post_id / posted_at 同梱）→ x_targets `last_reply_at` 3 件 → **読み戻し 3＋3 件とも全項目一致**。**x_replies 累計 61 件。**
+
+## 5. フォロー（HUMAN・2026-09-29 朝）
+
+- 実施 7 件（提示 6＋昨夜提示の @hiyokoyahiyo）→ `follows.json` 追記・読み戻し一致（累計 25・推定フォロー中 181・停止閾値 300 まで 119）。
