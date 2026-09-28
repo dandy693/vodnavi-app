@@ -4914,3 +4914,16 @@ gtag('config', 'G-GG7JV9MJRW', {
   - **台帳で vodnavi.jp ドメインのアドレスを登録先として使っているのは Bluesky（`admin@vodnavi.jp`・2026-09-28）のみ**（リポジトリ全体の `grep`＝`contact@vodnavi.jp` 7 箇所は www の掲載のみ・`admin@vodnavi.jp` は手順書のみ）。
   - **DMM アフィリエイトのログイン・登録メールは台帳に記載が無い＝未確認。** 管理画面は `moterist.com@gmail.com` の Chrome セッションで閲覧してきた（ALERTS.md L450）が、それは Google アカウントのセッションであり DMM の登録メールの証拠ではない。**HUMAN が DMM アフィリエイト「登録情報」で確認する。** X（@vodnavi_jp）・Vercel・Airtable・Make の登録メールも台帳に記載なし＝同じく未確認。
 - **【厳守】apex の A レコード（Vercel）と `_atproto` TXT は変更していない**（§5・Bluesky 手順書 §5）。
+
+### 30-1. 【HUMAN 報告・CTO 読み戻し 2026-09-28 22:4x JST】修正後の着信と登録メールの確認
+
+| 項目 | 記録 |
+|---|---|
+| MX 変更時刻（cPanel Zone Editor） | **HUMAN 報告で空欄＝未記入**。読み戻しで反映を確認した最初の時刻は 2026-09-28 22:27:48 JST（§30） |
+| **修正後の初着信** | **`admin@vodnavi.jp` に 2026-09-28 22:35 JST の着信（maildir の mtime・本文は読んでいない）。** HUMAN 報告「Bluesky 確認メールが届き、メール認証完了」と一致。**→ MX 修正後に外部からの受信が通ることを確認** |
+| **DMM アフィリエイトの登録メール** | **`support@moterist.com`＝vodnavi.jp 外・今回の不達の影響なし**（HUMAN 報告）。`moterist.com` の MX は `moterist.com`（A ＝ `133.125.148.25`＝mixhost）で正常・`support` の箱の最新着信 2026-09-28 22:40 JST（mtime のみ） |
+| DMM の 2 段階認証・復旧用メール | **未設定**（HUMAN 報告）＝**HUMAN の後日タスク** |
+| DMM サポート Q3/Q4 の返信有無 | **HUMAN 報告で空欄＝未確認として記録。** 【併記】§9 のとおり 2026-07-29 送信分の Q3・Q4・Q-2 は 2026-07-30 に回答受領済み・クローズ済み。今回の報告欄がそれとは別の照会を指すかは未確認 |
+| Bluesky 二要素認証 | **有効**（CTO 読み戻し 2026-09-28 22:4x・設定 → プライバシーとセキュリティ「メールでの2要素認証が有効」）。HUMAN 報告欄は空欄 |
+
+- **X・Vercel・Airtable・Make の登録メールは引き続き未確認**（§30）。
