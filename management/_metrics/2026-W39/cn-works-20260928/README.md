@@ -242,3 +242,62 @@ SG は UTC 10:00〜16:59（JST 19:00〜翌 01:59）にほぼ止まり、UTC 17:0
 5. **JST／UTC のずれ・SG の停止時間帯（UTC 10:00〜16:59）は、介入テストの前後比較には影響しない。記録のままでよい。**
 
 - **FACT_GOVERNANCE への反映は 9/29 裁定後。**
+
+---
+
+## 9. 【訂正・自己検出 2026-09-28 18:0x JST】§0・§3-3・§3-4・§6-5 の「Firewall 24h」は **7 日**の値だった／「Observability はブロック分を含まない」は**誤り**
+
+- **13:0x に読んだ Firewall Traffic 画面の URL は `?range=7d` だった。** 18:07 に同じ URL を開き直すと Allowed 645.6k／Denied 260.2k／ClaudeBot 384.0k／E28-2 258.1k（7 日窓）。**URL パラメータなしの画面（既定＝直近 24h）は Allowed 94.2k／Denied 4.8k／E28-2 4.5k／ClaudeBot は上位 5 に無い**（窓 9/27 18:00〜9/28 17:45 JST 表示）。
+  - **→ §3-3・§3-4 の「Firewall 24h: Allowed 642.9k／Denied 259.5k／ClaudeBot 383.9k／E28-2 257.4k」は 7 日窓の値である。** 記述は訂正として残す。
+  - **→ §0 の「Firewall の Traffic 画面は直近 24h しか選べない」も誤り。** カレンダーのクリックが効かなかっただけで、`?range=7d` で 7 日は表示できる。
+- **Observability の ClaudeBot 7 日合計＝1.4K+78K+288K+11K+4.3K+1.2K+0.55K ≈ 384K で、Firewall 7 日の 384.0k と一致する。** さらに Observability の `wafAction` 次元に **deny が 259K（7 日）** として現れる。
+  - **→ §0・§3-3・§6-5 の「Observability の Requests は Firewall でブロックされた分を含まない」は誤り。** 550 と 383.9K の食い違いは**窓の違い（UTC 1 日 対 7 日）**だった。
+  - **→ §6-5 の運用則候補（Observability と Firewall は母集団が違う・ClaudeBot 550 vs 383.9K）は取り下げる。** CSO が「運用則の候補として記録」と指示した項目だが、**根拠が誤っていたため台帳（FACT）へは上げない。** 代わりの候補: **「Firewall Traffic 画面の窓は URL パラメータ（`?range=`）で変わる。数値には必ず窓を併記し、既定（24h）と 7 日を混ぜない」**（採否は CSO）。
+- **分類D・自己申告**: 画面の窓を URL から確認せず「24h」と書いた。**E28 の日次材料を取り直す過程で検出した**（外部からの指摘ではない）。
+
+## 10. 9/29 E28 再裁定の材料（取得 2026-09-28 18:0x JST・read-only）
+
+### 10-1. WAF 判定の日別（Vercel Observability・`wafAction`・Requests Count・**UTC 日**）
+
+| UTC 日 | allow | deny | 備考 |
+|---|---|---|---|
+| 9/21 | 81K | 33 | E28 適用前 |
+| 9/22 | 92K | 41K | 適用日（9/22 08:57 JST＝9/21 23:57 UTC 適用・この UTC 日はほぼ適用後） |
+| 9/23 | 169K | 181K | ClaudeBot の集中日（同日 ClaudeBot 288K） |
+| 9/24 | 63K | 12K | |
+| 9/25 | 69K | 8.9K | |
+| 9/26 | 85K | 8.3K | |
+| 9/27 | 85K | 6.4K | |
+| 9/28（〜09 UTC） | 40K | 1.5K | 途中 |
+| **7 日計** | **685K** | **259K** | Firewall 画面 7 日（Allowed 645.6k／Denied 260.2k）とほぼ一致 |
+
+- **Rate Limited は 7 日を通じて表示なし**（Firewall 画面）。**E28-1（PerplexityBot rate_limit）はルール一覧に 7 日窓でも現れない。**
+- Firewall 既定 24h（9/27 18:00〜9/28 17:45 JST）: Allowed 94.2k／Denied 4.8k／Challenged 8／E28-2 4.5k／DDoS 289。UA 上位＝bingbot 13.4k／ExaSearchBot 8.9k／Chrome 139 Linux aarch64 8.0k／**Chrome/99.0.4844.51 4.9k**／MJ12bot 3.0k。AS 上位＝**Alibaba (US) 41.9k**／Microsoft 13.4k／Leaseweb 8.9k／Oracle 8.9k／CHINA UNICOM 5.3k。
+
+### 10-2. 対象 UA の日別（Observability・UTC 日・§3-3 の再掲）
+
+| UTC 日 | PerplexityBot | ClaudeBot | Chrome/99.0.4844.51 |
+|---|---|---|---|
+| 9/21 | 13K | 1.4K | 4.9K |
+| 9/22 | 380 | 78K | 4.0K |
+| 9/23 | 2 | 288K | 5.7K |
+| 9/24 | 0 | 11K | 4.0K |
+| 9/25 | 2 | 4.3K | 3.5K |
+| 9/26 | 0 | 1.2K | 5.2K |
+| 9/27 | 0 | 550 | 5.4K |
+
+- **§29-3 ① の再裁定条件「9/29 に Allowed が 20k/日を下回らなければ Challenge 格上げ」に対し: PerplexityBot は 9/23 以降 0〜2/日。** **ただし E28-1 のルールはヒットが記録されておらず、PerplexityBot の減少が rate_limit によるものかは分離できない**（自発的に止まった可能性を排除していない）。
+- **ClaudeBot は 9/23 の 288K をピークに 550/日まで減っている**（ルールは当てていない。E28-2 の `/concierge` deny には該当しうる）。
+- **Chrome/99（CN 系）は 3.5〜5.7K/日で横ばい。**
+
+### 10-3. `served:500` の日別（Vercel Runtime Logs MCP・query `"served":500`・statusCode 500 の行数・**JST 日**）
+
+| JST 日 | 9/22 | 9/23 | 9/24 | 9/25 | 9/26 | 9/27 | 9/28（〜18:00） |
+|---|---|---|---|---|---|---|---|
+| 行数 | 164 | 954 | 131 | 252 | 35 | 354 | 941 |
+
+- **前窓 9/14〜9/20＝6,462 行（日平均 923）。後窓 9/22〜9/27＝1,890 行（日平均 315）。** **【厳守】`served:500` は上流 FANZA 400 のバーストで決まる（§24-12）。E28 の効果として読まない**（代理指標として併記のみ）。
+
+### 10-4. 戦略顧問案（区別して転記）と CTO の事実
+- **戦略顧問案**: PerplexityBot の効果／ClaudeBot／country=CN Challenge／UA Chrome/99 Challenge。
+- **CTO が出せる事実**: 上表のとおり。**新規＝SG Alibaba Cloud（AS 45102）の `/works/` 取得が 2.2K → 20K/日**（§3-2・§6-2）。**CTO の推奨は書かない。**
