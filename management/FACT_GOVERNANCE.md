@@ -4691,6 +4691,8 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **固定した版＝`@supabase/mcp-server-supabase@0.13.0`**（npm の最終更新 2026-09-17）。`.mcp.json` の `@latest` を置き換えた（2026-09-29 06:40 JST）。**自動更新はしない。版の確認は月次ルーティン（`ROUTINE_CHECKLISTS.md` §2）で月 1 回。**
 - **`MCP_TIMEOUT` = 60000（ms）** を Windows（Vostro）の User 環境変数に設定（2026-09-29 06:40:11 JST・設定前は未設定）。値の根拠＝`@latest` 単独起動の実測 11.0 秒の 3 倍以上（CSO 裁定）。
 - **固定後の単独起動の実測**: 初回（キャッシュ作成）12.4 秒 → 2 回目 **2.7 秒**（initialize 応答まで・06:4x JST）。
+- **【裏付け・Claude Code の MCP ログ `%LOCALAPPDATA%\claude-cli-nodejs\Cache\C--Users-Tachi-projects-VODNAVI-GROUP\mcp-logs-supabase\*.jsonl`】** 既定の接続待ちは **30000ms**（`Starting connection with timeout of 30000ms`）。**2026-09-28 21:25 JST の起動は `Connection failed after 28319ms (CONNECT_TIMEOUT)`**。同じ `@latest` でも成功した回は 2,985ms（9/28 06:11）・7,586ms（12:21）・7,127ms（18:03）とばらつき、**上限 30 秒に届いた回だけ失敗した**。2026-09-29 06:39 JST の `/mcp` 再接続は 1,823ms で成功。
+- **再起動後の確認方法**: 同ログの `Starting connection with timeout of …ms` が **60000ms** になっていれば `MCP_TIMEOUT` が効いている。`Successfully connected … in …ms` が起動所要時間。
 - **未確認**: Claude Code 再起動後の起動所要時間と `list_tables` の実疎通（HUMAN の再起動後に CTO が測って本項に追記する）。
 
 ---
