@@ -67,3 +67,10 @@ CTO は受領後、プロフィール URL を読み取りのみで開き、表�
 - **【CSO 指示 2026-09-28 夜・追記 22:07】ウェブサイト欄が無いため、自己紹介の末尾に改行して `https://app.vodnavi.jp/?utm_source=bluesky` を追加 → 保存。** 読み戻し（22:07:57 JST・getProfile）: description は 2 行・2 行目が当該 URL と一致・1 行目は変更なし。プロフィール画面では URL がリンク化（href に `utm_source=bluesky` を含むリンク 1 本）。§3 の utm（medium／campaign 付き）ではなく CSO 指定の `utm_source=bluesky` のみ。
 - **成人向け設定は上記のとおり CSO が確定**（指示の「ヌード」を画面の「性的ではないヌード」と読み替えた点を含む）。
 - **HUMAN 残**: アイコン画像／二要素認証。**投稿は未開始。**
+- **【2026-09-28 22:1x・CSO 個別許可】二要素認証（メール）**: 「有効にする」→ 先にメールアドレス確認を要求 → 「メールを送信」押下（「メールを送りました！」表示）で停止。**アイコンは CTO のファイル投入ができず（ページがファイル入力を DOM に出さない）HUMAN 実施に変更。**
+- **【2026-09-28 22:20〜22:2x・CSO 指示・read-only】確認メール不達の調査 → 分類＝未到達（DNS/MX）。**
+  - `vodnavi.jp` MX ＝ `vodnavi.jp`（優先度 0）→ A ＝ `216.150.1.1`＝**Vercel**（HTTP 応答 `server: Vercel`）。mixhost のメールサーバ `ik10014.mixhost.jp` は `133.125.148.25`。**MX が mixhost を指していない。** 8.8.8.8 と `ns1.mixhost.jp` で同値。
+  - SPF `v=spf1 redirect=_spf.mixhost.jp`／DMARC `v=DMARC1; p=none;`（受信には無関係）。
+  - mixhost（SSH・読み取りのみ）: `admin@vodnavi.jp` の箱は存在（`~/mail/vodnavi.jp/admin`・`contact` も）。**直近 24 時間の着信 0 件・最新の着信は 2026-05-31 19:17**（ファイルの mtime のみ・本文は読んでいない）。`/var/log/exim_mainlog` は共有ホストのため閲覧不可＝受信ログは取得不能。
+  - Bluesky 設定 → アカウントの登録メール＝`admin@vodnavi.jp`（宛先違いなし・「メールアドレスを確認」表示＝未確認）。
+  - **設定変更はしていない。** 是正（MX を mixhost へ向ける等）は CSO 裁定・DNS は mixhost Zone Editor（HUMAN）。
