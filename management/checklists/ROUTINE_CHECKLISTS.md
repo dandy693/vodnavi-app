@@ -184,6 +184,14 @@
 - [ ] **【CSO裁定 2026-09-23・配信前再検査・朝 06:00 のみ】朝の抽出と同じ枠で、`posts` の__当日予約行__を MCP で読み戻し（`予約日時 = today`・`Asia/Tokyo`）→ `node management/tools/x-post-refill/preflight-today.mjs --readback <readback.json> --date <YYYY-MM-DD> --json <out.json>` を実行する。** **NG が出たら提示の__先頭__に「🔴配信前NG」として出し、レコード名・予約時刻・ガード ID・本文を添える。** **是正（承認を外す／本文を直す）は HUMAN。CTO は `posts` を書かない（読み戻し・検査・報告まで）。** **Make シナリオ 5615632 は触らない。** 検査不能（生成時メタが posts に無い＝`g9` / `g12` / `g19` / `g20` / `g21`）は毎回そのまま併記する。**残差＝当日朝以降（06:00〜21:00）の書き換えは検知できない**（FACT §13-5-1）。
 - [ ] **【CSO 指示 2026-09-21 夜・基盤D-1 引用ポスト・2026-09-22 朝から】朝・夜のリプ生成の直後に `quote.mjs` を同じ中間ファイルで実行し、引用向き 1〜2 件（Q1・Q2）を別枠で提示（提示前に works ページ HTTP 200 を確認）。HUMAN 投稿後「@ハンドル｜Q1/Q2（手直し有無）｜引用ポストURL｜本文」→ `record.mjs --create quotes.json --pick … --replies` → MCP（初回のみ `typecast: true`）→ `--posted --quote` → 読み戻し。**同一投稿にリプ＋引用の両方はしない／引用は 1 日 2 件まで（T1改 と合わせて works リンク 3 件/日）**。木曜集計は `ga4-quote-sessions.mjs`（`utm_medium=quote`）→ `weekly-report.mjs --ga4-quote`。引用ポストは X Analytics では自投稿として数える（FACT §26-11）。
 
+## 3-3. outreach の週次サイクル（**CSO 指示 2026-09-28・2026-10-01 から**・FACT §26-15）
+
+- [ ] **木曜 PDCA（CTO）: 候補 2 件＋依頼文の下書き（選定根拠つき）を用意する。**
+- [ ] **金曜（HUMAN）: 送信（15 分）→ 日付・件数を CTO へ一言。**
+- [ ] **CTO: `management/_metrics/outreach/outreach.json` に追記（日付・件数・返信・掲載約束・掲載済み）。宛先名と本文は保存しない。**
+- [ ] **木曜 PDCA の外部リンク欄は Ahrefs と outreach 実績を別行で並べる**（`cn-works-20260928/README.md` §11-3）。
+- [ ] **2 週連続で送信 0 件なら台帳に「停止」と書く（「継続中」と書かない）。**
+
 ## 4. T3 自動投稿の事後目視（**初回2週間・木曜サイクルとは別**・第102便 タスクB）
 
 > **【厳守・2026-09-10 追加／第123便 裁定(a)】`VODNAVI_T3_AUTOPOST` の `verify_all_ok` を判定に使わないこと。** **項目6（読み戻した行でガード再実行）が `g9_utc_iso: intendedJst が未指定（照合できない）` で__構造的に必ず落ちる__ため、`verify_all_ok` は常に `false` になる**（9/8・9/9・9/10 の3回とも実測）。**verify の結果は7項目を個別に読む。** **修正は E18 として 9/12 以降。**

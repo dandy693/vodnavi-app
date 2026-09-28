@@ -1,0 +1,9 @@
+{
+  "_note": "outreach の週次記録（FACT_GOVERNANCE §26-15・CSO 指示 2026-09-28）。宛先名と本文は保存しない。件数のみ。2 週連続で sent=0 なら FACT に「停止」と書く。",
+  "baseline": {
+    "period": "2026-09-13..2026-09-28",
+    "sent": 0,
+    "source": "CSO報告 2026-09-28（HUMAN 多忙・X 転換とラベル対応を優先）"
+  },
+  "entries": []
+}
