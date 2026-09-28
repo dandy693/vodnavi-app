@@ -4693,7 +4693,7 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **固定後の単独起動の実測**: 初回（キャッシュ作成）12.4 秒 → 2 回目 **2.7 秒**（initialize 応答まで・06:4x JST）。
 - **【裏付け・Claude Code の MCP ログ `%LOCALAPPDATA%\claude-cli-nodejs\Cache\C--Users-Tachi-projects-VODNAVI-GROUP\mcp-logs-supabase\*.jsonl`】** 既定の接続待ちは **30000ms**（`Starting connection with timeout of 30000ms`）。**2026-09-28 21:25 JST の起動は `Connection failed after 28319ms (CONNECT_TIMEOUT)`**。同じ `@latest` でも成功した回は 2,985ms（9/28 06:11）・7,586ms（12:21）・7,127ms（18:03）とばらつき、**上限 30 秒に届いた回だけ失敗した**。2026-09-29 06:39 JST の `/mcp` 再接続は 1,823ms で成功。
 - **再起動後の確認方法**: 同ログの `Starting connection with timeout of …ms` が **60000ms** になっていれば `MCP_TIMEOUT` が効いている。`Successfully connected … in …ms` が起動所要時間。
-- **未確認**: Claude Code 再起動後の起動所要時間と `list_tables` の実疎通（HUMAN の再起動後に CTO が測って本項に追記する）。
+- ~~**未確認**: Claude Code 再起動後の起動所要時間と `list_tables` の実疎通（HUMAN の再起動後に CTO が測って本項に追記する）。~~ → **【確認済み 2026-09-29 07:03 JST・HUMAN 再起動後】** MCP ログ（`2026-09-28T22-01-50-790Z.jsonl`）＝**`Starting connection with timeout of 60000ms`**（07:01:50 JST・`MCP_TIMEOUT` が効いている）／**`Successfully connected (transport: stdio) in 3576ms`**（起動所要 3.6 秒）。プロセス環境 `MCP_TIMEOUT=60000`。**`list_tables` 成功**（public 7 表・`fanza_response_cache` 176,411 行・`sitemap_works_archive` 4,330 行ほか）。**n=1 の起動であり、以後の起動で 60 秒を超えないことは未検証**（§10）。
 
 ---
 
