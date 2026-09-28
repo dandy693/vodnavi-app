@@ -57,3 +57,10 @@ CTO は受領後、プロフィール URL を読み取りのみで開き、表�
   - **CTO 読み戻し 2026-09-28 18:31:36 JST**: `8.8.8.8` / `1.1.1.1` / `ns1.mixhost.jp` / `ns2.mixhost.jp` の 4 か所とも同値。
   - **18:31:45 JST**: `public.api.bsky.app` の `resolveHandle?handle=vodnavi.jp` → `did:plc:bhehlgmr74qysfc4mcxwsh5i`（一致）。ただし `plc.directory` の DID 文書の `alsoKnownAs` は **`at://vodnavi.bsky.social` のまま**＝Bluesky アプリ側でハンドルを `vodnavi.jp` に切り替える操作（設定 → ハンドル → 独自ドメイン → 検証）は **HUMAN 未実施**。切替後に CTO が `alsoKnownAs` を読み戻す。
   - **【完了・CTO 読み戻し 2026-09-28 18:48:36 JST】HUMAN がハンドルを `vodnavi.jp` に切替。** DID 文書の `alsoKnownAs` ＝ `at://vodnavi.jp`／`app.bsky.actor.getProfile` の `handle` ＝ `vodnavi.jp`／`resolveHandle?handle=vodnavi.jp` ＝ 同 DID／旧 `vodnavi.bsky.social` は解決不可（HTTP 400）。プロフィールの表示名は未設定・ラベルなし（§3 のプロフィール設定は未確認）。**`_atproto` TXT（mixhost）は消さないこと＝消すとハンドルが無効になる。**
+
+## 6. 実施記録（CTO・2026-09-28 22:0x JST・CSO 指示による Chrome 操作。投稿・フォロー・いいねはしていない）
+
+- **プロフィール**: 表示名「VODNAVI｜ビブリア・エロティカ」・自己紹介（CSO 指定文）を入力 → 保存（「プロフィールを更新しました」表示）。入力欄の値を保存前に読み戻して一致を確認。アイコンは変更していない。
+- **ウェブサイト**: 設定していない。**「プロフィールを編集」画面に項目が無い**（表示名・説明・アイコン・バナーのみ）。公開 API の `website` も空。§3 のリンクは未反映のまま。
+- **成人向けコンテンツ**: 「成人向けコンテンツを有効にする」ON。成人向けコンテンツ（露骨な性的画像）＝警告／性的にきわどい＝警告（既定で警告だった）／性的ではないヌード＝警告（表示から変更）。生々しいメディア＝警告（既定のまま・指示対象外）。**生年月日の入力は求められなかった。** ページ再読込後も同じ状態（DOM の選択状態で確認）。
+- **読み戻し（22:04:01 JST・`public.api.bsky.app` getProfile）**: handle `vodnavi.jp`／displayName・description とも入力どおり／website 空／フォロワー 0・フォロー 1・投稿 0／ラベルなし。フォロー 1 は作業前から表示されていたもの（CTO はフォローしていない）。
