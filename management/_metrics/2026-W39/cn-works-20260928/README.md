@@ -112,7 +112,7 @@ Allowed 642.9k／Denied 259.5k／Challenged 427。ルール: **E28-2 concierge n
 
 ## 4. 事前登録外の観測（仮説として登録するかは CSO）
 - **`/works/` の増加は CN ではなく SG の Alibaba Cloud（回転 UA）と US のクローラである。** GA4 の「他」の国のセッションは 2〜11/日で、SG の 60K は GA4 にほとんど現れない＝JS を実行しない取得と見られる（**断定しない**）。
-- **JS を実行しないクローラが works の CTA（af_id 004 の href）を辿れば、GA4 には出ずに DMM のクリックにだけ計上されうる。** これは §2 の H1（GA4 CN 条件付き）とは別の仮説であり、**事前登録していないため本便では判定しない。** 検証には DMM 日別と、Vercel での `al.dmm.co.jp` 宛の外部遷移は見えない（自サイト外）ため、DMM 側の時間帯別クリックとの突合が要る。
+- **JS を実行しないクローラが works の CTA（af_id 004 の href）を辿れば、GA4 には出ずに DMM のクリックにだけ計上されうる。** これは §2 の H1（GA4 CN 条件付き）とは別の仮説であり、**事前登録していないため本便では判定しない。** 検証には DMM 側の日別・時間帯別クリックとの突合が要る（`al.dmm.co.jp` への遷移は自サイトの外で起きるため Vercel には記録されない）。
 
 ## 5. 9/29 E28 再裁定への材料
 **戦略顧問案（転記・区別）**: PerplexityBot の効果／ClaudeBot／country=CN Challenge／UA Chrome/99 Challenge。
