@@ -1,0 +1,44 @@
+{
+  "tag": "PREFLIGHT_TODAY",
+  "ts": "2026-09-28T20:32:02.810Z",
+  "date": "2026-09-29",
+  "n": 1,
+  "ngCount": 0,
+  "unrecovered": [],
+  "selfExcluded": [],
+  "dumpUsed": false,
+  "existingRows": 0,
+  "metaDependent": {
+    "g9_utc_iso": "intendedJst（生成時の意図時刻）",
+    "g12_actress_not_recent": "actressNames（posts に出演女優の列が無い）",
+    "g19_t3_deadline": "material.ends_at（T3 の生成材料）",
+    "g20_t3_template": "material（T3 の生成材料）",
+    "g21_t3_not_reported": "material.campaign_title（T3 の生成材料）"
+  },
+  "posts": [
+    {
+      "recordId": "recL6QGC8yrcmcoUG",
+      "name": "W12-04 T1改 九野ひなの MIDV-855",
+      "text": "MIDV-855（九野ひなの）はレビュー37件で平均4.7。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/midv00855",
+      "kind": "T1",
+      "typeName": "T1改",
+      "statusName": "承認済",
+      "linkKindName": "サイト",
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-09-29T12:00:00.000Z",
+      "contentId": "midv00855",
+      "hinban": "MIDV-855",
+      "actressNames": [],
+      "failures": [],
+      "skipped": [
+        {
+          "post": "W12-04 T1改 九野ひなの MIDV-855",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        }
+      ]
+    }
+  ]
+}

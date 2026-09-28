@@ -1,0 +1,70 @@
+model=claude-opus-5 dry_run=false today_jst=20260929 counts={"lines":8,"generated":5,"stopped":3} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/FANZAdougaX/status/2104662456249545042（2026-09-29 05:00）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260929-FANZAdougaX calls=1 in=439 out=526
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=69 weight=122 ok=true attempts=1
+     水卜さくらさんの11時間BESTが30%OFFキャンペーンの作品リストに入っているのですね。長尺のBESTが並ぶと見ごたえがありそうです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=49 weight=92 ok=true attempts=1
+     30%OFFキャンペーンの対象は、今回のビデオ作品リストに載っている作品だけになりますでしょうか。
+
+=== 対象 https://x.com/MOODYZ_official/status/2104600780779262265（2026-09-29 00:55）
+    @MOODYZ_official (メーカー公式) status=generated replyKey=20260929-MOODYZ_official calls=2 in=729 out=1467
+  A chars=56 weight=106 ok=true attempts=1
+     25周年のタイミングでVRの新作が予約開始なのですね。VRでの展開がこの先どう広がっていくのか気になっています。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=80 ok=true attempts=2
+     新作予約開始とのことですが、予約された方向けの特典や先行配信の予定はありますか？
+
+=== 対象 https://x.com/attackers_av/status/2104586951441678665（2026-09-29 00:00）
+    @attackers_av (メーカー公式) status=一部生成不能（A/C がガード未通過・最大 2 回再生成後） replyKey=20260929-attackers_av calls=3 in=1149 out=3897
+  A chars=54 weight=107 ok=false attempts=3 NG=[{"rule":"R8","detail":"文数 3（≤2）"},{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     おもいっきり！ という一言が力強いですね。アタッカーズのドラマ作品として、どんな展開になるのか気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=46 weight=91 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     おもいっきり！ は単発の作品でしょうか、それともシリーズものとして続いていく予定でしょうか？
+
+=== 対象 https://x.com/attackers_av/status/2104579391628136854（2026-09-28 23:30）
+    @attackers_av (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 3 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260929-attackers_av calls=0 in=0 out=0
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/Aizawa_miyu03/status/2104572240004292739（2026-09-28 23:01）
+    @Aizawa_miyu03 (女優本人) status=generated replyKey=20260929-Aizawa_miyu03 calls=1 in=322 out=648
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=47 weight=90 ok=true attempts=1
+     逢沢みゆさん、本中からの大共演VRとのことで、複数人でのVRは視点の距離感が変わりそうですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=32 weight=62 ok=true attempts=1
+     逢沢みゆさん、この大共演VRの配信開始はいつ頃からになりますか。
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2104571958771982688（2026-09-28 23:00）
+    @shirot_AV_chosa (レビュー系) status=generated replyKey=20260929-shirot_AV_chosa calls=1 in=261 out=1125
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=57 weight=108 ok=true attempts=1
+     Emika の恋におちる瞬間で白上咲花さんの名前が挙がっているのは新鮮ですね。どんな傾向の作品なのか気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=41 weight=76 ok=true attempts=1
+     Emika の恋におちる瞬間について、配信の開始日はいつからになるか分かりますか？
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2104571844724707744（2026-09-28 23:00）
+    @IDEAPOCKETTER (メーカー公式) status=一部生成不能（A/C がガード未通過・最大 2 回再生成後） replyKey=20260929-IDEAPOCKETTER calls=3 in=1115 out=5097
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=47 weight=94 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     澪ちゃん、という呼び方だけの短い一言ですが、送り手の思い入れがしっかり伝わってくる投稿ですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=36 weight=72 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     澪ちゃんという呼び方は、撮影の現場でもそのまま使われているのでしょうか。
+
+=== 対象 https://x.com/S1_No1_Style/status/2104552081181004182（2026-09-28 21:41）
+    @S1_No1_Style (メーカー公式) status=generated replyKey=20260929-S1_No1_Style calls=1 in=304 out=759
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  ! priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）
+  A chars=46 weight=92 ok=true attempts=1
+     デビューイベント、無事に終了とのことで何よりです。当日は足を運んだ方も多かったのでしょうね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=45 weight=90 ok=true attempts=1
+     デビューイベントの当日の様子は、後日レポートなどの形で公開される予定はありますでしょうか。

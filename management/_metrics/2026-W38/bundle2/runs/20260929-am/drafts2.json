@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-09-28T20:43:46.984Z",
+  "today_jst": "20260929",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "79d1227310ad4e06ca3cd99afbc9339d35b3cba13a08d4e37ba112b63567ed4b",
+  "counts": {
+    "lines": 1,
+    "generated": 1,
+    "stopped": 0
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "attackers_av",
+      "postUrl": "https://x.com/attackers_av/status/2104579391628136854",
+      "targetPostId": "2104579391628136854",
+      "postedAtJst": "2026-09-28 23:30",
+      "target": {
+        "id": "recGCCpEJDzLNEkLo",
+        "handle": "attackers_av",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T21:24:59.579Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260929-attackers_av",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第5弾は9月30日の朝9時59分までなのですね、締め切りがはっきりしていて分かりやすいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第5弾の50%OFFは9月30日朝9時59分までとのことですが、対象になるのはどのシリーズまででしょうか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 93
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "第5弾の50%OFF対象になるのは、こだわりのフェラのテーマに沿った作品だけでしょうか。",
+              "failures": [
+                {
+                  "rule": "R6",
+                  "detail": "容姿・露骨語: フェラ"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 840,
+        "output_tokens": 436,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7286,
+        "calls": 2
+      }
+    }
+  ]
+}

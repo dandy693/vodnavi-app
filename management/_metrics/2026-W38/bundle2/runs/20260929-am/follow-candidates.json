@@ -1,0 +1,41 @@
+{
+ "generatedAtJst": "2026-09-29 05:45:48 JST",
+ "date": "2026-09-29",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "HoHzs",
+   "reason": "前回送り（9/28 夜・honnaka_NN 9/28 11:04 のリポスト一覧）"
+  },
+  {
+   "handle": "sakuli131",
+   "reason": "前回送り（9/28 夜・honnaka_NN 9/28 11:04 のリポスト一覧）"
+  },
+  {
+   "handle": "roku_ni_san",
+   "reason": "前回送り（9/28 夜・honnaka_NN 9/28 11:04 のリポスト一覧）"
+  },
+  {
+   "handle": "mgt_xknkmtc",
+   "reason": "前回送り（9/28 夜・honnaka_NN 9/28 11:04 のリポスト一覧）"
+  },
+  {
+   "handle": "kamipGentle",
+   "reason": "Aizawa_miyu03 9/28 23:01（大共演VR）への返信・自己紹介「オカズ候補」・フォロワー244＝一般ユーザー"
+  },
+  {
+   "handle": "syucreate",
+   "reason": "Aizawa_miyu03 9/28 23:01（大共演VR）への返信・自己紹介は個人クリエイター・フォロワー978＝一般ユーザー（業界・宣伝アカウントではない）"
+  }
+ ],
+ "skipped": [],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 18,
+  "estimated": 174,
+  "stop": 300,
+  "remainingToStop": 126,
+  "reached": false
+ }
+}
