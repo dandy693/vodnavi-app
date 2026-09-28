@@ -6,7 +6,7 @@
         "/c",
         "npx",
         "-y",
-        "@supabase/mcp-server-supabase@latest",
+        "@supabase/mcp-server-supabase@0.13.0",
         "--read-only",
         "--project-ref=xflqxxyvphqqmnzscpxr",
         "--features=database,docs"

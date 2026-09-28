@@ -40,6 +40,9 @@
 - [ ] **Sitemap Index 物理整合性監査**: `https://vodnavi.jp/sitemap.xml` および `https://app.vodnavi.jp/sitemap.xml` の中身をパースし、XML内の `<loc>` がすべて `https://` から始まる完全絶対URLであり、かつ `canonical` 先と100%一致しているかスクリプト監査。
 - [ ] **Worksサイトマップ分割数確認**: 作品件数増加に伴い、1ファイルあたり20,000URLの上限を超えていないか。必要に応じて `app-works-0003.xml` などの子サイトマップが自動生成されているか。
 
+### 📌 MCP の版確認（CSO裁定 2026-09-29・FACT §27-7）
+- [ ] **Supabase MCP の固定版（`.mcp.json` の `@supabase/mcp-server-supabase@0.13.0`）と npm の最新版（`npm view @supabase/mcp-server-supabase version`）を比べて記録する。** 更新するかは CSO 判断・**自動更新はしない**。
+
 ### 📌 規約・E-E-A-T防衛
 - [ ] **法務表現一斉パトロール**: 「絶対」「最安」「業界No.1」などの根拠なき誇大表現がライターによって混入されていないか、サイト内検索で一括スクリーニング。
 - [ ] **著者・編集ポリシーページの生存**: `vodnavi.jp/authors` ページおよび編集ポリシー（E-E-A-Tのコア）のリンクがフッター等から正常にクローラーへ露出しているか確認。

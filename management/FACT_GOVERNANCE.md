@@ -4685,6 +4685,14 @@ gtag('config', 'G-GG7JV9MJRW', {
 - 旧トークン 2 件（§27-2）の削除完了。
 - X Premium 加入（未完なら今週中）／`x_targets` 初期 30 件の登録（束1 のテーブル新設後）。 → **【2026-09-17 更新】X Premium は 9/16 加入済み（§26-7・実請求額の追記が残）。`x_targets` は CTO が 42 件を `status=候補` で投入済み（§26-9）。HUMAN 残＝稼働候補 35 件の X 画面実査（`followers` / `verified_at` / `reply_restriction`）→ `status=稼働`。**
 
+### 27-7. 【CSO裁定 2026-09-29 朝】Supabase MCP の起動時接続失敗＝**プロセス起動**で確定。版固定と接続待ちの延長
+
+- **原因（確定）**: 2026-09-28 夜・09-29 朝の起動時 `CONNECT_TIMEOUT` は、`.mcp.json` の `npx -y @supabase/mcp-server-supabase@latest` が起動のたびにレジストリで最新版を解決し、接続待ちの上限を超えたもの。**PAT（Management API 200）・ネットワーク（0.3〜0.6 秒）は正常**（切り分け → `bundle2/runs/20260929-am/README.md` §7）。
+- **固定した版＝`@supabase/mcp-server-supabase@0.13.0`**（npm の最終更新 2026-09-17）。`.mcp.json` の `@latest` を置き換えた（2026-09-29 06:40 JST）。**自動更新はしない。版の確認は月次ルーティン（`ROUTINE_CHECKLISTS.md` §2）で月 1 回。**
+- **`MCP_TIMEOUT` = 60000（ms）** を Windows（Vostro）の User 環境変数に設定（2026-09-29 06:40:11 JST・設定前は未設定）。値の根拠＝`@latest` 単独起動の実測 11.0 秒の 3 倍以上（CSO 裁定）。
+- **固定後の単独起動の実測**: 初回（キャッシュ作成）12.4 秒 → 2 回目 **2.7 秒**（initialize 応答まで・06:4x JST）。
+- **未確認**: Claude Code 再起動後の起動所要時間と `list_tables` の実疎通（HUMAN の再起動後に CTO が測って本項に追記する）。
+
 ---
 
 ## 28. DMM アフィリエイトのお知らせ対応（**CSO 指示 2026-09-21・受領 2026-09-20 22:0x JST**）
