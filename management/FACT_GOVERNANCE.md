@@ -4610,6 +4610,7 @@ gtag('config', 'G-GG7JV9MJRW', {
 - **【実施 2026-09-28】`317dbf3` → デプロイ `dpl_5Yws5537RPZCdUfanuaHmv3RXGo1` READY（06:56:26 JST）。本番 `/works/videoa/snos00377` と `snos00299`（今夜の W12-03）の `og:image` ＝ `https://app.vodnavi.jp/opengraph-image`（1200×630）／`twitter:image` ＝ `https://app.vodnavi.jp/twitter-image`（06:56:43 JST curl）。画像本体 2 件とも 200 image/png。sitemap は再生成（`<loc>` 2,569・works 1,200＝全損なし）。** 今夜 21:00 の W12-03 のカードは HUMAN がログアウトで目視（未実施）。
 - **【自己申告・分類D 2026-09-28】本日 06:1x〜06:54 の 5 コミット（`7cec235` / `8d61e18` / `a689c22` / `9f680ae` / `de3f0cd`）と `317dbf3` の初回 push は GitHub に届いていなかった。** 原因＝ローカル `main` に upstream が設定されておらず、`git push -q 2>&1 | tail -1` がエラーを表示しないまま終わっていた（`fatal: no upstream configured` は `git rev-parse @{u}` で確認）。**CTO はそれぞれ「push 済み」と報告していた＝誤り。** デプロイが作成されないことで検出し、`git push origin main`（37f0ec4..317dbf3）で 6 件をまとめて反映、`git branch -u origin/main` で upstream を設定した。**以後、push 後は `git log -1 origin/main` で到達を確認する**（§10 の一般則）。
 - **【CSO裁定 2026-09-29・審査結果】却下**（通知の原文趣旨＝「センシティブなメディアが含まれることが確認されたため、ラベルは削除されていません」）。**再依頼は 10/12 前後に UI に出ていれば 1 回だけ。**
+  - **【日付の併記・§11】本裁定と HUMAN のフォロワー報告（§26-13-1）は指示文で「2026-09-29」と日付されているが、CTO の受領時刻の実測は 2026-09-28 18:0x JST（`date -u` 09:06Z）。** 日付は指示文のまま記し、受領時刻をここに残す。
 - **【CSO裁定 2026-09-29・10/12 判定の指標を変更】ラベルという外部要因により、自投稿インプレッションは到達の指標として機能しなくなったため**（§26-2 の旧基準は残置・下記）:
 
   | 区分 | 指標 | 基準 | 5軸 |
