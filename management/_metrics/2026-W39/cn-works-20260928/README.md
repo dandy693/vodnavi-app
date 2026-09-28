@@ -304,7 +304,7 @@ SG は UTC 10:00〜16:59（JST 19:00〜翌 01:59）にほぼ止まり、UTC 17:0
 
 ---
 
-## 11. Ahrefs の確認（CSO 追加指示 2026-09-28 夜・read-only・19:0x JST）
+## 11. Ahrefs の確認（CSO 追加指示 2026-09-28 夜・read-only・18:1x〜18:2x JST）
 
 ### 11-1. クローラとしての AhrefsBot（Vercel Observability・Requests Count・7 日＝9/21〜9/28 UTC）
 
@@ -315,7 +315,7 @@ SG は UTC 10:00〜16:59（JST 19:00〜翌 01:59）にほぼ止まり、UTC 17:0
 
 ### 11-2. SEO ツールとしての Ahrefs（Site Explorer・`app.vodnavi.jp`・サブドメイン・HUMAN ログイン済み Chrome・読み取りのみ）
 
-| 項目 | 2026-09-28 19:0x JST | 台帳の既存値 | 増減 |
+| 項目 | 2026-09-28 18:1x JST | 台帳の既存値 | 増減 |
 |---|---|---|---|
 | **DR** | **19**（AR 9,132,981） | 20 | **−1** |
 | UR | 0 | — | — |
