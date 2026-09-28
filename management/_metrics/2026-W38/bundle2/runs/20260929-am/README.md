@@ -47,3 +47,23 @@
 ## 5. フォロー（HUMAN・2026-09-29 朝）
 
 - 実施 7 件（提示 6＋昨夜提示の @hiyokoyahiyo）→ `follows.json` 追記・読み戻し一致（累計 25・推定フォロー中 181・停止閾値 300 まで 119）。
+
+## 6. E28-3 適用（CSO裁定 2026-09-28 夜 ⑤・06:30 以降・朝の抽出と記録の後）
+
+- 事前（06:1x）: active **version 6**・ルール 2（E28-1 / E28-2）。**MCP `get_firewall_config` は 404 `Seawall Config not found`（9/22 と同じ）→ Vercel CLI 54.0.0 `vercel api` で実施。**
+- **06:30:17 JST** `PATCH /v1/security/firewall/config`（`rules.insert`）→ 応答本文は `{}`（成否を示さない）→ **読み戻しで確認**: **version 7**（updatedAt 21:30:21Z）・ルール 3・**`rule_e28_3_as_45102_challenge_1qqJ3T`**＝active・`geo_as_number eq 45102` → `challenge`・`valid: true`。E28-1 / E28-2 は不変。全文 → `management/_metrics/2026-W39/cn-works-20260928/e28-3-firewall-active-readback-20260929.json`。
+- **healthcheck 1 回（06:31:20〜29 JST）＝ALL PASS**（sitemap works 1200 / home grid / llm.concierge）。プローブ: Chrome UA で `/`・`/works/videoa/miab00677` とも 200（国内 IP・AS 45102 外）。
+- 効果測定: 前窓＝9/22〜9/28（FACT §29-5）・後窓＝9/29〜10/5（`/works/` の SG リクエスト数と `served:500`）。
+
+## 7. Supabase MCP の起動時接続失敗（2 朝連続）の切り分け（06:3x JST・読み取りのみ・値は表示していない）
+
+| 切り分け | 実測 | 判定 |
+|---|---|---|
+| **PAT** | User / Process とも `SUPABASE_ACCESS_TOKEN` あり（長さ 44）。Management API `GET /v1/projects` を PAT 付きで **200**（無認証は 401） | **失効ではない** |
+| **ネットワーク** | `api.supabase.com` 応答 0.3〜0.6 秒 | **問題なし** |
+| **サーバ本体** | `.mcp.json` と同じ起動コマンド（`cmd /c npx -y @supabase/mcp-server-supabase@latest …`）を単独で起動 → initialize 応答まで **11.0 秒**（v0.13.0）→ `list_tables` で **7 表**（fanza_response_cache ほか）を返した | **単独なら動く** |
+| **プロセス起動** | 起動時のエラーは `CONNECT_TIMEOUT: Request timed out`。`npx -y …@latest` は起動のたびにレジストリで最新版を解決する（今回の単独起動で 11 秒） | **これが該当（推定）** |
+
+- **分類＝プロセス起動（起動時間が接続待ちの上限を超えた）。PAT・ネットワークではない。** Claude Code の起動時は他の MCP サーバと同時に立ち上がるため、単独時の 11 秒より長くなりうる。**起動時の所要時間そのものは測れていない**（推定と明記）。
+- **是正の候補（設定変更＝CSO 承認後・未実施）**: ①`.mcp.json` の `@latest` を `@0.13.0` に固定（毎回のレジストリ解決をなくす）②接続待ちの上限（環境変数 `MCP_TIMEOUT`）を延ばす ③両方。
+- **当面の回避（HUMAN）**: Claude Code で `/mcp` を開き supabase を再接続すれば、今夜の抽出で B 案と引用が出せる見込み。
