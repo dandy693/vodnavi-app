@@ -1,0 +1,49 @@
+model=claude-opus-5 dry_run=false today_jst=20260928 counts={"lines":6,"generated":6,"stopped":0} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/kawaii_pr/status/2104543151591710874（2026-09-28 21:06）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20260928-kawaii_pr calls=1 in=392 out=702
+  A chars=48 weight=89 ok=true attempts=1
+     第5弾は9月30日の朝9時59分までなのですね。分単位での区切りだと、終わりの時間を意識します。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=69 ok=true attempts=1
+     50％OFFの対象作品は、9月30日の朝9時59分まで同じ並びのままでしょうか？
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2104541756880760916（2026-09-28 21:00）
+    @shirot_AV_chosa (レビュー系) status=generated replyKey=20260928-shirot_AV_chosa calls=1 in=271 out=803
+  A chars=43 weight=86 ok=true attempts=1
+     本郷愛さんの出演作の紹介ですね。レビューでどんな点が挙がっているのか気になる一本です。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=39 weight=78 ok=true attempts=1
+     本郷愛さんの出演作について、レビューでは特にどのあたりが評価されていましたか。
+
+=== 対象 https://x.com/honnaka_NN/status/2104391739650036051（2026-09-28 11:04）
+    @honnaka_NN (メーカー公式) status=generated replyKey=20260928-honnaka_NN calls=1 in=346 out=838
+  A chars=52 weight=102 ok=true attempts=1
+     出演者が12人という規模での新作予約開始、かなり大がかりな一本ですね。予約の段階から動きが気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=30 weight=58 ok=true attempts=1
+     12人が出演する今作で、予約された方向けの特典はありますか？
+
+=== 対象 https://x.com/fanza_sns/status/2104375542250111170（2026-09-28 10:00）
+    @fanza_sns (セール告知系) status=generated replyKey=20260928-fanza_sns calls=1 in=340 out=103
+  A chars=65 weight=105 ok=true attempts=1
+     MOODYZキャンペーン2026の第6弾、9月30日のAM9:59までなんですね。30％OFFの区切りが明確で追いかけやすいです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=36 weight=66 ok=true attempts=1
+     第6弾の30％OFF対象には、どのシリーズまで含まれているのでしょうか。
+
+=== 対象 https://x.com/FANZAdougaX/status/2104375650681548900（2026-09-28 10:00）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260928-FANZAdougaX calls=1 in=336 out=774
+  A chars=48 weight=89 ok=true attempts=1
+     全9弾のうちの第5弾で50％OFFとのことで、今回の更新で入れ替わる対象作品の幅が気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=48 weight=90 ok=true attempts=1
+     第5弾の50％OFF対象は、次の弾に切り替わるまでどのくらいの期間が設定されているのでしょうか。
+
+=== 対象 https://x.com/Fitch_official/status/2104379319791604130（2026-09-28 10:15）
+    @Fitch_official (メーカー公式) status=generated replyKey=20260928-Fitch_official calls=1 in=298 out=716
+  A chars=52 weight=98 ok=true attempts=1
+     50%OFFという値引き幅は思い切っていますね。新村あかりさんの作品が対象に入っているのが目を引きます。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=74 ok=true attempts=1
+     50%OFFの期間はいつまででしょうか。対象になる作品の範囲も気になっています。

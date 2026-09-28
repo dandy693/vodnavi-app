@@ -1,0 +1,23 @@
+{
+ "resolvedAtJst": "2026-09-28 21:36:36 JST",
+ "maxHops": 1,
+ "items": [
+  {
+   "input": "https://t.co/Ewwpay7FVY",
+   "chain": [
+    {
+     "url": "https://t.co/Ewwpay7FVY",
+     "status": 301,
+     "location": "https://al.dmm.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Dsone00318%26utm_medium%3Ddmm_affiliate%26utm_source%3Derotaqbin-001%26utm_term%3Dfanza.co.jp%26utm_campaign%3Daffiliate_toolbar_sp%26utm_content%3Dlink&af_id=eroerounko-010"
+    }
+   ],
+   "cid": "sone00318",
+   "floor": null,
+   "note": ""
+  }
+ ],
+ "byHandle": {
+  "shirot_AV_chosa": "sone00318"
+ },
+ "fill": null
+}

@@ -1,0 +1,76 @@
+{
+ "resolvedAtJst": "2026-09-28 21:32:18 JST",
+ "maxHops": 1,
+ "items": [
+  {
+   "input": "https://t.co/gNoFtM0qBJ",
+   "chain": [
+    {
+     "url": "https://t.co/gNoFtM0qBJ",
+     "status": 301,
+     "location": "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Dkavr00218&af_id=WILLaffi-062&ch=toolbar&ch_id=link"
+    }
+   ],
+   "cid": "kavr00218",
+   "floor": null,
+   "note": ""
+  },
+  {
+   "input": "https://t.co/TjffPW5JOe",
+   "chain": [
+    {
+     "url": "https://t.co/TjffPW5JOe",
+     "status": 301,
+     "location": "https://rcv.ixd.dmm.com/api/surl?urid=hBko53u1"
+    }
+   ],
+   "cid": null,
+   "floor": null,
+   "note": "maxHops 1 で未取得（al.fanza 以降はクリック計測が走るため既定では辿らない）"
+  },
+  {
+   "input": "https://t.co/YTDWGzSVMq",
+   "chain": [
+    {
+     "url": "https://t.co/YTDWGzSVMq",
+     "status": 301,
+     "location": "https://honnaka.jp/works/detail/HNVR180"
+    }
+   ],
+   "cid": null,
+   "floor": null,
+   "note": "maxHops 1 で未取得（al.fanza 以降はクリック計測が走るため既定では辿らない）"
+  },
+  {
+   "input": "https://t.co/6Ddt97ymkz",
+   "chain": [
+    {
+     "url": "https://t.co/6Ddt97ymkz",
+     "status": 301,
+     "location": "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Djufe00543&af_id=WILLaffi-096&ch=toolbar&ch_id=link"
+    }
+   ],
+   "cid": "jufe00543",
+   "floor": null,
+   "note": ""
+  },
+  {
+   "input": "https://t.co/TjYymiempy",
+   "chain": [
+    {
+     "url": "https://t.co/TjYymiempy",
+     "status": 301,
+     "location": "https://rcv.ixd.dmm.com/api/surl?urid=LgNEoToN"
+    }
+   ],
+   "cid": null,
+   "floor": null,
+   "note": "maxHops 1 で未取得（al.fanza 以降はクリック計測が走るため既定では辿らない）"
+  }
+ ],
+ "byHandle": {
+  "kawaii_pr": "kavr00218",
+  "Fitch_official": "jufe00543"
+ },
+ "fill": null
+}

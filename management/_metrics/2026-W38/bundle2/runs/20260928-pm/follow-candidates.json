@@ -1,0 +1,42 @@
+{
+ "generatedAtJst": "2026-09-28 21:50:45 JST",
+ "date": "2026-09-28",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "hiyokoyahiyo",
+   "reason": "honnaka_NN 9/28 11:04（VR 予約開始）をリポスト・プロフィールにイベント参加と推し女優の記述（ファン個人）"
+  }
+ ],
+ "skipped": [
+  {
+   "handle": "HoHzs",
+   "reason": "honnaka_NN 9/28 11:04 をリポスト・プロフィール「AV女優愛好者」",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  },
+  {
+   "handle": "sakuli131",
+   "reason": "honnaka_NN 9/28 11:04 をリポスト・プロフィールに個人の好みの記述",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  },
+  {
+   "handle": "roku_ni_san",
+   "reason": "honnaka_NN 9/28 11:04 をリポスト・プロフィールに個人の趣味の記述",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  },
+  {
+   "handle": "mgt_xknkmtc",
+   "reason": "honnaka_NN 9/28 11:04 をリポスト・プロフィールに個人の一言",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  }
+ ],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 18,
+  "estimated": 174,
+  "stop": 300,
+  "remainingToStop": 126,
+  "reached": false
+ }
+}
