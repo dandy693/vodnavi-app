@@ -4623,6 +4623,7 @@ gtag('config', 'G-GG7JV9MJRW', {
 
 - **引用（Q）は 1 日 2 件の上限まで積極的に提示する**（条件＝メーカー公式・cache ヒット・works 200 は不変・§26-11）。
 - **Bluesky の準備（アカウント作成・成人向けラベル設定・プロフィール）を HUMAN 作業として起案。投稿はしない。** 手順書 → `management/checklists/BLUESKY_SETUP_HUMAN.md`（CTO 作成）。
+  - **【CSO 2026-09-28 夜】自己紹介の「5万作品」の根拠＝在庫 ≥6万（videoa 50,000＝API の `total_count` 上限値／anime 3,869／nikkatsu 6,125・7/30 引き継ぎ）に基づく控えめな表現で、X の自己紹介と同一。** 実施記録（ハンドル `vodnavi.jp`・プロフィール・成人向け設定・自己紹介末尾の URL）→ 手順書 §5・§6。アイコンと二要素認証は HUMAN 実施待ち・投稿は未開始。
 - 調査の全文 → `management/_metrics/2026-W39/research-20260928-sensitive-label-media.md`
 
 ### 26-15. 【CSO報告・指示 2026-09-28】**outreach は 9/13〜9/28 未実施（送信 0 件）。再開の型を固定する**
