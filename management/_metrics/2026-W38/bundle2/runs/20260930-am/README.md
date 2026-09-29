@@ -46,3 +46,21 @@
 - 提示 6（本日の残り枠 10）: `@do9_f9`（前回送り）／`@KOishiS181007`／`@mTYNE0UXmYt3ptu`／`@shin_dokumaru`／`@yGMcpNEi5EXnHR6`／`@shin126lp`。
 - 除外（件数のみ）: 女優本人 1／フォロー済み 1／店舗アカウント 1／自己紹介なし 2。
 - `@shin126lp` はプロレス情報サイトの管理人（AV の紹介・アフィリエイトではない）。一般ユーザーとして扱ったのは CTO の判断。
+
+## 6. 投稿と記録（HUMAN 投稿 2026-09-30 06:10〜06:13 JST）
+
+| # | 対象 | 案 | 投稿 | 配信（snowflake・UTC） |
+|---|---|---|---|---|
+| 1 | https://x.com/FANZAdougaX/status/2105024861836030028 | A（手直し報告なし） | 2105042678916530291 | 2026-09-29T21:10:59.112Z |
+| 2 | https://x.com/attackers_av/status/2104964427229655232 | B | 2105042836899123443 | 21:11:36.778Z |
+| 3 | https://x.com/kawaii_pr/status/2104949334488039847 | C | 2105043036799680859 | 21:12:24.438Z |
+| 4 | https://x.com/MOODYZ_official/status/2104919129673400407 | B | 2105043235160907959 | 21:13:11.731Z |
+| 5 | https://x.com/shiromine_miu/status/2104979924176261382 | A | 2105043393512612126 | 21:13:49.485Z |
+
+- X 実在（06:21 JST）: 5 件とも HTTP 200・Twitterbot の `<title>` で宛先一致（2〜5 は本文冒頭も案と一致・1 は宛先のみ表示）／無効 ID 対照 404。
+- 記録: MCP create（createdTime 06:21:52 JST・`recNegT1YACHWgkAn` / `rec2zaFJXMaJiAdGw` / `recA37gFCUID1R6lL` / `recBc0SShL6W74hEU` / `recrjuQ86lANYhVq4`）→ x_targets `last_reply_at` 5 件 → **別呼び出しの読み戻しで 5＋5 件とも全項目一致。x_replies 累計 72 件。**
+- **shiromine_miu は女優本人＝次に返信できるのは 10/3 以降**（3 日ルール）。
+
+## 7. フォロー（HUMAN・2026-09-30 朝）
+
+- 実施 5 件（@do9_f9／@KOishiS181007／@mTYNE0UXmYt3ptu／@shin_dokumaru／@yGMcpNEi5EXnHR6）→ `follows.json` 追記・読み戻し一致。本日 5・残り枠 5。@shin126lp は見送り（HUMAN）。
