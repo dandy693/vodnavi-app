@@ -41,3 +41,22 @@
 - 提示 3（本日の残り枠 3・朝に 7 件実施済み）: `@dtshdma`／`@Scarlet_Aniki`／`@auxyzkazu1`。次回送り 1: `@do9_f9`。
 - 除外（件数のみ）: 女優本人 1／女優応援・作品紹介アカウント 1／自己紹介が無く判断材料なし 5。
 - `follows.json` は累計 25 のまま（推定フォロー中 181・閾値 300 まで 119）。
+
+## 5. 投稿と記録（HUMAN 投稿 2026-09-29 22:16〜22:24 JST）
+
+| # | 対象 | 案 | 投稿 | 配信（snowflake・UTC） |
+|---|---|---|---|---|
+| 1 | https://x.com/kawaii_pr/status/2104899496228594037 | B（手直し報告なし） | 2104923193198920166 | 13:16:11.497Z |
+| 2 | https://x.com/Fitch_official/status/2104892701577769224 | B | 2104923347142541805 | 13:16:48.200Z |
+| 3 | https://x.com/PREMIUM_AV/status/2104858740340252883 | A | 2104923937494925414 | 13:19:08.951Z |
+| 4 | https://x.com/shirot_AV_chosa/status/2104904083400466564 | A | 2104924058857152936 | 13:19:37.886Z |
+| 5 | https://x.com/IDEAPOCKETTER/status/2104895221918319075 | A | 2104924248628498940 | 13:20:23.131Z |
+| 6 | https://x.com/S1_No1_Style/status/2104896480398250297 | B | 2104925289507893437 | 13:24:31.296Z |
+
+- X 実在（22:31 JST）: 6 件とも HTTP 200・Twitterbot の `<title>` で宛先と本文冒頭が選んだ案と一致／無効 ID 対照 404。
+- 記録: `record.mjs --create`（手直し報告が無いため `--texts` なし）＋ reply_post_id / posted_at を同梱 → MCP create（createdTime 22:32:33 JST・`rec6Gw9Znmbl8myGL` / `recxv4WmTfiUWHhC8` / `recObuaVc1NZ2QEjb` / `rec0yv2c3wDEzUZiu` / `reccG33vXV80Jy8ow` / `recqOy33VpZNgpNzG`）→ x_targets `last_reply_at` 6 件 → **別呼び出しの読み戻しで 6＋6 件とも全項目一致**。**x_replies 累計 67 件。**
+- **priority 3: S1 で今週（9/28〜10/4）2 / 2 に到達・残り 0**（`priority3-week.mjs`・`replies-after.json`）。10/4 まで S1・shinnakanodream・mayukiito・umi_sea_0v0 の案は出さない。
+
+## 6. フォロー（HUMAN・2026-09-29 夜）
+
+- 実施 3 件（@dtshdma／@Scarlet_Aniki／@auxyzkazu1）→ `follows.json` 追記・読み戻し一致（**累計 28・本日 10 件で上限到達・推定フォロー中 184・閾値 300 まで 116**）。次回送り: @do9_f9。
