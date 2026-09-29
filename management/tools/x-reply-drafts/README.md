@@ -114,6 +114,8 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 
 ## 木曜 PDCA 集計（`weekly-report.mjs`・CSO 連絡 2026-09-19 22:2x）
 
+- **【CSO 指示 2026-09-30 朝・フォロー突合】木曜に `management/_metrics/x-follows/follows.json`（2026-09-30 時点 累計 33）と X の「フォロー中」一覧を突合し、①`follows.json` にあるが一覧に無い件数とハンドル ②起点 156 からの差（推定 189 − 実測）の内訳を出す。** 一覧は HUMAN がスクリーンショットをファイルで渡す（背景タブでは一覧が追加描画されないため・§26-12-2）。**CTO はフォロー・解除をしない。** 初回の要確認＝`@Scarlet_Aniki`（9/29 夜・一覧の先頭付近に見当たらない）。
+
 9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。**集計の起点は朝の抽出と同じ 06:00**（CSO 決定 2026-09-21・反応の補完 → 集計の順で 06:00 から）。
 
 ```
