@@ -1,0 +1,35 @@
+{
+ "generatedAtJst": "2026-09-29 22:06:18 JST",
+ "date": "2026-09-29",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "dtshdma",
+   "reason": "sakuramio_X 9/29 18:04（チェキ会）への返信・自己紹介は趣味（ゴルフ・野球）と女優の応援＝一般ユーザー"
+  },
+  {
+   "handle": "Scarlet_Aniki",
+   "reason": "sakuramio_X 9/29 18:04（チェキ会）への返信・自己紹介は声優ファン・楽器＝一般ユーザー"
+  },
+  {
+   "handle": "auxyzkazu1",
+   "reason": "sakuramio_X 9/29 18:04（チェキ会）への返信・自己紹介は車イベント・撮影会＝一般ユーザー"
+  }
+ ],
+ "skipped": [
+  {
+   "handle": "do9_f9",
+   "reason": "kawaii_pr 9/29 20:42（美咲夏蓮デビュー告知）のリポスト一覧・自己紹介は撮影会・写真の趣味＝一般ユーザー",
+   "why": "本日の上限（10 件）に達したため次回へ"
+  }
+ ],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 25,
+  "estimated": 181,
+  "stop": 300,
+  "remainingToStop": 119,
+  "reached": false
+ }
+}

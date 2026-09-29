@@ -1,0 +1,79 @@
+{
+ "resolvedAtJst": "2026-09-29 21:59:57 JST",
+ "maxHops": 1,
+ "items": [
+  {
+   "input": "https://t.co/M7cFYUbJts",
+   "chain": [
+    {
+     "url": "https://t.co/M7cFYUbJts",
+     "status": 301,
+     "location": "https://kawaiikawaii.jp/works/detail/CAWB051"
+    }
+   ],
+   "cid": null,
+   "floor": null,
+   "note": "maxHops 1 で未取得（al.fanza 以降はクリック計測が走るため既定では辿らない）"
+  },
+  {
+   "input": "https://t.co/OGrQ0vZiwt",
+   "chain": [
+    {
+     "url": "https://t.co/OGrQ0vZiwt",
+     "status": 301,
+     "location": "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Dpred00672&af_id=WILLaffi-097&ch=toolbar&ch_id=link"
+    }
+   ],
+   "cid": "pred00672",
+   "floor": null,
+   "note": ""
+  },
+  {
+   "input": "https://t.co/jagWGz7iu8",
+   "chain": [
+    {
+     "url": "https://t.co/jagWGz7iu8",
+     "status": 301,
+     "location": "https://al.dmm.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Dhnds00072&af_id=eroerounko-010"
+    }
+   ],
+   "cid": "hnds00072",
+   "floor": null,
+   "note": ""
+  },
+  {
+   "input": "https://t.co/HZNZoPwS2g",
+   "chain": [
+    {
+     "url": "https://t.co/HZNZoPwS2g",
+     "status": 301,
+     "location": "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Ffeature%2Fkizuki-amane%2F&af_id=WILLaffi-078&ch=toolbar&ch_id=link"
+    }
+   ],
+   "cid": null,
+   "floor": null,
+   "note": "maxHops 1 で未取得（al.fanza 以降はクリック計測が走るため既定では辿らない）"
+  }
+ ],
+ "byHandle": {
+  "PREMIUM_AV": "pred00672",
+  "shirot_AV_chosa": "hnds00072"
+ },
+ "fill": {
+  "path": "management/_metrics/2026-W38/bundle2/runs/20260929-pm/input.txt",
+  "filled": [
+   {
+    "lineNo": 3,
+    "handle": "PREMIUM_AV",
+    "cid": "pred00672"
+   },
+   {
+    "lineNo": 4,
+    "handle": "shirot_AV_chosa",
+    "cid": "hnds00072"
+   }
+  ],
+  "skipped": [],
+  "readbackMatch": true
+ }
+}

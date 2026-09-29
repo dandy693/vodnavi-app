@@ -1,0 +1,488 @@
+{
+  "generated_at": "2026-09-29T13:03:24.915Z",
+  "today_jst": "20260929",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "79d1227310ad4e06ca3cd99afbc9339d35b3cba13a08d4e37ba112b63567ed4b",
+  "counts": {
+    "lines": 6,
+    "generated": 6,
+    "stopped": 0
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2104899496228594037",
+      "targetPostId": "2104899496228594037",
+      "postedAtJst": "2026-09-29 20:42",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-28T12:46:06.866Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "cawb00051",
+        "title": "晴れ女なのにイケない場所でおもらししちゃう性癖でおしっこ大洪水。 天真爛漫ショートカットGcup 大量お漏らし失禁スケベ女子 AVデビュー 美咲夏蓮",
+        "fetched_at": "2026-09-28 11:04:35.459+00"
+      },
+      "replyKey": "20260929-kawaii_pr",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "想像以上にコーフンしますよ、という一言で押してくるのが印象的です。続く情報も追いかけたいところです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 100
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "おもらしを前面に出した題材なのですね。どういう一本に仕上がっているのか気になります。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: 想像以上、コーフン）"
+                },
+                {
+                  "rule": "R15",
+                  "detail": "告知の形式への言及: 前面に出した"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "本編169分と長めなので、想像以上にコーフンという紹介にも納得です。配信は10月2日からですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 90
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "169分の収録で、配信は10月2日からなのですね。おもらしという題材でどう構成されるのか気になります。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: 想像以上、コーフン）"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "想像以上にコーフンしますよ、とのことですが、サンプル動画の公開はいつ頃を予定されていますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 92
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "おもらしがテーマとのことですが、サンプル動画の公開はもう始まっていますでしょうか。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: 想像以上、コーフン）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 1625,
+        "output_tokens": 2417,
+        "cache_creation_input_tokens": 3676,
+        "cache_read_input_tokens": 3676,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "Fitch_official",
+      "postUrl": "https://x.com/Fitch_official/status/2104892701577769224",
+      "targetPostId": "2104892701577769224",
+      "postedAtJst": "2026-09-29 20:15",
+      "target": {
+        "id": "rec4XV4eU5UQUntIZ",
+        "handle": "Fitch_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-21T13:27:16.204Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "juny00117",
+        "title": "爆乳ドMな元アイドルの変態願望を叶える肉塊凌●SEX 小田桜",
+        "fetched_at": "2026-09-29 10:17:56.961+00"
+      },
+      "replyKey": "20260929-Fitch_official",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "50%OFFの表記が出ていますね。この時期に価格が動くと、気になっていた一本を思い出すきっかけになります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 53,
+              "weight": 100
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録146分の作品が50%OFFの対象なのですね。2024年5月17日配信の一本が今の時期に動くのは面白いです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 56,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "50%OFFの期間はいつまででしょうか。対象になる作品の範囲も気になっています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 735,
+        "output_tokens": 1088,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "PREMIUM_AV",
+      "postUrl": "https://x.com/PREMIUM_AV/status/2104858740340252883",
+      "targetPostId": "2104858740340252883",
+      "postedAtJst": "2026-09-29 18:00",
+      "target": {
+        "id": "recHwHcrfE8LFcRdW",
+        "handle": "PREMIUM_AV",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-25T13:34:58.243Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "pred00672",
+        "title": "―仕事のミスを全て肩代わりした僕の復讐― 女上司をエロメイドにして週末肉オナホ契約 白峰ミウ",
+        "fetched_at": "2026-09-28 13:15:01.698+00"
+      },
+      "replyKey": "20260929-PREMIUM_AV",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "第5弾は9月30日の朝9時59分までなのですね、残り時間を意識して見ておきます。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 40,
+              "weight": 73
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "9月30日の朝9時59分までの50％OFF対象に、収録時間122分の白峰ミウさん出演作も入っているのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 54,
+              "weight": 94
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "第5弾の9月30日朝9時59分までという区切りのあと、対象作品の入れ替えはありますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 43,
+              "weight": 79
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 814,
+        "output_tokens": 140,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "shirot_AV_chosa",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2104904083400466564",
+      "targetPostId": "2104904083400466564",
+      "postedAtJst": "2026-09-29 21:00",
+      "target": {
+        "id": "recPYIDdkQ7EC0w0q",
+        "handle": "shirot_AV_chosa",
+        "type": "レビュー系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-22T00:15:35.260Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260929-shirot_AV_chosa",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "ほろ酔い上司というキャッチが目を引きますね。お酒がからむ設定のレビューは読み応えがありそうです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 96
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "ほろ酔い上司の紹介は、レビュー全文のどのあたりまで触れた内容になりそうでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 41,
+              "weight": 82
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 236,
+        "output_tokens": 1026,
+        "cache_creation_input_tokens": 3654,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "IDEAPOCKETTER",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2104895221918319075",
+      "targetPostId": "2104895221918319075",
+      "postedAtJst": "2026-09-29 20:25",
+      "target": {
+        "id": "rec3EWHDnA1tnjPzL",
+        "handle": "IDEAPOCKETTER",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-22T22:06:02.608Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20260929-IDEAPOCKETTER",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "秋と言えばフルーツという流れからのTAWAWA旋風という打ち出し、季節感があって面白いですね。FANZAの特設ページも気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 66,
+              "weight": 121
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "FANZAの特設ページは、公開期間や掲載される作品の範囲はどこまで決まっているのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 87
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 409,
+        "output_tokens": 822,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "S1_No1_Style",
+      "postUrl": "https://x.com/S1_No1_Style/status/2104896480398250297",
+      "targetPostId": "2104896480398250297",
+      "postedAtJst": "2026-09-29 20:30",
+      "target": {
+        "id": "recItkceKqz7rPmzD",
+        "handle": "S1_No1_Style",
+        "type": "メーカー公式",
+        "priority": 3,
+        "status": "稼働",
+        "last_reply_at": "2026-09-27T21:28:20.663Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "snos00489",
+        "title": "新人NO.1 STYLE 4か国のカワイイから、生まれた顔面。世界が恋するクォーター美女 桐谷エマ DEBUT",
+        "fetched_at": "2026-09-29 04:02:58.296+00"
+      },
+      "replyKey": "20260929-S1_No1_Style",
+      "warnings": [
+        "priority 3（対照用）: 案の提示は週 2 件まで（CSO 連絡 2026-09-19 22:2x）"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "4ヵ国分という言葉が印象的ですね。桐谷エマさんのデビュー作を打ち出すキャッチとして強く残ります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 95
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "4ヵ国分のカワイイという言葉、キャッチとして強いですね。桐谷エマさんのデビュー作を楽しみにしています。",
+              "failures": [
+                {
+                  "rule": "R6",
+                  "detail": "容姿・露骨語: カワイイ"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "4ヵ国分を掲げた桐谷エマさんのデビュー作は、収録時間180分で10月23日配信の予定なのですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 48,
+              "weight": 88
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "4ヵ国分というテーマは、本編の中でも語られる構成になるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 34,
+              "weight": 67
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 1485,
+        "output_tokens": 1577,
+        "cache_creation_input_tokens": 3632,
+        "cache_read_input_tokens": 3676,
+        "calls": 2
+      }
+    }
+  ]
+}
