@@ -1,0 +1,58 @@
+{
+ "resolvedAtJst": "2026-09-30 05:43:19 JST",
+ "maxHops": 1,
+ "items": [
+  {
+   "input": "https://t.co/lGk1FNqlFT",
+   "chain": [
+    {
+     "url": "https://t.co/lGk1FNqlFT",
+     "status": 301,
+     "location": "https://al.fanza.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Dkavr00527&af_id=WILLaffi-062&ch=toolbar&ch_id=link"
+    }
+   ],
+   "cid": "kavr00527",
+   "floor": null,
+   "note": ""
+  },
+  {
+   "input": "https://t.co/AJKrLGAqaG",
+   "chain": [
+    {
+     "url": "https://t.co/AJKrLGAqaG",
+     "status": 301,
+     "location": "https://al.dmm.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2Fav%2Fcontent%2F%3Fid%3Dsnos00093&af_id=eroerounko-010"
+    }
+   ],
+   "cid": "snos00093",
+   "floor": null,
+   "note": ""
+  }
+ ],
+ "byHandle": {
+  "kawaii_pr": "kavr00527",
+  "shirot_AV_chosa": "snos00093"
+ },
+ "fill": {
+  "path": "management/_metrics/2026-W38/bundle2/runs/20260930-am/input.txt",
+  "filled": [
+   {
+    "lineNo": 4,
+    "handle": "kawaii_pr",
+    "cid": "kavr00527"
+   },
+   {
+    "lineNo": 5,
+    "handle": "shirot_AV_chosa",
+    "cid": "snos00093"
+   },
+   {
+    "lineNo": 6,
+    "handle": "shirot_AV_chosa",
+    "cid": "snos00093"
+   }
+  ],
+  "skipped": [],
+  "readbackMatch": true
+ }
+}

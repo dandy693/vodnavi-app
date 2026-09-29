@@ -1,0 +1,81 @@
+model=claude-opus-5 dry_run=false today_jst=20260930 counts={"lines":10,"generated":7,"stopped":3} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/FANZAdougaX/status/2105024861836030028（2026-09-30 05:00）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20260930-FANZAdougaX calls=1 in=313 out=853
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=50 weight=95 ok=true attempts=1
+     第5弾が朝9:59までという締め切りなのですね。切り替わる前に気になる作品を絞っておきたくなります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=59 weight=113 ok=true attempts=1
+     第5弾は朝9:59で終了とのことですが、次の弾への切り替えは何時からになりますか。対象作品の入れ替わりも気になります。
+
+=== 対象 https://x.com/attackers_av/status/2104964427229655232（2026-09-30 01:00）
+    @attackers_av (メーカー公式) status=generated replyKey=20260930-attackers_av calls=1 in=693 out=972
+  A chars=45 weight=90 ok=true attempts=1
+     一途なだけなんだよ、という一言の言い切りが強いですね。説明を足さない短さが印象に残ります。
+  B chars=61 weight=116 ok=true attempts=1
+     一途なだけなんだよ、の木下ひまりさん出演作は収録164分、配信は8月28日からなのですね。長尺で描く関係性が気になります。
+  C chars=40 weight=80 ok=true attempts=1
+     一途なだけなんだよ、という言葉は作中のセリフからそのまま取られたものでしょうか？
+
+=== 対象 https://x.com/attackers_av/status/2104941777178575020（2026-09-29 23:30）
+    @attackers_av (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260930-attackers_av calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/kawaii_pr/status/2104949334488039847（2026-09-30 00:00）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20260930-kawaii_pr calls=1 in=362 out=1286
+  A chars=48 weight=96 ok=true attempts=1
+     新作予約開始のお知らせですね。予約の段階から分かると、配信開始の日を落ち着いて楽しみに待てます。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=80 ok=true attempts=1
+     新作予約開始とのことですが、予約した方に向けた特典や先行配信の予定はありますか？
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2104934414132429293（2026-09-29 23:00）
+    @shirot_AV_chosa (レビュー系) status=generated replyKey=20260930-shirot_AV_chosa calls=1 in=230 out=1412
+  A chars=42 weight=84 ok=true attempts=1
+     最高の脱ぎシーンという一言から入る紹介文は、どこに注目したのかが端的に伝わりますね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=46 weight=92 ok=true attempts=1
+     最高の脱ぎシーンという切り口は、寄せられたレビューの中から選んで紹介されているのでしょうか。
+
+=== 対象 https://x.com/shirot_AV_chosa/status/2104919311907496066（2026-09-29 22:00）
+    @shirot_AV_chosa (レビュー系) status=停止（同日同ハンドル 2 件目: 本バッチ内 5 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260930-shirot_AV_chosa calls=0 in=0 out=0
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/IDEAPOCKETTER/status/2104934234989474301（2026-09-29 23:00）
+    @IDEAPOCKETTER (メーカー公式) status=generated replyKey=20260930-IDEAPOCKETTER calls=1 in=331 out=1928
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=48 weight=96 ok=true attempts=1
+     法事で久しぶりに再会した同級生に飲まされるという入り口、シチュエーションの起点として新鮮ですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=42 weight=84 ok=true attempts=1
+     法事での再会から始まる今作、サンプル動画は配信開始と同じタイミングで公開されますか？
+
+=== 対象 https://x.com/MOODYZ_official/status/2104919129673400407（2026-09-29 22:00）
+    @MOODYZ_official (メーカー公式) status=generated replyKey=20260930-MOODYZ_official calls=2 in=1452 out=2175
+  A chars=46 weight=89 ok=true attempts=2
+     天然、という一言だけで方向性が伝わってきます。平野楓さんのデビュー作が10月2日配信ですね。
+  B chars=42 weight=78 ok=true attempts=2
+     天然と紹介されている平野楓さんのデビュー作、収録は153分で配信は10月2日ですね。
+  C chars=35 weight=70 ok=true attempts=2
+     天然という切り口の今作、サンプル動画の公開は配信日より前になりますか。
+
+=== 対象 https://x.com/MOODYZ_official/status/2104919134912102770（2026-09-29 22:00）
+    @MOODYZ_official (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 8 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20260930-MOODYZ_official calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)
+
+=== 対象 https://x.com/shiromine_miu/status/2104979924176261382（2026-09-30 02:01）
+    @shiromine_miu (女優本人) status=generated replyKey=20260930-shiromine_miu calls=1 in=460 out=670
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=54 weight=103 ok=true attempts=1
+     白峰ミウさん、10月4日17時からのイベント、まだチケットが残っているのですね。会場の雰囲気が気になります。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=40 weight=75 ok=true attempts=1
+     白峰ミウさん、10月4日17時からのイベントは当日券の販売もありますでしょうか？
