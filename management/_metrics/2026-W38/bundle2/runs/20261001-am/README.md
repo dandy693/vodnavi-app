@@ -36,3 +36,14 @@
 - 当日予約 1 件（`W12-06 T1改 美谷朱音（美谷朱里） HNDB-221`・21:00 JST・承認済）→ **PASS**（検査不能 g9 のみ）。`preflight.json`。
 - 06:00 の cron で T3 は生成されていない（当日予約は上記 1 件のみ）。
 - 終了時の libuv アサーション（`UV_HANDLE_CLOSING`）は前日と同じで、判定・JSON 出力の後。
+
+## 5. 投稿と記録（HUMAN 投稿 2026-10-01 06:04 JST・手直しなし）
+
+| # | 対象 | 案 | 投稿 | 配信（snowflake・UTC） |
+|---|---|---|---|---|
+| 1 | https://x.com/IDEAPOCKETTER/status/2105296617452736904 | C | 2105403460535648612 | 2026-09-30T21:04:36.153Z |
+
+- attackers_av は投稿の報告なし＝見送りとして扱う。
+- X 実在（06:2x JST）: HTTP 200・Twitterbot の `<title>` で宛先と本文冒頭が案 C と一致／無効 ID 対照 404。
+- 投稿は CSV（account_analytics_content_2026-09-17_2026-09-30）で先に見つかり、HUMAN の報告で確定した。
+- 記録: MCP create（createdTime 06:23:44 JST・`recwOO7r5ohrzPrsK`）→ x_targets `last_reply_at` → **別呼び出しの読み戻しで 1＋1 件とも一致。x_replies 累計 77 件。**
