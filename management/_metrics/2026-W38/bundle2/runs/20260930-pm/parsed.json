@@ -1,0 +1,99 @@
+{
+  "lines": [
+    {
+      "ok": true,
+      "lineNo": 1,
+      "handle": "shirot_AV_chosa",
+      "postedAtJst": "2026-09-30 22:00",
+      "postedAtIso": "2026-09-30T13:00:00.000Z",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2105281652889182581",
+      "targetPostId": "2105281652889182581",
+      "body": "週明けの俺たちに必要なもの",
+      "work": {
+        "kind": "content_id",
+        "contentId": "snos00313",
+        "floor": null,
+        "raw": "snos00313"
+      },
+      "warnings": []
+    },
+    {
+      "ok": true,
+      "lineNo": 2,
+      "handle": "shirot_AV_chosa",
+      "postedAtJst": "2026-09-30 21:00",
+      "postedAtIso": "2026-09-30T12:00:00.000Z",
+      "postUrl": "https://x.com/shirot_AV_chosa/status/2105266573846188523",
+      "targetPostId": "2105266573846188523",
+      "body": "オイルに濡れてハメまくる…",
+      "work": {
+        "kind": "content_id",
+        "contentId": "h_237nacr00622",
+        "floor": null,
+        "raw": "h_237nacr00622"
+      },
+      "warnings": []
+    },
+    {
+      "ok": true,
+      "lineNo": 3,
+      "handle": "Fitch_official",
+      "postedAtJst": "2026-09-30 20:15",
+      "postedAtIso": "2026-09-30T11:15:00.000Z",
+      "postUrl": "https://x.com/Fitch_official/status/2105255089183334770",
+      "targetPostId": "2105255089183334770",
+      "body": "#肉欲の秋 【PR】50%OFF #永井マリア",
+      "work": {
+        "kind": "content_id",
+        "contentId": "juny00127",
+        "floor": null,
+        "raw": "juny00127"
+      },
+      "warnings": []
+    },
+    {
+      "ok": true,
+      "lineNo": 4,
+      "handle": "Kizukiamane",
+      "postedAtJst": "2026-09-30 20:24",
+      "postedAtIso": "2026-09-30T11:24:00.000Z",
+      "postUrl": "https://x.com/Kizukiamane/status/2105257586622939570",
+      "targetPostId": "2105257586622939570",
+      "body": "イベントのお知らせ 10/24(土) 17:00〜 初のデビュー作イベントを開催します 初めてのイベント、今からドキドキ… みんなに会えるの楽しみにしてます♡ ぜひ会いに来てね 詳細はこちらです！｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    },
+    {
+      "ok": true,
+      "lineNo": 5,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-30 20:28",
+      "postedAtIso": "2026-09-30T11:28:00.000Z",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2105258360857874474",
+      "targetPostId": "2105258360857874474",
+      "body": "THIS IS たわわ 9月も早かったですねぇ 10月はあまねちゃんのデビュー！！！ 歴史的瞬間を見逃さないでね #希月あまね ［同一スレッドの詳細投稿 20:28］FANZAさんにて特設ページ公開中｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    },
+    {
+      "ok": true,
+      "lineNo": 6,
+      "handle": "fanza_sns",
+      "postedAtJst": "2026-09-30 10:00",
+      "postedAtIso": "2026-09-30T01:00:00.000Z",
+      "postUrl": "https://x.com/fanza_sns/status/2105100322259468645",
+      "targetPostId": "2105100322259468645",
+      "body": "⋱こだわりの⋰ フェラ％OFF 第6弾スタート 対象の動画作品が50％OFF 本日から10/2（金） AM 9:59まで #FANZA #愛弓りょう｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    }
+  ],
+  "okCount": 6,
+  "ngCount": 0
+}

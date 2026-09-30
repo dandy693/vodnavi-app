@@ -1,0 +1,25 @@
+{
+ "generatedAtJst": "2026-09-30 22:16:41 JST",
+ "date": "2026-09-30",
+ "max": 10,
+ "picked": [
+  {
+   "handle": "Osikatu39g0",
+   "reason": "@Fitch_official 9/30 20:15（肉欲の秋・永井マリア）のリポスト。自己紹介「アダルトな事をRT、いいねするだけのアカウント」＝一般ユーザー"
+  },
+  {
+   "handle": "miyabi_x09x",
+   "reason": "@Fitch_official 9/30 20:15 のリポスト。自己紹介「こんにちは」のみ・メーカー/女優/アフィリエイターの表示なし＝一般ユーザー"
+  }
+ ],
+ "skipped": [],
+ "errors": [],
+ "status": {
+  "baseline": 156,
+  "added": 33,
+  "estimated": 189,
+  "stop": 300,
+  "remainingToStop": 111,
+  "reached": false
+ }
+}
