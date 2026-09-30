@@ -44,6 +44,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 | 4 | CTO | `record.mjs` の payload を Airtable MCP で書き込み → 読み戻しを報告（手順 7〜8） |
 
 チャット側（戦略顧問）は日次ループから外れる。週次（木曜）で `x_replies` を読んで型を再判定。**B 型は知識ありモード（cache ヒット）でのみ生成**（知識なしでは A・C の 2 案）。
+- **【運用則・CSO裁定 2026-10-01 の 5】`reply_key`・`posted_at`・`last_reply_at` は実投稿時刻の日付（snowflake の JST）。抽出日・生成日ではない**（`record.mjs --create` が生成日のキーを出したときは投稿日に直して書く・例: 9/30 夜生成→10/1 00:41 投稿＝`20261001-`）。
 
 ## 手順（1 回分）
 

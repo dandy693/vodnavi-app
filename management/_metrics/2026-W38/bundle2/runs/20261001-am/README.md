@@ -47,3 +47,4 @@
 - X 実在（06:2x JST）: HTTP 200・Twitterbot の `<title>` で宛先と本文冒頭が案 C と一致／無効 ID 対照 404。
 - 投稿は CSV（account_analytics_content_2026-09-17_2026-09-30）で先に見つかり、HUMAN の報告で確定した。
 - 記録: MCP create（createdTime 06:23:44 JST・`recwOO7r5ohrzPrsK`）→ x_targets `last_reply_at` → **別呼び出しの読み戻しで 1＋1 件とも一致。x_replies 累計 77 件。**
+- **【CSO裁定 2026-10-01 の 1】@attackers_av（候補①）は見送りで確定。記録のみ。**

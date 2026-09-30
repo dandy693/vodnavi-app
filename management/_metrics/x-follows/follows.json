@@ -6,8 +6,10 @@
   "source": "HUMAN 実測（CSO 連絡 2026-09-24）"
  },
  "limits": {
-  "perDay": 10,
-  "followingStop": 300
+  "perDay": 5,
+  "followingStop": 300,
+  "blockStop": 3,
+  "_note": "CSO 裁定 2026-10-01 の 4: 1 日上限 10→5・ブロック累計 3 件で D-2 停止。CLI は limits.perDay を読まないため --max 5 で実行する（ツール改修は別便）"
  },
  "entries": [
   {
@@ -188,5 +190,13 @@
    "handle": "danine1203",
    "note": "既フォロー・9/25判明（9/25 夜の候補提示時に HUMAN が確認・今回の実施に含めない）"
   }
- ]
+ ],
+ "baseline_20261001": {
+  "date": "2026-10-01",
+  "asof_jst": "2026-10-01 06:18",
+  "following": 184,
+  "entries_counted": 33,
+  "source": "HUMAN スクリーンショット（フォロー中一覧）を CTO が書き起こし＝management/_metrics/x-follows/following-20261001.txt（184）。CSO 裁定 2026-10-01 の 2: 以後の起点。差 3 件は未特定で受容",
+  "note": "以後の推定＝184＋（entries の 34 件目以降のうちブロックでないもの）。follow-candidates.mjs の推定は旧 baseline（156）のまま＝ツール改修は別便"
+ }
 }
