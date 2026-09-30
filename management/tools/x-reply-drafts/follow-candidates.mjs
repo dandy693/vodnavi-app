@@ -98,6 +98,8 @@ export function targetHandles(targetsJson) {
  */
 export function selectCandidates(items, { targets = new Set(), follows = [], preexisting = [], max = LIMITS.perDay, date = null } = {}) {
   const followed = new Set(follows.map((e) => String(e.handle || "").replace(/^@/, "")));
+  // 相手が @vodnavi_jp をブロック済みの行（status=ブロック）は恒久除外（HUMAN 確認・2026-10-01 指示）
+  const blocked = new Set(follows.filter(isBlocked).map((e) => String(e.handle || "").replace(/^@/, "")));
   const pre = new Set(preexisting.map((e) => String(e.handle || "").replace(/^@/, "")));
   const todayCount = date ? follows.filter((e) => e.date === date).length : 0;
   const remaining = Math.max(0, max - todayCount);
@@ -110,6 +112,7 @@ export function selectCandidates(items, { targets = new Set(), follows = [], pre
     const h = it.handle;
     if (SELF_HANDLES.has(h)) { skipped.push({ ...it, why: "自アカウント" }); continue; }
     if (targets.has(h)) { skipped.push({ ...it, why: "x_targets に登録済み（営業対象＝一般ユーザーではない）" }); continue; }
+    if (blocked.has(h)) { skipped.push({ ...it, why: "ブロック済み（相手が @vodnavi_jp をブロック・恒久除外）" }); continue; }
     if (followed.has(h)) { skipped.push({ ...it, why: "follows.json に既存（フォロー済み）" }); continue; }
     if (pre.has(h)) { skipped.push({ ...it, why: "既フォロー（営業開始前から・follows.json preexisting）" }); continue; }
     if (seen.has(h)) { skipped.push({ ...it, why: "同一バッチ内の重複" }); continue; }
@@ -120,13 +123,22 @@ export function selectCandidates(items, { targets = new Set(), follows = [], pre
   return { picked, skipped, todayCount, remaining };
 }
 
-/** 推定フォロー中（正は画面実測）。 */
+/** entries の行が「相手にブロックされている」か。 */
+export function isBlocked(e) {
+  return String(e?.status || "") === "ブロック";
+}
+
+/**
+ * 推定フォロー中（正は画面実測）。
+ * ブロックされた行はフォローが成立していないため推定から除く（日次件数には数えたまま＝フォロー操作は行った）。
+ */
 export function estimateFollowing(follows) {
   const base = follows.baseline?.following ?? FOLLOWING_BASELINE.following;
-  const added = follows.entries.length;
+  const blocked = follows.entries.filter(isBlocked).length;
+  const added = follows.entries.length - blocked;
   const est = base + added;
   const stop = follows.limits?.followingStop ?? LIMITS.followingStop;
-  return { baseline: base, added, estimated: est, stop, remainingToStop: stop - est, reached: est >= stop };
+  return { baseline: base, added, blocked, estimated: est, stop, remainingToStop: stop - est, reached: est >= stop };
 }
 
 /** 既フォロー（営業開始前から）を preexisting に追記する。entries・日次件数・推定には入れない。純関数。 */
@@ -166,7 +178,7 @@ function printStatus(follows) {
   const est = estimateFollowing(follows);
   process.stdout.write(
     "[follow] 累計記録 " + follows.entries.length + " 件 / 推定フォロー中 " + est.estimated +
-    "（起点 " + est.baseline + "＋追加 " + est.added + "）/ 停止閾値 " + est.stop +
+    "（起点 " + est.baseline + "＋追加 " + est.added + "・ブロック " + est.blocked + " は除外）/ 停止閾値 " + est.stop +
     " まで残り " + est.remainingToStop + "\n"
   );
   if (est.reached) {

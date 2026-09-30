@@ -150,3 +150,20 @@ test("own-posts: 新形式（Post id / Date・TZ 無し＝JST）と JSON 形式"
   assert.equal(j.n, 2);
   assert.equal(j.impressions_median, 20);
 });
+
+test("weekly-report --follows: ブロック件数の行（期間内・累計・ハンドル）を出す（HUMAN 指示 2026-10-01）", () => {
+  const follows = { baseline: { following: 156 }, entries: [
+    { date: "2026-09-29", handle: "a", status: "ブロック", status_date: "2026-10-01" },
+    { date: "2026-09-29", handle: "b" },
+    { date: "2026-09-25", handle: "c" },
+  ] };
+  const agg = aggregate({ replies: { records: [] }, targets: { records: [] }, since: "2026-09-25", until: "2026-10-01", follows });
+  assert.equal(agg.follows.blocked_in_period, 1);
+  assert.equal(agg.follows.blocked_total, 1);
+  assert.equal(agg.follows.followed_in_period, 3);
+  assert.equal(agg.follows.estimated_following, 158);
+  const md = toMarkdown(agg);
+  assert.match(md, /\| ブロック件数（[^|]*\| 1 \| 1（@a） \|/);
+  const agg2 = aggregate({ replies: { records: [] }, targets: { records: [] }, since: "2026-09-18", until: "2026-09-24", follows });
+  assert.equal(agg2.follows.blocked_in_period, 0);
+});

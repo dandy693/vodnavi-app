@@ -115,6 +115,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 ## 木曜 PDCA 集計（`weekly-report.mjs`・CSO 連絡 2026-09-19 22:2x）
 
 - **【CSO 指示 2026-09-30 朝・フォロー突合】木曜に `management/_metrics/x-follows/follows.json`（2026-09-30 時点 累計 33）と X の「フォロー中」一覧を突合し、①`follows.json` にあるが一覧に無い件数とハンドル ②起点 156 からの差（推定 189 − 実測）の内訳を出す。** 一覧は HUMAN がスクリーンショットをファイルで渡す（背景タブでは一覧が追加描画されないため・§26-12-2）。**CTO はフォロー・解除をしない。** 初回の要確認＝`@Scarlet_Aniki`（9/29 夜・一覧の先頭付近に見当たらない）。
+- **【HUMAN 指示 2026-10-01・ブロック】初回突合で一覧に無かった `@mgt_xknkmtc`・`@Scarlet_Aniki` は相手が @vodnavi_jp をブロック済み（HUMAN 確認）。`follows.json` の該当行を `status=ブロック`（`status_date`）とし、`follow-candidates.mjs` は候補から恒久除外・推定フォロー中からも除く。木曜集計は `weekly-report.mjs --follows` で「ブロック件数」の行（期間内・累計）を出す。** 突合の記録 → `management/_metrics/x-follows/reconcile-20261001.md`。
 
 9/24（水）朝の時点で `x_replies` を **priority 別・type 別**に集計して報告する（件数・`draft_used` の内訳・`got_like` / `got_reply` の記入状況）。判断は書かない。**集計の起点は朝の抽出と同じ 06:00**（CSO 決定 2026-09-21・反応の補完 → 集計の順で 06:00 から）。
 
@@ -125,7 +126,7 @@ node --test management/tools/x-reply-drafts/*.test.mjs
 #    profile_click_delta は投稿ページから取れない＝空のまま（未取得）。表示回数は x_replies に note 欄が無いため Airtable に書かず reactions.json のみ。
 # 1) MCP で x_replies（全フィールド）と x_targets を読み戻して state/<日付>/ に保存
 # 2) 集計（期間は posted_at の JST 暦日・両端含む・--reactions を付けると「反応 取得済（未取得 n）」「likes / replies 合計」「views 合計（中央値）」列が出る）
-node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/replies.json --targets state/<日付>/targets.json --reactions state/<日付>/reactions.json --since 2026-09-18 --until 2026-09-24 --md
+node management/tools/x-reply-drafts/weekly-report.mjs --replies state/<日付>/replies.json --targets state/<日付>/targets.json --reactions state/<日付>/reactions.json --follows management/_metrics/x-follows/follows.json --since 2026-09-18 --until 2026-09-24 --md
 ```
 
 - `x_targets` に紐づかない行は priority 空・type 不明で別行に出る（`unmatched`）。`posted_at` 空の行は期間で落とさず記入状況に出す。

@@ -16,6 +16,7 @@
 //   x_replies の reply_post_id と一致する行（＝リプ自身・draft_used A/B/C）は自投稿から除外する。引用ポスト（Q）は自投稿に含める。タイムゾーン表記の無い日時は JST として扱う。
 // --ga4-quote ga4_quote.json（任意・CSO 指示 2026-09-21 夜）: ga4-quote-sessions.mjs の出力（utm_medium=quote のセッション）を末尾に添付する。
 //   .json でもよい: [{ id, time, impressions }] または { posts: [...] }。
+// --follows follows.json（任意・HUMAN 指示 2026-10-01）: フォロー営業の集計（フォロー記録・ブロック件数・推定フォロー中）を末尾に添付する。ブロック＝entries の status=ブロック（status_date で期間判定）。
 
 import fs from "node:fs";
 import { isMain } from "./parse.mjs";
@@ -213,7 +214,30 @@ export function normalizeReactions(raw) {
  * 集計本体。since / until は JST の YYYY-MM-DD（両端含む・省略可）。
  * 返り値 { period, total, by_priority, by_type, by_priority_type, by_target, unmatched }
  */
-export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null }) {
+/**
+ * フォロー営業（follows.json）の週次集計。ブロック件数の行を持つ（HUMAN 指示 2026-10-01）。
+ * - フォロー記録: entries の date が期間内の件数（ブロックされた行も「フォロー操作をした」ので数える）
+ * - ブロック確認: status=ブロック の行のうち status_date が期間内の件数（累計も併記）
+ * - 推定フォロー中: 起点＋entries−ブロック（正は画面実測）
+ */
+export function followsStats(follows, { since = null, until = null } = {}) {
+  const entries = Array.isArray(follows?.entries) ? follows.entries : [];
+  const inRange = (d) => !!d && (!since || d >= since) && (!until || d <= until);
+  const isBlocked = (e) => String(e?.status || "") === "ブロック";
+  const blockedAll = entries.filter(isBlocked);
+  const base = follows?.baseline?.following ?? null;
+  return {
+    followed_in_period: entries.filter((e) => inRange(e.date)).length,
+    followed_total: entries.length,
+    blocked_in_period: blockedAll.filter((e) => inRange(e.status_date)).length,
+    blocked_total: blockedAll.length,
+    blocked_handles: blockedAll.map((e) => e.handle),
+    estimated_following: base == null ? null : base + entries.length - blockedAll.length,
+    baseline: base,
+  };
+}
+
+export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null, follows = null }) {
   const T = normalizeTargets(targets);
   const RX = normalizeReactions(reactions);
   const byId = new Map(T.map((t) => [t.id, t]));
@@ -254,6 +278,7 @@ export function aggregate({ replies, targets, reactions = null, ownPosts = null,
     out.own_posts = ownPostsStats(normalizeOwnPosts(ownPosts), { since, until, excludeIds: replyIds });
   }
   if (ga4Quote != null) out.ga4_quote = ga4Quote; // ga4-quote-sessions.mjs の出力（utm_medium=quote のセッション）をそのまま添付
+  if (follows != null) out.follows = followsStats(follows, { since, until });
   return out;
 }
 
@@ -308,6 +333,15 @@ export function toMarkdown(agg) {
     for (const r of g.by_content ?? []) L.push(`| utm_content=${r.content} | ${r.sessions} | ${r.users} | ${r.pageviews} |`);
     if (g.note) L.push("", g.note);
   }
+  if (agg.follows) {
+    const f = agg.follows;
+    L.push("");
+    L.push("| フォロー営業（follows.json・フォロー操作は HUMAN・正は画面実測） | 期間内 | 累計 |");
+    L.push("|---|---|---|");
+    L.push(`| フォロー記録 | ${f.followed_in_period} | ${f.followed_total} |`);
+    L.push(`| ブロック件数（相手が @vodnavi_jp をブロック・HUMAN 確認・恒久除外） | ${f.blocked_in_period} | ${f.blocked_total}${f.blocked_handles.length ? "（" + f.blocked_handles.map((h) => "@" + h).join("・") + "）" : ""} |`);
+    L.push(`| 推定フォロー中（起点 ${f.baseline ?? "?"}＋記録−ブロック） | — | ${f.estimated_following ?? "—"} |`);
+  }
   if (agg.unmatched.length) L.push("", `x_targets に紐づかない行: ${agg.unmatched.join("、")}`);
   return L.join("\n") + "\n";
 }
@@ -327,7 +361,7 @@ function parseArgs(argv) {
 if (isMain(import.meta.url)) {
   const a = parseArgs(process.argv.slice(2));
   if (!a.replies || !a.targets) {
-    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
+    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--follows follows.json] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
     process.exit(2);
   }
   const agg = aggregate({
@@ -338,6 +372,7 @@ if (isMain(import.meta.url)) {
     since: typeof a.since === "string" ? a.since : null,
     until: typeof a.until === "string" ? a.until : null,
     ga4Quote: typeof a["ga4-quote"] === "string" ? JSON.parse(fs.readFileSync(a["ga4-quote"], "utf8")) : null,
+    follows: typeof a.follows === "string" ? JSON.parse(fs.readFileSync(a.follows, "utf8")) : null,
   });
   process.stdout.write(a.md ? toMarkdown(agg) : JSON.stringify(agg, null, 2) + "\n");
 }

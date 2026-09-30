@@ -130,3 +130,17 @@ test("preexisting（既フォロー）は候補から除外し、日次件数・
   assert.match(sel.skipped[0].why, /既フォロー/);
   assert.equal(sel.todayCount, 1);
 });
+
+test("ブロック済み（status=ブロック）は候補から恒久除外し、推定フォロー中からも除く（HUMAN 指示 2026-10-01）", () => {
+  const follows = [
+    { date: "2026-09-29", handle: "blockedUser", status: "ブロック", status_date: "2026-10-01" },
+    { date: "2026-09-29", handle: "okUser" },
+  ];
+  const r = selectCandidates([{ handle: "blockedUser", reason: "x" }, { handle: "newUser", reason: "y" }], { follows, date: "2026-10-01" });
+  assert.deepEqual(r.picked.map((x) => x.handle), ["newUser"]);
+  assert.match(r.skipped[0].why, /ブロック済み/);
+  const est = estimateFollowing({ baseline: { following: 156 }, entries: follows });
+  assert.equal(est.blocked, 1);
+  assert.equal(est.added, 1);
+  assert.equal(est.estimated, 157);
+});

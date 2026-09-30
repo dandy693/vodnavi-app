@@ -118,7 +118,10 @@
   {
    "date": "2026-09-29",
    "handle": "mgt_xknkmtc",
-   "reason": "前回送り（9/28 夜・honnaka_NN 9/28 11:04 のリポスト一覧）"
+   "reason": "前回送り（9/28 夜・honnaka_NN 9/28 11:04 のリポスト一覧）",
+   "status": "ブロック",
+   "status_date": "2026-10-01",
+   "status_source": "HUMAN 確認 2026-10-01（相手が @vodnavi_jp をブロック）。以後の候補抽出から恒久除外"
   },
   {
    "date": "2026-09-29",
@@ -143,7 +146,10 @@
   {
    "date": "2026-09-29",
    "handle": "Scarlet_Aniki",
-   "reason": "sakuramio_X 9/29 18:04（チェキ会）への返信・自己紹介は声優ファン・楽器＝一般ユーザー"
+   "reason": "sakuramio_X 9/29 18:04（チェキ会）への返信・自己紹介は声優ファン・楽器＝一般ユーザー",
+   "status": "ブロック",
+   "status_date": "2026-10-01",
+   "status_source": "HUMAN 確認 2026-10-01（相手が @vodnavi_jp をブロック）。以後の候補抽出から恒久除外"
   },
   {
    "date": "2026-09-29",
