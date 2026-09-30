@@ -1,0 +1,44 @@
+{
+  "tag": "PREFLIGHT_TODAY",
+  "ts": "2026-09-30T21:11:07.603Z",
+  "date": "2026-10-01",
+  "n": 1,
+  "ngCount": 0,
+  "unrecovered": [],
+  "selfExcluded": [],
+  "dumpUsed": false,
+  "existingRows": 0,
+  "metaDependent": {
+    "g9_utc_iso": "intendedJst（生成時の意図時刻）",
+    "g12_actress_not_recent": "actressNames（posts に出演女優の列が無い）",
+    "g19_t3_deadline": "material.ends_at（T3 の生成材料）",
+    "g20_t3_template": "material（T3 の生成材料）",
+    "g21_t3_not_reported": "material.campaign_title（T3 の生成材料）"
+  },
+  "posts": [
+    {
+      "recordId": "recdDbsffixEc3NL4",
+      "name": "W12-06 T1改 美谷朱音（美谷朱里） HNDB-221",
+      "text": "美谷朱音（美谷朱里）の単体作品、HNDB-221。ハイビジョン収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/hndb00221",
+      "kind": "T1",
+      "typeName": "T1改",
+      "statusName": "承認済",
+      "linkKindName": "サイト",
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-10-01T12:00:00.000Z",
+      "contentId": "hndb00221",
+      "hinban": "HNDB-221",
+      "actressNames": [],
+      "failures": [],
+      "skipped": [
+        {
+          "post": "W12-06 T1改 美谷朱音（美谷朱里） HNDB-221",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        }
+      ]
+    }
+  ]
+}

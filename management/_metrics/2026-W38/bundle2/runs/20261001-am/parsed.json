@@ -1,0 +1,34 @@
+{
+  "lines": [
+    {
+      "ok": true,
+      "lineNo": 1,
+      "handle": "attackers_av",
+      "postedAtJst": "2026-09-30 23:30",
+      "postedAtIso": "2026-09-30T14:30:00.000Z",
+      "postUrl": "https://x.com/attackers_av/status/2105304163219562829",
+      "targetPostId": "2105304163219562829",
+      "body": "こだわりのフェラ 【PR】50％OFFで楽しめるのは今だけ 動画はこちらからチェック！ 第6弾10/2（金）朝9時59分まで！ #愛弓りょう｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    },
+    {
+      "ok": true,
+      "lineNo": 2,
+      "handle": "IDEAPOCKETTER",
+      "postedAtJst": "2026-09-30 23:00",
+      "postedAtIso": "2026-09-30T14:00:00.000Z",
+      "postUrl": "https://x.com/IDEAPOCKETTER/status/2105296617452736904",
+      "targetPostId": "2105296617452736904",
+      "body": "こだわりのフェラ特集 50％OFFで楽しめるのは今だけ 第6弾 動画はこちらからチェック！ #愛弓りょう #PR｜",
+      "work": null,
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ]
+    }
+  ],
+  "okCount": 2,
+  "ngCount": 0
+}
