@@ -144,3 +144,13 @@ test("ブロック済み（status=ブロック）は候補から恒久除外し�
   assert.equal(est.added, 1);
   assert.equal(est.estimated, 157);
 });
+
+test("起点の置き直し（baseline_20261001）: 184 ＋ 34 件目以降の記録−ブロックで推定する（CSO裁定 2026-10-01 の 2）", () => {
+  const entries = Array.from({ length: 33 }, (_, i) => ({ date: "2026-09-25", handle: "h" + i, ...(i < 2 ? { status: "ブロック" } : {}) }));
+  entries.push({ date: "2026-10-02", handle: "n1" }, { date: "2026-10-02", handle: "n2", status: "ブロック" });
+  const est = estimateFollowing({ baseline: { following: 156 }, rebase: { following: 184, entries_counted: 33 }, entries });
+  assert.equal(est.baseline, 184);
+  assert.equal(est.added, 1);
+  assert.equal(est.blocked, 1);
+  assert.equal(est.estimated, 185);
+});

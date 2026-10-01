@@ -9,6 +9,7 @@ for (let i = 0; i < t.length; i++) { const c = t[i];
   if (q) { if (c === '"') { if (t[i + 1] === '"') { f += '"'; i++; } else q = false; } else f += c; }
   else if (c === '"') q = true; else if (c === ",") { cur.push(f); f = ""; }
   else if (c === "\n") { cur.push(f.replace(/\r$/, "")); rows.push(cur); cur = []; f = ""; } else f += c; }
+if (f || cur.length) { cur.push(f.trimEnd()); rows.push(cur); } // 【修正 2026-10-01 夜】末尾に改行の無い最終行を落としていた
 const H = rows.shift(); const ix = (n) => H.indexOf(n);
 const exported = new Date(exportedJst.replace(" ", "T") + "+09:00").getTime();
 const posts = rows.filter((r) => r.length >= H.length).map((r) => {

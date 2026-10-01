@@ -14,7 +14,7 @@
 // 使い方:
 //   1) 候補の提示（除外・重複排除・上限）
 //      node follow-candidates.mjs --candidates cands.tsv --targets state/<日付>/targets.json \
-//        [--follows management/_metrics/x-follows/follows.json] [--max 10] [--json out.json]
+//        [--follows management/_metrics/x-follows/follows.json] [--max N（既定＝follows.json の limits.perDay）] [--json out.json]
 //      cands.tsv = 「@ハンドル <TAB> 根拠」（1 行 1 件。根拠＝どの投稿へのどの反応か）
 //   2) HUMAN がフォローした分の記録
 //      node follow-candidates.mjs --record followed.tsv --date 2026-09-24 \
@@ -76,6 +76,8 @@ export function loadFollows(file) {
     // 【CSO 2026-09-25 夜】候補に出したが HUMAN の実施前から既にフォローしていたハンドル。
     // 起点（baseline.following）に含まれるため、日次件数・推定フォロー中には数えない。候補からは除外する。
     preexisting: Array.isArray(j.preexisting) ? j.preexisting : [],
+    // 【CSO裁定 2026-10-01 の 2】起点の置き直し（一覧 184・entries 33 件目までを内包）。あれば推定はこちらを起点にする
+    rebase: j.baseline_20261001 ?? null,
   };
 }
 
@@ -133,9 +135,13 @@ export function isBlocked(e) {
  * ブロックされた行はフォローが成立していないため推定から除く（日次件数には数えたまま＝フォロー操作は行った）。
  */
 export function estimateFollowing(follows) {
-  const base = follows.baseline?.following ?? FOLLOWING_BASELINE.following;
-  const blocked = follows.entries.filter(isBlocked).length;
-  const added = follows.entries.length - blocked;
+  // 起点の置き直し（rebase）があれば、起点＝rebase.following、加算は entries の entries_counted 件目より後のみ
+  // （それ以前の記録とブロックは実測一覧に反映済み・CSO裁定 2026-10-01 の 2）
+  const rb = follows.rebase && Number.isFinite(Number(follows.rebase.following)) ? follows.rebase : null;
+  const base = rb ? Number(rb.following) : (follows.baseline?.following ?? FOLLOWING_BASELINE.following);
+  const counted = follows.entries.slice(rb ? Number(rb.entries_counted ?? 0) : 0);
+  const blocked = counted.filter(isBlocked).length;
+  const added = counted.length - blocked;
   const est = base + added;
   const stop = follows.limits?.followingStop ?? LIMITS.followingStop;
   return { baseline: base, added, blocked, estimated: est, stop, remainingToStop: stop - est, reached: est >= stop };
@@ -191,7 +197,7 @@ async function main() {
   const argv = process.argv.slice(2);
   let candFile = null, recordFile = null, targetsFile = null, outJson = null, preFile = null;
   let followsFile = "management/_metrics/x-follows/follows.json";
-  let max = LIMITS.perDay;
+  let max = null; // 未指定なら follows.json の limits.perDay（CSO裁定 2026-10-01 の 4＝5 件）
   let date = jstDate();
   let statusOnly = false;
   for (let i = 0; i < argv.length; i++) {
@@ -202,12 +208,13 @@ async function main() {
     if (a === "--targets") { targetsFile = argv[++i]; continue; }
     if (a === "--follows") { followsFile = argv[++i]; continue; }
     if (a === "--json") { outJson = argv[++i]; continue; }
-    if (a === "--max") { max = Number(argv[++i]) || LIMITS.perDay; continue; }
+    if (a === "--max") { max = Number(argv[++i]) || null; continue; }
     if (a === "--date") { date = argv[++i]; continue; }
     if (a === "--status") { statusOnly = true; continue; }
   }
 
   const follows = loadFollows(followsFile);
+  if (max == null) max = Number(follows.limits?.perDay) || LIMITS.perDay;
 
   if (statusOnly) { printStatus(follows); return; }
 

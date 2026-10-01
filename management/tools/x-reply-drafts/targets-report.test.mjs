@@ -120,7 +120,7 @@ test("own-posts: X Analytics CSV（旧形式 +0000）を tolerant に読み、�
   assert.equal(parseTimeJst("2026/9/18 21:00").toISOString(), "2026-09-18T12:00:00.000Z");
   assert.equal(parseTimeJst("no date"), null);
   const norm = normalizeOwnPosts(csv);
-  assert.deepEqual(norm.columns, { id: "Tweet id", time: "time", impressions: "impressions" });
+  assert.deepEqual(norm.columns, { id: "Tweet id", time: "time", impressions: "impressions", text: "Tweet text" });
   const st = ownPostsStats(norm, { since: "2026-09-18", until: "2026-09-24", excludeIds: new Set(["1"]) });
   assert.equal(st.excluded_replies, 1);
   assert.equal(st.n, 2, "9001 / 9002（期間外 9003・imp 空 9004 は除く）");
@@ -141,7 +141,7 @@ test("own-posts: 新形式（Post id / Date・TZ 無し＝JST）と JSON 形式"
   const { normalizeOwnPosts, ownPostsStats } = await import("./weekly-report.mjs");
   const csv = "Date,Post id,Post text,Impressions,Likes\r\n2026-09-18 21:00,9001,本文,\"1,234\",2\r\n2026-09-19 22:30,9002,本文2,50,0\r\n";
   const norm = normalizeOwnPosts(csv);
-  assert.deepEqual(norm.columns, { id: "Post id", time: "Date", impressions: "Impressions" });
+  assert.deepEqual(norm.columns, { id: "Post id", time: "Date", impressions: "Impressions", text: "Post text" });
   assert.equal(norm.posts[0].impressions, 1234, "桁区切りカンマを除去");
   const st = ownPostsStats(norm, { since: "2026-09-19", until: "2026-09-19" });
   assert.equal(st.n, 1);
@@ -166,4 +166,25 @@ test("weekly-report --follows: ブロック件数の行（期間内・累計・�
   assert.match(md, /\| ブロック件数（[^|]*\| 1 \| 1（@a） \|/);
   const agg2 = aggregate({ replies: { records: [] }, targets: { records: [] }, since: "2026-09-18", until: "2026-09-24", follows });
   assert.equal(agg2.follows.blocked_in_period, 0);
+});
+
+test("own-posts: 日本語 CSV（ポストID・日付は日単位）＝ID 列を認識し、snowflake から JST 時刻を復元し、@ で始まる行と 24 時間未満を除く（修正 2026-10-01）", async () => {
+  const { normalizeOwnPosts, ownPostsStats } = await import("./weekly-report.mjs");
+  // 2105266431667351917＝2026-09-30 21:00 JST／2105281536631222487＝2026-09-30 22:00 JST／2100917880552341762＝2026-09-18 21:00 JST
+  const csv = "ポストID,日付,ポスト本文,インプレッション数\n" +
+    "2105281536631222487,\"Wed, Sep 30, 2026\",自投稿B,2\n" +
+    "2105266431667351917,\"Wed, Sep 30, 2026\",自投稿A,4\n" +
+    "2105322683642863862,\"Wed, Sep 30, 2026\",@fanza_sns 返信,9\n" +
+    "2100917880552341762,\"Fri, Sep 18, 2026\",自投稿C,79";
+  const norm = normalizeOwnPosts(csv);
+  assert.equal(norm.columns.id, "ポストID");
+  assert.equal(norm.posts.length, 4, "末尾に改行が無くても最終行を読む");
+  assert.equal(norm.posts[1].time.toISOString().slice(0, 16), "2026-09-30T12:00");
+  const st = ownPostsStats(norm, { since: "2026-09-30", until: "2026-09-30", asOf: new Date("2026-10-01T06:08:00+09:00") });
+  assert.equal(st.excluded_replies, 1);
+  assert.equal(st.young_excluded, 2);
+  assert.equal(st.n, 0);
+  const all = ownPostsStats(norm, { since: "2026-09-17", until: "2026-09-26" });
+  assert.equal(all.n, 1);
+  assert.equal(all.impressions_median, 79);
 });

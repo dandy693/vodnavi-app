@@ -1,0 +1,73 @@
+model=claude-opus-5 dry_run=false today_jst=20261001 counts={"lines":8,"generated":7,"stopped":1} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/FANZAdougaX/status/2105598929534587190（2026-10-01 19:01）
+    @FANZAdougaX (セール告知系) status=generated replyKey=20261001-FANZAdougaX calls=2 in=824 out=1440
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=51 weight=99 ok=true attempts=1
+     OFFキャンペーンビデオ作品リストが公開されたのですね、対象になっている作品を順番に見ていきたいです。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=63 weight=123 ok=true attempts=2
+     OFFキャンペーンビデオ作品リストは今回で出そろいなのでしょうか、それとも期間中に対象作品が追加されることもあるのでしょうか。
+
+=== 対象 https://x.com/kawaii_pr/status/2105626789410468153（2026-10-01 20:52）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20261001-kawaii_pr calls=1 in=699 out=2073
+  A chars=46 weight=85 ok=true attempts=1
+     もうすぐ配信開始とのことで、kawaii*の新作を待っている方にはいよいよという段階ですね。
+  B chars=50 weight=94 ok=true attempts=1
+     収録時間は125分、配信日は10月2日と出ていますね。もうすぐ配信開始という告知のとおりの日程です。
+  C chars=41 weight=81 ok=true attempts=1
+     もうすぐ配信開始とのことですが、配信の開始時刻は深夜0時からになりますでしょうか。
+
+=== 対象 https://x.com/MOODYZ_official/status/2105606157054407122（2026-10-01 19:30）
+    @MOODYZ_official (メーカー公式) status=generated replyKey=20261001-MOODYZ_official calls=1 in=326 out=763
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=45 weight=90 ok=true attempts=1
+     撮影のオフショットまで届くとは思いませんでした。本編とは違う現場の空気が伝わってきますね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=51 weight=102 ok=true attempts=1
+     オフショットは特設サイトでまとめて公開される形でしょうか、それとも日を分けて少しずつ出る形でしょうか。
+
+=== 対象 https://x.com/attackers_av/status/2105402322608419044（2026-10-01 06:00）
+    @attackers_av (メーカー公式) status=一部生成不能（A/B/C がガード未通過・最大 2 回再生成後） replyKey=20261001-attackers_av calls=3 in=2278 out=4708
+  A chars=47 weight=94 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     「手、繋ごう」の一言だけで、もう物語が始まっている感じがしますね。短い投げかけが効いています。
+  B chars=46 weight=86 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     「手、繋ごう」のこの一本は収録134分、配信は8月28日なのですね。二時間を超える長さです。
+  C chars=43 weight=86 ok=false attempts=3 NG=[{"rule":"R14","detail":"相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"}]
+     「手、繋ごう」というこの一言が出てくる場面は、サンプル動画でも見られるものでしょうか？
+
+=== 対象 https://x.com/Madonna_AVinfo/status/2105459923744338201（2026-10-01 09:48）
+    @Madonna_AVinfo (メーカー公式) status=generated replyKey=20261001-Madonna_AVinfo calls=1 in=916 out=1143
+  A chars=41 weight=74 ok=true attempts=1
+     予約受付中の段階で売れ筋3位は強いですね。2026年10月2日発売を待っています。
+  B chars=57 weight=103 ok=true attempts=1
+     収録時間は362分と長尺で、発売は2026年10月2日ですね。予約の時点で売れ筋3位まで来ているのが気になります。
+  C chars=46 weight=85 ok=true attempts=1
+     2026年10月2日発売とのことですが、予約された方向けの特典や先行配信の予定はありますか？
+
+=== 対象 https://x.com/FalenoEvent/status/2105469574162547097（2026-10-01 10:27）
+    @FalenoEvent (メーカー公式) status=generated replyKey=20261001-FalenoEvent calls=1 in=334 out=576
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=46 weight=84 ok=true attempts=1
+     2026年10月イベントカレンダーの公開、10月に会える日がまとめて分かるのは楽しみですね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=49 weight=92 ok=true attempts=1
+     2026年10月イベントカレンダーに載っている日程は、月の途中で追加されることもあるのでしょうか。
+
+=== 対象 https://x.com/sodstarofficial/status/2105598612633989525（2026-10-01 19:00）
+    @sodstarofficial (メーカー公式) status=generated replyKey=20261001-sodstarofficial calls=2 in=557 out=308
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=33 weight=65 ok=true attempts=1
+     1ヶ月我慢という設定、企画の軸がはっきりしていて引き込まれますね。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=49 weight=97 ok=true attempts=2
+     1ヶ月我慢したというのは作品内の企画設定でしょうか、それとも撮影に向けた実際の期間なのでしょうか。
+
+=== 対象 https://x.com/wanz_official/status/2105492974373392656（2026-10-01 12:00）
+    @wanz_official (メーカー公式) status=generated replyKey=20261001-wanz_official calls=1 in=413 out=87
+  ! 末尾フィールドは作品コードの形でないため本文の一部として扱った
+  A chars=47 weight=87 ok=true attempts=1
+     10月18日は昼の部と夜の部の二部構成なんですね。発券開始が10月2日というのも分かりました。
+  B: (なし・知識なしモードでは B を生成しない)
+  C chars=34 weight=64 ok=true attempts=1
+     10月18日の昼の部と夜の部で、発券の枚数や条件に違いはありますか。

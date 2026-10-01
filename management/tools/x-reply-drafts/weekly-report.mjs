@@ -153,12 +153,14 @@ export function normalizeOwnPosts(input) {
     if (!rows.length) return { posts: [], columns: null };
     const header = rows[0].map((h) => String(h).trim());
     const idx = (re) => header.findIndex((h) => re.test(h));
-    const iId = (() => { const a = idx(/(post|tweet)\s*id/i); return a >= 0 ? a : idx(/^id$/i); })();
+    // 【修正 2026-10-01】X Analytics の日本語 CSV は列名「ポストID」。旧正規表現は英語名のみで ID 列を見落とし、リプ自身の除外が効かなかった
+    const iId = (() => { const a = idx(/(post|tweet)\s*id|ポスト\s*ID/i); return a >= 0 ? a : idx(/^id$/i); })();
+    const iText = idx(/^(text|post text|tweet text|ポスト本文|本文)$/i);
     const iTime = idx(/^(time|date|created|posted|日時|日付|投稿日)/i);
     const iImp = idx(/impression|インプレッション|表示回数/i);
-    const columns = { id: iId >= 0 ? header[iId] : null, time: iTime >= 0 ? header[iTime] : null, impressions: iImp >= 0 ? header[iImp] : null };
+    const columns = { id: iId >= 0 ? header[iId] : null, time: iTime >= 0 ? header[iTime] : null, impressions: iImp >= 0 ? header[iImp] : null, text: iText >= 0 ? header[iText] : null };
     for (const r of rows.slice(1)) {
-      recs.push({ id: iId >= 0 ? String(r[iId] ?? "").trim() : null, time: iTime >= 0 ? r[iTime] : null, impressions: iImp >= 0 ? r[iImp] : null });
+      recs.push({ id: iId >= 0 ? String(r[iId] ?? "").trim() : null, time: iTime >= 0 ? r[iTime] : null, impressions: iImp >= 0 ? r[iImp] : null, text: iText >= 0 ? r[iText] : null });
     }
     return { posts: finish(recs), columns };
   }
@@ -170,7 +172,13 @@ export function normalizeOwnPosts(input) {
     return list.map((r) => {
       const impRaw = r.impressions;
       const imp = impRaw == null || impRaw === "" ? null : Number(String(impRaw).replace(/[,\s]/g, ""));
-      return { id: r.id == null || r.id === "" ? null : String(r.id).replace(/\D/g, "") || String(r.id), time: parseTimeJst(r.time), impressions: imp == null || isNaN(imp) ? null : imp, raw: r };
+      const id = r.id == null || r.id === "" ? null : String(r.id).replace(/\D/g, "") || String(r.id);
+      // 【修正 2026-10-01】CSV の「日付」列は日単位のみ（例 "Wed, Sep 30, 2026"）で JST 暦日とずれることがある。
+      // ID が X の snowflake（17 桁以上）なら投稿時刻はそこから復元する（PDCA 2026-10-01 の 7 と同じ方法）
+      const time = id && /^\d{17,}$/.test(id) ? new Date(Number((BigInt(id) >> 22n) + 1288834974657n)) : parseTimeJst(r.time);
+      // 本文が「@」で始まる行はリプ（x_replies 未記録の古いリプも含めて自投稿から除く）
+      const isReply = typeof r.text === "string" && r.text.trimStart().startsWith("@");
+      return { id, time, impressions: imp == null || isNaN(imp) ? null : imp, isReply, raw: r };
     });
   }
 }
@@ -179,11 +187,12 @@ export function normalizeOwnPosts(input) {
  * 自投稿の統計（期間は JST 暦日・両端含む・excludeIds＝x_replies の reply_post_id を除外）。
  * 返り値 { n, impressions_median, impressions_sum, excluded_replies, unparsed_time, no_impressions, columns }
  */
-export function ownPostsStats(norm, { since = null, until = null, excludeIds = new Set() } = {}) {
-  const out = { n: 0, impressions_median: null, impressions_sum: 0, excluded_replies: 0, unparsed_time: 0, no_impressions: 0, columns: norm.columns };
+export function ownPostsStats(norm, { since = null, until = null, excludeIds = new Set(), asOf = null } = {}) {
+  // asOf（Date）を渡すと、その時点で投稿から 24 時間未満の行を中央値から外し件数だけ数える（PDCA 2026-10-01 の 7 の規則）
+  const out = { n: 0, impressions_median: null, impressions_sum: 0, excluded_replies: 0, unparsed_time: 0, no_impressions: 0, young_excluded: 0, columns: norm.columns };
   const vals = [];
   for (const p of norm.posts) {
-    if (p.id && excludeIds.has(p.id)) { out.excluded_replies++; continue; }
+    if ((p.id && excludeIds.has(p.id)) || p.isReply) { out.excluded_replies++; continue; }
     if (since || until) {
       if (!p.time) { out.unparsed_time++; continue; }
       const d = jstYmd(p.time).replace(/(\d{4})(\d{2})(\d{2})/, "$1-$2-$3");
@@ -191,6 +200,7 @@ export function ownPostsStats(norm, { since = null, until = null, excludeIds = n
       if (until && d > until) continue;
     }
     if (p.impressions == null) { out.no_impressions++; continue; }
+    if (asOf && p.time && asOf.getTime() - p.time.getTime() < 24 * 3600e3) { out.young_excluded++; continue; }
     vals.push(p.impressions);
   }
   out.n = vals.length;
@@ -237,7 +247,7 @@ export function followsStats(follows, { since = null, until = null } = {}) {
   };
 }
 
-export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null, follows = null }) {
+export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null, follows = null, asOf = null }) {
   const T = normalizeTargets(targets);
   const RX = normalizeReactions(reactions);
   const byId = new Map(T.map((t) => [t.id, t]));
@@ -275,7 +285,7 @@ export function aggregate({ replies, targets, reactions = null, ownPosts = null,
   if (ownPosts != null) {
     // 自投稿から除外するのはリプ自身（A/B/C）だけ。引用ポスト（Q）は「自投稿」として集計に含める（判定指標の中央値にも入る・CSO 指示 2026-09-21 夜）。
     const replyIds = new Set(normalizeRepliesFull(replies).filter((r) => r.draft_used !== "Q").map((r) => r.reply_post_id).filter(Boolean).map(String));
-    out.own_posts = ownPostsStats(normalizeOwnPosts(ownPosts), { since, until, excludeIds: replyIds });
+    out.own_posts = ownPostsStats(normalizeOwnPosts(ownPosts), { since, until, excludeIds: replyIds, asOf });
   }
   if (ga4Quote != null) out.ga4_quote = ga4Quote; // ga4-quote-sessions.mjs の出力（utm_medium=quote のセッション）をそのまま添付
   if (follows != null) out.follows = followsStats(follows, { since, until });
@@ -317,7 +327,7 @@ export function toMarkdown(agg) {
     L.push("| 比較（観測のみ・判定基準 10/12＝自投稿の中央値 ≥ 50 は変えない） | n | 中央値 | 合計 |");
     L.push("|---|---|---|---|");
     L.push(`| リプの表示回数（reactions.json・取得済みのみ） | ${agg.total.reactions_fetched} | ${agg.total.views_median ?? "—"} | ${agg.total.views_sum} |`);
-    L.push(`| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 ${op.excluded_replies} 件を除外・引用ポスト Q は自投稿に含める） | ${op.n} | ${op.impressions_median ?? "—"} | ${op.impressions_sum} |`);
+    L.push(`| 自投稿のインプレッション（X Analytics CSV・HUMAN 提供・リプ自身 ${op.excluded_replies} 件を除外・引用ポスト Q は自投稿に含める${op.young_excluded ? `・24 時間未満 ${op.young_excluded} 件は中央値から除外` : ""}） | ${op.n} | ${op.impressions_median ?? "—"} | ${op.impressions_sum} |`);
     const notes = [];
     if (op.unparsed_time) notes.push(`日時を解釈できず期間判定から外した行 ${op.unparsed_time}`);
     if (op.no_impressions) notes.push(`インプレッション列が空の行 ${op.no_impressions}`);
@@ -361,7 +371,7 @@ function parseArgs(argv) {
 if (isMain(import.meta.url)) {
   const a = parseArgs(process.argv.slice(2));
   if (!a.replies || !a.targets) {
-    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--follows follows.json] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
+    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--follows follows.json] [--as-of \"YYYY-MM-DD HH:MM\"] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
     process.exit(2);
   }
   const agg = aggregate({
@@ -372,6 +382,7 @@ if (isMain(import.meta.url)) {
     since: typeof a.since === "string" ? a.since : null,
     until: typeof a.until === "string" ? a.until : null,
     ga4Quote: typeof a["ga4-quote"] === "string" ? JSON.parse(fs.readFileSync(a["ga4-quote"], "utf8")) : null,
+    asOf: typeof a["as-of"] === "string" ? parseTimeJst(a["as-of"]) : null,
     follows: typeof a.follows === "string" ? JSON.parse(fs.readFileSync(a.follows, "utf8")) : null,
   });
   process.stdout.write(a.md ? toMarkdown(agg) : JSON.stringify(agg, null, 2) + "\n");

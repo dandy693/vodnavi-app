@@ -1,0 +1,654 @@
+{
+  "generated_at": "2026-10-01T12:43:00.814Z",
+  "today_jst": "20261001",
+  "model": "claude-opus-5",
+  "dry_run": false,
+  "system_prompt_sha256": "79d1227310ad4e06ca3cd99afbc9339d35b3cba13a08d4e37ba112b63567ed4b",
+  "counts": {
+    "lines": 8,
+    "generated": 7,
+    "stopped": 1
+  },
+  "items": [
+    {
+      "lineNo": 1,
+      "handle": "FANZAdougaX",
+      "postUrl": "https://x.com/FANZAdougaX/status/2105598929534587190",
+      "targetPostId": "2105598929534587190",
+      "postedAtJst": "2026-10-01 19:01",
+      "target": {
+        "id": "recEfvfO65s5S0o1f",
+        "handle": "FANZAdougaX",
+        "type": "セール告知系",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-29T21:10:59.112Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20261001-FANZAdougaX",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "OFFキャンペーンビデオ作品リストが公開されたのですね、対象になっている作品を順番に見ていきたいです。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 99
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "OFFキャンペーンビデオ作品リストは今回で出そろいなのでしょうか、それとも期間中に対象作品が追加されることもあるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 63,
+              "weight": 123
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "OFFキャンペーンビデオ作品リストに入っている作品の割引期間は、いつまでになりますでしょうか。",
+              "failures": [
+                {
+                  "rule": "R5",
+                  "detail": "宣伝語: 割引"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 824,
+        "output_tokens": 1440,
+        "cache_creation_input_tokens": 3632,
+        "cache_read_input_tokens": 3654,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 2,
+      "handle": "kawaii_pr",
+      "postUrl": "https://x.com/kawaii_pr/status/2105626789410468153",
+      "targetPostId": "2105626789410468153",
+      "postedAtJst": "2026-10-01 20:52",
+      "target": {
+        "id": "rec00dXKxyuZuZzEY",
+        "handle": "kawaii_pr",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-29T21:12:24.438Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "cawb00040",
+        "title": "「この女、マジでだらしなくてイライラする」部屋汚く服装だらしなく働いていない でかぱいニート女子なので、レ×プして汚してメチャクチャにしても国としては問題ありません。 彩月七緒",
+        "fetched_at": "2026-09-27 04:25:20.7+00"
+      },
+      "replyKey": "20261001-kawaii_pr",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "もうすぐ配信開始とのことで、kawaii*の新作を待っている方にはいよいよという段階ですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録時間は125分、配信日は10月2日と出ていますね。もうすぐ配信開始という告知のとおりの日程です。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 50,
+              "weight": 94
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "もうすぐ配信開始とのことですが、配信の開始時刻は深夜0時からになりますでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 41,
+              "weight": 81
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 699,
+        "output_tokens": 2073,
+        "cache_creation_input_tokens": 3676,
+        "cache_read_input_tokens": 0,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 3,
+      "handle": "MOODYZ_official",
+      "postUrl": "https://x.com/MOODYZ_official/status/2105606157054407122",
+      "targetPostId": "2105606157054407122",
+      "postedAtJst": "2026-10-01 19:30",
+      "target": {
+        "id": "recuIj1YV4CmsxgJN",
+        "handle": "MOODYZ_official",
+        "type": "メーカー公式",
+        "priority": 2,
+        "status": "稼働",
+        "last_reply_at": "2026-09-29T21:13:11.731Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20261001-MOODYZ_official",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "撮影のオフショットまで届くとは思いませんでした。本編とは違う現場の空気が伝わってきますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 45,
+              "weight": 90
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "オフショットは特設サイトでまとめて公開される形でしょうか、それとも日を分けて少しずつ出る形でしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 51,
+              "weight": 102
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 326,
+        "output_tokens": 763,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 4,
+      "handle": "attackers_av",
+      "postUrl": "https://x.com/attackers_av/status/2105402322608419044",
+      "targetPostId": "2105402322608419044",
+      "postedAtJst": "2026-10-01 06:00",
+      "target": {
+        "id": "recGCCpEJDzLNEkLo",
+        "handle": "attackers_av",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-29T21:11:36.778Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "yuj00073",
+        "title": "私に告白してきた息子の同級生に大人のデートを教えてあげた日。 小野りんか",
+        "fetched_at": "2026-09-25 05:05:33.675+00"
+      },
+      "replyKey": "20261001-attackers_av",
+      "warnings": [],
+      "status": "一部生成不能（A/B/C がガード未通過・最大 2 回再生成後）",
+      "drafts": {
+        "A": {
+          "text": "「手、繋ごう」の一言だけで、もう物語が始まっている感じがしますね。短い投げかけが効いています。",
+          "guard": {
+            "ok": false,
+            "failures": [
+              {
+                "rule": "R14",
+                "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+              }
+            ],
+            "metrics": {
+              "chars": 47,
+              "weight": 94
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "手、繋ごう？ というひと言だけで距離感が伝わってきますね。短い言葉ですが、この誘い方は印象に残ります。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "文数 3（≤2）"
+                },
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            },
+            {
+              "text": "「手、繋ごう？」というキャッチの一言、短い言葉だけで引きが作れているのが面白いところですね。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            }
+          ]
+        },
+        "B": {
+          "text": "「手、繋ごう」のこの一本は収録134分、配信は8月28日なのですね。二時間を超える長さです。",
+          "guard": {
+            "ok": false,
+            "failures": [
+              {
+                "rule": "R14",
+                "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+              }
+            ],
+            "metrics": {
+              "chars": 46,
+              "weight": 86
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "手、繋ごう？ のひと言ですね。収録時間は134分、配信開始は8月28日の作品だと思います。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "文数 3（≤2）"
+                },
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            },
+            {
+              "text": "「手、繋ごう？」で紹介されている作品は収録134分、配信は8月28日からですね。まとまった時間を確保して向き合いたい長さです。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "文数 3（≤2）"
+                },
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            }
+          ]
+        },
+        "C": {
+          "text": "「手、繋ごう」というこの一言が出てくる場面は、サンプル動画でも見られるものでしょうか？",
+          "guard": {
+            "ok": false,
+            "failures": [
+              {
+                "rule": "R14",
+                "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+              }
+            ],
+            "metrics": {
+              "chars": 43,
+              "weight": 86
+            }
+          },
+          "attempts": 3,
+          "history": [
+            {
+              "text": "手、繋ごう？ というこのひと言は、サンプル動画の中でも聞ける場面でしょうか？",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            },
+            {
+              "text": "「手、繋ごう？」というキャッチは、作品内の台詞からそのまま取られたものでしょうか。",
+              "failures": [
+                {
+                  "rule": "R14",
+                  "detail": "相手投稿本文の具体（数値・日付・企画名・順位）を含まない（本文の候補: なし）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 2278,
+        "output_tokens": 4708,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 11028,
+        "calls": 3
+      }
+    },
+    {
+      "lineNo": 5,
+      "handle": "Madonna_AVinfo",
+      "postUrl": "https://x.com/Madonna_AVinfo/status/2105459923744338201",
+      "targetPostId": "2105459923744338201",
+      "postedAtJst": "2026-10-01 09:48",
+      "target": {
+        "id": "rec81cW6UPEmdwPZQ",
+        "handle": "Madonna_AVinfo",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T21:24:08.939Z"
+      },
+      "knowledgeMode": "cache",
+      "types": [
+        "A",
+        "B",
+        "C"
+      ],
+      "knowledge": {
+        "content_id": "juvr00281",
+        "title": "【VR】MadonnaVR史上初！！専属美熟女10人大集合！！町内会の合宿で欲求不満な人妻たちが僕1人を求め合い奪い合う超ハーレム温泉中出し乱交 8KVR",
+        "fetched_at": "2026-10-01 11:59:06.895+00"
+      },
+      "replyKey": "20261001-Madonna_AVinfo",
+      "warnings": [],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "予約受付中の段階で売れ筋3位は強いですね。2026年10月2日発売を待っています。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 41,
+              "weight": 74
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "B": {
+          "text": "収録時間は362分と長尺で、発売は2026年10月2日ですね。予約の時点で売れ筋3位まで来ているのが気になります。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 57,
+              "weight": 103
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "2026年10月2日発売とのことですが、予約された方向けの特典や先行配信の予定はありますか？",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 85
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 916,
+        "output_tokens": 1143,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3676,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 6,
+      "handle": "FalenoEvent",
+      "postUrl": "https://x.com/FalenoEvent/status/2105469574162547097",
+      "targetPostId": "2105469574162547097",
+      "postedAtJst": "2026-10-01 10:27",
+      "target": {
+        "id": "recByvjAnovkOIiu3",
+        "handle": "FalenoEvent",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-25T13:35:46.341Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20261001-FalenoEvent",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "2026年10月イベントカレンダーの公開、10月に会える日がまとめて分かるのは楽しみですね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 46,
+              "weight": 84
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "2026年10月イベントカレンダーに載っている日程は、月の途中で追加されることもあるのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 49,
+              "weight": 92
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 334,
+        "output_tokens": 576,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    },
+    {
+      "lineNo": 7,
+      "handle": "sodstarofficial",
+      "postUrl": "https://x.com/sodstarofficial/status/2105598612633989525",
+      "targetPostId": "2105598612633989525",
+      "postedAtJst": "2026-10-01 19:00",
+      "target": {
+        "id": "recNeii0IxsmSm4Sb",
+        "handle": "sodstarofficial",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": null
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20261001-sodstarofficial",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "1ヶ月我慢という設定、企画の軸がはっきりしていて引き込まれますね。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 33,
+              "weight": 65
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "1ヶ月我慢したというのは作品内の企画設定でしょうか、それとも撮影に向けた実際の期間なのでしょうか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 49,
+              "weight": 97
+            }
+          },
+          "attempts": 2,
+          "history": [
+            {
+              "text": "1ヶ月我慢という企画は、この作品単体の設定でしょうか。",
+              "failures": [
+                {
+                  "rule": "R8",
+                  "detail": "字数 27（30〜140）"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "usage": {
+        "input_tokens": 557,
+        "output_tokens": 308,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 7286,
+        "calls": 2
+      }
+    },
+    {
+      "lineNo": 8,
+      "handle": "wanz_official",
+      "postUrl": "https://x.com/wanz_official/status/2105492974373392656",
+      "targetPostId": "2105492974373392656",
+      "postedAtJst": "2026-10-01 12:00",
+      "target": {
+        "id": "recrSDMfNaoitnuaV",
+        "handle": "wanz_official",
+        "type": "メーカー公式",
+        "priority": 1,
+        "status": "稼働",
+        "last_reply_at": "2026-09-24T21:25:54.495Z"
+      },
+      "knowledgeMode": "none",
+      "types": [
+        "A",
+        "C"
+      ],
+      "knowledge": null,
+      "replyKey": "20261001-wanz_official",
+      "warnings": [
+        "末尾フィールドは作品コードの形でないため本文の一部として扱った"
+      ],
+      "status": "generated",
+      "drafts": {
+        "A": {
+          "text": "10月18日は昼の部と夜の部の二部構成なんですね。発券開始が10月2日というのも分かりました。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 47,
+              "weight": 87
+            }
+          },
+          "attempts": 1,
+          "history": []
+        },
+        "C": {
+          "text": "10月18日の昼の部と夜の部で、発券の枚数や条件に違いはありますか。",
+          "guard": {
+            "ok": true,
+            "failures": [],
+            "metrics": {
+              "chars": 34,
+              "weight": 64
+            }
+          },
+          "attempts": 1,
+          "history": []
+        }
+      },
+      "usage": {
+        "input_tokens": 413,
+        "output_tokens": 87,
+        "cache_creation_input_tokens": 0,
+        "cache_read_input_tokens": 3654,
+        "calls": 1
+      }
+    }
+  ]
+}
