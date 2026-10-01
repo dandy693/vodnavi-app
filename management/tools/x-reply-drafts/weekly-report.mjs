@@ -247,7 +247,7 @@ export function followsStats(follows, { since = null, until = null } = {}) {
   };
 }
 
-export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null, follows = null, asOf = null }) {
+export function aggregate({ replies, targets, reactions = null, ownPosts = null, since = null, until = null, ga4Quote = null, follows = null, asOf = null, kpi = null }) {
   const T = normalizeTargets(targets);
   const RX = normalizeReactions(reactions);
   const byId = new Map(T.map((t) => [t.id, t]));
@@ -289,6 +289,7 @@ export function aggregate({ replies, targets, reactions = null, ownPosts = null,
   }
   if (ga4Quote != null) out.ga4_quote = ga4Quote; // ga4-quote-sessions.mjs の出力（utm_medium=quote のセッション）をそのまま添付
   if (follows != null) out.follows = followsStats(follows, { since, until });
+  if (kpi != null) out.kpi = kpi; // 主要 2 指標と 10/12 判定のフォロワー数（手入力・HUMAN/CTO が管理画面・GA4 から転記）
   return out;
 }
 
@@ -305,6 +306,26 @@ export function toMarkdown(agg) {
     : "| 区分 | 件数 | draft_used | got_like ✓ | got_reply ✓ | profile_click_delta 記入 |";
   const S = withRx ? "|---|---|---|---|---|---|---|---|---|" : "|---|---|---|---|---|---|";
   const L = [];
+  // 第129便 C3: 先頭に「主要 2 指標」と「10/12 判定指標」。以下の表はすべて補助（参考）。
+  const K = agg.kpi ?? {};
+  const v = (x) => (x == null || x === "" ? "未入力" : x);
+  L.push("## 主要 2 指標");
+  L.push("");
+  L.push("| 指標 | 値 | 期間 | 計測系 |");
+  L.push("|---|---|---|---|");
+  L.push(`| DMM 成果額（月） | ${v(K.dmm_revenue_month)} | ${v(K.dmm_period)} | DMM 管理画面（ID=すべて・当日分は翌日反映） |`);
+  L.push(`| 検索セッション（週） | ${v(K.search_sessions_week)} | ${v(K.search_period)} | GA4（Organic Search・hostName=app.vodnavi.jp・CN 除外） |`);
+  L.push("");
+  L.push("## 2026-10-12 判定指標（§26-14）");
+  L.push("");
+  L.push("| 指標 | 現在値 | 基準 | 期間 |");
+  L.push("|---|---|---|---|");
+  L.push(`| 主指標① リプの表示回数中央値 | ${agg.total.views_median ?? "—"}（n=${agg.total.reactions_fetched}） | ≥ 20（ラベル前 28） | ${agg.period.since ?? "?"} 〜 ${agg.period.until ?? "?"}（判定窓は 2026-09-29〜10-12） |`);
+  L.push(`| 主指標② フォロワー数 | ${v(K.followers)}${K.followers_at ? `（${K.followers_at}・HUMAN 実測）` : ""} | ≥ 30（起点 2026-09-24 の 13） | 〜 2026-10-12 |`);
+  if (agg.own_posts) L.push(`| 参考 自投稿インプレッション中央値（判定に使わない） | ${agg.own_posts.impressions_median ?? "—"}（n=${agg.own_posts.n}） | — | 同上 |`);
+  L.push("");
+  L.push("## 補助（参考）");
+  L.push("");
   L.push(`期間: ${agg.period.since ?? "（下限なし）"} 〜 ${agg.period.until ?? "（上限なし）"}（posted_at の JST 暦日・両端含む）`);
   if (withRx) L.push("反応（likes / replies / views）は reactions.json（X 投稿ページの読み取り）から。Airtable の got_like / got_reply は「取得済み・0」と「未取得」を区別しないため「反応 取得済」列で見る。profile_click_delta は投稿ページから取れないため常に未取得。");
   L.push("");
@@ -371,7 +392,7 @@ function parseArgs(argv) {
 if (isMain(import.meta.url)) {
   const a = parseArgs(process.argv.slice(2));
   if (!a.replies || !a.targets) {
-    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--follows follows.json] [--as-of \"YYYY-MM-DD HH:MM\"] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
+    process.stderr.write("usage: node weekly-report.mjs --replies replies.json --targets targets.json [--reactions reactions.json] [--own-posts own_posts.csv|.json] [--ga4-quote ga4_quote.json] [--follows follows.json] [--kpi kpi.json] [--as-of \"YYYY-MM-DD HH:MM\"] [--since YYYY-MM-DD] [--until YYYY-MM-DD] [--md]\n");
     process.exit(2);
   }
   const agg = aggregate({
@@ -384,6 +405,7 @@ if (isMain(import.meta.url)) {
     ga4Quote: typeof a["ga4-quote"] === "string" ? JSON.parse(fs.readFileSync(a["ga4-quote"], "utf8")) : null,
     asOf: typeof a["as-of"] === "string" ? parseTimeJst(a["as-of"]) : null,
     follows: typeof a.follows === "string" ? JSON.parse(fs.readFileSync(a.follows, "utf8")) : null,
+    kpi: typeof a.kpi === "string" ? JSON.parse(fs.readFileSync(a.kpi, "utf8")) : null,
   });
   process.stdout.write(a.md ? toMarkdown(agg) : JSON.stringify(agg, null, 2) + "\n");
 }

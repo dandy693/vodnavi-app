@@ -11559,3 +11559,9 @@ TG の記事ローテーションは W9 の順の続き（first-guide → paymen
 - **裁定 5**: 運用則「`reply_key`・`posted_at`・`last_reply_at` は実投稿時刻の日付」を FACT §26-10-1 と tool README に追加。
 - **裁定 6（台帳修正 3 件・9/29 構造調査便の結果）**: ①本番の af_id 直書きリンク（`href="https://al.(dmm|fanza)..."`・works 詳細 3 面の `<main>` 内）は **17 本**（便の「15 本」は台帳に出典なし）②`internal_links` は **B2②-b の資産**（B2① は依存しない・L2531 に注記）③B2②-b の進捗は **4/6**（L5321 の「5/6」を訂正で残置）。出典 → `management/_metrics/2026-W40/structure-survey-20260929/README.md`。
 - **週次集計** → `management/_metrics/2026-W40/pdca-20261001/`。
+
+### 2026-10-02 第129便（CTO 02:05:50 着手）— A3 凍結リスト／B1〜B4 設計報告／C1〜C3
+- **A3 凍結リスト（FACT §31）**: ボット対策・Firewall・計測・抽出方式・リプ案ツールの改善提案をしない。例外＝E28 Challenge テスト（10/7 判定）と「収益を止めているもの」。
+- **A1／A2 保留**: 便本文に「上記裁定1〜5」が無く、FACT への記録と「12月10万円」の差し替えができない（裁定本文待ち）。
+- B1〜B4 設計報告・C2 テーマ 8 件・C3 週次レポート出力整理 → `management/_metrics/2026-W40/bin129-20261002/README.md`。**実装は B 各件の CSO 裁定後。**
+- C1: 10/2 送信の報告待ち（outreach.json 未記録）。来週候補 2 件は 10/8 PDCA まで。

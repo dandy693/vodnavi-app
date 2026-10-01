@@ -188,3 +188,14 @@ test("own-posts: 日本語 CSV（ポストID・日付は日単位）＝ID 列を
   assert.equal(all.n, 1);
   assert.equal(all.impressions_median, 79);
 });
+
+test("weekly-report: 主要2指標と10/12判定指標を先頭に出す（C3）", async () => {
+  const { aggregate, toMarkdown } = await import("./weekly-report.mjs");
+  const agg = aggregate({ replies: [], targets: [], since: "2026-09-29", until: "2026-10-12", kpi: { dmm_revenue_month: "1,484円", followers: 18 } });
+  const md = toMarkdown(agg);
+  assert.ok(md.indexOf("## 主要 2 指標") < md.indexOf("## 2026-10-12 判定指標"));
+  assert.ok(md.indexOf("## 2026-10-12 判定指標") < md.indexOf("## 補助（参考）"));
+  assert.match(md, /DMM 成果額（月） \| 1,484円/);
+  assert.match(md, /検索セッション（週） \| 未入力/);
+  assert.match(md, /主指標② フォロワー数 \| 18/);
+});
