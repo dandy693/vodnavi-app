@@ -1,0 +1,43 @@
+model=claude-opus-5 dry_run=false today_jst=20261002 counts={"lines":5,"generated":4,"stopped":1} prompt_sha=79d1227310ad
+
+=== 対象 https://x.com/Fitch_official/status/2105674114338066457（2026-10-02 00:00）
+    @Fitch_official (メーカー公式) status=generated replyKey=20261002-Fitch_official calls=1 in=653 out=179
+  A chars=66 weight=130 ok=true attempts=1
+     小谷アリサさんのAVデビュー作、本日先行配信スタートおめでとうございます。デビュー作が出る日の告知は見ていて気持ちが引き締まります。
+  B chars=62 weight=118 ok=true attempts=1
+     小谷アリサさんのデビュー作、収録時間は135分で配信日は10月2日なのですね。デビュー作としてはしっかりした尺だと思います。
+  C chars=42 weight=84 ok=true attempts=1
+     小谷アリサさんのデビュー作、先行配信から通常配信に切り替わるのはいつ頃になりますか。
+
+=== 対象 https://x.com/kawaii_pr/status/2105681654799032503（2026-10-02 00:30）
+    @kawaii_pr (メーカー公式) status=generated replyKey=20261002-kawaii_pr calls=1 in=791 out=151
+  A chars=60 weight=113 ok=true attempts=1
+     乃音ののさんの先行配信スタート、おめでとうございます。kawaii*芸能新人デビューという打ち出しが分かりやすいですね。
+  B chars=54 weight=102 ok=true attempts=1
+     収録時間は120分で、配信日は10月2日なのですね。乃音ののさんのデビュー作として見やすい長さだと思います。
+  C chars=36 weight=72 ok=true attempts=1
+     先行配信の期間は何日間までで、通常配信への切り替えはいつ頃になりますか？
+
+=== 対象 https://x.com/wanz_official/status/2105681662415982634（2026-10-02 00:30）
+    @wanz_official (メーカー公式) status=generated replyKey=20261002-wanz_official calls=1 in=666 out=1135
+  A chars=49 weight=98 ok=true attempts=1
+     先行配信スタートおめでとうございます。本日スタートということで、どんな反応が集まるか気になります。
+  B chars=54 weight=105 ok=true attempts=1
+     本日先行配信スタートの新作は収録124分なのですね。新井リマさんの単体作品として、長めの尺で見られそうです。
+  C chars=38 weight=76 ok=true attempts=1
+     本日先行配信スタートとのことですが、通常配信の開始はいつ頃の予定でしょうか。
+
+=== 対象 https://x.com/attackers_av/status/2105704305579982893（2026-10-02 02:00）
+    @attackers_av (メーカー公式) status=generated replyKey=20261002-attackers_av calls=1 in=730 out=1164
+  A chars=50 weight=100 ok=true attempts=1
+     本日先行配信スタートおめでとうございます。先行の段階から追えるタイトルが増えるのはありがたいですね。
+  B chars=56 weight=106 ok=true attempts=1
+     本日先行配信スタートの本作、収録時間は120分で、配信日は10月2日なのですね。長めの尺でじっくり追えそうです。
+  C chars=40 weight=80 ok=true attempts=1
+     本日先行配信スタートとのことですが、通常配信の開始はいつ頃を予定されていますか？
+
+=== 対象 https://x.com/kawaii_pr/status/2105689208291742124（2026-10-02 01:00）
+    @kawaii_pr (メーカー公式) status=停止（同日同ハンドル 2 件目: 本バッチ内 2 行目を優先・投稿は 1 日 1 件。別の行を優先するなら入力順を入れ替えるか --all-lines） replyKey=20261002-kawaii_pr calls=0 in=0 out=0
+  A: (なし)
+  B: (なし)
+  C: (なし)

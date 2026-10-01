@@ -1,0 +1,44 @@
+{
+  "tag": "PREFLIGHT_TODAY",
+  "ts": "2026-10-01T21:08:02.633Z",
+  "date": "2026-10-02",
+  "n": 1,
+  "ngCount": 0,
+  "unrecovered": [],
+  "selfExcluded": [],
+  "dumpUsed": false,
+  "existingRows": 0,
+  "metaDependent": {
+    "g9_utc_iso": "intendedJst（生成時の意図時刻）",
+    "g12_actress_not_recent": "actressNames（posts に出演女優の列が無い）",
+    "g19_t3_deadline": "material.ends_at（T3 の生成材料）",
+    "g20_t3_template": "material（T3 の生成材料）",
+    "g21_t3_not_reported": "material.campaign_title（T3 の生成材料）"
+  },
+  "posts": [
+    {
+      "recordId": "rec9goZ2IC3zigTyo",
+      "name": "W12-07 T1改 七沢みあ MIDV-174",
+      "text": "七沢みあのMIDV-174は120分の収録。4K収録です。\n収録内容・サンプル・出演情報はこちらから↓",
+      "linkUrl": "https://app.vodnavi.jp/works/videoa/midv00174",
+      "kind": "T1",
+      "typeName": "T1改",
+      "statusName": "承認済",
+      "linkKindName": "サイト",
+      "postId": null,
+      "errorDetail": null,
+      "scheduledUtc": "2026-10-02T12:00:00.000Z",
+      "contentId": "midv00174",
+      "hinban": "MIDV-174",
+      "actressNames": [],
+      "failures": [],
+      "skipped": [
+        {
+          "post": "W12-07 T1改 七沢みあ MIDV-174",
+          "guard": "g9_utc_iso",
+          "ng": "intendedJst が未指定（照合できない）"
+        }
+      ]
+    }
+  ]
+}
