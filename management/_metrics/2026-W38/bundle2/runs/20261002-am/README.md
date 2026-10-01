@@ -7,8 +7,8 @@
 
 ## 1. 走査（約 06:12〜06:30 JST・20 分上限で打ち切り）
 - **停止確定のため未読 6**: 女優 3 日＝Kizukiamane（10/1）・shiromine_miu（9/30）／priority 3（今週 2/2）＝S1_No1_Style・shinnakanodream・mayukiito・umi_sea_0v0。
-- **読めた 13**: kawaii_pr（窓内 9）・IDEAPOCKETTER（2）・Fitch_official（2）・MOODYZ_official（1）・wanz_official（5）・attackers_av（2）／窓内なし＝honnaka_NN・5may_itsukaichi・Madonna_AVinfo・FalenoEvent・PREMIUM_AV（描画 1 件のみ）・fanza_sns（描画 1 件のみ）。
-- **描画されず取得不能 4**: nao_satsuki・iyo_shinohara・FANZAdougaX（ページが応答せず）・sodstarofficial・shirot_AV_chosa（固定のみ）→ 次回に持ち越し。
+- **読めた 12**: kawaii_pr（窓内 9）・IDEAPOCKETTER（2）・Fitch_official（2）・MOODYZ_official（1）・wanz_official（5）・attackers_av（2）／窓内なし＝honnaka_NN・5may_itsukaichi・Madonna_AVinfo・FalenoEvent・PREMIUM_AV（描画 1 件のみ）・fanza_sns（描画 1 件のみ）。
+- **描画されず取得不能 5**: nao_satsuki・iyo_shinohara・FANZAdougaX（ページが応答せず）・sodstarofficial・shirot_AV_chosa（固定のみ）→ 次回に持ち越し。
 - **未読（打ち切り）11**: mio_sakai_・waka_misono・DMM10sale・sakuramio_X・karin_kitaoka_・ran_tpowers・fanza_meireview・azusa_hikari_・PRESTIGE_PR2020・saki_seino・Aizawa_miyu03（夜の走査で先頭に回す）。
 - **環境**: 背景タブでは小さなスクリーンショット 1 枚で描画が進む（無いと articles 0）。JS 内の `setTimeout` は大きく遅延。JS の返り値に URL のクエリ断片が残るとツール側で出力が遮断される。
 
