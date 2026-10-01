@@ -23,3 +23,14 @@
 
 ## 4. フォロー候補
 - 時間上限のため今朝は未実施（夜に実施）。
+
+## 5. 投稿と記録（HUMAN 投稿 2026-10-02 06:30〜06:31 JST・手直しなし）
+
+| # | 対象 | 案 | 投稿 | 配信（snowflake・UTC） |
+|---|---|---|---|---|
+| 1 | https://x.com/attackers_av/status/2105704305579982893 | B | 2105772480380223530 | 2026-10-01T21:30:57.340Z |
+| 2 | https://x.com/kawaii_pr/status/2105681654799032503 | A | 2105772666351464618 | 2026-10-01T21:31:41.679Z |
+
+- 見送り: ①Fitch（AI生成作品タグ）・③wanz（昨夜返信済み・夜の候補に回す）。
+- X 実在: 2 件とも HTTP 200・Twitterbot の `<title>` で宛先と本文が案と一致（手直しなし）／無効 ID 対照 404。
+- 記録: MCP create（createdTime 06:41:13 JST・`recHuEYRTyB7nQWQj` / `recmdYzmkrYkzZNG0`）→ x_targets `last_reply_at` 2 件 → **別呼び出しの読み戻しで 2＋2 件一致。reply_key `20261002-` は 2 件・x_replies 累計 83 件。**
